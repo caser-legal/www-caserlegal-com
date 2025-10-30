@@ -534,17 +534,17 @@ export default function Home() {
                       <div className="grid grid-cols-2 gap-2">
                         <div className="p-2 border rounded text-center">
                           <div className="text-[10px] text-muted-foreground">Page Fees</div>
-                          <div className="text-sm font-semibold">${pacerCosts.pageCosts.toFixed(2)}</div>
+                          <div className="text-sm font-semibold">${formatNumber(Number(pacerCosts.pageCosts.toFixed(2)))}</div>
                         </div>
                         <div className="p-2 border rounded text-center">
                           <div className="text-[10px] text-muted-foreground">Doc Fees</div>
-                          <div className="text-sm font-semibold">${pacerCosts.documentCosts.toFixed(2)}</div>
+                          <div className="text-sm font-semibold">${formatNumber(Number(pacerCosts.documentCosts.toFixed(2)))}</div>
                         </div>
                       </div>
                       <div className="p-2 border rounded">
                         <div className="flex justify-between items-center">
                           <span className="text-xs font-medium">Annual Total</span>
-                          <span className="text-sm font-bold">${pacerCosts.annualWithCap.toFixed(2)}</span>
+                          <span className="text-sm font-bold">${formatNumber(Number(pacerCosts.annualWithCap.toFixed(2)))}</span>
                         </div>
                       </div>
                     </CardContent>
@@ -559,7 +559,7 @@ export default function Home() {
                       <div className="p-2 border rounded">
                         <div className="flex justify-between items-center">
                           <span className="text-xs font-medium">Annual Cost</span>
-                          <span className="text-sm font-semibold">${caserCosts.annualCost.toFixed(2)}</span>
+                          <span className="text-sm font-semibold">${formatNumber(Number(caserCosts.annualCost.toFixed(2)))}</span>
                         </div>
                       </div>
                     </CardContent>
@@ -570,17 +570,17 @@ export default function Home() {
                     <CardContent className="space-y-3 px-0 pt-0 pb-0">
                       <div className="text-center">
                         <div className="text-2xl font-bold text-primary mb-1">
-                          ${totalAnnualSavings.toFixed(0)}
+                          ${formatNumber(Number(totalAnnualSavings.toFixed(0)))}
                         </div>
                         <div className="text-[10px] text-muted-foreground">Total Annual Savings</div>
                       </div>
                       <div className="grid grid-cols-2 gap-2 text-center">
                         <div className="p-2 bg-white rounded">
-                          <div className="text-lg font-bold text-green-600">${monthlySavings.toFixed(0)}</div>
+                          <div className="text-lg font-bold text-green-600">${formatNumber(Number(monthlySavings.toFixed(0)))}</div>
                           <div className="text-[10px] text-muted-foreground">Monthly</div>
                         </div>
                         <div className="p-2 bg-white rounded">
-                          <div className="text-lg font-bold text-blue-600">{roiPercentage.toFixed(0)}%</div>
+                          <div className="text-lg font-bold text-blue-600">{formatNumber(Number(roiPercentage.toFixed(0)))}%</div>
                           <div className="text-[10px] text-muted-foreground">ROI</div>
                         </div>
                       </div>

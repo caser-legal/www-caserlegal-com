@@ -180,8 +180,8 @@ export default function FeaturesPage() {
                   </Card>
                 </div>
 
-                <div className="flex justify-center lg:justify-end">
-                  <img src="/search.png" alt="Search & Monitoring" className="max-w-md w-full h-auto" />
+                <div className="flex justify-center lg:justify-start">
+                  <img src="/search.png" alt="Search & Monitoring" className="max-w-sm w-full h-auto" />
                 </div>
               </div>
             </TabsContent>
@@ -264,8 +264,8 @@ export default function FeaturesPage() {
                   </Card>
                 </div>
 
-                <div className="flex justify-center lg:justify-end">
-                  <img src="/dashboard.png" alt="Analytics Dashboard" className="max-w-md w-full h-auto" />
+                <div className="flex justify-center lg:justify-start">
+                  <img src="/dashboard.png" alt="Analytics Dashboard" className="max-w-sm w-full h-auto" />
                 </div>
               </div>
             </TabsContent>
@@ -348,8 +348,8 @@ export default function FeaturesPage() {
                   </Card>
                 </div>
 
-                <div className="flex justify-center lg:justify-end">
-                  <img src="/security-screen.png" alt="CASER Security" className="max-w-md w-full h-auto" />
+                <div className="flex justify-center lg:justify-start">
+                  <img src="/security-screen.png" alt="CASER Security" className="max-w-sm w-full h-auto" />
                 </div>
               </div>
             </TabsContent>
@@ -420,8 +420,8 @@ export default function FeaturesPage() {
                   </CardContent>
                 </Card>
 
-                <div className="flex justify-center lg:justify-end">
-                  <img src="/ai.png" alt="Atticus AI Assistant" className="max-w-md w-full h-auto" />
+                <div className="flex justify-center lg:justify-start">
+                  <img src="/ai.png" alt="Atticus AI Assistant" className="max-w-sm w-full h-auto" />
                 </div>
               </div>
             </TabsContent>
