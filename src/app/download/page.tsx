@@ -5,7 +5,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { 
   ScalesOfJustice, 
-  ContactDocument,
   ProfessionalBriefcase,
   Gavel,
   CourthouseClock,
@@ -16,8 +15,10 @@ import {
   Star,
   Smartphone,
   Monitor,
-  Apple
+  Apple,
+  LegalDocument
 } from '@/components/ui/icons';
+// Note: Replaced missing ContactDocument with LegalDocument
 import Link from 'next/link';
 
 export default function ContactPage() {
@@ -329,7 +330,7 @@ export default function ContactPage() {
             <Card className="text-center">
               <CardHeader>
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <ContactDocument className="w-6 h-6 text-primary" />
+                  <LegalDocument className="w-6 h-6 text-primary" />
                 </div>
                 <CardTitle className="text-lg">Document Access</CardTitle>
               </CardHeader>
