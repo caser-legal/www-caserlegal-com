@@ -150,7 +150,7 @@ export default function ContactPage() {
               <img 
                 src="/screenshot-3.png" 
                 alt="CASER App Screenshot" 
-                className="max-w-sm w-full h-auto shadow-2xl"
+                className="max-w-sm w-full h-auto"
               />
             </div>
           </div>
