@@ -38,7 +38,7 @@ export default function PricingPage() {
   const PACER_DOCUMENT_COST = 2.50;
   const PACER_QUARTERLY_CAP = 30; // $30 per quarter waived if under $15
 
-  // C.A.S.E.R pricing
+  // CASER pricing
   const CASER_PRICING = {
     professional: 49,
     business: 149,
@@ -97,21 +97,18 @@ export default function PricingPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm">CASER</span>
-              </div>
-              <span className="font-semibold text-lg">C.A.S.E.R</span>
+              <img src="/logo-full.png" alt="CASER" className="h-11" />
             </div>
             <div className="hidden md:flex items-center space-x-6">
               <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">Home</Link>
               <Link href="/about" className="text-sm font-medium hover:text-primary transition-colors">About</Link>
               <Link href="/features" className="text-sm font-medium hover:text-primary transition-colors">Features</Link>
               <Link href="/pricing" className="text-sm font-medium text-primary">Pricing</Link>
-              <Link href="/contact" className="text-sm font-medium hover:text-primary transition-colors">Contact</Link>
+              <Link href="/download" className="text-sm font-medium hover:text-primary transition-colors">Download</Link>
             </div>
             <Button variant="outline" size="sm" asChild>
-              <Link href="https://apps.apple.com" target="_blank" rel="noopener noreferrer">
-                App Store
+              <Link href="/contact">
+                Contact
               </Link>
             </Button>
           </div>
@@ -126,9 +123,6 @@ export default function PricingPage() {
               <DollarDocument className="w-3 h-3 mr-2" />
               Pricing Plans
             </Badge>
-            <Badge variant="outline" className="w-fit">
-              Available Soon
-            </Badge>
             <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">
               Professional Pricing
               <span className="text-primary"> for Every Practice Size</span>
@@ -139,7 +133,7 @@ export default function PricingPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild>
-                <Link href="https://apps.apple.com" target="_blank" rel="noopener noreferrer">
+                <Link href="/contact">
                   Purchase Now
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
@@ -203,19 +197,19 @@ export default function PricingPage() {
                   </div>
                 </div>
                 <Button className="w-full" size="lg" asChild>
-                  <Link href="https://apps.apple.com" target="_blank" rel="noopener noreferrer">
+                  <Link href="/contact">
                     Get Started Now
                   </Link>
                 </Button>
                 <div className="flex items-center justify-center space-x-2 mt-3">
-                  <Badge variant="outline" className="text-xs">
-                    🔒 AES-256 Secured
+                  <Badge variant="outline" className="text-[10px] px-1.5 py-0.5">
+                    🔒 AES-256
                   </Badge>
-                  <Badge variant="outline" className="text-xs">
-                    TLS 1.3 Encryption
+                  <Badge variant="outline" className="text-[10px] px-1.5 py-0.5">
+                    TLS 1.3
                   </Badge>
-                  <Badge variant="outline" className="text-xs">
-                    Pro Se Discount
+                  <Badge variant="outline" className="text-[10px] px-1.5 py-0.5">
+                    Pro Se
                   </Badge>
                 </div>
               </CardContent>
@@ -279,19 +273,19 @@ export default function PricingPage() {
                   </div>
                 </div>
                 <Button className="w-full" size="lg" asChild>
-                  <Link href="https://apps.apple.com" target="_blank" rel="noopener noreferrer">
+                  <Link href="/contact">
                     Get Started Now
                   </Link>
                 </Button>
                 <div className="flex items-center justify-center space-x-2 mt-3">
-                  <Badge variant="outline" className="text-xs">
-                    🔒 AES-256 Secured
+                  <Badge variant="outline" className="text-[10px] px-1.5 py-0.5">
+                    🔒 AES-256
                   </Badge>
-                  <Badge variant="outline" className="text-xs">
-                    TLS 1.3 Encryption
+                  <Badge variant="outline" className="text-[10px] px-1.5 py-0.5">
+                    TLS 1.3
                   </Badge>
-                  <Badge variant="outline" className="text-xs">
-                    Pro Se Discount
+                  <Badge variant="outline" className="text-[10px] px-1.5 py-0.5">
+                    Pro Se
                   </Badge>
                 </div>
               </CardContent>
@@ -373,10 +367,9 @@ export default function PricingPage() {
               </Badge>
               <h2 className="text-3xl lg:text-4xl font-bold">
                 PACER Savings Calculator
-                <span className="text-lg font-normal text-muted-foreground block mt-2">Available Soon</span>
               </h2>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Calculate your exact savings with C.A.S.E.R. Adjust the sliders to match your firm's PACER usage and see the potential ROI.
+                Calculate your exact savings with CASER. Adjust the sliders to match your firm's PACER usage and see the potential ROI.
               </p>
             </div>
 
@@ -437,7 +430,7 @@ export default function PricingPage() {
                   {/* Documents per Month */}
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
-                      <Label className="text-sm font-medium">Document Downloads per Month</Label>
+                      <Label className="text-sm font-medium">Document Contacts per Month</Label>
                       <span className="text-sm font-semibold text-primary">{documentsPerMonth[0]}</span>
                     </div>
                     <Slider
@@ -476,7 +469,7 @@ export default function PricingPage() {
 
                   {/* Plan Selection */}
                   <div className="space-y-3">
-                    <Label className="text-sm font-medium">Select C.A.S.E.R Plan</Label>
+                    <Label className="text-sm font-medium">Select CASER Plan</Label>
                     <Select value={selectedPlan} onValueChange={setSelectedPlan}>
                       <SelectTrigger>
                         <SelectValue />
@@ -496,38 +489,35 @@ export default function PricingPage() {
                 {/* PACER Costs Breakdown */}
                 <Card className="p-6">
                   <CardHeader className="px-0 pt-0">
-                    <div className="flex items-center space-x-2">
-                      <PiggyBank className="w-5 h-5 text-red-600" />
-                      <CardTitle className="text-xl">Traditional PACER Costs</CardTitle>
-                    </div>
+                    <CardTitle className="text-xl">Traditional PACER Costs</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4 px-0">
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="p-3 bg-red-50 rounded-lg">
+                      <div className="p-3 border rounded-lg">
                         <div className="text-xs text-muted-foreground">Page Fees</div>
-                        <div className="text-lg font-semibold text-red-600">
+                        <div className="text-lg font-semibold">
                           ${pacerCosts.pageCosts.toFixed(2)}/mo
                         </div>
                       </div>
-                      <div className="p-3 bg-red-50 rounded-lg">
+                      <div className="p-3 border rounded-lg">
                         <div className="text-xs text-muted-foreground">Document Fees</div>
-                        <div className="text-lg font-semibold text-red-600">
+                        <div className="text-lg font-semibold">
                           ${pacerCosts.documentCosts.toFixed(2)}/mo
                         </div>
                       </div>
                     </div>
-                    <div className="p-3 bg-red-100 rounded-lg">
+                    <div className="p-3 border rounded-lg">
                       <div className="flex justify-between items-center">
                         <span className="text-sm font-medium">Monthly Total</span>
-                        <span className="text-lg font-bold text-red-600">
+                        <span className="text-lg font-bold">
                           ${pacerCosts.monthlyTotal.toFixed(2)}
                         </span>
                       </div>
                     </div>
-                    <div className="p-3 bg-red-100 rounded-lg">
+                    <div className="p-3 border rounded-lg">
                       <div className="flex justify-between items-center">
                         <span className="text-sm font-medium">Annual Total (with caps)</span>
-                        <span className="text-xl font-bold text-red-600">
+                        <span className="text-xl font-bold">
                           ${pacerCosts.annualWithCap.toFixed(2)}
                         </span>
                       </div>
@@ -535,27 +525,24 @@ export default function PricingPage() {
                   </CardContent>
                 </Card>
 
-                {/* C.A.S.E.R Costs */}
+                {/* CASER Costs */}
                 <Card className="p-6">
                   <CardHeader className="px-0 pt-0">
-                    <div className="flex items-center space-x-2">
-                      <TrendingUp className="w-5 h-5 text-green-600" />
-                      <CardTitle className="text-xl">C.A.S.E.R Investment</CardTitle>
-                    </div>
+                    <CardTitle className="text-xl">CASER Investment</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4 px-0">
-                    <div className="p-3 bg-green-50 rounded-lg">
+                    <div className="p-3 border rounded-lg">
                       <div className="flex justify-between items-center">
                         <span className="text-sm font-medium">Monthly Cost</span>
-                        <span className="text-lg font-semibold text-green-600">
+                        <span className="text-lg font-semibold">
                           ${caserCosts.monthlyCost.toFixed(2)}
                         </span>
                       </div>
                     </div>
-                    <div className="p-3 bg-green-50 rounded-lg">
+                    <div className="p-3 border rounded-lg">
                       <div className="flex justify-between items-center">
                         <span className="text-sm font-medium">Annual Cost</span>
-                        <span className="text-lg font-semibold text-green-600">
+                        <span className="text-lg font-semibold">
                           ${caserCosts.annualCost.toFixed(2)}
                         </span>
                       </div>
@@ -582,13 +569,13 @@ export default function PricingPage() {
                     <div className="text-sm text-muted-foreground">Total Annual Savings</div>
                   </div>
                   <div className="text-center p-4 bg-white rounded-lg">
-                    <div className="text-3xl font-bold text-green-600 mb-2">
+                    <div className="text-3xl font-bold text-foreground mb-2">
                       ${monthlySavings.toFixed(0)}
                     </div>
                     <div className="text-sm text-muted-foreground">Monthly Savings</div>
                   </div>
                   <div className="text-center p-4 bg-white rounded-lg">
-                    <div className="text-3xl font-bold text-blue-600 mb-2">
+                    <div className="text-3xl font-bold text-foreground mb-2">
                       {roiPercentage.toFixed(0)}%
                     </div>
                     <div className="text-sm text-muted-foreground">ROI Percentage</div>
@@ -599,13 +586,13 @@ export default function PricingPage() {
                 <div className="p-4 bg-white/50 rounded-lg">
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-sm font-medium">Time Savings Value</span>
-                    <span className="font-semibold text-green-600">
+                    <span className="font-semibold text-foreground">
                       ${timeSavings.monetaryValue.toFixed(2)}/year
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium">Hours Saved Annually</span>
-                    <span className="font-semibold text-blue-600">
+                    <span className="font-semibold text-foreground">
                       {timeSavings.hoursSaved.toFixed(0)} hours
                     </span>
                   </div>
@@ -622,13 +609,13 @@ export default function PricingPage() {
 
                 <div className="text-center pt-4">
                   <Button size="lg" className="bg-primary text-primary-foreground" asChild>
-                    <Link href="https://apps.apple.com" target="_blank" rel="noopener noreferrer">
-                      Purchase C.A.S.E.R Now
+                    <Link href="/contact">
+                      Purchase CASER Now
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </Link>
                   </Button>
                   <p className="text-xs text-muted-foreground mt-3">
-                    Pro Se Discounts Available Soon • AES-256 & TLS 1.3 Encryption • Secure Purchase
+                    AES-256 & TLS 1.3 • Secure Purchase
                   </p>
                 </div>
               </CardContent>
@@ -640,13 +627,10 @@ export default function PricingPage() {
       {/* Footer */}
       <footer className="border-t bg-muted/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="space-y-4">
+          <div className="grid md:grid-cols-4 gap-1">
+            <div className="space-y-2">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-sm">CASER</span>
-                </div>
-                <span className="font-semibold">C.A.S.E.R</span>
+                <img src="/logo-icon.png" alt="CASER" className="h-12" />
               </div>
               <p className="text-sm text-muted-foreground">
                 Court Automated Search of Electronic Records - Your intelligent legal research assistant.
@@ -655,16 +639,16 @@ export default function PricingPage() {
             
             <div>
               <h4 className="font-semibold mb-4">Product</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li><Link href="/features" className="hover:text-primary transition-colors">Features</Link></li>
                 <li><Link href="/pricing" className="hover:text-primary transition-colors">Pricing</Link></li>
-                <li><Link href="/download" className="hover:text-primary transition-colors">Download</Link></li>
+                <li><Link href="/download" className="hover:text-primary transition-colors">Contact</Link></li>
               </ul>
             </div>
             
             <div>
               <h4 className="font-semibold mb-4">Company</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li><Link href="/about" className="hover:text-primary transition-colors">About</Link></li>
                 <li><Link href="/careers" className="hover:text-primary transition-colors">Careers</Link></li>
                 <li><Link href="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
@@ -673,7 +657,7 @@ export default function PricingPage() {
             
             <div>
               <h4 className="font-semibold mb-4">Support</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li><Link href="/support" className="hover:text-primary transition-colors">Help Center</Link></li>
                 <li><Link href="/terms" className="hover:text-primary transition-colors">Terms</Link></li>
                 <li><Link href="/privacy" className="hover:text-primary transition-colors">Privacy</Link></li>
@@ -682,7 +666,7 @@ export default function PricingPage() {
           </div>
           
           <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
-            <p>&copy; 2026 C.A.S.E.R. All rights reserved.</p>
+            <p>&copy; 2026 CASER. All rights reserved.</p>
           </div>
         </div>
       </footer>

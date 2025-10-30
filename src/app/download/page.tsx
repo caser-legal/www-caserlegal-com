@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { 
   ScalesOfJustice, 
-  DownloadDocument,
+  ContactDocument,
   ProfessionalBriefcase,
   Gavel,
   CourthouseClock,
@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/icons';
 import Link from 'next/link';
 
-export default function DownloadPage() {
+export default function ContactPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
@@ -28,10 +28,7 @@ export default function DownloadPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm">CASER</span>
-              </div>
-              <span className="font-semibold text-lg">C.A.S.E.R</span>
+              <img src="/logo-full.png" alt="CASER" className="h-11" />
             </div>
             <div className="hidden md:flex items-center space-x-6">
               <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">Home</Link>
@@ -41,8 +38,8 @@ export default function DownloadPage() {
               <Link href="/download" className="text-sm font-medium text-primary">Download</Link>
             </div>
             <Button variant="outline" size="sm" asChild>
-              <Link href="https://apps.apple.com" target="_blank" rel="noopener noreferrer">
-                App Store
+              <Link href="/contact">
+                Contact
               </Link>
             </Button>
           </div>
@@ -53,12 +50,8 @@ export default function DownloadPage() {
       <section className="relative py-20 lg:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
-            <Badge variant="secondary" className="w-fit">
-              <DownloadDocument className="w-3 h-3 mr-2" />
-              Available Soon
-            </Badge>
             <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">
-              Download C.A.S.E.R
+              Contact CASER
               <span className="text-primary"> for iOS</span>
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
@@ -67,9 +60,9 @@ export default function DownloadPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="text-lg px-8 py-6" asChild>
-                <Link href="https://apps.apple.com" target="_blank" rel="noopener noreferrer">
+                <Link href="/contact">
                   <Apple className="w-5 h-5 mr-2" />
-                  Download on App Store
+                  Contact on Download
                 </Link>
               </Button>
               <Button variant="outline" size="lg" className="text-lg px-8 py-6" asChild>
@@ -90,7 +83,7 @@ export default function DownloadPage() {
               Professional Court Monitoring on Your Device
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Experience the power of C.A.S.E.R wherever you are. Monitor cases, receive alerts, 
+              Experience the power of CASER wherever you are. Monitor cases, receive alerts, 
               and access documents right from your iPhone or iPad.
             </p>
           </div>
@@ -152,26 +145,12 @@ export default function DownloadPage() {
               </div>
             </div>
 
-            <div className="relative">
-              <div className="bg-gradient-to-br from-primary/20 to-primary/5 p-8 rounded-2xl border">
-                <div className="aspect-[9/19] bg-black rounded-3xl p-4 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/20"></div>
-                  <div className="relative z-10 h-full flex flex-col items-center justify-center text-white text-center space-y-4">
-                    <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur">
-                      <ScalesOfJustice className="w-8 h-8" />
-                    </div>
-                    <div className="space-y-2">
-                      <h3 className="text-xl font-bold">C.A.S.E.R</h3>
-                      <p className="text-sm opacity-80">Court Monitoring</p>
-                    </div>
-                    <div className="text-xs space-y-1 opacity-60">
-                      <p>175+ Courts Monitored</p>
-                      <p>Real-Time Alerts</p>
-                      <p>AI Assistant</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div className="relative flex justify-center">
+              <img 
+                src="/screenshot-3.png" 
+                alt="CASER App Screenshot" 
+                className="max-w-sm w-full h-auto shadow-2xl"
+              />
             </div>
           </div>
         </div>
@@ -202,11 +181,11 @@ export default function DownloadPage() {
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
                       <span className="text-sm font-medium">iOS Version</span>
-                      <Badge variant="secondary">iOS 15.0+</Badge>
+                      <Badge variant="secondary">iOS 26.0+</Badge>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm font-medium">Storage</span>
-                      <Badge variant="secondary">150 MB</Badge>
+                      <Badge variant="secondary">TBD</Badge>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm font-medium">Network</span>
@@ -241,7 +220,7 @@ export default function DownloadPage() {
                       <CheckCircle className="w-4 h-4 text-primary mt-0.5" />
                       <div>
                         <div className="text-sm font-medium">Subscription</div>
-                        <div className="text-xs text-muted-foreground">Free trial available</div>
+                        <div className="text-xs text-muted-foreground">Discounts available periodically</div>
                       </div>
                     </div>
                     <div className="flex items-start space-x-2">
@@ -350,7 +329,7 @@ export default function DownloadPage() {
             <Card className="text-center">
               <CardHeader>
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <DownloadDocument className="w-6 h-6 text-primary" />
+                  <ContactDocument className="w-6 h-6 text-primary" />
                 </div>
                 <CardTitle className="text-lg">Document Access</CardTitle>
               </CardHeader>
@@ -369,64 +348,36 @@ export default function DownloadPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold">
-              Trusted by Legal Professionals
+              Join the Waitlist
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              See what attorneys and paralegals are saying about C.A.S.E.R
+              CASER is currently in development. Be among the first to experience professional court monitoring without the PACER fees.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <Card className="text-center">
-              <CardContent className="pt-6">
-                <div className="flex justify-center mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-yellow-500 fill-current" />
-                  ))}
-                </div>
-                <p className="text-sm text-muted-foreground mb-4">
-                  "C.A.S.E.R has transformed how we monitor litigation. We're saving thousands monthly 
-                  and never miss important filings. Essential for any modern practice."
-                </p>
-                <div>
-                  <div className="font-semibold text-sm">Sarah Johnson</div>
-                  <div className="text-xs text-muted-foreground">Partner, Am Law 100 Firm</div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center">
-              <CardContent className="pt-6">
-                <div className="flex justify-center mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-yellow-500 fill-current" />
-                  ))}
-                </div>
-                <p className="text-sm text-muted-foreground mb-4">
-                  "The AI assistant alone is worth the subscription. Combined with real-time alerts, 
-                  it's the most comprehensive court monitoring tool available."
-                </p>
-                <div>
-                  <div className="font-semibold text-sm">Michael Chen</div>
-                  <div className="text-xs text-muted-foreground">Litigation Attorney</div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center">
-              <CardContent className="pt-6">
-                <div className="flex justify-center mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-yellow-500 fill-current" />
-                  ))}
-                </div>
-                <p className="text-sm text-muted-foreground mb-4">
-                  "As a paralegal, this app has made my job so much easier. I can monitor dozens 
-                  of cases simultaneously and get instant alerts for any updates."
-                </p>
-                <div>
-                  <div className="font-semibold text-sm">Emily Rodriguez</div>
-                  <div className="text-xs text-muted-foreground">Senior Paralegal</div>
+          <div className="max-w-3xl mx-auto">
+            <Card>
+              <CardContent className="pt-6 text-center space-y-6">
+                <div className="space-y-4">
+                  <h3 className="text-xl font-semibold">What You'll Get as an Early User</h3>
+                  <div className="grid md:grid-cols-2 gap-4 text-left">
+                    <div className="flex items-start space-x-3">
+                      <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                      <span className="text-sm">Priority access when we launch</span>
+                    </div>
+                    <div className="flex items-start space-x-3">
+                      <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                      <span className="text-sm">Special early adopter pricing</span>
+                    </div>
+                    <div className="flex items-start space-x-3">
+                      <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                      <span className="text-sm">Direct input on features</span>
+                    </div>
+                    <div className="flex items-start space-x-3">
+                      <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                      <span className="text-sm">Launch updates via email</span>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -439,23 +390,22 @@ export default function DownloadPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h2 className="text-3xl lg:text-4xl font-bold">
-              Start Your Free Trial Today
+              Ready to Transform Your Court Monitoring?
             </h2>
             <p className="text-xl text-muted-foreground">
-              Experience the power of professional court monitoring risk-free. 
-              No credit card required for your 14-day trial.
+              Join our waitlist to be notified when CASER launches. No commitment required.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="text-lg px-8 py-6" asChild>
-                <Link href="https://apps.apple.com" target="_blank" rel="noopener noreferrer">
+                <Link href="/contact">
                   <Apple className="w-5 h-5 mr-2" />
-                  Download on App Store
+                  Join Waitlist
                 </Link>
               </Button>
               <Button variant="outline" size="lg" className="text-lg px-8 py-6" asChild>
                 <Link href="/contact">
                   <ArrowRight className="w-4 h-4 mr-2" />
-                  Schedule a Demo
+                  Contact Us
                 </Link>
               </Button>
             </div>
@@ -480,40 +430,37 @@ export default function DownloadPage() {
       {/* Footer */}
       <footer className="border-t bg-muted/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="space-y-4">
+          <div className="grid md:grid-cols-4 gap-1">
+            <div className="space-y-2">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-sm">CASER</span>
-                </div>
-                <span className="font-semibold">C.A.S.E.R</span>
+                <img src="/logo-icon.png" alt="CASER" className="h-12" />
               </div>
               <p className="text-sm text-muted-foreground">
                 Court Automated Search of Electronic Records
               </p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               <h4 className="font-semibold">Product</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li><Link href="/features" className="hover:text-primary transition-colors">Features</Link></li>
                 <li><Link href="/pricing" className="hover:text-primary transition-colors">Pricing</Link></li>
-                <li><Link href="/download" className="hover:text-primary transition-colors">Download</Link></li>
+                <li><Link href="/download" className="hover:text-primary transition-colors">Contact</Link></li>
               </ul>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               <h4 className="font-semibold">Company</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li><Link href="/about" className="hover:text-primary transition-colors">About</Link></li>
                 <li><Link href="/careers" className="hover:text-primary transition-colors">Careers</Link></li>
                 <li><Link href="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
               </ul>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               <h4 className="font-semibold">Support</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li><Link href="/support" className="hover:text-primary transition-colors">Support Center</Link></li>
                 <li><Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link></li>
                 <li><Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
@@ -522,7 +469,7 @@ export default function DownloadPage() {
           </div>
 
           <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
-            <p>&copy; 2024 C.A.S.E.R. All rights reserved.</p>
+            <p>&copy; 2026 CASER. All rights reserved.</p>
           </div>
         </div>
       </footer>
