@@ -23,6 +23,7 @@ import {
   FileSearch
 } from '@/components/ui/icons';
 import Link from 'next/link';
+import { formatNumber } from '@/lib/utils';
 import { useState, useEffect } from 'react';
 
 export default function PricingPage() {
@@ -518,7 +519,7 @@ export default function PricingPage() {
                       <div className="flex justify-between items-center">
                         <span className="text-sm font-medium">Annual Total (with caps)</span>
                         <span className="text-xl font-bold">
-                          ${pacerCosts.annualWithCap.toFixed(2)}
+                          ${formatNumber(Number(pacerCosts.annualWithCap.toFixed(2)))}
                         </span>
                       </div>
                     </div>
@@ -535,7 +536,7 @@ export default function PricingPage() {
                       <div className="flex justify-between items-center">
                         <span className="text-sm font-medium">Monthly Cost</span>
                         <span className="text-lg font-semibold">
-                          ${caserCosts.monthlyCost.toFixed(2)}
+                          ${formatNumber(Number(caserCosts.monthlyCost.toFixed(2)))}
                         </span>
                       </div>
                     </div>
@@ -543,7 +544,7 @@ export default function PricingPage() {
                       <div className="flex justify-between items-center">
                         <span className="text-sm font-medium">Annual Cost</span>
                         <span className="text-lg font-semibold">
-                          ${caserCosts.annualCost.toFixed(2)}
+                          ${formatNumber(Number(caserCosts.annualCost.toFixed(2)))}
                         </span>
                       </div>
                     </div>
@@ -564,19 +565,19 @@ export default function PricingPage() {
                 <div className="grid md:grid-cols-3 gap-6">
                   <div className="text-center p-4 bg-white rounded-lg">
                     <div className="text-3xl font-bold text-primary mb-2">
-                      ${totalAnnualSavings.toFixed(0)}
+                      ${formatNumber(Number(totalAnnualSavings.toFixed(0)))}
                     </div>
                     <div className="text-sm text-muted-foreground">Total Annual Savings</div>
                   </div>
                   <div className="text-center p-4 bg-white rounded-lg">
                     <div className="text-3xl font-bold text-foreground mb-2">
-                      ${monthlySavings.toFixed(0)}
+                      ${formatNumber(Number(monthlySavings.toFixed(0)))}
                     </div>
                     <div className="text-sm text-muted-foreground">Monthly Savings</div>
                   </div>
                   <div className="text-center p-4 bg-white rounded-lg">
                     <div className="text-3xl font-bold text-foreground mb-2">
-                      {roiPercentage.toFixed(0)}%
+                      {formatNumber(Number(roiPercentage.toFixed(0)))}%
                     </div>
                     <div className="text-sm text-muted-foreground">ROI Percentage</div>
                   </div>
@@ -587,13 +588,13 @@ export default function PricingPage() {
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-sm font-medium">Time Savings Value</span>
                     <span className="font-semibold text-foreground">
-                      ${timeSavings.monetaryValue.toFixed(2)}/year
+                      ${formatNumber(Number(timeSavings.monetaryValue.toFixed(2)))}/year
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium">Hours Saved Annually</span>
                     <span className="font-semibold text-foreground">
-                      {timeSavings.hoursSaved.toFixed(0)} hours
+                      {formatNumber(Number(timeSavings.hoursSaved.toFixed(0)))} hours
                     </span>
                   </div>
                 </div>
