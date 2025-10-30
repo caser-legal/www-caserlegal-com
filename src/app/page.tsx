@@ -22,6 +22,7 @@ import { Shield, Zap, Brain } from 'lucide-react';
 import { CheckCircle, AlertCircle } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { formatNumber } from '@/lib/utils';
 import { useState } from 'react';
 import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
@@ -152,7 +153,7 @@ export default function Home() {
 
               <div className="grid grid-cols-3 gap-6 pt-8">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-primary">175+</div>
+                  <div className="text-3xl font-bold text-primary">{formatNumber(175)}+</div>
                   <div className="text-sm text-muted-foreground">U.S. Courts</div>
                 </div>
                 <div className="text-center">
@@ -746,19 +747,19 @@ export default function Home() {
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-2 h-2 bg-destructive rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>Cloud storage would cost only $128,000/year</span>
+                      <span>Cloud storage would cost only {formatNumber(128000)}/year</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-2 h-2 bg-destructive rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>PACER revenue: $142 million annually (FY 2025-26)</span>
+                      <span>PACER revenue: {formatNumber(142000000)} annually (FY 2025-26)</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-2 h-2 bg-destructive rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>619 million requests processed in FY 2024 alone</span>
+                      <span>{formatNumber(619000000)} requests processed in FY 2024 alone</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-2 h-2 bg-destructive rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>$200 million modernization cost (FY 2026-27)</span>
+                      <span>${formatNumber(200000000)} modernization cost (FY 2026-27)</span>
                     </li>
                   </ul>
                 </div>
@@ -775,11 +776,11 @@ export default function Home() {
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>323,560 documents monitored in first 3 days</span>
+                      <span>{formatNumber(323560)} documents monitored in first 3 days</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>Saving users ~$100,000 daily in PACER fees</span>
+                      <span>Saving users ~{formatNumber(100000)} daily in PACER fees</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
@@ -835,7 +836,7 @@ export default function Home() {
                       </li>
                       <li className="flex items-start space-x-2">
                         <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
-                        <span>Proven results: 100,000+ documents saved daily</span>
+                        <span>Proven results: {formatNumber(100000)}+ documents saved daily</span>
                       </li>
                       <li className="flex items-start space-x-2">
                         <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
@@ -966,15 +967,15 @@ export default function Home() {
               <h4 className="text-lg font-semibold text-center mb-4">The CASER Impact</h4>
               <div className="grid md:grid-cols-3 gap-6 text-center">
                 <div className="bg-primary/5 rounded-lg p-4">
-                  <div className="text-2xl font-bold text-primary mb-2">323,560</div>
+                  <div className="text-2xl font-bold text-primary mb-2">{formatNumber(323560)}</div>
                   <div className="text-sm text-muted-foreground">Documents Monitored (First 3 Days)</div>
                 </div>
                 <div className="bg-primary/5 rounded-lg p-4">
-                  <div className="text-2xl font-bold text-primary mb-2">100,000+</div>
+                  <div className="text-2xl font-bold text-primary mb-2">{formatNumber(100000)}+</div>
                   <div className="text-sm text-muted-foreground">Documents Saved Daily</div>
                 </div>
                 <div className="bg-primary/5 rounded-lg p-4">
-                  <div className="text-2xl font-bold text-primary mb-2">$100,000</div>
+                  <div className="text-2xl font-bold text-primary mb-2">${formatNumber(100000)}</div>
                   <div className="text-sm text-muted-foreground">Daily PACER Costs Avoided</div>
                 </div>
               </div>

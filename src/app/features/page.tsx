@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/icons';
 import { CheckCircle, ArrowRight, Star, Shield, Zap } from 'lucide-react';
 import Link from 'next/link';
+import { formatNumber } from '@/lib/utils';
 
 export default function FeaturesPage() {
   return (
@@ -484,7 +485,7 @@ export default function FeaturesPage() {
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm">Data Freshness</span>
-                  <span className="text-sm font-medium">&lt; 1000 seconds</span>
+                  <span className="text-sm font-medium">&lt; {formatNumber(1000)} seconds</span>
                 </div>
               </CardContent>
             </Card>
