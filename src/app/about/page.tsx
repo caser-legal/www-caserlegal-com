@@ -22,21 +22,18 @@ export default function AboutPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm">CASER</span>
-              </div>
-              <span className="font-semibold text-lg">C.A.S.E.R</span>
+              <img src="/logo-full.png" alt="CASER" className="h-11" />
             </div>
             <div className="hidden md:flex items-center space-x-6">
               <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">Home</Link>
               <Link href="/about" className="text-sm font-medium text-primary">About</Link>
               <Link href="/features" className="text-sm font-medium hover:text-primary transition-colors">Features</Link>
               <Link href="/pricing" className="text-sm font-medium hover:text-primary transition-colors">Pricing</Link>
-              <Link href="/contact" className="text-sm font-medium hover:text-primary transition-colors">Contact</Link>
+              <Link href="/download" className="text-sm font-medium hover:text-primary transition-colors">Download</Link>
             </div>
             <Button variant="outline" size="sm" asChild>
-              <Link href="https://apps.apple.com" target="_blank" rel="noopener noreferrer">
-                App Store
+              <Link href="/contact">
+                Contact
               </Link>
             </Button>
           </div>
@@ -49,15 +46,15 @@ export default function AboutPage() {
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <Badge variant="secondary" className="w-fit">
               <ScalesOfJustice className="w-3 h-3 mr-2" />
-              About C.A.S.E.R
+              About CASER
             </Badge>
             <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">
               Pioneering Legal Technology
               <span className="text-primary"> for Modern Practice</span>
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Founded by legal technology experts with decades of experience in Am Law 100 firms, 
-              C.A.S.E.R represents the culmination of extensive research into the evolving needs 
+              Born from firsthand experience navigating the federal court system, 
+              CASER represents the culmination of extensive research into the evolving needs 
               of modern litigation teams and legal operations professionals.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -90,11 +87,11 @@ export default function AboutPage() {
                 intelligence without the prohibitive costs and inefficiencies of traditional PACER research.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                C.A.S.E.R was engineered to eliminate the billions of dollars wasted annually on 
+                CASER was engineered to eliminate the billions of dollars wasted annually on 
                 unnecessary PACER searches while providing the critical court monitoring capabilities 
                 that modern litigation demands.
               </p>
-              <div className="space-y-4">
+              <div className="space-y-2">
                 <div className="flex items-center space-x-3">
                   <CheckCircle className="w-5 h-5 text-primary" />
                   <span>175+ U.S. Courts monitored in real-time</span>
@@ -131,77 +128,49 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Team Section */}
+      {/* Origin Story Section */}
       <section className="py-20 lg:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold">
-              Leadership Team
+              How CASER Was Born
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Our team brings together decades of experience from top-tier law firms, 
-              leading legal tech companies, and federal court systems.
+              A personal journey through the federal court system that sparked a technological revolution.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <Card className="text-center">
-              <CardHeader>
-                <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <ProfessionalBriefcase className="w-10 h-10 text-primary" />
-                </div>
-                <CardTitle>Managing Partner</CardTitle>
-                <CardDescription>Former Am Law 100 Litigation Partner</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground mb-4">
-                  20+ years of complex litigation experience at Cravath, Swaine & Moore. 
-                  Recognized expert in legal technology and litigation strategy.
+          <div className="max-w-4xl mx-auto">
+            <Card className="p-8">
+              <CardContent className="space-y-6 text-lg leading-relaxed text-muted-foreground">
+                <p>
+                  It started with countless nights studying law, drafting page after page of documents, 
+                  navigating the federal court system Pro Se for the very first time. The complexity 
+                  was overwhelming, but the real challenge came after filing.
                 </p>
-                <div className="space-y-2">
-                  <div className="text-xs text-muted-foreground">Harvard Law School, JD</div>
-                  <div className="text-xs text-muted-foreground">Former Federal Clerk</div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center">
-              <CardHeader>
-                <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <BrainScales className="w-10 h-10 text-primary" />
-                </div>
-                <CardTitle>CTO</CardTitle>
-                <CardDescription>Former Legal Tech Architect</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Lead architect at Thomson Reuters and LexisNexis. 
-                  Specialized in court data integration and real-time monitoring systems.
+                <p>
+                  What happens next? How do you monitor your case? How do you know when something changes? 
+                  The PACER system was expensive, confusing, and seemed designed to keep people out rather 
+                  than provide access to justice.
                 </p>
-                <div className="space-y-2">
-                  <div className="text-xs text-muted-foreground">MIT, Computer Science</div>
-                  <div className="text-xs text-muted-foreground">15+ Patents in Legal Tech</div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center">
-              <CardHeader>
-                <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Gavel className="w-10 h-10 text-primary" />
-                </div>
-                <CardTitle>Head of Legal Affairs</CardTitle>
-                <CardDescription>Former Federal Prosecutor</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Former U.S. Attorney with extensive experience in federal court procedures 
-                  and electronic court record systems.
+                <p>
+                  That's when the idea sparked: if the system won't work for regular people, maybe 
+                  technology could bridge that gap. So I started learning to code—because I needed 
+                  solutions to problems that didn't exist yet.
                 </p>
-                <div className="space-y-2">
-                  <div className="text-xs text-muted-foreground">Yale Law School, JD</div>
-                  <div className="text-xs text-muted-foreground">Former DOJ Senior Counsel</div>
-                </div>
+                <p className="text-primary font-semibold text-xl">
+                  And so, CASER was born.
+                </p>
+                <p>
+                  What began as a personal tool to monitor a single case evolved into a platform that 
+                  can now serve thousands of legal professionals, Pro Se litigants, and anyone who believes 
+                  that access to court information shouldn't require a law degree to navigate.
+                </p>
+                <p>
+                  CASER represents more than just technology—it's proof that when the system fails, 
+                  innovation can succeed. It's a solution built by someone who lived the problem, 
+                  for everyone who faces the same challenges.
+                </p>
               </CardContent>
             </Card>
           </div>
@@ -216,7 +185,7 @@ export default function AboutPage() {
               Our Values
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              The principles that guide everything we do at C.A.S.E.R
+              The principles that guide everything we do at CASER
             </p>
           </div>
 
@@ -293,8 +262,8 @@ export default function AboutPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild>
-                <Link href="https://apps.apple.com" target="_blank" rel="noopener noreferrer">
-                  Download C.A.S.E.R
+                <Link href="/download">
+                  Download CASER
                 </Link>
               </Button>
               <Button variant="outline" size="lg" asChild>
@@ -310,40 +279,37 @@ export default function AboutPage() {
       {/* Footer */}
       <footer className="border-t bg-muted/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="space-y-4">
+          <div className="grid md:grid-cols-4 gap-1">
+            <div className="space-y-2">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-sm">CASER</span>
-                </div>
-                <span className="font-semibold">C.A.S.E.R</span>
+                <img src="/logo-icon.png" alt="CASER" className="h-12" />
               </div>
               <p className="text-sm text-muted-foreground">
                 Court Automated Search of Electronic Records
               </p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               <h4 className="font-semibold">Product</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li><Link href="/features" className="hover:text-primary transition-colors">Features</Link></li>
                 <li><Link href="/pricing" className="hover:text-primary transition-colors">Pricing</Link></li>
                 <li><Link href="/about" className="hover:text-primary transition-colors">About</Link></li>
               </ul>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               <h4 className="font-semibold">Support</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li><Link href="/support" className="hover:text-primary transition-colors">Documentation</Link></li>
                 <li><Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
                 <li><Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link></li>
               </ul>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               <h4 className="font-semibold">Contact</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li>Website: www.caserlegal.com</li>
                 <li>Available on iOS</li>
                 <li>MacOS and Web coming soon</li>
@@ -352,7 +318,7 @@ export default function AboutPage() {
           </div>
 
           <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
-            <p>© 2024 CASER. All rights reserved. Supporting independent developers in legal technology.</p>
+            <p>© 2026 CASER. All rights reserved. Supporting independent developers in legal technology.</p>
           </div>
         </div>
       </footer>

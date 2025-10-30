@@ -26,21 +26,18 @@ export default function ContactPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm">CASER</span>
-              </div>
-              <span className="font-semibold text-lg">C.A.S.E.R</span>
+              <img src="/logo-full.png" alt="CASER" className="h-11" />
             </div>
             <div className="hidden md:flex items-center space-x-6">
               <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">Home</Link>
               <Link href="/about" className="text-sm font-medium hover:text-primary transition-colors">About</Link>
               <Link href="/features" className="text-sm font-medium hover:text-primary transition-colors">Features</Link>
               <Link href="/pricing" className="text-sm font-medium hover:text-primary transition-colors">Pricing</Link>
-              <Link href="/contact" className="text-sm font-medium text-primary">Contact</Link>
+              <Link href="/download" className="text-sm font-medium hover:text-primary transition-colors">Download</Link>
             </div>
             <Button variant="outline" size="sm" asChild>
-              <Link href="https://apps.apple.com" target="_blank" rel="noopener noreferrer">
-                App Store
+              <Link href="/contact">
+                Contact
               </Link>
             </Button>
           </div>
@@ -56,12 +53,12 @@ export default function ContactPage() {
               Get in Touch
             </Badge>
             <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">
-              Let's Discuss How C.A.S.E.R
+              Let's Discuss How CASER
               <span className="text-primary"> Can Transform Your Practice</span>
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
               Whether you're a solo practitioner or managing a large litigation team, 
-              we're here to help you understand how C.A.S.E.R can eliminate wasteful PACER fees 
+              we're here to help you understand how CASER can eliminate wasteful PACER fees 
               and streamline your court monitoring workflow.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -103,7 +100,7 @@ export default function ContactPage() {
                 </div>
                 <CardTitle>General Inquiries</CardTitle>
                 <CardDescription>
-                  Questions about C.A.S.E.R features, pricing, or how we can help your practice
+                  Questions about CASER features, pricing, or how we can help your practice
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -117,7 +114,7 @@ export default function ContactPage() {
                   </div>
                 </div>
                 <Button className="w-full" asChild>
-                  <a href="mailto:hi@caserlegal.com?subject=General Inquiry - C.A.S.E.R">
+                  <a href="mailto:hi@caserlegal.com?subject=General Inquiry - CASER">
                     <Send className="w-4 h-4 mr-2" />
                     Send Email
                   </a>
@@ -140,14 +137,14 @@ export default function ContactPage() {
                 <div className="space-y-2">
                   <div className="flex items-center justify-center space-x-2">
                     <Mail className="w-4 h-4 text-primary" />
-                    <span className="text-sm font-medium">hi@caserlegal.com</span>
+                    <span className="text-sm font-medium">business@caserlegal.com</span>
                   </div>
                   <div className="text-xs text-muted-foreground">
                     Priority response for enterprise inquiries
                   </div>
                 </div>
                 <Button className="w-full" asChild>
-                  <a href="mailto:hi@caserlegal.com?subject=Business Development Inquiry - C.A.S.E.R">
+                  <a href="mailto:business@caserlegal.com?subject=Business Development Inquiry - CASER">
                     <Send className="w-4 h-4 mr-2" />
                     Contact Business Team
                   </a>
@@ -204,7 +201,7 @@ export default function ContactPage() {
               <div className="grid md:grid-cols-2 gap-8">
                 <div className="space-y-6">
                   <h3 className="text-xl font-semibold">Practice Information</h3>
-                  <div className="space-y-4">
+                  <div className="space-y-2">
                     <div className="flex items-start space-x-3">
                       <CheckCircle className="w-5 h-5 text-primary mt-0.5" />
                       <div>
@@ -238,7 +235,7 @@ export default function ContactPage() {
 
                 <div className="space-y-6">
                   <h3 className="text-xl font-semibold">What We Can Help With</h3>
-                  <div className="space-y-4">
+                  <div className="space-y-2">
                     <div className="flex items-start space-x-3">
                       <DollarDocument className="w-5 h-5 text-primary mt-0.5" />
                       <div>
@@ -278,7 +275,7 @@ export default function ContactPage() {
                     Send us an email with your practice details and we'll provide a personalized consultation
                   </p>
                   <Button size="lg" asChild>
-                    <a href="mailto:hi@caserlegal.com?subject=Practice Consultation Request - C.A.S.E.R&body=Hi C.A.S.E.R Team,%0D%0A%0D%0AI'm interested in learning more about how C.A.S.E.R can help my practice. Here are some details about my firm:%0D%0A%0D%0AFirm Size: %0D%0APractice Areas: %0D%0ACurrent PACER Usage: %0D%0ASpecific Needs: %0D%0A%0D%0ALooking forward to hearing from you.">
+                    <a href="mailto:hi@caserlegal.com?subject=Practice Consultation Request - CASER&body=Hi CASER Team,%0D%0A%0D%0AI'm interested in learning more about how CASER can help my practice. Here are some details about my firm:%0D%0A%0D%0AFirm Size: %0D%0APractice Areas: %0D%0ACurrent PACER Usage: %0D%0ASpecific Needs: %0D%0A%0D%0ALooking forward to hearing from you.">
                       <Mail className="w-4 h-4 mr-2" />
                       Send Practice Details
                     </a>
@@ -339,7 +336,7 @@ export default function ContactPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild>
-                <a href="mailto:hi@caserlegal.com?subject=Demo Request - C.A.S.E.R">
+                <a href="mailto:hi@caserlegal.com?subject=Demo Request - CASER">
                   <MessageCircle className="w-4 h-4 mr-2" />
                   Schedule a Demo
                 </a>
@@ -357,40 +354,37 @@ export default function ContactPage() {
       {/* Footer */}
       <footer className="border-t bg-muted/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="space-y-4">
+          <div className="grid md:grid-cols-4 gap-1">
+            <div className="space-y-2">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-sm">CASER</span>
-                </div>
-                <span className="font-semibold">C.A.S.E.R</span>
+                <img src="/logo-icon.png" alt="CASER" className="h-12" />
               </div>
               <p className="text-sm text-muted-foreground">
                 Court Automated Search of Electronic Records
               </p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               <h4 className="font-semibold">Product</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li><Link href="/features" className="hover:text-primary transition-colors">Features</Link></li>
                 <li><Link href="/pricing" className="hover:text-primary transition-colors">Pricing</Link></li>
-                <li><Link href="/download" className="hover:text-primary transition-colors">Download</Link></li>
+                <li><Link href="/download" className="hover:text-primary transition-colors">Contact</Link></li>
               </ul>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               <h4 className="font-semibold">Company</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li><Link href="/about" className="hover:text-primary transition-colors">About</Link></li>
                 <li><Link href="/careers" className="hover:text-primary transition-colors">Careers</Link></li>
                 <li><Link href="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
               </ul>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               <h4 className="font-semibold">Support</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li><Link href="/support" className="hover:text-primary transition-colors">Support Center</Link></li>
                 <li><Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link></li>
                 <li><Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
@@ -399,7 +393,7 @@ export default function ContactPage() {
           </div>
 
           <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
-            <p>&copy; 2024 C.A.S.E.R. All rights reserved.</p>
+            <p>&copy; 2026 CASER. All rights reserved.</p>
           </div>
         </div>
       </footer>

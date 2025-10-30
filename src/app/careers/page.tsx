@@ -28,10 +28,7 @@ export default function CareersPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm">CASER</span>
-              </div>
-              <span className="font-semibold text-lg">C.A.S.E.R</span>
+              <img src="/logo-full.png" alt="CASER" className="h-11" />
             </div>
             <div className="hidden md:flex items-center space-x-6">
               <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">Home</Link>
@@ -41,8 +38,8 @@ export default function CareersPage() {
               <Link href="/careers" className="text-sm font-medium text-primary">Careers</Link>
             </div>
             <Button variant="outline" size="sm" asChild>
-              <Link href="https://apps.apple.com" target="_blank" rel="noopener noreferrer">
-                App Store
+              <Link href="/download">
+                Download
               </Link>
             </Button>
           </div>
@@ -74,7 +71,7 @@ export default function CareersPage() {
               </Button>
               <Button variant="outline" size="lg" asChild>
                 <Link href="/about">
-                  Learn About C.A.S.E.R
+                  Learn About CASER
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
               </Button>
@@ -88,7 +85,7 @@ export default function CareersPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold">
-              Why Join C.A.S.E.R?
+              Why Join CASER?
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Be part of a mission-driven company that's transforming how legal professionals access court information
@@ -262,7 +259,7 @@ export default function CareersPage() {
 
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button className="flex-1" asChild>
-                    <a href="mailto:careers@caserlegal.com?subject=General Application - C.A.S.E.R&body=Hi C.A.S.E.R Team,%0D%0A%0D%0AI'm interested in joining your team. Here's some information about me:%0D%0A%0D%0AName: %0D%0ABackground: %0D%0AExperience: %0D%0AWhy I'm interested in C.A.S.E.R: %0D%0A%0D%0AI've attached my resume and look forward to discussing how I can contribute to your mission.">
+                    <a href="mailto:careers@caserlegal.com?subject=General Application - CASER&body=Hi CASER Team,%0D%0A%0D%0AI'm interested in joining your team. Here's some information about me:%0D%0A%0D%0AName: %0D%0ABackground: %0D%0AExperience: %0D%0AWhy I'm interested in CASER: %0D%0A%0D%0AI've attached my resume and look forward to discussing how I can contribute to your mission.">
                       <Send className="w-4 h-4 mr-2" />
                       Apply Now
                     </a>
@@ -282,7 +279,7 @@ export default function CareersPage() {
               Don't see a specific role that matches your skills?
             </p>
             <Button variant="outline" asChild>
-              <a href="mailto:careers@caserlegal.com?subject=General Inquiry - C.A.S.E.R">
+              <a href="mailto:careers@caserlegal.com?subject=General Inquiry - CASER">
                 <Mail className="w-4 h-4 mr-2" />
                 Send Us Your Resume
               </a>
@@ -379,7 +376,7 @@ export default function CareersPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild>
-                <a href="mailto:careers@caserlegal.com?subject=General Application - C.A.S.E.R">
+                <a href="mailto:careers@caserlegal.com?subject=General Application - CASER">
                   <Send className="w-4 h-4 mr-2" />
                   Apply Today
                 </a>
@@ -397,40 +394,37 @@ export default function CareersPage() {
       {/* Footer */}
       <footer className="border-t bg-muted/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="space-y-4">
+          <div className="grid md:grid-cols-4 gap-1">
+            <div className="space-y-2">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-sm">CASER</span>
-                </div>
-                <span className="font-semibold">C.A.S.E.R</span>
+                <img src="/logo-icon.png" alt="CASER" className="h-12" />
               </div>
               <p className="text-sm text-muted-foreground">
                 Court Automated Search of Electronic Records
               </p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               <h4 className="font-semibold">Product</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li><Link href="/features" className="hover:text-primary transition-colors">Features</Link></li>
                 <li><Link href="/pricing" className="hover:text-primary transition-colors">Pricing</Link></li>
                 <li><Link href="/download" className="hover:text-primary transition-colors">Download</Link></li>
               </ul>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               <h4 className="font-semibold">Company</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li><Link href="/about" className="hover:text-primary transition-colors">About</Link></li>
                 <li><Link href="/careers" className="hover:text-primary transition-colors">Careers</Link></li>
-                <li><Link href="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
+                <li><Link href="/contact" className="hover:text-primary transition-colors">Download</Link></li>
               </ul>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               <h4 className="font-semibold">Support</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li><Link href="/support" className="hover:text-primary transition-colors">Support Center</Link></li>
                 <li><Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link></li>
                 <li><Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
@@ -439,7 +433,7 @@ export default function CareersPage() {
           </div>
 
           <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
-            <p>&copy; 2024 C.A.S.E.R. All rights reserved.</p>
+            <p>&copy; 2026 CASER. All rights reserved.</p>
           </div>
         </div>
       </footer>

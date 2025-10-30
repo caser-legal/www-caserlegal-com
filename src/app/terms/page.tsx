@@ -19,10 +19,7 @@ export default function TermsPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm">CASER</span>
-              </div>
-              <span className="font-semibold text-lg">C.A.S.E.R</span>
+              <img src="/logo-full.png" alt="CASER" className="h-11" />
             </div>
             <div className="hidden md:flex items-center space-x-6">
               <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">Home</Link>
@@ -32,8 +29,8 @@ export default function TermsPage() {
               <Link href="/contact" className="text-sm font-medium hover:text-primary transition-colors">Contact</Link>
             </div>
             <Button variant="outline" size="sm" asChild>
-              <Link href="https://apps.apple.com" target="_blank" rel="noopener noreferrer">
-                App Store
+              <Link href="/download">
+                Download
               </Link>
             </Button>
           </div>
@@ -50,10 +47,10 @@ export default function TermsPage() {
             </Badge>
             <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">
               Terms of Service
-              <span className="text-primary"> for C.A.S.E.R</span>
+              <span className="text-primary"> for CASER</span>
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              These terms govern your use of C.A.S.E.R court monitoring services. 
+              These terms govern your use of CASER court monitoring services. 
               Please read them carefully before using our application.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -88,14 +85,14 @@ export default function TermsPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-muted-foreground">
-                  By accessing and using C.A.S.E.R (Court Automated Search of Electronic Records), 
+                  By accessing and using CASER (Court Automated Search of Electronic Records), 
                   you accept and agree to be bound by the terms and provision of this agreement. 
                   If you do not agree to abide by the above, please do not use this service.
                 </p>
                 <p className="text-muted-foreground">
-                  These Terms of Service ("Terms") govern your access to and use of the C.A.S.E.R 
+                  These Terms of Service ("Terms") govern your access to and use of the CASER 
                   mobile application, website, and related services (collectively, the "Service") 
-                  operated by C.A.S.E.R ("we," "us," or "our").
+                  operated by CASER ("we," "us," or "our").
                 </p>
                 <p className="text-muted-foreground">
                   <strong>Effective Date:</strong> January 1, 2024
@@ -110,7 +107,7 @@ export default function TermsPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-muted-foreground">
-                  C.A.S.E.R is a court monitoring service that provides:
+                  CASER is a court monitoring service that provides:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
                   <li>Real-time monitoring of 175+ U.S. federal courts</li>
@@ -121,7 +118,7 @@ export default function TermsPage() {
                   <li>AI-powered legal research assistance</li>
                 </ul>
                 <p className="text-muted-foreground">
-                  C.A.S.E.R is a research tool designed to monitor publicly available court docket 
+                  CASER is a research tool designed to monitor publicly available court docket 
                   information. We do not provide legal advice, and our service is not a substitute 
                   for professional legal counsel or official court records.
                 </p>
@@ -135,7 +132,7 @@ export default function TermsPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-muted-foreground">
-                  As a user of C.A.S.E.R, you agree to:
+                  As a user of CASER, you agree to:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
                   <li>Provide accurate and complete information when creating your account</li>
@@ -159,7 +156,7 @@ export default function TermsPage() {
                 <div>
                   <h4 className="font-semibold mb-3">Registration</h4>
                   <p className="text-muted-foreground">
-                    You must create an account to use certain features of C.A.S.E.R. You agree to:
+                    You must create an account to use certain features of CASER. You agree to:
                   </p>
                   <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4 mt-2">
                     <li>Provide truthful, accurate, and complete information</li>
@@ -172,7 +169,7 @@ export default function TermsPage() {
                 <div>
                   <h4 className="font-semibold mb-3">Subscription and Payment</h4>
                   <p className="text-muted-foreground">
-                    C.A.S.E.R offers subscription-based services. You agree to:
+                    CASER offers subscription-based services. You agree to:
                   </p>
                   <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4 mt-2">
                     <li>Provide current, complete, and accurate payment information</li>
@@ -201,7 +198,7 @@ export default function TermsPage() {
               <CardContent className="space-y-4">
                 <p className="text-muted-foreground">
                   The service and its original content, features, and functionality are and 
-                  will remain the exclusive property of C.A.S.E.R and its licensors. The 
+                  will remain the exclusive property of CASER and its licensors. The 
                   service is protected by copyright, trademark, and other laws.
                 </p>
                 <p className="text-muted-foreground">
@@ -210,7 +207,7 @@ export default function TermsPage() {
                   material on our service, except as permitted by these Terms.
                 </p>
                 <p className="text-muted-foreground">
-                  Court data and documents accessed through C.A.S.E.R remain the property of 
+                  Court data and documents accessed through CASER remain the property of 
                   the respective courts and are subject to PACER terms and conditions.
                 </p>
               </CardContent>
@@ -227,7 +224,7 @@ export default function TermsPage() {
                   governs your use of the service, to understand our practices.
                 </p>
                 <p className="text-muted-foreground">
-                  By using C.A.S.E.R, you consent to the collection and use of information 
+                  By using CASER, you consent to the collection and use of information 
                   in accordance with our Privacy Policy.
                 </p>
               </CardContent>
@@ -240,7 +237,7 @@ export default function TermsPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-muted-foreground">
-                  <strong>Important Disclaimer:</strong> C.A.S.E.R is a research tool and does 
+                  <strong>Important Disclaimer:</strong> CASER is a research tool and does 
                   not provide legal advice. The information provided through our service is 
                   for informational purposes only and should not be considered legal advice.
                 </p>
@@ -251,7 +248,7 @@ export default function TermsPage() {
                   specific legal matters.
                 </p>
                 <p className="text-muted-foreground">
-                  C.A.S.E.R is provided "as is" and "as available" without warranties of any 
+                  CASER is provided "as is" and "as available" without warranties of any 
                   kind, either express or implied, including but not limited to warranties of 
                   merchantability, fitness for a particular purpose, or non-infringement.
                 </p>
@@ -265,7 +262,7 @@ export default function TermsPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-muted-foreground">
-                  In no event shall C.A.S.E.R, its directors, employees, partners, agents, 
+                  In no event shall CASER, its directors, employees, partners, agents, 
                   suppliers, or affiliates be liable for any indirect, incidental, special, 
                   consequential, or punitive damages, including without limitation, loss of 
                   profits, data, use, goodwill, or other intangible losses, resulting from 
@@ -286,7 +283,7 @@ export default function TermsPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-muted-foreground">
-                  You agree to defend, indemnify, and hold harmless C.A.S.E.R and its licensee 
+                  You agree to defend, indemnify, and hold harmless CASER and its licensee 
                   and licensors, and their employees, contractors, agents, officers and directors, 
                   from and against any and all claims, damages, obligations, losses, liabilities, 
                   costs or debt, and expenses (including but not limited to attorney's fees).
@@ -401,40 +398,37 @@ export default function TermsPage() {
       {/* Footer */}
       <footer className="border-t bg-muted/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="space-y-4">
+          <div className="grid md:grid-cols-4 gap-1">
+            <div className="space-y-2">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-sm">CASER</span>
-                </div>
-                <span className="font-semibold">C.A.S.E.R</span>
+                <img src="/logo-icon.png" alt="CASER" className="h-12" />
               </div>
               <p className="text-sm text-muted-foreground">
                 Court Automated Search of Electronic Records
               </p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               <h4 className="font-semibold">Product</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li><Link href="/features" className="hover:text-primary transition-colors">Features</Link></li>
                 <li><Link href="/pricing" className="hover:text-primary transition-colors">Pricing</Link></li>
                 <li><Link href="/about" className="hover:text-primary transition-colors">About</Link></li>
               </ul>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               <h4 className="font-semibold">Legal</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li><Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
                 <li><Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link></li>
                 <li><Link href="/support" className="hover:text-primary transition-colors">Support</Link></li>
               </ul>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               <h4 className="font-semibold">Contact</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li>Website: www.caserlegal.com</li>
                 <li>Available on iOS</li>
                 <li>MacOS and Web coming soon</li>
@@ -443,7 +437,7 @@ export default function TermsPage() {
           </div>
 
           <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
-            <p>© 2024 CASER. All rights reserved. Supporting independent developers in legal technology.</p>
+            <p>© 2026 CASER. All rights reserved. Supporting independent developers in legal technology.</p>
           </div>
         </div>
       </footer>

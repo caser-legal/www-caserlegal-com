@@ -19,10 +19,7 @@ export default function PrivacyPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm">CASER</span>
-              </div>
-              <span className="font-semibold text-lg">C.A.S.E.R</span>
+              <img src="/logo-full.png" alt="CASER" className="h-11" />
             </div>
             <div className="hidden md:flex items-center space-x-6">
               <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">Home</Link>
@@ -32,8 +29,8 @@ export default function PrivacyPage() {
               <Link href="/contact" className="text-sm font-medium hover:text-primary transition-colors">Contact</Link>
             </div>
             <Button variant="outline" size="sm" asChild>
-              <Link href="https://apps.apple.com" target="_blank" rel="noopener noreferrer">
-                App Store
+              <Link href="/download">
+                Download
               </Link>
             </Button>
           </div>
@@ -53,7 +50,7 @@ export default function PrivacyPage() {
               <span className="text-primary"> Our Priority</span>
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              C.A.S.E.R is committed to protecting your personal information and maintaining 
+              CASER is committed to protecting your personal information and maintaining 
               the highest standards of data privacy and security for legal professionals.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -88,13 +85,13 @@ export default function PrivacyPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-muted-foreground">
-                  This Privacy Policy describes how C.A.S.E.R ("we," "our," or "us") collects, 
+                  This Privacy Policy describes how CASER ("we," "our," or "us") collects, 
                   uses, and protects your information when you use our court monitoring application 
                   and related services. We are committed to protecting your privacy and ensuring 
                   the security of your personal information.
                 </p>
                 <p className="text-muted-foreground">
-                  By using C.A.S.E.R, you agree to the collection and use of information in 
+                  By using CASER, you agree to the collection and use of information in 
                   accordance with this policy. If you disagree with any aspect of this privacy 
                   policy, you should not use our application or services.
                 </p>
@@ -140,7 +137,7 @@ export default function PrivacyPage() {
                 <div>
                   <h4 className="font-semibold mb-3">Court Data</h4>
                   <p className="text-muted-foreground">
-                    C.A.S.E.R monitors publicly available court docket information. 
+                    CASER monitors publicly available court docket information. 
                     We do not access or store confidential court documents - we only provide 
                     links to official PACER sources for verified access.
                   </p>
@@ -270,7 +267,7 @@ export default function PrivacyPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-muted-foreground">
-                  C.A.S.E.R may transfer and process your personal information in countries 
+                  CASER may transfer and process your personal information in countries 
                   other than your own. We ensure appropriate safeguards are in place to protect 
                   your information in accordance with applicable data protection laws.
                 </p>
@@ -289,7 +286,7 @@ export default function PrivacyPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-muted-foreground">
-                  C.A.S.E.R is not intended for use by individuals under the age of 18. 
+                  CASER is not intended for use by individuals under the age of 18. 
                   We do not knowingly collect personal information from children under 18. 
                   If you become aware that a child has provided us with personal information, 
                   please contact us immediately.
@@ -369,40 +366,37 @@ export default function PrivacyPage() {
       {/* Footer */}
       <footer className="border-t bg-muted/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="space-y-4">
+          <div className="grid md:grid-cols-4 gap-1">
+            <div className="space-y-2">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-sm">CASER</span>
-                </div>
-                <span className="font-semibold">C.A.S.E.R</span>
+                <img src="/logo-icon.png" alt="CASER" className="h-12" />
               </div>
               <p className="text-sm text-muted-foreground">
                 Court Automated Search of Electronic Records
               </p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               <h4 className="font-semibold">Product</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li><Link href="/features" className="hover:text-primary transition-colors">Features</Link></li>
                 <li><Link href="/pricing" className="hover:text-primary transition-colors">Pricing</Link></li>
                 <li><Link href="/about" className="hover:text-primary transition-colors">About</Link></li>
               </ul>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               <h4 className="font-semibold">Legal</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li><Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
                 <li><Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link></li>
                 <li><Link href="/support" className="hover:text-primary transition-colors">Support</Link></li>
               </ul>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               <h4 className="font-semibold">Contact</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li>Website: www.caserlegal.com</li>
                 <li>Available on iOS</li>
                 <li>MacOS and Web coming soon</li>
@@ -411,7 +405,7 @@ export default function PrivacyPage() {
           </div>
 
           <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
-            <p>© 2024 CASER. All rights reserved. Supporting independent developers in legal technology.</p>
+            <p>© 2026 CASER. All rights reserved. Supporting independent developers in legal technology.</p>
           </div>
         </div>
       </footer>

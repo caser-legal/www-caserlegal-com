@@ -25,21 +25,18 @@ export default function SupportPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm">CASER</span>
-              </div>
-              <span className="font-semibold text-lg">C.A.S.E.R</span>
+              <img src="/logo-full.png" alt="CASER" className="h-11" />
             </div>
             <div className="hidden md:flex items-center space-x-6">
               <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">Home</Link>
               <Link href="/about" className="text-sm font-medium hover:text-primary transition-colors">About</Link>
               <Link href="/features" className="text-sm font-medium hover:text-primary transition-colors">Features</Link>
               <Link href="/pricing" className="text-sm font-medium hover:text-primary transition-colors">Pricing</Link>
-              <Link href="/contact" className="text-sm font-medium text-primary">Contact</Link>
+              <Link href="/contact" className="text-sm font-medium text-primary">Download</Link>
             </div>
             <Button variant="outline" size="sm" asChild>
-              <Link href="https://apps.apple.com" target="_blank" rel="noopener noreferrer">
-                App Store
+              <Link href="/download">
+                Download
               </Link>
             </Button>
           </div>
@@ -99,7 +96,7 @@ export default function SupportPage() {
                 </div>
                 <CardTitle>Getting Started</CardTitle>
                 <CardDescription>
-                  New to C.A.S.E.R? Start here with setup guides and tutorials
+                  New to CASER? Start here with setup guides and tutorials
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -154,7 +151,7 @@ export default function SupportPage() {
               Documentation Library
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Detailed guides and resources for mastering C.A.S.E.R
+              Detailed guides and resources for mastering CASER
             </p>
           </div>
 
@@ -170,7 +167,7 @@ export default function SupportPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <ul className="space-y-2 text-sm">
+                <ul className="space-y-1 text-sm">
                   <li className="flex items-center space-x-2">
                     <CheckCircle className="w-4 h-4 text-primary" />
                     <span>Account setup and configuration</span>
@@ -206,7 +203,7 @@ export default function SupportPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <ul className="space-y-2 text-sm">
+                <ul className="space-y-1 text-sm">
                   <li className="flex items-center space-x-2">
                     <CheckCircle className="w-4 h-4 text-primary" />
                     <span>Authentication methods</span>
@@ -242,7 +239,7 @@ export default function SupportPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <ul className="space-y-2 text-sm">
+                <ul className="space-y-1 text-sm">
                   <li className="flex items-center space-x-2">
                     <CheckCircle className="w-4 h-4 text-primary" />
                     <span>Keyword optimization</span>
@@ -278,7 +275,7 @@ export default function SupportPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <ul className="space-y-2 text-sm">
+                <ul className="space-y-1 text-sm">
                   <li className="flex items-center space-x-2">
                     <CheckCircle className="w-4 h-4 text-primary" />
                     <span>Product overview (5 min)</span>
@@ -310,11 +307,11 @@ export default function SupportPage() {
                   <span>Integration Guides</span>
                 </CardTitle>
                 <CardDescription>
-                  Connect C.A.S.E.R with your existing tools
+                  Connect CASER with your existing tools
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <ul className="space-y-2 text-sm">
+                <ul className="space-y-1 text-sm">
                   <li className="flex items-center space-x-2">
                     <CheckCircle className="w-4 h-4 text-primary" />
                     <span>Email integration setup</span>
@@ -350,7 +347,7 @@ export default function SupportPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <ul className="space-y-2 text-sm">
+                <ul className="space-y-1 text-sm">
                   <li className="flex items-center space-x-2">
                     <CheckCircle className="w-4 h-4 text-primary" />
                     <span>Connection issues</span>
@@ -518,7 +515,7 @@ export default function SupportPage() {
               Additional Resources
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Helpful links and resources to enhance your C.A.S.E.R experience
+              Helpful links and resources to enhance your CASER experience
             </p>
           </div>
 
@@ -571,7 +568,7 @@ export default function SupportPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Help us improve C.A.S.E.R
+                  Help us improve CASER
                 </p>
                 <Button variant="outline" size="sm" className="w-full">
                   Send Feedback
@@ -585,40 +582,37 @@ export default function SupportPage() {
       {/* Footer */}
       <footer className="border-t bg-muted/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="space-y-4">
+          <div className="grid md:grid-cols-4 gap-1">
+            <div className="space-y-2">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-sm">CASER</span>
-                </div>
-                <span className="font-semibold">C.A.S.E.R</span>
+                <img src="/logo-icon.png" alt="CASER" className="h-12" />
               </div>
               <p className="text-sm text-muted-foreground">
                 Court Automated Search of Electronic Records
               </p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               <h4 className="font-semibold">Product</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li><Link href="/features" className="hover:text-primary transition-colors">Features</Link></li>
                 <li><Link href="/pricing" className="hover:text-primary transition-colors">Pricing</Link></li>
                 <li><Link href="/about" className="hover:text-primary transition-colors">About</Link></li>
               </ul>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               <h4 className="font-semibold">Support</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li><Link href="/support" className="hover:text-primary transition-colors">Documentation</Link></li>
                 <li><Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
                 <li><Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link></li>
               </ul>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               <h4 className="font-semibold">Contact</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li>Website: www.caserlegal.com</li>
                 <li>Available on iOS</li>
                 <li>MacOS and Web coming soon</li>
@@ -627,7 +621,7 @@ export default function SupportPage() {
           </div>
 
           <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
-            <p>© 2024 CASER. All rights reserved. Supporting independent developers in legal technology.</p>
+            <p>© 2026 CASER. All rights reserved. Supporting independent developers in legal technology.</p>
           </div>
         </div>
       </footer>
