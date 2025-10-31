@@ -49,3 +49,6 @@ prompt
 server.log
 # Local Netlify folder
 .netlify
+
+# Amazon Q CLI
+.amazonq/
