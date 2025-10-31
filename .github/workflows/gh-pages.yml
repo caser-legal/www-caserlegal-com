@@ -3,6 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -11,7 +12,7 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -26,14 +27,21 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
       - name: Install dependencies
         run: npm ci
 
       - name: Build Next.js site
         run: npm run build
 
-      - name: Export static site
-        run: npx next export
+      - name: Verify build output
+        run: |
+          echo "Verifying build output..."
+          ls -la ./out
+          test -f ./out/index.html || (echo "Error: index.html not found" && exit 1)
+          echo "Build verification successful"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
