@@ -15,7 +15,6 @@ import {
   DollarDocument,
   LegalSeal,
   MagnifyingGlassLegal,
-  ContactDocument,
   LegalBookSearch
 } from '@/components/ui/icons';
 import { CheckCircle, ArrowRight, Star, Shield, Zap } from 'lucide-react';

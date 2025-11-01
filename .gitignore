@@ -52,3 +52,6 @@ server.log
 
 # Amazon Q CLI
 .amazonq/
+
+# local files
+how-to-edit.rtf

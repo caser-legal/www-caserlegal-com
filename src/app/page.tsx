@@ -1222,45 +1222,6 @@ export default function Home() {
           </div>
         </div>
       </footer>
-
-      <script dangerouslySetInnerHTML={{
-        __html: `
-          function updateCalculator() {
-            const searches = parseInt(document.getElementById('searchRange').value);
-            const pages = parseInt(document.getElementById('pagesRange').value);
-            const docs = parseInt(document.getElementById('docsRange').value);
-            
-            // Update display values
-            document.getElementById('searchValue').textContent = searches;
-            document.getElementById('pagesValue').textContent = pages;
-            document.getElementById('docsValue').textContent = docs;
-            
-            // Calculate PACER costs
-            const searchCost = searches * pages * 0.10; // $0.10 per page for searches
-            const docCost = docs * 3.00; // $3.00 per document (cap)
-            const totalPacerCost = searchCost + docCost;
-            
-            // CASER cost: $0 for searches + $3 per document
-            const caserCost = docs * 3.00;
-            
-            // Calculate savings
-            const savings = totalPacerCost - caserCost;
-            const savingsPercent = totalPacerCost > 0 ? (savings / totalPacerCost * 100) : 0;
-            
-            // Update display
-            document.getElementById('searchCost').textContent = '$' + searchCost.toFixed(2);
-            document.getElementById('docCost').textContent = '$' + docCost.toFixed(2);
-            document.getElementById('totalCost').textContent = '$' + totalPacerCost.toFixed(2);
-            document.getElementById('savings').textContent = '$' + savings.toFixed(2);
-            document.getElementById('savingsPercent').textContent = savingsPercent.toFixed(1) + '%';
-          }
-          
-          // Initialize calculator on page load
-          if (typeof window !== 'undefined') {
-            updateCalculator();
-          }
-        `
-      }} />
     </div>
   );
 }
