@@ -63,7 +63,7 @@ export default function ContactPage() {
               <Button size="lg" className="text-lg px-8 py-6" asChild>
                 <Link href="/contact">
                   <Apple className="w-5 h-5 mr-2" />
-                  Contact on Download
+                  Download
                 </Link>
               </Button>
               <Button variant="outline" size="lg" className="text-lg px-8 py-6" asChild>
