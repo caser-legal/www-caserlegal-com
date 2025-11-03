@@ -69,7 +69,7 @@ export default function ContactPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* General Inquiries */}
             <Card className="text-center hover:shadow-lg transition-shadow">
               <CardHeader>
@@ -98,33 +98,6 @@ export default function ContactPage() {
               </CardContent>
             </Card>
 
-            {/* Business Development */}
-            <Card className="text-center hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <Briefcase className="w-8 h-8 text-primary" />
-                </div>
-                <CardTitle>Business Development</CardTitle>
-                <CardDescription>
-                  Enterprise solutions, custom integrations, and partnership opportunities
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <div className="flex items-center justify-center space-x-2">
-                    <Mail className="w-4 h-4 text-primary" />
-                    <span className="text-sm font-medium">business@caserlegal.com</span>
-                  </div>
-                  <p className="text-sm text-muted-foreground h-10">Priority response for enterprise inquiries</p>
-                </div>
-                <Button className="w-full" asChild>
-                  <a href="mailto:business@caserlegal.com?subject=Business Inquiry - CASER">
-                    Contact Business Team
-                  </a>
-                </Button>
-              </CardContent>
-            </Card>
-
             {/* Support */}
             <Card className="text-center hover:shadow-lg transition-shadow">
               <CardHeader>
@@ -142,7 +115,7 @@ export default function ContactPage() {
                     <Mail className="w-4 h-4 text-primary" />
                     <span className="text-sm font-medium">hi@caserlegal.com</span>
                   </div>
-                  <p className="text-sm text-muted-foreground h-10">Support available 9 AM - 6 PM EST</p>
+                  <p className="text-sm text-muted-foreground h-10"></p>
                 </div>
                 <Button className="w-full" asChild>
                   <Link href="/support">
