@@ -372,7 +372,7 @@ export default function PrivacyPage() {
                 <img src="/logo-icon.png" alt="CASER" className="h-12" />
               </div>
               <p className="text-sm text-muted-foreground">
-                Court Automated Search of Electronic Records
+                Case Automated Search of Electronic Records
               </p>
             </div>
 

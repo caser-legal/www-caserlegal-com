@@ -72,7 +72,7 @@ export default function FeaturesPage() {
               </Button>
               <Button variant="outline" size="lg" asChild>
                 <Link href="/contact">
-                  Contact App
+                  Contact
                 </Link>
               </Button>
             </div>
