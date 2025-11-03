@@ -10,8 +10,6 @@ import {
   ProfessionalBriefcase,
   Gavel,
   Mail,
-  Phone,
-  MessageCircle,
   ExternalLink
 } from '@/components/ui/icons';
 import { CheckCircle, ArrowRight, Star } from 'lucide-react';
@@ -387,7 +385,7 @@ export default function SupportPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="max-w-2xl mx-auto">
             <Card className="text-center">
               <CardHeader>
                 <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
@@ -407,52 +405,6 @@ export default function SupportPage() {
                 </div>
                 <Button variant="outline" size="sm" className="w-full">
                   Send Email
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center">
-              <CardHeader>
-                <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <MessageCircle className="w-8 h-8 text-primary" />
-                </div>
-                <CardTitle>Live Chat</CardTitle>
-                <CardDescription>
-                  Real-time support during business hours
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <p className="text-sm font-medium">Available 9 AM - 6 PM EST</p>
-                  <p className="text-xs text-muted-foreground">
-                    Average wait: 2-5 minutes
-                  </p>
-                </div>
-                <Button size="sm" className="w-full">
-                  Start Chat
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center">
-              <CardHeader>
-                <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <Phone className="w-8 h-8 text-primary" />
-                </div>
-                <CardTitle>Phone Support</CardTitle>
-                <CardDescription>
-                  Direct assistance for urgent matters
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <p className="text-sm font-medium">1-800-CASER-01</p>
-                  <p className="text-xs text-muted-foreground">
-                    Business & Enterprise plans only
-                  </p>
-                </div>
-                <Button variant="outline" size="sm" className="w-full">
-                  Call Now
                 </Button>
               </CardContent>
             </Card>
@@ -587,9 +539,6 @@ export default function SupportPage() {
               <div className="flex items-center space-x-2">
                 <img src="/logo-icon.png" alt="CASER" className="h-12" />
               </div>
-              <p className="text-sm text-muted-foreground">
-                Court Automated Search of Electronic Records
-              </p>
             </div>
 
             <div className="space-y-2">
