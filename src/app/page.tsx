@@ -1181,9 +1181,6 @@ export default function Home() {
               <Link href="/" className="flex justify-center">
                 <img src="/logo-icon.png" alt="CASER" className="h-12" />
               </Link>
-              <p className="text-sm text-muted-foreground text-center">
-                Professional-grade court monitoring for legal professionals.
-              </p>
             </div>
 
             <div className="space-y-3">
