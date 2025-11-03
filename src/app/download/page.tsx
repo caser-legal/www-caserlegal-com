@@ -1,5 +1,7 @@
 'use client';
 
+import Navigation from '@/components/Navigation';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -24,28 +26,7 @@ import Link from 'next/link';
 export default function ContactPage() {
   return (
     <div className="min-h-screen bg-background">
-      {/* Navigation */}
-      <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link href="/" className="flex items-center space-x-2">
-              <img src="/logo-full.png" alt="CASER" className="h-11" />
-            </Link>
-            <div className="hidden md:flex items-center space-x-6">
-              <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">Home</Link>
-              <Link href="/about" className="text-sm font-medium hover:text-primary transition-colors">About</Link>
-              <Link href="/features" className="text-sm font-medium hover:text-primary transition-colors">Features</Link>
-              <Link href="/pricing" className="text-sm font-medium hover:text-primary transition-colors">Pricing</Link>
-              <Link href="/download" className="text-sm font-medium text-primary">Download</Link>
-            </div>
-            <Button variant="outline" size="sm" asChild>
-              <Link href="/contact">
-                Contact
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </nav>
+      <Navigation />
 
       {/* Hero Section */}
       <section className="relative py-20 lg:py-32">
