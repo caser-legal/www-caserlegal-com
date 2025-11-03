@@ -359,7 +359,7 @@ export default function PricingPage() {
               {/* Input Section */}
               <Card className="p-6">
                 <CardHeader className="px-0 pt-0">
-                  <Link href="/" className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2">
                     <FileSearch className="w-5 h-5 text-primary" />
                     <CardTitle className="text-xl">Your PACER Usage</CardTitle>
                   </div>

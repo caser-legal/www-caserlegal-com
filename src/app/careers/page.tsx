@@ -151,7 +151,7 @@ export default function CareersPage() {
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="space-y-2">
-                    <Link href="/" className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-2">
                       <Badge className="bg-primary text-primary-foreground">Open</Badge>
                       <Badge variant="outline">Remote</Badge>
                     </div>
