@@ -609,13 +609,7 @@ export default function PricingPage() {
       {/* Footer */}
       <footer className="border-t bg-muted/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid md:grid-cols-4 gap-1">
-            <div className="space-y-2">
-              <Link href="/" className="flex items-center space-x-2">
-                <img src="/logo-icon.png" alt="CASER" className="h-12" />
-              </Link>
-            </div>
-            
+          <div className="grid md:grid-cols-3 gap-8">
             <div>
               <h4 className="font-semibold mb-4">Product</h4>
               <ul className="space-y-1 text-sm text-muted-foreground">
