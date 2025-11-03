@@ -415,7 +415,7 @@ export default function CareersPage() {
               <ul className="space-y-1 text-sm text-muted-foreground">
                 <li><Link href="/about" className="hover:text-primary transition-colors">About</Link></li>
                 <li><Link href="/careers" className="hover:text-primary transition-colors">Careers</Link></li>
-                <li><Link href="/contact" className="hover:text-primary transition-colors">Download</Link></li>
+                <li><Link href="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
               </ul>
             </div>
 

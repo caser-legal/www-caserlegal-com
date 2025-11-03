@@ -30,7 +30,7 @@ export default function SupportPage() {
               <Link href="/about" className="text-sm font-medium hover:text-primary transition-colors">About</Link>
               <Link href="/features" className="text-sm font-medium hover:text-primary transition-colors">Features</Link>
               <Link href="/pricing" className="text-sm font-medium hover:text-primary transition-colors">Pricing</Link>
-              <Link href="/contact" className="text-sm font-medium text-primary">Download</Link>
+              <Link href="/contact" className="text-sm font-medium text-primary">Contact</Link>
             </div>
             <Button variant="outline" size="sm" asChild>
               <Link href="/download">
@@ -124,7 +124,7 @@ export default function SupportPage() {
             <Card className="text-center hover:shadow-lg transition-shadow cursor-pointer">
               <CardHeader>
                 <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <MessageCircle className="w-8 h-8 text-primary" />
+                  <Mail className="w-8 h-8 text-primary" />
                 </div>
                 <CardTitle>FAQs</CardTitle>
                 <CardDescription>
@@ -337,7 +337,7 @@ export default function SupportPage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <Phone className="w-5 h-5 text-primary" />
+                  <Gavel className="w-5 h-5 text-primary" />
                   <span>Troubleshooting</span>
                 </CardTitle>
                 <CardDescription>

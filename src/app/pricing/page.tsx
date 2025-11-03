@@ -640,7 +640,7 @@ export default function PricingPage() {
               <ul className="space-y-1 text-sm text-muted-foreground">
                 <li><Link href="/features" className="hover:text-primary transition-colors">Features</Link></li>
                 <li><Link href="/pricing" className="hover:text-primary transition-colors">Pricing</Link></li>
-                <li><Link href="/download" className="hover:text-primary transition-colors">Contact</Link></li>
+                <li><Link href="/download" className="hover:text-primary transition-colors">Download</Link></li>
               </ul>
             </div>
             

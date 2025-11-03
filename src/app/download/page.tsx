@@ -52,7 +52,7 @@ export default function ContactPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">
-              Contact CASER
+              Download CASER
               <span className="text-primary"> for iOS</span>
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
@@ -443,7 +443,7 @@ export default function ContactPage() {
               <ul className="space-y-1 text-sm text-muted-foreground">
                 <li><Link href="/features" className="hover:text-primary transition-colors">Features</Link></li>
                 <li><Link href="/pricing" className="hover:text-primary transition-colors">Pricing</Link></li>
-                <li><Link href="/download" className="hover:text-primary transition-colors">Contact</Link></li>
+                <li><Link href="/download" className="hover:text-primary transition-colors">Download</Link></li>
               </ul>
             </div>
 

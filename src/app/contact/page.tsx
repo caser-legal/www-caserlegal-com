@@ -6,7 +6,6 @@ import { Badge } from '@/components/ui/badge';
 import { 
   ScalesOfJustice, 
   Mail, 
-  Phone, 
   MessageCircle,
   ProfessionalBriefcase,
   Gavel,
@@ -108,9 +107,6 @@ export default function ContactPage() {
                   <div className="flex items-center justify-center space-x-2">
                     <Mail className="w-4 h-4 text-primary" />
                     <span className="text-sm font-medium">hi@caserlegal.com</span>
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    Response within 24 business hours
                   </div>
                 </div>
                 <Button className="w-full" asChild>
@@ -366,7 +362,7 @@ export default function ContactPage() {
               <ul className="space-y-1 text-sm text-muted-foreground">
                 <li><Link href="/features" className="hover:text-primary transition-colors">Features</Link></li>
                 <li><Link href="/pricing" className="hover:text-primary transition-colors">Pricing</Link></li>
-                <li><Link href="/download" className="hover:text-primary transition-colors">Contact</Link></li>
+                <li><Link href="/download" className="hover:text-primary transition-colors">Download</Link></li>
               </ul>
             </div>
 
