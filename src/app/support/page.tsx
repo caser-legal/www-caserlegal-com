@@ -22,9 +22,9 @@ export default function SupportPage() {
       <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-2">
+            <Link href="/" className="flex items-center space-x-2">
               <img src="/logo-full.png" alt="CASER" className="h-11" />
-            </div>
+            </Link>
             <div className="hidden md:flex items-center space-x-6">
               <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">Home</Link>
               <Link href="/about" className="text-sm font-medium hover:text-primary transition-colors">About</Link>
@@ -197,7 +197,7 @@ export default function SupportPage() {
                   <span>API Documentation</span>
                 </CardTitle>
                 <CardDescription>
-                  Technical documentation for enterprise integrations
+                  Technical documentation for developers
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -409,53 +409,6 @@ export default function SupportPage() {
               </CardContent>
             </Card>
           </div>
-
-          <div className="mt-16 max-w-4xl mx-auto">
-            <Card className="p-8">
-              <div className="text-center space-y-6">
-                <h3 className="text-2xl font-bold">Enterprise Support</h3>
-                <p className="text-muted-foreground">
-                  For enterprise customers, we offer dedicated support teams, 
-                  custom training sessions, and priority assistance.
-                </p>
-                <div className="grid md:grid-cols-2 gap-6 text-left">
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-3">
-                      <Star className="w-5 h-5 text-primary" />
-                      <span className="text-sm">Dedicated account manager</span>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <Star className="w-5 h-5 text-primary" />
-                      <span className="text-sm">24/7 priority support</span>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <Star className="w-5 h-5 text-primary" />
-                      <span className="text-sm">Custom training sessions</span>
-                    </div>
-                  </div>
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-3">
-                      <Star className="w-5 h-5 text-primary" />
-                      <span className="text-sm">SLA guarantees</span>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <Star className="w-5 h-5 text-primary" />
-                      <span className="text-sm">Direct engineering access</span>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <Star className="w-5 h-5 text-primary" />
-                      <span className="text-sm">On-site support available</span>
-                    </div>
-                  </div>
-                </div>
-                <Button size="lg" asChild>
-                  <Link href="/pricing">
-                    Contact Enterprise Sales
-                  </Link>
-                </Button>
-              </div>
-            </Card>
-          </div>
         </div>
       </section>
 
@@ -536,9 +489,9 @@ export default function SupportPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid md:grid-cols-4 gap-1">
             <div className="space-y-2">
-              <div className="flex items-center space-x-2">
+              <Link href="/" className="flex items-center space-x-2">
                 <img src="/logo-icon.png" alt="CASER" className="h-12" />
-              </div>
+              </Link>
             </div>
 
             <div className="space-y-2">

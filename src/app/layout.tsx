@@ -16,7 +16,7 @@ import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "CASER - Case Automated Search of Electronic Records",
-  description: "Monitor 175+ U.S. Courts in near real-time. Eliminate wasteful PACER search fees. Receive instant alerts with direct document links.",
+  description: "Monitor 170+ U.S. Courts in near real-time. Eliminate wasteful PACER search fees. Receive instant alerts with direct document links.",
   keywords: ["CASER", "PACER", "Court Monitoring", "Legal Technology", "Electronic Records", "Federal Courts"],
   authors: [{ name: "CASER Legal" }],
   icons: {
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "CASER - Case Automated Search of Electronic Records",
-    description: "Monitor 175+ U.S. Courts in near real-time. Eliminate wasteful PACER search fees.",
+    description: "Monitor 170+ U.S. Courts in near real-time. Eliminate wasteful PACER search fees.",
     url: "https://caserlegal.com",
     siteName: "CASER",
     type: "website",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "CASER - Case Automated Search of Electronic Records",
-    description: "Monitor 175+ U.S. Courts in near real-time. Eliminate wasteful PACER search fees.",
+    description: "Monitor 170+ U.S. Courts in near real-time. Eliminate wasteful PACER search fees.",
   },
 };
 

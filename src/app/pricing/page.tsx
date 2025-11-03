@@ -97,9 +97,9 @@ export default function PricingPage() {
       <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-2">
+            <Link href="/" className="flex items-center space-x-2">
               <img src="/logo-full.png" alt="CASER" className="h-11" />
-            </div>
+            </Link>
             <div className="hidden md:flex items-center space-x-6">
               <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">Home</Link>
               <Link href="/about" className="text-sm font-medium hover:text-primary transition-colors">About</Link>
@@ -378,7 +378,7 @@ export default function PricingPage() {
               {/* Input Section */}
               <Card className="p-6">
                 <CardHeader className="px-0 pt-0">
-                  <div className="flex items-center space-x-2">
+                  <Link href="/" className="flex items-center space-x-2">
                     <FileSearch className="w-5 h-5 text-primary" />
                     <CardTitle className="text-xl">Your PACER Usage</CardTitle>
                   </div>
@@ -630,9 +630,9 @@ export default function PricingPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid md:grid-cols-4 gap-1">
             <div className="space-y-2">
-              <div className="flex items-center space-x-2">
+              <Link href="/" className="flex items-center space-x-2">
                 <img src="/logo-icon.png" alt="CASER" className="h-12" />
-              </div>
+              </Link>
             </div>
             
             <div>

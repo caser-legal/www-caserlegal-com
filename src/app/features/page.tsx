@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -28,9 +29,9 @@ export default function FeaturesPage() {
       <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-2">
+            <Link href="/" className="flex items-center space-x-2">
               <img src="/logo-full.png" alt="CASER" className="h-11" />
-            </div>
+            </Link>
             <div className="hidden md:flex items-center space-x-6">
               <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">Home</Link>
               <Link href="/about" className="text-sm font-medium hover:text-primary transition-colors">About</Link>
@@ -111,7 +112,7 @@ export default function FeaturesPage() {
                       </div>
                       <CardTitle>Real-Time Court Monitoring</CardTitle>
                       <CardDescription>
-                        Monitor 175+ U.S. Courts with near real-time docket updates
+                        Monitor 170+ U.S. Courts with near real-time docket updates
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
@@ -548,9 +549,9 @@ export default function FeaturesPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid md:grid-cols-4 gap-1">
             <div className="space-y-2">
-              <div className="flex items-center space-x-2">
+              <Link href="/" className="flex items-center space-x-2">
                 <img src="/logo-icon.png" alt="CASER" className="h-12" />
-              </div>
+              </Link>
             </div>
 
             <div className="space-y-2">

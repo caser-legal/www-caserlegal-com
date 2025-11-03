@@ -10,11 +10,9 @@ import {
   ProfessionalBriefcase,
   Gavel,
   CourthouseClock,
-  DollarDocument,
-  MapPin,
-  Clock
+  DollarDocument
 } from '@/components/ui/icons';
-import { CheckCircle, ArrowRight, Send } from 'lucide-react';
+import { CheckCircle, ArrowRight, Send, Briefcase } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ContactPage() {
@@ -24,9 +22,9 @@ export default function ContactPage() {
       <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-2">
+            <Link href="/" className="flex items-center space-x-2">
               <img src="/logo-full.png" alt="CASER" className="h-11" />
-            </div>
+            </Link>
             <div className="hidden md:flex items-center space-x-6">
               <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">Home</Link>
               <Link href="/about" className="text-sm font-medium hover:text-primary transition-colors">About</Link>
@@ -108,6 +106,7 @@ export default function ContactPage() {
                     <Mail className="w-4 h-4 text-primary" />
                     <span className="text-sm font-medium">hi@caserlegal.com</span>
                   </div>
+                  <p className="text-sm text-muted-foreground h-10"></p>
                 </div>
                 <Button className="w-full" asChild>
                   <a href="mailto:hi@caserlegal.com?subject=General Inquiry - CASER">
@@ -119,10 +118,10 @@ export default function ContactPage() {
             </Card>
 
             {/* Business Development */}
-            <Card className="text-center hover:shadow-lg transition-shadow border-primary">
+            <Card className="text-center hover:shadow-lg transition-shadow">
               <CardHeader>
-                <div className="w-16 h-16 bg-primary rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <ProfessionalBriefcase className="w-8 h-8 text-primary-foreground" />
+                <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <Briefcase className="w-8 h-8 text-primary" />
                 </div>
                 <CardTitle>Business Development</CardTitle>
                 <CardDescription>
@@ -135,13 +134,10 @@ export default function ContactPage() {
                     <Mail className="w-4 h-4 text-primary" />
                     <span className="text-sm font-medium">business@caserlegal.com</span>
                   </div>
-                  <div className="text-xs text-muted-foreground">
-                    Priority response for enterprise inquiries
-                  </div>
+                  <p className="text-sm text-muted-foreground h-10">Priority response for enterprise inquiries</p>
                 </div>
                 <Button className="w-full" asChild>
-                  <a href="mailto:business@caserlegal.com?subject=Business Development Inquiry - CASER">
-                    <Send className="w-4 h-4 mr-2" />
+                  <a href="mailto:business@caserlegal.com?subject=Business Inquiry - CASER">
                     Contact Business Team
                   </a>
                 </Button>
@@ -165,11 +161,9 @@ export default function ContactPage() {
                     <Mail className="w-4 h-4 text-primary" />
                     <span className="text-sm font-medium">hi@caserlegal.com</span>
                   </div>
-                  <div className="text-xs text-muted-foreground">
-                    Support available 9 AM - 6 PM EST
-                  </div>
+                  <p className="text-sm text-muted-foreground h-10">Support available 9 AM - 6 PM EST</p>
                 </div>
-                <Button variant="outline" className="w-full" asChild>
+                <Button className="w-full" asChild>
                   <Link href="/support">
                     Visit Support Center
                   </Link>
@@ -249,15 +243,8 @@ export default function ContactPage() {
                     <div className="flex items-start space-x-3">
                       <Gavel className="w-5 h-5 text-primary mt-0.5" />
                       <div>
-                        <div className="font-medium">Custom Solutions</div>
-                        <div className="text-sm text-muted-foreground">Tailored features for your practice</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start space-x-3">
-                      <ProfessionalBriefcase className="w-5 h-5 text-primary mt-0.5" />
-                      <div>
-                        <div className="font-medium">Team Training</div>
-                        <div className="text-sm text-muted-foreground">Onboarding and best practices</div>
+                        <div className="font-medium">Product Support</div>
+                        <div className="text-sm text-muted-foreground">Help with features and setup</div>
                       </div>
                     </div>
                   </div>
@@ -279,43 +266,6 @@ export default function ContactPage() {
                 </div>
               </div>
             </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Office Hours */}
-      <section className="py-20 lg:py-32 bg-muted/50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center space-y-8">
-            <h2 className="text-3xl lg:text-4xl font-bold">
-              Available When You Need Us
-            </h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="text-center space-y-3">
-                <Clock className="w-8 h-8 text-primary mx-auto" />
-                <h3 className="font-semibold">Business Hours</h3>
-                <p className="text-sm text-muted-foreground">
-                  Monday - Friday<br />
-                  9:00 AM - 6:00 PM EST
-                </p>
-              </div>
-              <div className="text-center space-y-3">
-                <Mail className="w-8 h-8 text-primary mx-auto" />
-                <h3 className="font-semibold">Email Support</h3>
-                <p className="text-sm text-muted-foreground">
-                  24-hour response time<br />
-                  hi@caserlegal.com
-                </p>
-              </div>
-              <div className="text-center space-y-3">
-                <MapPin className="w-8 h-8 text-primary mx-auto" />
-                <h3 className="font-semibold">Remote First</h3>
-                <p className="text-sm text-muted-foreground">
-                  Serving legal professionals<br />
-                  across all 50 states
-                </p>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -352,9 +302,9 @@ export default function ContactPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid md:grid-cols-4 gap-1">
             <div className="space-y-2">
-              <div className="flex items-center space-x-2">
+              <Link href="/" className="flex items-center space-x-2">
                 <img src="/logo-icon.png" alt="CASER" className="h-12" />
-              </div>
+              </Link>
             </div>
 
             <div className="space-y-2">

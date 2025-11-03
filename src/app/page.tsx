@@ -131,7 +131,7 @@ export default function Home() {
                   <span className="text-primary"> Electronic Records</span>
                 </h1>
                 <p className="text-xl text-muted-foreground leading-relaxed">
-                  Monitor 175+ U.S. Courts in near real-time. Eliminate wasteful PACER search fees. 
+                  Monitor 170+ U.S. Courts in near real-time. Eliminate wasteful PACER search fees. 
                   Receive instant alerts with direct document links. No PACER account required.
                 </p>
               </div>
@@ -199,7 +199,7 @@ export default function Home() {
                 </div>
                 <CardTitle>Near Real-Time Monitoring</CardTitle>
                 <CardDescription>
-                  Receive instant notifications as new entries are docketed across 175+ U.S. courts
+                  Receive instant notifications as new entries are docketed across 170+ U.S. courts
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -671,7 +671,7 @@ export default function Home() {
                     <div>
                       <h4 className="font-medium mb-1">Zero Search Fees</h4>
                       <p className="text-sm text-muted-foreground">
-                        Monitor 175+ courts without paying search fees. Only pay for documents 
+                        Monitor 170+ courts without paying search fees. Only pay for documents 
                         you actually need, eliminating surprise charges.
                       </p>
                     </div>
@@ -772,7 +772,7 @@ export default function Home() {
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>Monitor 175+ courts with zero search costs</span>
+                      <span>Monitor 170+ courts with zero search costs</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
@@ -875,7 +875,7 @@ export default function Home() {
                 <h3 className="text-xl font-semibold text-primary mb-4">Advanced Data Capabilities</h3>
                 <p className="text-muted-foreground mb-4">
                   Our proprietary monitoring system captures comprehensive docket information 
-                  from 175+ U.S. courts, providing insights unavailable through any other source.
+                  from 170+ U.S. courts, providing insights unavailable through any other source.
                 </p>
                 <div className="space-y-3">
                   <div className="flex items-center space-x-3">
@@ -1139,7 +1139,7 @@ export default function Home() {
               <span className="text-primary"> for iOS</span>
             </h2>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Start monitoring 175+ U.S. federal courts in real-time. Transform your court monitoring 
+              Start monitoring 170+ U.S. federal courts in real-time. Transform your court monitoring 
               workflow and eliminate wasteful PACER fees today.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -1178,9 +1178,9 @@ export default function Home() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid md:grid-cols-4 gap-1">
             <div className="space-y-3">
-              <div className="flex justify-center">
+              <Link href="/" className="flex justify-center">
                 <img src="/logo-icon.png" alt="CASER" className="h-12" />
-              </div>
+              </Link>
               <p className="text-sm text-muted-foreground text-center">
                 Professional-grade court monitoring for legal professionals.
               </p>
