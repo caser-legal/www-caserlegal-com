@@ -28,9 +28,9 @@ export default function ContactPage() {
       <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-2">
+            <Link href="/" className="flex items-center space-x-2">
               <img src="/logo-full.png" alt="CASER" className="h-11" />
-            </div>
+            </Link>
             <div className="hidden md:flex items-center space-x-6">
               <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">Home</Link>
               <Link href="/about" className="text-sm font-medium hover:text-primary transition-colors">About</Link>
@@ -56,7 +56,7 @@ export default function ContactPage() {
               <span className="text-primary"> for iOS</span>
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Start monitoring 175+ U.S. federal courts in real-time. Eliminate wasteful PACER fees 
+              Start monitoring 170+ U.S. federal courts in real-time. Eliminate wasteful PACER fees 
               and transform your court monitoring workflow today.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -99,7 +99,7 @@ export default function ContactPage() {
                   <div>
                     <h3 className="text-xl font-semibold mb-2">Real-Time Monitoring</h3>
                     <p className="text-muted-foreground">
-                      Monitor 175+ U.S. federal courts with instant notifications for new filings 
+                      Monitor 170+ U.S. federal courts with instant notifications for new filings 
                       and docket updates. Never miss important case developments.
                     </p>
                   </div>
@@ -433,9 +433,9 @@ export default function ContactPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid md:grid-cols-4 gap-1">
             <div className="space-y-2">
-              <div className="flex items-center space-x-2">
+              <Link href="/" className="flex items-center space-x-2">
                 <img src="/logo-icon.png" alt="CASER" className="h-12" />
-              </div>
+              </Link>
             </div>
 
             <div className="space-y-2">

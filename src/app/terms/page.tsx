@@ -18,9 +18,9 @@ export default function TermsPage() {
       <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-2">
+            <Link href="/" className="flex items-center space-x-2">
               <img src="/logo-full.png" alt="CASER" className="h-11" />
-            </div>
+            </Link>
             <div className="hidden md:flex items-center space-x-6">
               <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">Home</Link>
               <Link href="/about" className="text-sm font-medium hover:text-primary transition-colors">About</Link>
@@ -110,7 +110,7 @@ export default function TermsPage() {
                   CASER is a court monitoring service that provides:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
-                  <li>Real-time monitoring of 175+ U.S. federal courts</li>
+                  <li>Real-time monitoring of 170+ U.S. federal courts</li>
                   <li>Alert notifications for new court filings</li>
                   <li>Direct links to PACER documents</li>
                   <li>Search and filtering capabilities</li>
@@ -400,9 +400,9 @@ export default function TermsPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid md:grid-cols-4 gap-1">
             <div className="space-y-2">
-              <div className="flex items-center space-x-2">
+              <Link href="/" className="flex items-center space-x-2">
                 <img src="/logo-icon.png" alt="CASER" className="h-12" />
-              </div>
+              </Link>
             </div>
 
             <div className="space-y-2">
