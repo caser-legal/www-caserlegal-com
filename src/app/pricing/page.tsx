@@ -1,5 +1,7 @@
 'use client';
 
+import Navigation from '@/components/Navigation';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -93,28 +95,7 @@ export default function PricingPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Navigation */}
-      <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link href="/" className="flex items-center space-x-2">
-              <img src="/logo-full.png" alt="CASER" className="h-11" />
-            </Link>
-            <div className="hidden md:flex items-center space-x-6">
-              <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">Home</Link>
-              <Link href="/about" className="text-sm font-medium hover:text-primary transition-colors">About</Link>
-              <Link href="/features" className="text-sm font-medium hover:text-primary transition-colors">Features</Link>
-              <Link href="/pricing" className="text-sm font-medium text-primary">Pricing</Link>
-              <Link href="/download" className="text-sm font-medium hover:text-primary transition-colors">Download</Link>
-            </div>
-            <Button variant="outline" size="sm" asChild>
-              <Link href="/contact">
-                Contact
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </nav>
+      <Navigation />
 
       {/* Hero Section */}
       <section className="relative py-20 lg:py-32">
@@ -564,7 +545,7 @@ export default function PricingPage() {
               <CardContent className="space-y-6">
                 <div className="grid md:grid-cols-3 gap-6">
                   <div className="text-center p-4 bg-white rounded-lg">
-                    <div className="text-3xl font-bold text-primary mb-2">
+                    <div className="text-3xl font-bold text-foreground mb-2">
                       ${formatNumber(Number(totalAnnualSavings.toFixed(0)))}
                     </div>
                     <div className="text-sm text-muted-foreground">Total Annual Savings</div>
