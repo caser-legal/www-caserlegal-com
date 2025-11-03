@@ -330,6 +330,6 @@ For questions about this website:
 
 ---
 
-**Last Updated**: January 3, 2025
+**Last Updated**: November 3, 2025
 **Version**: 1.0.0
 **Maintained By**: CASER Development Team

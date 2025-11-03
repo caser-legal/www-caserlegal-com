@@ -563,7 +563,7 @@ export default function FeaturesPage() {
           </div>
 
           <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
-            <p>© 2026 CASER. All rights reserved. Supporting independent developers in legal technology.</p>
+            <p>© 2025 CASER. All rights reserved. Supporting independent developers in legal technology.</p>
           </div>
         </div>
       </footer>

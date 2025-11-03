@@ -77,7 +77,7 @@ export default function PrivacyPage() {
                   policy, you should not use our application or services.
                 </p>
                 <p className="text-muted-foreground">
-                  <strong>Last Updated:</strong> January 1, 2024
+                  <strong>Last Updated:</strong> November 3, 2025
                 </p>
               </CardContent>
             </Card>
@@ -383,7 +383,7 @@ export default function PrivacyPage() {
           </div>
 
           <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
-            <p>© 2026 CASER. All rights reserved. Supporting independent developers in legal technology.</p>
+            <p>© 2025 CASER. All rights reserved. Supporting independent developers in legal technology.</p>
           </div>
         </div>
       </footer>
