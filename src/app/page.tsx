@@ -127,7 +127,7 @@ export default function Home() {
                   Google Backed & Trusted Technology
                 </Badge>
                 <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">
-                  Court Automated Search of
+                  Case Automated Search of
                   <span className="text-primary"> Electronic Records</span>
                 </h1>
                 <p className="text-xl text-muted-foreground leading-relaxed">
@@ -1181,9 +1181,6 @@ export default function Home() {
               <div className="flex justify-center">
                 <img src="/logo-icon.png" alt="CASER" className="h-12" />
               </div>
-              <p className="text-sm text-muted-foreground text-center">
-                Court Automated Search of Electronic Records
-              </p>
               <p className="text-sm text-muted-foreground text-center">
                 Professional-grade court monitoring for legal professionals.
               </p>

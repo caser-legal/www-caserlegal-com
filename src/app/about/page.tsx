@@ -284,9 +284,6 @@ export default function AboutPage() {
               <div className="flex items-center space-x-2">
                 <img src="/logo-icon.png" alt="CASER" className="h-12" />
               </div>
-              <p className="text-sm text-muted-foreground">
-                Court Automated Search of Electronic Records
-              </p>
             </div>
 
             <div className="space-y-2">

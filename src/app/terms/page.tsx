@@ -85,7 +85,7 @@ export default function TermsPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-muted-foreground">
-                  By accessing and using CASER (Court Automated Search of Electronic Records), 
+                  By accessing and using CASER (Case Automated Search of Electronic Records), 
                   you accept and agree to be bound by the terms and provision of this agreement. 
                   If you do not agree to abide by the above, please do not use this service.
                 </p>
@@ -403,9 +403,6 @@ export default function TermsPage() {
               <div className="flex items-center space-x-2">
                 <img src="/logo-icon.png" alt="CASER" className="h-12" />
               </div>
-              <p className="text-sm text-muted-foreground">
-                Court Automated Search of Electronic Records
-              </p>
             </div>
 
             <div className="space-y-2">
