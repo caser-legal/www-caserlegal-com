@@ -1,29 +1,27 @@
 'use client';
 
 import Navigation from '@/components/Navigation';
+import Image from 'next/image';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { 
-  ScalesOfJustice, 
+import {
+  ScalesOfJustice,
   ProfessionalBriefcase,
   Gavel,
   CourthouseClock,
   DollarDocument,
   Shield,
-  CheckCircle,
-  ArrowRight,
-  Star,
+  LegalDocument,
   Smartphone,
   Monitor,
-  Apple,
-  LegalDocument
+  Apple
 } from '@/components/ui/icons';
-// Note: Replaced missing ContactDocument with LegalDocument
+import { CheckCircle, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
-export default function ContactPage() {
+export default function DownloadPage() {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -128,9 +126,11 @@ export default function ContactPage() {
             </div>
 
             <div className="relative flex justify-center">
-              <img 
-                src="/screenshot-3.png" 
-                alt="CASER App Screenshot" 
+              <Image
+                src="/screenshot-3.png"
+                alt="CASER App Screenshot"
+                width={1070}
+                height={2149}
                 className="max-w-sm w-full h-auto"
               />
             </div>
@@ -413,9 +413,6 @@ export default function ContactPage() {
       <footer className="border-t bg-muted/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="space-y-2">
-              </div>
-
             <div className="space-y-2">
               <h4 className="font-semibold">Product</h4>
               <ul className="space-y-1 text-sm text-muted-foreground">

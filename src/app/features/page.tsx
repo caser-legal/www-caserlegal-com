@@ -1,24 +1,22 @@
 'use client';
 
 import Navigation from '@/components/Navigation';
+import Image from 'next/image';
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  ScalesOfJustice, 
-  Gavel, 
-  CourthouseClock, 
+import {
+  ScalesOfJustice,
+  Gavel,
+  CourthouseClock,
   LegalDocument,
   LegalBriefChart,
-  KeyDocument,
   BrainScales,
   DollarDocument,
   LegalSeal,
-  MagnifyingGlassLegal,
-  LegalBookSearch
 } from '@/components/ui/icons';
 import { CheckCircle, ArrowRight, Star, Shield, Zap } from 'lucide-react';
 import { formatNumber } from '@/lib/utils';
@@ -161,7 +159,7 @@ export default function FeaturesPage() {
                 </div>
 
                 <div className="flex justify-center lg:justify-start">
-                  <img src="/search.png" alt="Search & Monitoring" className="max-w-sm w-full h-auto" />
+                  <Image src="/search.png" alt="Search & Monitoring" width={1070} height={2149} className="max-w-sm w-full h-auto" />
                 </div>
               </div>
             </TabsContent>
@@ -245,7 +243,7 @@ export default function FeaturesPage() {
                 </div>
 
                 <div className="flex justify-center lg:justify-start">
-                  <img src="/dashboard.png" alt="Analytics Dashboard" className="max-w-sm w-full h-auto" />
+                  <Image src="/dashboard.png" alt="Analytics Dashboard" width={1070} height={2149} className="max-w-sm w-full h-auto" />
                 </div>
               </div>
             </TabsContent>
@@ -329,7 +327,7 @@ export default function FeaturesPage() {
                 </div>
 
                 <div className="flex justify-center lg:justify-start">
-                  <img src="/security-screen.png" alt="CASER Security" className="max-w-sm w-full h-auto" />
+                  <Image src="/security-screen.png" alt="CASER Security" width={1070} height={2149} className="max-w-sm w-full h-auto" />
                 </div>
               </div>
             </TabsContent>
@@ -401,7 +399,7 @@ export default function FeaturesPage() {
                 </Card>
 
                 <div className="flex justify-center lg:justify-start">
-                  <img src="/ai.png" alt="Atticus AI Assistant" className="max-w-sm w-full h-auto" />
+                  <Image src="/ai.png" alt="Atticus AI Assistant" width={1070} height={2149} className="max-w-sm w-full h-auto" />
                 </div>
               </div>
             </TabsContent>
@@ -528,9 +526,6 @@ export default function FeaturesPage() {
       <footer className="border-t bg-muted/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="space-y-2">
-              </div>
-
             <div className="space-y-2">
               <h4 className="font-semibold">Product</h4>
               <ul className="space-y-1 text-sm text-muted-foreground">

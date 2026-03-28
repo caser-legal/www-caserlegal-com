@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
 
@@ -13,7 +14,7 @@ export default function Navigation() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link href="/" className="flex items-center space-x-2">
-            <img src="/logo-full.png" alt="CASER" className="h-11" />
+            <Image src="/logo-full.png" alt="CASER" width={88} height={44} />
           </Link>
           
           {/* Desktop Navigation */}

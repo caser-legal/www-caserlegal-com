@@ -1,93 +1,27 @@
 'use client';
 
 import Navigation from '@/components/Navigation';
+import Image from 'next/image';
+import PACERCalculator from '@/components/PACERCalculator';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { 
-  ScalesOfJustice, 
-  Gavel, 
-  CourthouseClock, 
-  LegalDocument, 
-  LegalBriefChart, 
-  KeyDocument, 
-  BrainScales, 
-  DollarDocument, 
-  LegalSeal, 
-  MagnifyingGlassLegal, 
-  ProfessionalBriefcase, 
-  DownloadDocument, 
-  LegalBookSearch 
+import {
+  CourthouseClock,
+  LegalBriefChart,
+  KeyDocument,
+  BrainScales,
+  DollarDocument,
+  LegalSeal,
+  ProfessionalBriefcase,
+  DownloadDocument,
+  LegalBookSearch,
 } from '@/components/ui/icons';
-import { Shield, Zap, Brain } from 'lucide-react';
-import { CheckCircle, AlertCircle } from 'lucide-react';
-import Image from 'next/image';
+import { AlertCircle, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import { formatNumber } from '@/lib/utils';
-import { useState } from 'react';
-import { Slider } from '@/components/ui/slider';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export default function Home() {
-  const [monthlySearches, setMonthlySearches] = useState([100]);
-  const [pagesPerSearch, setPagesPerSearch] = useState([5]);
-  const [documentsPerMonth, setDocumentsPerMonth] = useState([10]);
-  const [hoursPerMonth, setHoursPerMonth] = useState([20]);
-  const [selectedPlan, setSelectedPlan] = useState('professional');
-
-  const PACER_PAGE_COST = 0.10;
-  const PACER_DOCUMENT_COST = 2.50;
-  const PACER_QUARTERLY_CAP = 30;
-
-  const CASER_PRICING = {
-    professional: 49,
-    business: 149,
-    enterprise: 0
-  };
-
-  const calculatePACERCosts = () => {
-    const pageCosts = monthlySearches[0] * pagesPerSearch[0] * PACER_PAGE_COST;
-    const documentCosts = documentsPerMonth[0] * PACER_DOCUMENT_COST;
-    const monthlyTotal = pageCosts + documentCosts;
-    const annualTotal = monthlyTotal * 12;
-    const quarterlyCost = Math.min(monthlyTotal * 3, PACER_QUARTERLY_CAP);
-    const annualWithCap = quarterlyCost * 4;
-    
-    return {
-      pageCosts,
-      documentCosts,
-      monthlyTotal,
-      annualTotal,
-      annualWithCap: Math.min(annualTotal, annualWithCap)
-    };
-  };
-
-  const calculateCASERCosts = () => {
-    const monthlyCost = CASER_PRICING[selectedPlan];
-    return {
-      monthlyCost,
-      annualCost: monthlyCost * 12
-    };
-  };
-
-  const calculateTimeSavings = () => {
-    const hourlyRate = 250;
-    const timeSavedHours = hoursPerMonth[0] * 0.7;
-    return {
-      hoursSaved: timeSavedHours * 12,
-      monetaryValue: timeSavedHours * 12 * hourlyRate
-    };
-  };
-
-  const pacerCosts = calculatePACERCosts();
-  const caserCosts = calculateCASERCosts();
-  const timeSavings = calculateTimeSavings();
-  
-  const totalAnnualSavings = pacerCosts.annualWithCap + timeSavings.monetaryValue - caserCosts.annualCost;
-  const monthlySavings = totalAnnualSavings / 12;
-  const roiPercentage = caserCosts.annualCost > 0 ? (totalAnnualSavings / caserCosts.annualCost) * 100 : 0;
-
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -99,9 +33,11 @@ export default function Home() {
             <div className="space-y-8">
               <div className="space-y-2">
                 <Badge variant="secondary" className="w-fit">
-                  <img 
-                    src="https://www.gstatic.com/marketing-cms/assets/images/29/8c/e1f2c0994e87b8d7edf2886f9c02/google-cloud.webp=s48-fcrop64=1,00000000ffffffff-rw" 
-                    alt="Google Cloud" 
+                  <Image
+                    src="https://www.gstatic.com/marketing-cms/assets/images/29/8c/e1f2c0994e87b8d7edf2886f9c02/google-cloud.webp=s48-fcrop64=1,00000000ffffffff-rw"
+                    alt="Google Cloud"
+                    width={12}
+                    height={12}
                     className="w-3 h-3 mr-2 rounded"
                   />
                   Google Backed & Trusted Technology
@@ -148,9 +84,11 @@ export default function Home() {
             </div>
 
             <div className="relative flex justify-center">
-              <img 
-                src="/screenshot-5.png" 
-                alt="CASER App Interface" 
+              <Image
+                src="/screenshot-5.png"
+                alt="CASER App Interface"
+                width={1070}
+                height={2149}
                 className="max-w-sm w-full h-auto"
               />
             </div>
@@ -411,164 +349,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="relative">
-              <div className="bg-gradient-to-br from-primary/10 to-primary/5 p-6 rounded-2xl border">
-                <div className="space-y-4">
-                  <div className="text-center">
-                    <h3 className="text-lg font-semibold mb-1">PACER Savings Calculator</h3>
-                    <p className="text-xs text-muted-foreground">
-                      Calculate your exact savings with CASER
-                    </p>
-                  </div>
-
-                  {/* Input Section */}
-                  <Card className="p-4">
-                    <CardContent className="space-y-4 px-0 pt-0">
-                      {/* Monthly Searches */}
-                      <div className="space-y-2">
-                        <div className="flex justify-between items-center">
-                          <Label className="text-xs font-medium">Monthly Searches</Label>
-                          <span className="text-xs font-semibold text-primary">{monthlySearches[0]}</span>
-                        </div>
-                        <Slider
-                          value={monthlySearches}
-                          onValueChange={setMonthlySearches}
-                          max={500}
-                          min={10}
-                          step={10}
-                          className="w-full"
-                        />
-                      </div>
-
-                      {/* Pages per Search */}
-                      <div className="space-y-2">
-                        <div className="flex justify-between items-center">
-                          <Label className="text-xs font-medium">Pages per Search</Label>
-                          <span className="text-xs font-semibold text-primary">{pagesPerSearch[0]}</span>
-                        </div>
-                        <Slider
-                          value={pagesPerSearch}
-                          onValueChange={setPagesPerSearch}
-                          max={50}
-                          min={1}
-                          step={1}
-                          className="w-full"
-                        />
-                      </div>
-
-                      {/* Documents per Month */}
-                      <div className="space-y-2">
-                        <div className="flex justify-between items-center">
-                          <Label className="text-xs font-medium">Documents per Month</Label>
-                          <span className="text-xs font-semibold text-primary">{documentsPerMonth[0]}</span>
-                        </div>
-                        <Slider
-                          value={documentsPerMonth}
-                          onValueChange={setDocumentsPerMonth}
-                          max={100}
-                          min={1}
-                          step={1}
-                          className="w-full"
-                        />
-                      </div>
-
-                      {/* Hours per Month */}
-                      <div className="space-y-2">
-                        <div className="flex justify-between items-center">
-                          <Label className="text-xs font-medium">Hours per Month</Label>
-                          <span className="text-xs font-semibold text-primary">{hoursPerMonth[0]}</span>
-                        </div>
-                        <Slider
-                          value={hoursPerMonth}
-                          onValueChange={setHoursPerMonth}
-                          max={100}
-                          min={1}
-                          step={1}
-                          className="w-full"
-                        />
-                      </div>
-
-                      {/* Plan Selection */}
-                      <div className="space-y-2">
-                        <Label className="text-xs font-medium">Select CASER Plan</Label>
-                        <Select value={selectedPlan} onValueChange={setSelectedPlan}>
-                          <SelectTrigger className="text-xs">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="professional">Professional - $49/month</SelectItem>
-                            <SelectItem value="business">Business - $149/month</SelectItem>
-                            <SelectItem value="enterprise">Enterprise - Custom</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* PACER Costs */}
-                  <Card className="p-4">
-                    <CardHeader className="px-0 pt-0 pb-2">
-                      <CardTitle className="text-sm">Traditional PACER Costs</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-2 px-0 pb-0">
-                      <div className="grid grid-cols-2 gap-2">
-                        <div className="p-2 border rounded text-center">
-                          <div className="text-[10px] text-muted-foreground">Page Fees</div>
-                          <div className="text-sm font-semibold">${formatNumber(Number(pacerCosts.pageCosts.toFixed(2)))}</div>
-                        </div>
-                        <div className="p-2 border rounded text-center">
-                          <div className="text-[10px] text-muted-foreground">Doc Fees</div>
-                          <div className="text-sm font-semibold">${formatNumber(Number(pacerCosts.documentCosts.toFixed(2)))}</div>
-                        </div>
-                      </div>
-                      <div className="p-2 border rounded">
-                        <div className="flex justify-between items-center">
-                          <span className="text-xs font-medium">Annual Total</span>
-                          <span className="text-sm font-bold">${formatNumber(Number(pacerCosts.annualWithCap.toFixed(2)))}</span>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* CASER Costs */}
-                  <Card className="p-4">
-                    <CardHeader className="px-0 pt-0 pb-2">
-                      <CardTitle className="text-sm">CASER Investment</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-2 px-0 pb-0">
-                      <div className="p-2 border rounded">
-                        <div className="flex justify-between items-center">
-                          <span className="text-xs font-medium">Annual Cost</span>
-                          <span className="text-sm font-semibold">${formatNumber(Number(caserCosts.annualCost.toFixed(2)))}</span>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Savings Summary */}
-                  <Card className="p-4 bg-gradient-to-r from-primary/5 to-primary/10 border-primary">
-                    <CardContent className="space-y-3 px-0 pt-0 pb-0">
-                      <div className="text-center">
-                        <div className="text-2xl font-bold text-primary mb-1">
-                          ${formatNumber(Number(totalAnnualSavings.toFixed(0)))}
-                        </div>
-                        <div className="text-[10px] text-muted-foreground">Total Annual Savings</div>
-                      </div>
-                      <div className="grid grid-cols-2 gap-2 text-center">
-                        <div className="p-2 bg-white rounded">
-                          <div className="text-lg font-bold text-green-600">${formatNumber(Number(monthlySavings.toFixed(0)))}</div>
-                          <div className="text-[10px] text-muted-foreground">Monthly</div>
-                        </div>
-                        <div className="p-2 bg-white rounded">
-                          <div className="text-lg font-bold text-blue-600">{formatNumber(Number(roiPercentage.toFixed(0)))}%</div>
-                          <div className="text-[10px] text-muted-foreground">ROI</div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              </div>
-            </div>
+            <PACERCalculator />
           </div>
         </div>
       </section>
@@ -1045,7 +826,7 @@ export default function Home() {
       </section>
 
       {/* Download CTA Section */}
-      <section id="download" className="py-20 lg:py-32">
+      <section id="download-cta" className="py-20 lg:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <div className="space-y-2">
