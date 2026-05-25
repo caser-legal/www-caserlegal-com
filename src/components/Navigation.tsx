@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { DownloadButton } from '@/components/AppStoreLink';
+import { AppStoreNavBadge } from '@/components/AppStoreLink';
 import { Menu, X } from 'lucide-react';
 
 export default function Navigation() {
@@ -41,7 +41,7 @@ export default function Navigation() {
             <Button variant="ghost" size="sm" asChild>
               <Link href="/contact">Contact</Link>
             </Button>
-            <DownloadButton size="sm" label="Download" />
+            <AppStoreNavBadge />
           </div>
 
           {/* Mobile Menu Button */}
@@ -64,7 +64,7 @@ export default function Navigation() {
             <Link href="/download" className="block py-2 text-sm font-medium hover:text-primary transition-colors" onClick={() => setIsOpen(false)}>Download</Link>
             <Link href="/contact" className="block py-2 text-sm font-medium hover:text-primary transition-colors" onClick={() => setIsOpen(false)}>Contact</Link>
             <div className="pt-2" onClick={() => setIsOpen(false)}>
-              <DownloadButton className="w-full" label="Download" />
+              <AppStoreNavBadge />
             </div>
           </div>
         )}

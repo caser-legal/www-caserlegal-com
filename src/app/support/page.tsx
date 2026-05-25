@@ -1,7 +1,7 @@
 'use client';
 
 import PageShell from '@/components/PageShell';
-import { DownloadButton } from '@/components/AppStoreLink';
+import { AppStoreCtaRow, MatchedOutlineButton } from '@/components/AppStoreLink';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -36,12 +36,15 @@ export default function SupportPage() {
               Comprehensive support resources designed for legal professionals. 
               From detailed documentation to personalized assistance, we're here to ensure your success.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <DownloadButton size="lg" label="Download the App" />
-              <Button variant="outline" size="lg" asChild>
-                <a href="mailto:hi@caserlegal.com">Contact Support</a>
-              </Button>
-            </div>
+            <AppStoreCtaRow
+              badgeSize="lg"
+              className="justify-center"
+              secondary={
+                <MatchedOutlineButton href="mailto:hi@caserlegal.com" badgeSize="lg" internal={false}>
+                  Contact Support
+                </MatchedOutlineButton>
+              }
+            />
           </div>
         </div>
       </section>
