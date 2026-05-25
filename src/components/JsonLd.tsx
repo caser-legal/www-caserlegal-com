@@ -1,3 +1,4 @@
+import { PRODUCT_FULL_NAME, PRODUCT_SHORT_NAME } from '@/lib/branding';
 import { SITE_URL } from '@/lib/site-metadata';
 import { APP_STORE_URL } from '@/lib/app-store';
 import { CONTACT_EMAIL } from '@/lib/contact-email';
@@ -20,6 +21,7 @@ const softwareJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
   name: 'CASER',
+  alternateName: [PRODUCT_FULL_NAME, PRODUCT_SHORT_NAME],
   applicationCategory: 'BusinessApplication',
   operatingSystem: 'iOS',
   offers: {
@@ -28,7 +30,7 @@ const softwareJsonLd = {
     priceCurrency: 'USD',
   },
   description:
-    'Federal court case search and keyword alerts. Monitor 300+ U.S. federal court feeds with no in-app search fees.',
+    `${PRODUCT_FULL_NAME} (${PRODUCT_SHORT_NAME}). Federal court alerts and search. Monitor 300+ U.S. federal court feeds with no in-app search fees.`,
   url: APP_STORE_URL,
 };
 

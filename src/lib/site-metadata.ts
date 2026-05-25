@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { LOGO_ALT, PRODUCT_FULL_NAME, PRODUCT_SHORT_NAME } from '@/lib/branding';
 
 export const SITE_URL = 'https://www.caserlegal.com';
 export const SITE_NAME = 'CASER';
@@ -8,7 +9,7 @@ function defaultOgImage() {
     url: `${SITE_URL}/logo-full.png`,
     width: 875,
     height: 352,
-    alt: 'CASER — Case Automated Search of Electronic Records',
+    alt: LOGO_ALT,
   };
 }
 
@@ -50,6 +51,6 @@ export function buildPageMetadata({
 export const homeMetadata = buildPageMetadata({
   title: 'CASER — Federal Court Monitoring for iOS',
   description:
-    'Federal court case search and keyword alerts for iOS. Monitor 300+ court feeds with no in-app search fees. Download on the App Store.',
+    `${PRODUCT_FULL_NAME} (${PRODUCT_SHORT_NAME}). Federal court alerts and search for iOS. Monitor 300+ court feeds with no in-app search fees. Download on the App Store.`,
   path: '/',
 });
