@@ -4,6 +4,7 @@ import * as React from "react"
 import * as SliderPrimitive from "@radix-ui/react-slider"
 
 import { cn } from "@/lib/utils"
+import { useMounted } from "@/lib/use-mounted"
 
 function Slider({
   className,
@@ -13,6 +14,7 @@ function Slider({
   max = 100,
   ...props
 }: React.ComponentProps<typeof SliderPrimitive.Root>) {
+  const mounted = useMounted()
   const _values = React.useMemo(
     () =>
       Array.isArray(value)
@@ -22,6 +24,37 @@ function Slider({
           : [min, max],
     [value, defaultValue, min, max]
   )
+
+  const fillPercent = React.useMemo(() => {
+    const span = max - min
+    if (span <= 0) return 0
+    return Math.min(100, Math.max(0, ((_values[0] - min) / span) * 100))
+  }, [_values, min, max])
+
+  if (!mounted) {
+    return (
+      <div
+        data-slot="slider"
+        aria-hidden
+        className={cn(
+          "relative flex h-6 w-full touch-none items-center select-none",
+          className
+        )}
+      >
+        <div className="bg-muted relative h-1.5 w-full grow overflow-hidden rounded-full">
+          <div
+            className="bg-primary absolute h-full rounded-full"
+            style={{ width: `${fillPercent}%` }}
+          />
+        </div>
+        <div
+          data-slot="slider-thumb"
+          className="border-primary bg-background absolute block size-4 shrink-0 rounded-full border shadow-sm"
+          style={{ left: `${fillPercent}%`, transform: "translateX(-50%)" }}
+        />
+      </div>
+    )
+  }
 
   return (
     <SliderPrimitive.Root
