@@ -10,10 +10,11 @@ export const metadata: Metadata = {
   ...homeMetadata,
   keywords: [
     'CASER',
+    'Case Alerts & Search of Electronic Records',
+    'Case Search & Alerts by CASER',
     'PACER',
     'Court Monitoring',
     'Legal Technology',
-    'Electronic Records',
     'Federal Courts',
   ],
   authors: [{ name: 'CASER Legal' }],

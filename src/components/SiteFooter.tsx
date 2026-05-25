@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { COPYRIGHT_HOLDER, getCopyrightYear } from '@/lib/copyright';
 import { CONTACT_EMAIL } from '@/lib/contact-email';
+import { FOOTER_PRODUCT_NAMES, LOGO_ALT } from '@/lib/branding';
 
 const productLinks = [
   { href: '/features', label: 'Features' },
@@ -66,7 +67,7 @@ export default function SiteFooter() {
             >
               <Image
                 src="/logo-full.png"
-                alt="CASER — Case Automated Search of Electronic Records"
+                alt={LOGO_ALT}
                 width={120}
                 height={48}
                 className="h-10 w-auto max-w-[140px] object-contain object-center mx-auto"
@@ -116,9 +117,7 @@ export default function SiteFooter() {
             reserved.
           </p>
           <p className="max-w-3xl mx-auto leading-relaxed">
-            CASER and Case Automated Search of Electronic Records are product names used on this
-            site and in the iOS app. Apple, App Store, and related marks are trademarks of Apple
-            Inc.
+            {FOOTER_PRODUCT_NAMES} Apple, App Store, and related marks are trademarks of Apple Inc.
           </p>
         </div>
       </div>

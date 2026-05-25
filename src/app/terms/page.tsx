@@ -5,6 +5,7 @@ import { LegalParagraph, LegalSection } from '@/components/LegalProse';
 import { Badge } from '@/components/ui/badge';
 import { Gavel } from '@/components/ui/icons';
 import { CONTACT_EMAIL } from '@/lib/contact-email';
+import { PRODUCT_LEGAL_REFERENCE } from '@/lib/branding';
 
 export default function TermsPage() {
   return (
@@ -21,9 +22,8 @@ export default function TermsPage() {
           <div className="space-y-8">
             <LegalSection title="1. Acceptance of Terms">
               <LegalParagraph>
-                By accessing and using CASER (Case Automated Search of Electronic Records), you
-                accept and agree to be bound by these Terms of Service. If you do not agree, do not
-                use this application.
+                By accessing and using {PRODUCT_LEGAL_REFERENCE}, you accept and agree to be bound
+                by these Terms of Service. If you do not agree, do not use this application.
               </LegalParagraph>
             </LegalSection>
 

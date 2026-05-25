@@ -42,7 +42,7 @@ export default function Home() {
                   Google Backed & Trusted Technology
                 </Badge>
                 <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">
-                  Case Automated Search of
+                  Case Alerts & Search of
                   <span className="text-primary"> Electronic Records</span>
                 </h1>
                 <p className="text-xl text-muted-foreground leading-relaxed">

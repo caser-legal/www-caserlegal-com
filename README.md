@@ -1,6 +1,6 @@
 # CASER Legal Website
 
-Marketing site for **CASER** (Case Automated Search of Electronic Records) — federal court case search and alerts for iOS.
+Marketing site for **CASER** — **Case Alerts & Search of Electronic Records** (aka **Case Search & Alerts by CASER**) — federal court alerts and search for iOS.
 
 - **Production**: [https://www.caserlegal.com](https://www.caserlegal.com) (Vercel)
 - **App Store**: [https://apps.apple.com/app/id6752289799](https://apps.apple.com/app/id6752289799)
