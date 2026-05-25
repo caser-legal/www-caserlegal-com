@@ -1,4 +1,6 @@
-export const CAREERS_EMAIL = 'careers@caserlegal.com';
+import { CONTACT_EMAIL } from '@/lib/contact-email';
+
+export const CAREERS_EMAIL = CONTACT_EMAIL;
 
 export const CAREERS_APPLICATION_SUBJECT = 'General Application - CASER';
 

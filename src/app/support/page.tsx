@@ -2,6 +2,7 @@
 
 import PageShell from '@/components/PageShell';
 import { AppStoreCtaRow, MatchedOutlineButton } from '@/components/AppStoreLink';
+import { CONTACT_EMAIL, mailto } from '@/lib/contact-email';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -40,7 +41,7 @@ export default function SupportPage() {
               badgeSize="lg"
               className="justify-center"
               secondary={
-                <MatchedOutlineButton href="mailto:hi@caserlegal.com" badgeSize="lg" internal={false}>
+                <MatchedOutlineButton href={mailto({ subject: 'CASER Support' })} badgeSize="lg" internal={false}>
                   Contact Support
                 </MatchedOutlineButton>
               }
@@ -373,13 +374,13 @@ export default function SupportPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <p className="text-sm font-medium">hi@caserlegal.com</p>
+                  <p className="text-sm font-medium">{CONTACT_EMAIL}</p>
                   <p className="text-xs text-muted-foreground">
                     Response time: 24-48 hours
                   </p>
                 </div>
                 <Button variant="outline" size="sm" className="w-full" asChild>
-                  <a href="mailto:hi@caserlegal.com?subject=CASER%20Support">Send Email</a>
+                  <a href={mailto({ subject: 'CASER Support' })}>Send Email</a>
                 </Button>
               </CardContent>
             </Card>

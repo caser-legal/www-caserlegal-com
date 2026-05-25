@@ -1,13 +1,18 @@
 import { SITE_URL } from '@/lib/site-metadata';
 import { APP_STORE_URL } from '@/lib/app-store';
+import { CONTACT_EMAIL } from '@/lib/contact-email';
 
 const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'CASER, LLC',
+  name: 'CASER',
+  founder: {
+    '@type': 'Person',
+    name: 'Adam Doherty',
+  },
   url: SITE_URL,
   logo: `${SITE_URL}/logo-full.png`,
-  email: 'hi@caserlegal.com',
+  email: CONTACT_EMAIL,
   sameAs: [APP_STORE_URL],
 };
 

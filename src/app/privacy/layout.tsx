@@ -4,7 +4,7 @@ import { buildPageMetadata } from '@/lib/site-metadata';
 export const metadata: Metadata = buildPageMetadata({
   title: 'CASER Privacy Policy',
   description:
-    'How the CASER iOS app collects, uses, and protects your data. Privacy rights and contact information for CASER, LLC.',
+    'How the CASER iOS app collects, uses, and protects your data. Privacy rights and contact information.',
   path: '/privacy',
 });
 
