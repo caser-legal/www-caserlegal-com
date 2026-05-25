@@ -1,7 +1,6 @@
 'use client';
 
-import Navigation from '@/components/Navigation';
-import SiteFooter from '@/components/SiteFooter';
+import PageShell from '@/components/PageShell';
 import Image from 'next/image';
 import PACERCalculator from '@/components/PACERCalculator';
 import { DownloadButton } from '@/components/AppStoreLink';
@@ -25,9 +24,7 @@ import { formatNumber } from '@/lib/utils';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
-
+    <PageShell mainUnpadded>
       {/* Hero Section */}
       <section className="relative pt-8 pb-20 lg:pt-12 lg:pb-32 overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -916,7 +913,6 @@ export default function Home() {
         </div>
       </section>
 
-      <SiteFooter />
-    </div>
+    </PageShell>
   );
 }

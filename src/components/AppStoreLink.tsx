@@ -54,7 +54,7 @@ export function AppStoreBadgeLink({ className }: { className?: string }) {
         alt="Download on the App Store"
         width={156}
         height={52}
-        className="h-[52px] w-auto"
+        className="h-10 sm:h-[52px] w-auto"
       />
     </AppStoreLink>
   );

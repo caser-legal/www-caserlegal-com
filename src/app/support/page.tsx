@@ -1,7 +1,6 @@
 'use client';
 
-import Navigation from '@/components/Navigation';
-import SiteFooter from '@/components/SiteFooter';
+import PageShell from '@/components/PageShell';
 import { DownloadButton } from '@/components/AppStoreLink';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -20,9 +19,7 @@ import Link from 'next/link';
 
 export default function SupportPage() {
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
-
+    <PageShell>
       {/* Hero Section */}
       <section className="relative py-20 lg:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -459,7 +456,6 @@ export default function SupportPage() {
         </div>
       </section>
 
-      <SiteFooter />
-    </div>
+    </PageShell>
   );
 }

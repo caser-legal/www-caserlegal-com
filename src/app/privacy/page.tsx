@@ -1,7 +1,6 @@
 'use client';
 
-import Navigation from '@/components/Navigation';
-import SiteFooter from '@/components/SiteFooter';
+import PageShell from '@/components/PageShell';
 import { LegalParagraph, LegalSection } from '@/components/LegalProse';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -10,9 +9,7 @@ import Link from 'next/link';
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
-
+    <PageShell>
       <section className="relative py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
           <Badge variant="secondary" className="w-fit mb-4">
@@ -149,8 +146,6 @@ export default function PrivacyPage() {
           </div>
         </div>
       </section>
-
-      <SiteFooter />
-    </div>
+    </PageShell>
   );
 }

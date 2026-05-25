@@ -1,7 +1,6 @@
 'use client';
 
-import Navigation from '@/components/Navigation';
-import SiteFooter from '@/components/SiteFooter';
+import PageShell from '@/components/PageShell';
 import PricingTiers from '@/components/PricingTiers';
 import dynamic from 'next/dynamic';
 import { DownloadButton } from '@/components/AppStoreLink';
@@ -16,9 +15,7 @@ const PACERCalculator = dynamic(() => import('@/components/PACERCalculator'), {
 
 export default function PricingPage() {
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
-
+    <PageShell>
       <section className="relative py-20 lg:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
@@ -51,8 +48,6 @@ export default function PricingPage() {
       </section>
 
       <PACERCalculator standalone />
-
-      <SiteFooter />
-    </div>
+    </PageShell>
   );
 }

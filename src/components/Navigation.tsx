@@ -14,8 +14,18 @@ export default function Navigation() {
     <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link href="/" className="flex items-center space-x-2">
-            <Image src="/logo-full.png" alt="CASER" width={88} height={44} />
+          <Link
+            href="/"
+            className="flex shrink-0 items-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          >
+            <Image
+              src="/logo-full.png"
+              alt="CASER"
+              width={120}
+              height={48}
+              className="h-9 w-auto max-w-[120px] object-contain"
+              priority
+            />
           </Link>
           
           {/* Desktop Navigation */}

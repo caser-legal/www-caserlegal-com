@@ -1,7 +1,6 @@
 'use client';
 
-import Navigation from '@/components/Navigation';
-import SiteFooter from '@/components/SiteFooter';
+import PageShell from '@/components/PageShell';
 import Image from 'next/image';
 import { DownloadButton, AppStoreBadgeLink } from '@/components/AppStoreLink';
 import { Button } from '@/components/ui/button';
@@ -20,9 +19,7 @@ import Link from 'next/link';
 
 export default function DownloadPage() {
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
-
+    <PageShell>
       <section className="relative py-20 lg:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
@@ -164,8 +161,6 @@ export default function DownloadPage() {
           <DownloadButton size="lg" label="Download" />
         </div>
       </section>
-
-      <SiteFooter />
-    </div>
+    </PageShell>
   );
 }
