@@ -8,7 +8,7 @@ import {
   LegalSeal,
 } from '@/components/ui/icons';
 import { CheckCircle } from 'lucide-react';
-import { DownloadButton } from '@/components/AppStoreLink';
+import { AppStoreBadge } from '@/components/AppStoreLink';
 
 const FREE_FEATURES = [
   '1 case search (lifetime)',
@@ -96,7 +96,9 @@ export default function PricingTiers() {
               ))}
             </div>
           </div>
-          <DownloadButton className="w-full" size="lg" label="Download on the App Store" />
+          <div className="flex justify-center w-full">
+            <AppStoreBadge size="md" />
+          </div>
           <p className="text-xs text-muted-foreground text-center">
             Subscribe to CASER Pro inside the app after download. Billed through your Apple ID.
           </p>

@@ -1,7 +1,7 @@
 'use client';
 
 import PageShell from '@/components/PageShell';
-import { DownloadButton } from '@/components/AppStoreLink';
+import { AppStoreCtaRow, MatchedOutlineButton } from '@/components/AppStoreLink';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -37,15 +37,16 @@ export default function ContactPage() {
               we're here to help you understand how CASER can eliminate wasteful PACER fees 
               and streamline your court monitoring workflow.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <DownloadButton size="lg" label="Download on the App Store" />
-              <Button variant="outline" size="lg" asChild>
-                <a href="mailto:hi@caserlegal.com">
-                  <Mail className="w-4 h-4 mr-2" />
+            <AppStoreCtaRow
+              badgeSize="lg"
+              className="justify-center"
+              secondary={
+                <MatchedOutlineButton href="mailto:hi@caserlegal.com" badgeSize="lg" internal={false}>
+                  <Mail className="w-4 h-4" />
                   Email Us
-                </a>
-              </Button>
-            </div>
+                </MatchedOutlineButton>
+              }
+            />
           </div>
         </div>
       </section>

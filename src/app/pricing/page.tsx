@@ -3,7 +3,7 @@
 import PageShell from '@/components/PageShell';
 import PricingTiers from '@/components/PricingTiers';
 import dynamic from 'next/dynamic';
-import { DownloadButton } from '@/components/AppStoreLink';
+import { AppStoreCtaRow, MatchedOutlineButton } from '@/components/AppStoreLink';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { DollarDocument } from '@/components/ui/icons';
@@ -31,12 +31,15 @@ export default function PricingPage() {
               Download CASER free on the App Store. Upgrade to CASER Pro for $19.99/year inside
               the app. Business and Enterprise plans are available by inquiry.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <DownloadButton size="lg" label="Download on the App Store" />
-              <Button variant="outline" size="lg" asChild>
-                <Link href="/features">View Features</Link>
-              </Button>
-            </div>
+            <AppStoreCtaRow
+              badgeSize="lg"
+              className="justify-center"
+              secondary={
+                <MatchedOutlineButton href="/features" badgeSize="lg">
+                  View Features
+                </MatchedOutlineButton>
+              }
+            />
           </div>
         </div>
       </section>

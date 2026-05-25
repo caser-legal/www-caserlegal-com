@@ -2,7 +2,7 @@
 
 import PageShell from '@/components/PageShell';
 import Image from 'next/image';
-import { DownloadButton } from '@/components/AppStoreLink';
+import { AppStoreCtaRow, MatchedOutlineButton } from '@/components/AppStoreLink';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -40,12 +40,15 @@ export default function FeaturesPage() {
               Engineered with precision for litigation teams, paralegals, and legal operations professionals. 
               Every feature designed to eliminate inefficiency and maximize competitive advantage.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <DownloadButton size="lg" label="Download on the App Store" />
-              <Button variant="outline" size="lg" asChild>
-                <Link href="/pricing">View Pricing</Link>
-              </Button>
-            </div>
+            <AppStoreCtaRow
+              badgeSize="lg"
+              className="justify-center"
+              secondary={
+                <MatchedOutlineButton href="/pricing" badgeSize="lg">
+                  View Pricing
+                </MatchedOutlineButton>
+              }
+            />
           </div>
         </div>
       </section>
@@ -497,12 +500,15 @@ export default function FeaturesPage() {
               Join thousands of legal professionals who have already elevated their practice 
               with CASER's professional-grade court monitoring capabilities.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <DownloadButton size="lg" label="Download on the App Store" />
-              <Button variant="outline" size="lg" asChild>
-                <Link href="/contact">Business &amp; Enterprise</Link>
-              </Button>
-            </div>
+            <AppStoreCtaRow
+              badgeSize="lg"
+              className="justify-center"
+              secondary={
+                <MatchedOutlineButton href="/contact" badgeSize="lg">
+                  Business &amp; Enterprise
+                </MatchedOutlineButton>
+              }
+            />
           </div>
         </div>
       </section>

@@ -1,61 +1,120 @@
+import Image from 'next/image';
+import Link from 'next/link';
 import { APP_STORE_URL } from '@/lib/app-store';
-import { Button, buttonVariants } from '@/components/ui/button';
+import {
+  APP_STORE_BADGE_HEIGHT,
+  APP_STORE_BADGE_SRC,
+  appStoreBadgeWidthClass,
+  type AppStoreBadgeSize,
+} from '@/lib/app-store-badge';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import type { VariantProps } from 'class-variance-authority';
-import { Download } from 'lucide-react';
 
-type AppStoreLinkProps = {
+type AppStoreBadgeProps = {
+  size?: AppStoreBadgeSize;
   className?: string;
-  children?: React.ReactNode;
 };
 
-export function AppStoreLink({ className, children }: AppStoreLinkProps) {
+/**
+ * Official “Download on the App Store” badge (self-hosted SVG from Apple Marketing Tools).
+ * Do not alter proportions, colors, or artwork per App Store Marketing Guidelines.
+ */
+export function AppStoreBadge({ size = 'md', className }: AppStoreBadgeProps) {
+  const heightClass = APP_STORE_BADGE_HEIGHT[size];
+  const widthClass = appStoreBadgeWidthClass(size);
+
   return (
     <a
       href={APP_STORE_URL}
       target="_blank"
       rel="noopener noreferrer"
-      className={className}
+      className={cn(
+        'inline-flex shrink-0 items-center rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+        className
+      )}
+      aria-label="Download on the App Store"
     >
-      {children ?? 'Download on the App Store'}
+      <Image
+        src={APP_STORE_BADGE_SRC}
+        alt="Download on the App Store"
+        width={250}
+        height={83}
+        className={cn(heightClass, widthClass, 'w-auto max-w-none object-contain object-left')}
+        priority={size === 'lg'}
+      />
     </a>
   );
 }
 
-type DownloadButtonProps = VariantProps<typeof buttonVariants> & {
+/** @deprecated Use AppStoreBadge — kept as alias for gradual migration */
+export function AppStoreBadgeLink(props: AppStoreBadgeProps) {
+  return <AppStoreBadge {...props} />;
+}
+
+type MatchedOutlineButtonProps = {
+  href: string;
+  children: React.ReactNode;
+  badgeSize?: AppStoreBadgeSize;
   className?: string;
-  label?: string;
-  showIcon?: boolean;
+  internal?: boolean;
 };
 
-export function DownloadButton({
+/** Outline CTA sized to match official App Store badge height on the same row */
+export function MatchedOutlineButton({
+  href,
+  children,
+  badgeSize = 'lg',
   className,
-  label = 'Download',
-  showIcon = true,
-  variant = 'default',
-  size = 'default',
-}: DownloadButtonProps) {
+  internal = true,
+}: MatchedOutlineButtonProps) {
+  const heightClass = APP_STORE_BADGE_HEIGHT[badgeSize];
+  const classes = cn(
+    heightClass,
+    'px-6 text-sm font-medium inline-flex items-center justify-center gap-2',
+    className
+  );
+
+  if (internal) {
+    return (
+      <Button variant="outline" className={classes} asChild>
+        <Link href={href}>{children}</Link>
+      </Button>
+    );
+  }
+
   return (
-    <Button variant={variant} size={size} className={className} asChild>
-      <a href={APP_STORE_URL} target="_blank" rel="noopener noreferrer">
-        {showIcon && <Download className="w-4 h-4" />}
-        {label}
-      </a>
+    <Button variant="outline" className={classes} asChild>
+      <a href={href}>{children}</a>
     </Button>
   );
 }
 
-export function AppStoreBadgeLink({ className }: { className?: string }) {
+type AppStoreCtaRowProps = {
+  badgeSize?: AppStoreBadgeSize;
+  className?: string;
+  secondary?: React.ReactNode;
+};
+
+/** Primary promo row: official badge + optional equally tall secondary button */
+export function AppStoreCtaRow({
+  badgeSize = 'lg',
+  className,
+  secondary,
+}: AppStoreCtaRowProps) {
   return (
-    <AppStoreLink className={cn('inline-block', className)}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83"
-        alt="Download on the App Store"
-        width={156}
-        height={52}
-        className="h-10 sm:h-[52px] w-auto"
-      />
-    </AppStoreLink>
+    <div
+      className={cn(
+        'flex flex-col sm:flex-row items-stretch sm:items-center gap-4',
+        className
+      )}
+    >
+      <AppStoreBadge size={badgeSize} className="self-center sm:self-auto" />
+      {secondary}
+    </div>
   );
+}
+
+/** Nav / compact areas: badge only at minimum guideline height */
+export function AppStoreNavBadge() {
+  return <AppStoreBadge size="sm" />;
 }

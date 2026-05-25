@@ -3,7 +3,7 @@
 import PageShell from '@/components/PageShell';
 import Image from 'next/image';
 import PACERCalculator from '@/components/PACERCalculator';
-import { DownloadButton } from '@/components/AppStoreLink';
+import { AppStoreBadge, AppStoreCtaRow, MatchedOutlineButton } from '@/components/AppStoreLink';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -51,15 +51,15 @@ export default function Home() {
                 </p>
               </div>
               
-              <div className="flex flex-col sm:flex-row gap-4">
-                <DownloadButton size="lg" className="text-lg px-8 py-6 h-auto" label="Download on the App Store" />
-                <Button variant="outline" size="lg" className="text-lg px-8 py-6" asChild>
-                  <a href="#features">
-                    <LegalBookSearch className="w-5 h-5 mr-2" />
+              <AppStoreCtaRow
+                badgeSize="lg"
+                secondary={
+                  <MatchedOutlineButton href="#features" badgeSize="lg">
+                    <LegalBookSearch className="w-5 h-5" />
                     Learn More
-                  </a>
-                </Button>
-              </div>
+                  </MatchedOutlineButton>
+                }
+              />
 
               <div className="grid grid-cols-3 gap-6 pt-8">
                 <div className="text-center">
@@ -802,12 +802,15 @@ export default function Home() {
               <p className="text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
                 Enterprise data services and custom integrations are available by inquiry.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="text-lg px-8 py-6" asChild>
-                  <Link href="/contact">Contact for Enterprise</Link>
-                </Button>
-                <DownloadButton size="lg" className="text-lg px-8 py-6 h-auto" label="Download CASER" />
-              </div>
+              <AppStoreCtaRow
+                badgeSize="lg"
+                className="justify-center"
+                secondary={
+                  <MatchedOutlineButton href="/contact" badgeSize="lg">
+                    Contact for Enterprise
+                  </MatchedOutlineButton>
+                }
+              />
             </div>
           </div>
         </div>
@@ -837,7 +840,9 @@ export default function Home() {
                   <p className="text-sm text-muted-foreground">
                     Available exclusively on the App Store for iOS devices
                   </p>
-                  <DownloadButton className="w-full" size="lg" label="Download" />
+                  <div className="flex justify-center pt-2">
+                    <AppStoreBadge size="md" />
+                  </div>
                 </div>
               </Card>
 
@@ -850,11 +855,11 @@ export default function Home() {
                   <p className="text-sm text-muted-foreground">
                     Visit our website for detailed features and documentation
                   </p>
-                  <Button variant="outline" size="lg" className="w-full" asChild>
-                    <a href="https://www.caserlegal.com" target="_blank" rel="noopener noreferrer">
-                      Visit Website
-                    </a>
-                  </Button>
+                  <div className="flex justify-center pt-2">
+                    <MatchedOutlineButton href="/features" badgeSize="md" className="w-full max-w-[200px]">
+                      View Features
+                    </MatchedOutlineButton>
+                  </div>
                 </div>
               </Card>
             </div>
@@ -887,14 +892,15 @@ export default function Home() {
               Download CASER on the App Store. Monitor 300+ federal court feeds and upgrade to CASER Pro
               inside the app.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <DownloadButton size="lg" className="text-lg px-8 py-6 h-auto" label="Download on the App Store" />
-              <Button variant="outline" size="lg" className="text-lg px-8 py-6" asChild>
-                <Link href="/download">
+            <AppStoreCtaRow
+              badgeSize="lg"
+              className="justify-center"
+              secondary={
+                <MatchedOutlineButton href="/download" badgeSize="lg">
                   Learn More
-                </Link>
-              </Button>
-            </div>
+                </MatchedOutlineButton>
+              }
+            />
             <div className="flex items-center justify-center space-x-6 text-sm text-muted-foreground">
               <div className="flex items-center space-x-1">
                 <CheckCircle className="w-4 h-4 text-foreground" />

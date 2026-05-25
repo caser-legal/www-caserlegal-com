@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { AppStoreBadgeLink } from '@/components/AppStoreLink';
+import { AppStoreBadge } from '@/components/AppStoreLink';
 import { getCopyrightYear } from '@/lib/copyright';
 
 const productLinks = [
@@ -21,6 +21,7 @@ const supportLinks = [
   { href: '/support', label: 'Help Center' },
   { href: '/terms', label: 'Terms of Service' },
   { href: '/privacy', label: 'Privacy Policy' },
+  { href: '/security-policy', label: 'Security Policy' },
 ] as const;
 
 function FooterLinkColumn({
@@ -73,7 +74,7 @@ export default function SiteFooter() {
               Federal court case search and keyword alerts for iOS. Monitor 300+ court feeds with
               no in-app search fees.
             </p>
-            <AppStoreBadgeLink className="opacity-90 hover:opacity-100 transition-opacity" />
+            <AppStoreBadge size="sm" className="opacity-90 hover:opacity-100 transition-opacity" />
           </div>
 
           <div className="grid grid-cols-2 gap-8 sm:col-span-2 lg:col-span-7 lg:grid-cols-3">

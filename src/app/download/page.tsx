@@ -2,19 +2,15 @@
 
 import PageShell from '@/components/PageShell';
 import Image from 'next/image';
-import { DownloadButton, AppStoreBadgeLink } from '@/components/AppStoreLink';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { AppStoreBadge, AppStoreCtaRow, MatchedOutlineButton } from '@/components/AppStoreLink';
 import { Badge } from '@/components/ui/badge';
 import {
   Gavel,
   CourthouseClock,
   DollarDocument,
-  Shield,
   LegalDocument,
   Smartphone,
 } from '@/components/ui/icons';
-import { CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 
 export default function DownloadPage() {
@@ -34,17 +30,15 @@ export default function DownloadPage() {
               Monitor 300+ U.S. federal court feeds. Search filings, set keyword alerts, and upgrade
               to CASER Pro ($19.99/year) inside the app after download.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <DownloadButton size="lg" label="Download on the App Store" />
-              <Button variant="outline" size="lg" asChild>
-                <Link href="/pricing">View Pricing</Link>
-              </Button>
-            </div>
-            <AppStoreBadgeLink className="mx-auto" />
-            <p className="text-sm text-muted-foreground max-w-lg mx-auto">
-              Subscribe to CASER Pro inside the app after download. Purchases are billed through your
-              Apple ID.
-            </p>
+            <AppStoreCtaRow
+              badgeSize="lg"
+              className="justify-center"
+              secondary={
+                <MatchedOutlineButton href="/pricing" badgeSize="lg">
+                  View Pricing
+                </MatchedOutlineButton>
+              }
+            />
           </div>
         </div>
       </section>
@@ -119,32 +113,24 @@ export default function DownloadPage() {
       <section className="py-20 lg:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
           <h2 className="text-3xl font-bold text-center mb-12">System Requirements</h2>
-          <Card>
-            <CardHeader>
-              <div className="flex items-center space-x-3">
-                <Smartphone className="w-6 h-6 text-primary" />
-                <CardTitle>iPhone &amp; iPad</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="text-sm font-medium">iOS Version</span>
-                <Badge variant="secondary">iOS 26.0+</Badge>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm font-medium">Account</span>
-                <Badge variant="secondary">No account required</Badge>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm font-medium">PACER account</span>
-                <Badge variant="secondary">Optional for documents</Badge>
-              </div>
-              <p className="text-sm text-muted-foreground pt-4 border-t">
-                Free tier: 1 search (lifetime), 1 keyword alert, 5 saved cases. CASER Pro unlocks
-                unlimited search, alerts, saves, and Atticus AI.
-              </p>
-            </CardContent>
-          </Card>
+          <div className="rounded-lg border bg-card p-6 space-y-4">
+            <div className="flex items-center space-x-3">
+              <Smartphone className="w-6 h-6 text-primary" />
+              <span className="font-semibold">iPhone &amp; iPad</span>
+            </div>
+            <div className="flex justify-between items-center text-sm">
+              <span className="font-medium">iOS Version</span>
+              <Badge variant="secondary">iOS 26.0+</Badge>
+            </div>
+            <div className="flex justify-between items-center text-sm">
+              <span className="font-medium">Account</span>
+              <Badge variant="secondary">No account required</Badge>
+            </div>
+            <p className="text-sm text-muted-foreground pt-4 border-t">
+              Free tier: 1 search (lifetime), 1 keyword alert, 5 saved cases. CASER Pro unlocks
+              unlimited search, alerts, saves, and Atticus AI.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -152,13 +138,15 @@ export default function DownloadPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
           <h2 className="text-3xl font-bold">Ready to get started?</h2>
           <p className="text-muted-foreground max-w-xl mx-auto">
-            Download CASER from the App Store. Need Business or Enterprise?{' '}
+            Need Business or Enterprise?{' '}
             <Link href="/contact" className="text-primary hover:underline">
               Contact us
             </Link>
             .
           </p>
-          <DownloadButton size="lg" label="Download" />
+          <div className="flex justify-center">
+            <AppStoreBadge size="lg" />
+          </div>
         </div>
       </section>
     </PageShell>

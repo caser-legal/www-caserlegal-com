@@ -11,7 +11,7 @@ import { Calculator, FileSearch } from '@/components/ui/icons';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { formatNumber } from '@/lib/utils';
-import { DownloadButton } from '@/components/AppStoreLink';
+import { AppStoreCtaRow, MatchedOutlineButton } from '@/components/AppStoreLink';
 
 interface PACERCalculatorProps {
   standalone?: boolean;
@@ -330,14 +330,16 @@ export default function PACERCalculator({ standalone = false }: PACERCalculatorP
                 <Progress value={Math.min(roiPercentage, 100)} className="h-3" />
               </div>
 
-              <div className="text-center pt-4 flex flex-col sm:flex-row gap-3 justify-center items-center">
-                <DownloadButton size="lg" label="Download CASER" />
-                <Button size="lg" variant="outline" asChild>
-                  <Link href="/contact">
-                    Contact for Business
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Link>
-                </Button>
+              <div className="text-center pt-4 flex justify-center">
+                <AppStoreCtaRow
+                  badgeSize="lg"
+                  secondary={
+                    <MatchedOutlineButton href="/contact" badgeSize="lg">
+                      Contact for Business
+                      <ArrowRight className="w-4 h-4" />
+                    </MatchedOutlineButton>
+                  }
+                />
               </div>
               <p className="text-xs text-muted-foreground mt-3 text-center">
                 Subscribe to CASER Pro inside the app after download.
