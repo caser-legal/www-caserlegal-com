@@ -2,171 +2,181 @@ import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-  ProfessionalBriefcase,
-  CourthouseClock,
-  LegalSeal,
-} from '@/components/ui/icons';
+import { CARD_ACTION_CLASS } from '@/components/ContactCard';
+import { CourthouseClock, LegalSeal } from '@/components/ui/icons';
 import { CheckCircle } from 'lucide-react';
 import { AppStoreBadge } from '@/components/AppStoreLink';
+import {
+  FREE_FEATURES,
+  PRO_FEATURES,
+  BUSINESS_FEATURES,
+  ENTERPRISE_FEATURES,
+} from '@/lib/pricing-features';
 
-const FREE_FEATURES = [
-  '1 case search (lifetime)',
-  '1 keyword alert',
-  '5 saved cases',
-  'Federal court RSS search',
-  'Direct PACER document links',
-  'PACER savings tracker',
-];
+function FeatureList({ items }: { items: readonly string[] }) {
+  return (
+    <ul className="space-y-2.5">
+      {items.map((text) => (
+        <li key={text} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+          <CheckCircle className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+          <span>{text}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
-const PRO_FEATURES = [
-  'Unlimited searches',
-  'Unlimited keyword alerts',
-  'Unlimited saved cases',
-  'Atticus AI legal assistant',
-  'Push notifications for matches',
-  'PDF export (legal brief layout)',
-];
+function IndividualPricing() {
+  return (
+    <div className="max-w-4xl mx-auto space-y-8">
+      <div className="text-center space-y-2">
+        <p className="text-sm font-medium text-primary uppercase tracking-wide">Individual · iOS</p>
+        <h2 className="text-2xl lg:text-3xl font-bold">Download free, upgrade in the app</h2>
+        <p className="text-muted-foreground max-w-lg mx-auto text-sm lg:text-base">
+          CASER is on the App Store. Start on the free tier, then subscribe to CASER Pro inside
+          the app when you need more capacity.
+        </p>
+      </div>
 
-const BUSINESS_FEATURES = [
-  'Multi-attorney firm workflows',
-  'Priority onboarding & training',
-  'Custom alert workflows',
-  'Dedicated account contact',
-  'Volume licensing options',
-];
+      <div className="grid md:grid-cols-2 gap-6 items-stretch">
+        <Card className="flex flex-col h-full border-border/80">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-xl">Free</CardTitle>
+            <CardDescription>Try federal court monitoring at no cost</CardDescription>
+            <div className="pt-4">
+              <div className="flex items-baseline gap-1">
+                <span className="text-4xl font-bold tracking-tight">$0</span>
+              </div>
+              <p className="text-sm text-muted-foreground mt-1">No subscription required</p>
+            </div>
+          </CardHeader>
+          <CardContent className="flex flex-col flex-1 pt-0">
+            <FeatureList items={FREE_FEATURES} />
+            <p className="text-xs text-muted-foreground mt-6 pt-4 border-t">
+              Lifetime limits apply to searches and alerts as listed above.
+            </p>
+          </CardContent>
+        </Card>
 
-const ENTERPRISE_FEATURES = [
-  'Enterprise volume licensing',
-  'Custom integrations & data services',
-  'Dedicated support & SLA options',
-  'White-label & API discussions',
-  'On-premise / compliance consulting',
-];
+        <Card className="flex flex-col h-full border-primary shadow-md relative">
+          <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+            <Badge className="bg-primary text-primary-foreground px-3 py-0.5 text-xs">
+              Recommended
+            </Badge>
+          </div>
+          <CardHeader className="pb-4 pt-2">
+            <CardTitle className="text-xl">CASER Pro</CardTitle>
+            <CardDescription>Full monitoring and Atticus AI for one year</CardDescription>
+            <div className="pt-4">
+              <div className="flex items-baseline gap-1">
+                <span className="text-4xl font-bold tracking-tight text-primary">$19.99</span>
+                <span className="text-muted-foreground text-sm font-medium">/ year</span>
+              </div>
+              <p className="text-sm text-muted-foreground mt-1">
+                Subscribed in-app · billed through your Apple ID
+              </p>
+            </div>
+          </CardHeader>
+          <CardContent className="flex flex-col flex-1 pt-0">
+            <p className="text-xs font-medium text-foreground mb-3">Includes everything in Free, plus:</p>
+            <FeatureList items={PRO_FEATURES} />
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="flex flex-col items-center gap-3 rounded-lg border bg-muted/30 px-6 py-8">
+        <AppStoreBadge size="md" />
+        <p className="text-sm text-muted-foreground text-center max-w-md leading-relaxed">
+          Download CASER on the App Store. CASER Pro is purchased inside the app after install;
+          Apple handles renewal and cancellation in your subscription settings.
+        </p>
+      </div>
+    </div>
+  );
+}
 
 export default function PricingTiers() {
   return (
-    <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-      <Card className="relative border-primary shadow-lg md:scale-105">
-        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-          <Badge className="bg-primary text-primary-foreground px-4 py-1">
-            Individual — App Store
-          </Badge>
+    <div className="space-y-16 max-w-5xl mx-auto">
+      <IndividualPricing />
+
+      <div className="space-y-4">
+        <div className="text-center space-y-2">
+          <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+            Firms &amp; organizations
+          </p>
+          <h2 className="text-2xl font-bold">Business and Enterprise</h2>
+          <p className="text-muted-foreground text-sm max-w-xl mx-auto">
+            Volume licensing, custom workflows, and integrations — priced per engagement.
+          </p>
         </div>
-        <CardHeader className="text-center pb-6 pt-8">
-          <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mx-auto mb-4">
-            <ProfessionalBriefcase className="w-6 h-6 text-primary-foreground" />
-          </div>
-          <CardTitle className="text-2xl">CASER Pro</CardTitle>
-          <CardDescription className="text-base">
-            Download free on the App Store. Upgrade to Pro inside the app.
-          </CardDescription>
-          <div className="mt-6 space-y-2">
-            <div>
-              <div className="text-2xl font-bold">Free</div>
-              <div className="text-sm text-muted-foreground">to get started</div>
-            </div>
-            <div className="text-muted-foreground">or</div>
-            <div>
-              <div className="text-4xl font-bold text-primary">$19.99</div>
-              <div className="text-muted-foreground">per year (CASER Pro)</div>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div>
-            <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">Free tier</p>
-            <div className="space-y-2">
-              {FREE_FEATURES.map((f) => (
-                <div key={f} className="flex items-start space-x-3">
-                  <CheckCircle className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                  <span className="text-sm">{f}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div>
-            <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">CASER Pro</p>
-            <div className="space-y-2">
-              {PRO_FEATURES.map((f) => (
-                <div key={f} className="flex items-start space-x-3">
-                  <CheckCircle className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                  <span className="text-sm">{f}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="flex justify-center w-full">
-            <AppStoreBadge size="md" />
-          </div>
-          <p className="text-xs text-muted-foreground text-center">
-            Subscribe to CASER Pro inside the app after download. Billed through your Apple ID.
-          </p>
-        </CardContent>
-      </Card>
 
-      <Card className="relative">
-        <CardHeader className="text-center pb-8">
-          <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-            <CourthouseClock className="w-6 h-6 text-primary" />
-          </div>
-          <CardTitle className="text-2xl">Business</CardTitle>
-          <CardDescription className="text-base">
-            For mid-sized firms and legal departments
-          </CardDescription>
-          <div className="mt-6">
-            <div className="text-4xl font-bold">Custom</div>
-            <div className="text-muted-foreground">contact sales</div>
-          </div>
-          <Badge variant="secondary" className="mt-4">Contact sales</Badge>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-3">
-            {BUSINESS_FEATURES.map((f) => (
-              <div key={f} className="flex items-center space-x-3">
-                <CheckCircle className="w-5 h-5 text-primary shrink-0" />
-                <span className="text-sm">{f}</span>
+        <div className="grid md:grid-cols-2 gap-x-6 sm:gap-x-10 md:gap-x-14 gap-y-8 items-stretch">
+          <Card className="relative flex flex-col h-full">
+            <CardHeader className="text-center pb-6">
+              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <CourthouseClock className="w-6 h-6 text-primary" />
               </div>
-            ))}
-          </div>
-          <Button className="w-full" size="lg" variant="outline" asChild>
-            <Link href="/contact">Contact Us</Link>
-          </Button>
-        </CardContent>
-      </Card>
+              <CardTitle className="text-2xl">Business</CardTitle>
+              <CardDescription className="text-base min-h-[3.25rem] flex items-center justify-center">
+                <span>
+                  Firm workflows and volume licensing
+                  <span className="block">for mid-sized teams</span>
+                </span>
+              </CardDescription>
+              <div className="mt-4">
+                <div className="text-4xl font-bold">Custom</div>
+                <p className="text-sm text-muted-foreground mt-1">Contact for quote</p>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-6 flex flex-col flex-1 pt-0">
+              <div className="space-y-3 flex-1">
+                {BUSINESS_FEATURES.map((f) => (
+                  <div key={f} className="flex items-center gap-3">
+                    <CheckCircle className="w-5 h-5 text-primary shrink-0" />
+                    <span className="text-sm">{f}</span>
+                  </div>
+                ))}
+              </div>
+              <Button className={CARD_ACTION_CLASS} variant="outline" asChild>
+                <Link href="/contact">Contact Us</Link>
+              </Button>
+            </CardContent>
+          </Card>
 
-      <Card className="relative">
-        <CardHeader className="text-center pb-8">
-          <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-            <LegalSeal className="w-6 h-6 text-primary" />
-          </div>
-          <CardTitle className="text-2xl">Enterprise</CardTitle>
-          <CardDescription className="text-base">
-            Large organizations and custom deployments
-          </CardDescription>
-          <div className="mt-6">
-            <div className="text-4xl font-bold">Custom</div>
-            <div className="text-muted-foreground">contact sales</div>
-          </div>
-          <Badge variant="outline" className="mt-4">Enterprise</Badge>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-3">
-            {ENTERPRISE_FEATURES.map((f) => (
-              <div key={f} className="flex items-center space-x-3">
-                <CheckCircle className="w-5 h-5 text-primary shrink-0" />
-                <span className="text-sm">{f}</span>
+          <Card className="relative flex flex-col h-full">
+            <CardHeader className="text-center pb-6">
+              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <LegalSeal className="w-6 h-6 text-primary" />
               </div>
-            ))}
-          </div>
-          <Button variant="outline" className="w-full" size="lg" asChild>
-            <Link href="/contact">Contact Sales</Link>
-          </Button>
-          <p className="text-xs text-muted-foreground text-center">
-            Custom pricing and tailored solutions
-          </p>
-        </CardContent>
-      </Card>
+              <CardTitle className="text-2xl">Enterprise</CardTitle>
+              <CardDescription className="text-base min-h-[3.25rem] flex items-center justify-center">
+                <span>
+                  Custom integrations and deployments
+                  <span className="block">for large organizations</span>
+                </span>
+              </CardDescription>
+              <div className="mt-4">
+                <div className="text-4xl font-bold">Custom</div>
+                <p className="text-sm text-muted-foreground mt-1">Contact for quote</p>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-6 flex flex-col flex-1 pt-0">
+              <div className="space-y-3 flex-1">
+                {ENTERPRISE_FEATURES.map((f) => (
+                  <div key={f} className="flex items-center gap-3">
+                    <CheckCircle className="w-5 h-5 text-primary shrink-0" />
+                    <span className="text-sm">{f}</span>
+                  </div>
+                ))}
+              </div>
+              <Button variant="outline" className={CARD_ACTION_CLASS} asChild>
+                <Link href="/contact">Contact Sales</Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }

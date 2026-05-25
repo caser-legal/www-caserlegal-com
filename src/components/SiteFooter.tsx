@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { AppStoreBadge } from '@/components/AppStoreLink';
 import { getCopyrightYear } from '@/lib/copyright';
 
 const productLinks = [
@@ -59,14 +58,17 @@ export default function SiteFooter() {
     <footer className="border-t border-border bg-muted/50 mt-auto" role="contentinfo">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8">
-          <div className="sm:col-span-2 lg:col-span-5 space-y-5">
-            <Link href="/" className="inline-flex items-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+          <div className="sm:col-span-2 lg:col-span-5 flex flex-col items-center text-center space-y-5">
+            <Link
+              href="/"
+              className="inline-flex justify-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            >
               <Image
                 src="/logo-full.png"
                 alt="CASER — Case Automated Search of Electronic Records"
                 width={120}
                 height={48}
-                className="h-10 w-auto max-w-[140px] object-contain object-left"
+                className="h-10 w-auto max-w-[140px] object-contain object-center mx-auto"
                 priority={false}
               />
             </Link>
@@ -74,7 +76,6 @@ export default function SiteFooter() {
               Federal court case search and keyword alerts for iOS. Monitor 300+ court feeds with
               no in-app search fees.
             </p>
-            <AppStoreBadge size="sm" className="opacity-90 hover:opacity-100 transition-opacity" />
           </div>
 
           <div className="grid grid-cols-2 gap-8 sm:col-span-2 lg:col-span-7 lg:grid-cols-3">
@@ -98,7 +99,7 @@ export default function SiteFooter() {
                 <li>
                   <a
                     href="mailto:hi@caserlegal.com"
-                    className="hover:text-foreground transition-colors underline-offset-4 hover:underline"
+                    className="text-muted-foreground/45 hover:text-muted-foreground/65 transition-colors"
                   >
                     hi@caserlegal.com
                   </a>
@@ -110,7 +111,7 @@ export default function SiteFooter() {
 
         <div className="border-t border-border mt-10 pt-8 space-y-2 text-center text-xs sm:text-sm text-muted-foreground">
           <p>
-            &copy; {year} CASER, LLC. All rights reserved.
+            <span suppressHydrationWarning>&copy; {year}</span> CASER, LLC. All rights reserved.
           </p>
           <p className="max-w-3xl mx-auto leading-relaxed">
             CASER and Case Automated Search of Electronic Records are trademarks of CASER, LLC.

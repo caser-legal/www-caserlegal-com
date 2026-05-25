@@ -2,8 +2,9 @@
 
 import PageShell from '@/components/PageShell';
 import Image from 'next/image';
-import PACERCalculator from '@/components/PACERCalculator';
-import { AppStoreBadge, AppStoreCtaRow, MatchedOutlineButton } from '@/components/AppStoreLink';
+import ShowcaseSection from '@/components/ShowcaseSection';
+import { AppStoreCtaRow, MatchedOutlineButton } from '@/components/AppStoreLink';
+import { ProductStatRow, StatHighlightGrid } from '@/components/ProductStatRow';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -15,7 +16,6 @@ import {
   DollarDocument,
   LegalSeal,
   ProfessionalBriefcase,
-  DownloadDocument,
   LegalBookSearch,
 } from '@/components/ui/icons';
 import { AlertCircle, CheckCircle } from 'lucide-react';
@@ -33,7 +33,7 @@ export default function Home() {
               <div className="space-y-2">
                 <Badge variant="secondary" className="w-fit">
                   <Image
-                    src="https://www.gstatic.com/marketing-cms/assets/images/29/8c/e1f2c0994e87b8d7edf2886f9c02/google-cloud.webp=s48-fcrop64=1,00000000ffffffff-rw"
+                    src="/google-cloud-badge.webp"
                     alt="Google Cloud"
                     width={12}
                     height={12}
@@ -61,20 +61,7 @@ export default function Home() {
                 }
               />
 
-              <div className="grid grid-cols-3 gap-6 pt-8">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-primary">{formatNumber(300)}+</div>
-                  <div className="text-sm text-muted-foreground">U.S. Courts</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-primary">Push</div>
-                  <div className="text-sm text-muted-foreground">Alerts</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-primary">$0</div>
-                  <div className="text-sm text-muted-foreground">Search Fees</div>
-                </div>
-              </div>
+              <ProductStatRow className="pt-8" />
             </div>
 
             <div className="relative flex justify-center">
@@ -278,72 +265,17 @@ export default function Home() {
       {/* App Showcase Section */}
       <section id="showcase" className="py-20 lg:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center space-y-4 mb-16">
+          <div className="text-center space-y-3 mb-12 max-w-3xl mx-auto">
             <h2 className="text-3xl lg:text-4xl font-bold">
               Experience Professional Court Monitoring
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Designed for legal professionals who demand precision, efficiency, and results.
+            <p className="text-lg text-muted-foreground">
+              Precision court monitoring for legal professionals — search, alerts, and savings in one app.
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <div className="space-y-6">
-                <div className="flex items-start space-x-4">
-                  <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                    <span className="text-primary-foreground text-sm font-bold">1</span>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold mb-2">Intelligent Search & Monitoring</h3>
-                    <p className="text-muted-foreground">
-                      Advanced keyword matching with exact match and case-sensitive options. 
-                      Monitor specific cases, parties, or legal concepts across all supported courts.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                    <span className="text-primary-foreground text-sm font-bold">2</span>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold mb-2">Push alert system</h3>
-                    <p className="text-muted-foreground">
-                      Push notifications when new filings match your keywords (scans run about every
-                      5 minutes). Includes direct PACER links for document access.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                    <span className="text-primary-foreground text-sm font-bold">3</span>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold mb-2">Comprehensive Dashboard</h3>
-                    <p className="text-muted-foreground">
-                      Monitor active cases, track cost savings, and manage all your 
-                      docket intelligence from a single, professional interface.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-muted/50 p-6 rounded-lg">
-                <div className="flex items-center space-x-2 mb-4">
-                  <AlertCircle className="w-5 h-5 text-primary" />
-                  <h4 className="font-semibold">Professional Disclaimer</h4>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  CASER monitors publicly available court docket information and provides 
-                  links to PACER for detailed review. This is a research tool, not legal advice. 
-                  Verify all information through official court sources.
-                </p>
-              </div>
-            </div>
-
-            <PACERCalculator />
+          <div className="max-w-6xl mx-auto">
+            <ShowcaseSection />
           </div>
         </div>
       </section>
@@ -360,9 +292,8 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-12 mb-16">
-            <div className="space-y-6">
-              <div className="bg-muted/50 border rounded-lg p-6">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-10 mb-16 items-stretch">
+            <div className="bg-muted/50 border rounded-lg p-6 h-full flex flex-col">
                 <h3 className="text-xl font-semibold mb-4">The Challenge</h3>
                 <p className="text-muted-foreground mb-4">
                   The federal PACER system, designed to provide Public Access to Court Electronic Records, 
@@ -410,11 +341,9 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-              </div>
             </div>
 
-            <div className="space-y-6">
-              <div className="bg-primary/5 border border-primary/20 rounded-lg p-6">
+            <div className="bg-primary/5 border border-primary/20 rounded-lg p-6 h-full flex flex-col">
                 <h3 className="text-xl font-semibold text-primary mb-4">The CASER Solution</h3>
                 <p className="text-muted-foreground mb-4">
                   CASER addresses these fundamental issues by providing intelligent monitoring 
@@ -462,7 +391,6 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-              </div>
             </div>
           </div>
 
@@ -691,191 +619,28 @@ export default function Home() {
           </div>
 
           <div className="bg-background border rounded-lg p-8 mb-12">
-            <h3 className="text-2xl font-bold text-center mb-8">Service Pricing</h3>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="text-center">
-                <div className="font-semibold text-lg mb-2">Academic Institutions</div>
-                <div className="text-3xl font-bold text-primary mb-2">$140</div>
-                <div className="text-sm text-muted-foreground">per hour</div>
-              </div>
-              <div className="text-center">
-                <div className="font-semibold text-lg mb-2">Media Organizations</div>
-                <div className="text-3xl font-bold text-primary mb-2">$70-180</div>
-                <div className="text-sm text-muted-foreground">per hour (sliding scale)</div>
-              </div>
-              <div className="text-center">
-                <div className="font-semibold text-lg mb-2">Non-Profit Organizations</div>
-                <div className="text-3xl font-bold text-primary mb-2">$140-180</div>
-                <div className="text-sm text-muted-foreground">per hour (based on scope)</div>
-              </div>
-              <div className="text-center">
-                <div className="font-semibold text-lg mb-2">Corporate Clients</div>
-                <div className="text-3xl font-bold text-primary mb-2">$170-750</div>
-                <div className="text-sm text-muted-foreground">per hour (project complexity)</div>
-              </div>
-            </div>
-            <p className="text-center text-sm text-muted-foreground mt-6">
-              One hour minimum. Billing rounded to nearest half hour. Volume discounts available.
-            </p>
-            
-            <div className="mt-8 pt-8 border-t">
-              <h4 className="text-lg font-semibold text-center mb-4">The CASER Impact</h4>
-              <div className="grid md:grid-cols-3 gap-6 text-center">
-                <div className="bg-primary/5 rounded-lg p-4">
-                  <div className="text-2xl font-bold text-primary mb-2">{formatNumber(323560)}</div>
-                  <div className="text-sm text-muted-foreground">Documents Monitored (First 3 Days)</div>
-                </div>
-                <div className="bg-primary/5 rounded-lg p-4">
-                  <div className="text-2xl font-bold text-primary mb-2">{formatNumber(100000)}+</div>
-                  <div className="text-sm text-muted-foreground">Documents Saved Daily</div>
-                </div>
-                <div className="bg-primary/5 rounded-lg p-4">
-                  <div className="text-2xl font-bold text-primary mb-2">${formatNumber(100000)}</div>
-                  <div className="text-sm text-muted-foreground">Daily PACER Costs Avoided</div>
-                </div>
-              </div>
-              <p className="text-center text-sm text-muted-foreground mt-4">
-                Based on PACER pricing: $0.10 per page with $3 cap per document
-              </p>
-            </div>
-          </div>
-
-          <div className="grid lg:grid-cols-2 gap-8 mb-12">
-            <div className="space-y-2">
-              <h3 className="text-xl font-semibold">Example Projects</h3>
-              <div className="space-y-3">
-                <div className="bg-muted/30 rounded-lg p-4">
-                  <div className="font-medium mb-1">One Hour: Comprehensive Citation Analysis</div>
-                  <p className="text-sm text-muted-foreground">
-                    Generate CSV of all federal court citations for specific legal topics across 
-                    monitored jurisdictions.
-                  </p>
-                </div>
-                <div className="bg-muted/30 rounded-lg p-4">
-                  <div className="font-medium mb-1">Two Hours: Litigation Pattern Report</div>
-                  <p className="text-sm text-muted-foreground">
-                    Create detailed analysis of filing patterns for specific case types or 
-                    parties across multiple districts.
-                  </p>
-                </div>
-                <div className="bg-muted/30 rounded-lg p-4">
-                  <div className="font-medium mb-1">Three Hours: Competitive Intelligence</div>
-                  <p className="text-sm text-muted-foreground">
-                    Comprehensive report on litigation activities involving specific companies 
-                    or industries within defined timeframes.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <h3 className="text-xl font-semibold">Complex Engagements</h3>
-              <div className="space-y-3">
-                <div className="bg-muted/30 rounded-lg p-4">
-                  <div className="font-medium mb-1">Strategic Market Analysis</div>
-                  <p className="text-sm text-muted-foreground">
-                    Long-term monitoring and analysis of litigation trends affecting your 
-                    industry with quarterly reports and alerts.
-                  </p>
-                </div>
-                <div className="bg-muted/30 rounded-lg p-4">
-                  <div className="font-medium mb-1">Regulatory Compliance Tracking</div>
-                  <p className="text-sm text-muted-foreground">
-                    Automated monitoring of regulatory enforcement actions and compliance 
-                    litigation across all federal courts.
-                  </p>
-                </div>
-                <div className="bg-muted/30 rounded-lg p-4">
-                  <div className="font-medium mb-1">Custom Integration Solutions</div>
-                  <p className="text-sm text-muted-foreground">
-                    API development and integration services to incorporate court monitoring 
-                    data into your existing systems.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="text-center">
-            <div className="bg-primary/5 border border-primary/20 rounded-lg p-8">
-              <h3 className="text-2xl font-bold mb-4">Ready to Get Started?</h3>
-              <p className="text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
-                Enterprise data services and custom integrations are available by inquiry.
-              </p>
-              <AppStoreCtaRow
-                badgeSize="lg"
-                className="justify-center"
-                secondary={
-                  <MatchedOutlineButton href="/contact" badgeSize="lg">
-                    Contact for Enterprise
-                  </MatchedOutlineButton>
-                }
+            <h4 className="text-lg font-semibold text-center mb-4">The CASER Impact</h4>
+            <div className="bg-primary/5 rounded-lg p-4 md:p-6">
+              <StatHighlightGrid
+                items={[
+                  {
+                    value: formatNumber(323560),
+                    lines: ['Documents', 'Monitored (3 days)'],
+                  },
+                  {
+                    value: `${formatNumber(100000)}+`,
+                    lines: ['Documents', 'Saved Daily'],
+                  },
+                  {
+                    value: `$${formatNumber(100000)}`,
+                    lines: ['Daily PACER', 'Costs Avoided'],
+                  },
+                ]}
               />
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Download CTA Section */}
-      <section id="download-cta" className="py-20 lg:py-32">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center space-y-8">
-            <div className="space-y-2">
-              <h2 className="text-3xl lg:text-4xl font-bold">
-                Elevate Your Court Monitoring Strategy
-              </h2>
-              <p className="text-xl text-muted-foreground">
-                Join thousands of legal professionals who trust CASER for critical 
-                docket intelligence and cost-effective court monitoring.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-8 max-w-2xl mx-auto">
-              <Card className="p-6">
-                <div className="text-center space-y-4">
-                  <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto">
-                    <DownloadDocument className="w-8 h-8 text-primary" />
-                  </div>
-                  <h3 className="text-lg font-semibold">Download Now</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Available exclusively on the App Store for iOS devices
-                  </p>
-                  <div className="flex justify-center pt-2">
-                    <AppStoreBadge size="md" />
-                  </div>
-                </div>
-              </Card>
-
-              <Card className="p-6">
-                <div className="text-center space-y-4">
-                  <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto">
-                    <LegalBookSearch className="w-8 h-8 text-primary" />
-                  </div>
-                  <h3 className="text-lg font-semibold">Learn More</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Visit our website for detailed features and documentation
-                  </p>
-                  <div className="flex justify-center pt-2">
-                    <MatchedOutlineButton href="/features" badgeSize="md" className="w-full max-w-[200px]">
-                      View Features
-                    </MatchedOutlineButton>
-                  </div>
-                </div>
-              </Card>
-            </div>
-
-            <div className="bg-muted/50 p-6 rounded-lg max-w-2xl mx-auto">
-              <div className="flex items-center space-x-2 mb-4">
-                <AlertCircle className="w-5 h-5 text-primary" />
-                <h4 className="font-semibold">Important Notice</h4>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                CASER is a research tool designed to monitor publicly available court docket information. 
-                It is not a substitute for official court records or legal advice. 
-                PACER charges may apply when accessing documents through provided links. 
-                MacOS and Web versions coming soon.
-              </p>
-            </div>
+            <p className="text-center text-sm text-muted-foreground mt-4">
+              Based on PACER pricing: $0.10 per page with $3 cap per document
+            </p>
           </div>
         </div>
       </section>
@@ -904,15 +669,15 @@ export default function Home() {
             <div className="flex items-center justify-center space-x-6 text-sm text-muted-foreground">
               <div className="flex items-center space-x-1">
                 <CheckCircle className="w-4 h-4 text-foreground" />
-                <span>AES-256 Encryption</span>
+                <span>AES-256 Encryption (app)</span>
               </div>
               <div className="flex items-center space-x-1">
                 <CheckCircle className="w-4 h-4 text-foreground" />
-                <span>TLS 1.3 Security</span>
+                <span>TLS 1.3 Security (app)</span>
               </div>
               <div className="flex items-center space-x-1">
                 <CheckCircle className="w-4 h-4 text-foreground" />
-                <span>Pro Se Discounts</span>
+                <span>Fee Free</span>
               </div>
             </div>
           </div>

@@ -18,8 +18,12 @@ import {
   MapPin,
   Clock
 } from '@/components/ui/icons';
-import { CheckCircle, ArrowRight, Send, Briefcase, GraduationCap } from 'lucide-react';
+import { CheckCircle, ArrowRight, Briefcase } from 'lucide-react';
 import Link from 'next/link';
+import {
+  careersApplicationMailto,
+  careersResumeMailto,
+} from '@/lib/careers-mail';
 
 export default function CareersPage() {
   return (
@@ -28,7 +32,7 @@ export default function CareersPage() {
       <section className="relative py-20 lg:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
-            <Badge variant="secondary" className="w-fit">
+            <Badge variant="secondary" className="w-fit mx-auto">
               <ProfessionalBriefcase className="w-3 h-3 mr-2" />
               Join Our Team
             </Badge>
@@ -40,8 +44,8 @@ export default function CareersPage() {
               Join a team of legal technology pioneers dedicated to democratizing access to court records 
               and eliminating wasteful PACER fees for legal professionals across the country.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" asChild>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+              <Button size="lg" className="w-full sm:w-auto" asChild>
                 <a href="#open-positions">
                   <Briefcase className="w-4 h-4 mr-2" />
                   View Open Positions
@@ -237,9 +241,9 @@ export default function CareersPage() {
 
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button className="flex-1" asChild>
-                    <a href="mailto:careers@caserlegal.com?subject=General Application - CASER&body=Hi CASER Team,%0D%0A%0D%0AI'm interested in joining your team. Here's some information about me:%0D%0A%0D%0AName: %0D%0ABackground: %0D%0AExperience: %0D%0AWhy I'm interested in CASER: %0D%0A%0D%0AI've attached my resume and look forward to discussing how I can contribute to your mission.">
-                      <Send className="w-4 h-4 mr-2" />
-                      Apply Now
+                    <a href={careersApplicationMailto()}>
+                      <Mail className="w-4 h-4 mr-2" />
+                      Apply via Email
                     </a>
                   </Button>
                   <Button variant="outline" className="flex-1" asChild>
@@ -256,10 +260,13 @@ export default function CareersPage() {
             <p className="text-muted-foreground mb-4">
               Don't see a specific role that matches your skills?
             </p>
+            <p className="text-xs text-muted-foreground mb-3 max-w-md mx-auto">
+              Opens your email app with a pre-filled message to careers@caserlegal.com
+            </p>
             <Button variant="outline" asChild>
-              <a href="mailto:careers@caserlegal.com?subject=General Inquiry - CASER">
+              <a href={careersResumeMailto()}>
                 <Mail className="w-4 h-4 mr-2" />
-                Send Us Your Resume
+                Send Resume via Email
               </a>
             </Button>
           </div>
@@ -276,10 +283,14 @@ export default function CareersPage() {
             <p className="text-xl text-muted-foreground">
               Join us in our mission to democratize access to court records and eliminate wasteful PACER fees
             </p>
+            <p className="text-sm text-muted-foreground max-w-lg mx-auto">
+              Apply Today opens your email app with a pre-filled application template. Attach your resume
+              before sending.
+            </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild>
-                <a href="mailto:careers@caserlegal.com?subject=General Application - CASER">
-                  <Send className="w-4 h-4 mr-2" />
+                <a href={careersApplicationMailto()}>
+                  <Mail className="w-4 h-4 mr-2" />
                   Apply Today
                 </a>
               </Button>
