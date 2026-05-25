@@ -24,7 +24,7 @@ export default function PricingPage() {
               <span className="text-primary"> for individuals and firms</span>
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Download CASER free on the App Store. Upgrade to CASER Pro for $19.99/year inside
+              Download CASER free on the App Store. Upgrade to CASER Pro for $14.99/year inside
               the app. Business and Enterprise plans are available by inquiry.
             </p>
             <AppStoreCtaRow

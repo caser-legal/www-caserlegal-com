@@ -12,3 +12,8 @@ export const LOGO_ALT = `CASER — ${PRODUCT_FULL_NAME}`;
 
 export const FOOTER_PRODUCT_NAMES =
   'CASER, Case Alerts & Search of Electronic Records, and Case Search & Alerts by CASER are product names used on this site and in the iOS app.';
+
+/** CASER Pro annual subscription (matches App Store Connect). */
+export const CASER_PRO_ANNUAL_PRICE = 14.99;
+
+export const CASER_PRO_PRICE_LABEL = `$${CASER_PRO_ANNUAL_PRICE.toFixed(2)}`;

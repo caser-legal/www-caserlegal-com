@@ -69,7 +69,7 @@ function IndividualPricing() {
             <CardDescription>Full monitoring and Atticus AI for one year</CardDescription>
             <div className="pt-4">
               <div className="flex items-baseline gap-1">
-                <span className="text-4xl font-bold tracking-tight text-primary">$19.99</span>
+                <span className="text-4xl font-bold tracking-tight text-primary">$14.99</span>
                 <span className="text-muted-foreground text-sm font-medium">/ year</span>
               </div>
               <p className="text-sm text-muted-foreground mt-1">

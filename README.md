@@ -17,7 +17,7 @@ npm run build  # static export to out/
 
 | Tier | CTA |
 |------|-----|
-| **CASER Pro (Individual)** | Free + $19.99/year Pro via App Store download |
+| **CASER Pro (Individual)** | Free + $14.99/year Pro via App Store download |
 | **Business** | Contact form → `/contact` |
 | **Enterprise** | Contact form → `/contact` |
 
