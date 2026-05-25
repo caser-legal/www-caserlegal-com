@@ -1,8 +1,9 @@
 'use client';
 
 import Navigation from '@/components/Navigation';
+import SiteFooter from '@/components/SiteFooter';
 import Image from 'next/image';
-
+import { DownloadButton } from '@/components/AppStoreLink';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -42,17 +43,10 @@ export default function FeaturesPage() {
               Engineered with precision for litigation teams, paralegals, and legal operations professionals. 
               Every feature designed to eliminate inefficiency and maximize competitive advantage.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" asChild>
-                <Link href="/pricing">
-                  View Pricing
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Link>
-              </Button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <DownloadButton size="lg" label="Download on the App Store" />
               <Button variant="outline" size="lg" asChild>
-                <Link href="/contact">
-                  Contact
-                </Link>
+                <Link href="/pricing">View Pricing</Link>
               </Button>
             </div>
           </div>
@@ -88,9 +82,9 @@ export default function FeaturesPage() {
                       <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                         <CourthouseClock className="w-6 h-6 text-primary" />
                       </div>
-                      <CardTitle>Real-Time Court Monitoring</CardTitle>
+                      <CardTitle>Court search &amp; monitoring</CardTitle>
                       <CardDescription>
-                        Monitor 170+ U.S. Courts with near real-time docket updates
+                        Monitor 300+ U.S. federal court feeds via RSS-based search
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
@@ -125,9 +119,9 @@ export default function FeaturesPage() {
                       <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                         <Gavel className="w-6 h-6 text-primary" />
                       </div>
-                      <CardTitle>Instant Alert System</CardTitle>
+                      <CardTitle>Keyword alerts</CardTitle>
                       <CardDescription>
-                        Receive immediate notifications for relevant court filings
+                        Push notifications when filings match your keywords (~5 min scan cadence)
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
@@ -142,8 +136,8 @@ export default function FeaturesPage() {
                         <div className="flex items-start space-x-3">
                           <CheckCircle className="w-5 h-5 text-primary mt-0.5" />
                           <div>
-                            <div className="font-medium">Email Notifications</div>
-                            <div className="text-sm text-muted-foreground">Detailed filing summaries</div>
+                            <div className="font-medium">Saved cases</div>
+                            <div className="text-sm text-muted-foreground">Up to 5 free; unlimited with Pro</div>
                           </div>
                         </div>
                         <div className="flex items-start space-x-3">
@@ -341,7 +335,7 @@ export default function FeaturesPage() {
                     </div>
                     <CardTitle className="text-2xl">Atticus AI Assistant</CardTitle>
                     <CardDescription className="text-lg">
-                      Your intelligent legal research companion powered by advanced AI
+                      Included with CASER Pro — powered by Google Gemini (not legal advice)
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-6">
@@ -427,11 +421,11 @@ export default function FeaturesPage() {
               <CardContent className="space-y-3">
                 <div className="flex justify-between items-center">
                   <span className="text-sm">iOS</span>
-                  <Badge variant="secondary">Waitlist</Badge>
+                  <Badge variant="secondary">Available</Badge>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm">iPadOS</span>
-                  <Badge variant="secondary">Waitlist</Badge>
+                  <Badge variant="secondary">Available</Badge>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm">macOS</span>
@@ -451,7 +445,7 @@ export default function FeaturesPage() {
               <CardContent className="space-y-3">
                 <div className="flex justify-between items-center">
                   <span className="text-sm">Update Frequency</span>
-                  <span className="text-sm font-medium">Real-time</span>
+                  <span className="text-sm font-medium">~5 min scans</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm">Response Time</span>
@@ -506,59 +500,17 @@ export default function FeaturesPage() {
               Join thousands of legal professionals who have already elevated their practice 
               with CASER's professional-grade court monitoring capabilities.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" asChild>
-                <Link href="/contact">
-                  Contact CASER
-                </Link>
-              </Button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <DownloadButton size="lg" label="Download on the App Store" />
               <Button variant="outline" size="lg" asChild>
-                <Link href="/pricing">
-                  Compare Plans
-                </Link>
+                <Link href="/contact">Business &amp; Enterprise</Link>
               </Button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t bg-muted/30">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="space-y-2">
-              <h4 className="font-semibold">Product</h4>
-              <ul className="space-y-1 text-sm text-muted-foreground">
-                <li><Link href="/features" className="hover:text-primary transition-colors">Features</Link></li>
-                <li><Link href="/pricing" className="hover:text-primary transition-colors">Pricing</Link></li>
-                <li><Link href="/about" className="hover:text-primary transition-colors">About</Link></li>
-              </ul>
-            </div>
-
-            <div className="space-y-2">
-              <h4 className="font-semibold">Support</h4>
-              <ul className="space-y-1 text-sm text-muted-foreground">
-                <li><Link href="/support" className="hover:text-primary transition-colors">Documentation</Link></li>
-                <li><Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
-                <li><Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link></li>
-              </ul>
-            </div>
-
-            <div className="space-y-2">
-              <h4 className="font-semibold">Contact</h4>
-              <ul className="space-y-1 text-sm text-muted-foreground">
-                <li>Website: www.caserlegal.com</li>
-                <li>Available on iOS</li>
-                <li>MacOS and Web coming soon</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
-            <p>© 2025 CASER. All rights reserved. Supporting independent developers in legal technology.</p>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

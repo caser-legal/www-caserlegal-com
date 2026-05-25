@@ -1,16 +1,11 @@
 'use client';
 
 import Navigation from '@/components/Navigation';
-
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import SiteFooter from '@/components/SiteFooter';
+import { LegalParagraph, LegalSection } from '@/components/LegalProse';
 import { Badge } from '@/components/ui/badge';
-import { 
-  ScalesOfJustice, 
-  Gavel,
-  LegalDocument,
-  ArrowRight
-} from '@/components/ui/icons';
+import { Button } from '@/components/ui/button';
+import { Gavel } from '@/components/ui/icons';
 import Link from 'next/link';
 
 export default function TermsPage() {
@@ -18,404 +13,155 @@ export default function TermsPage() {
     <div className="min-h-screen bg-background">
       <Navigation />
 
-      {/* Hero Section */}
-      <section className="relative py-20 lg:py-32">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center space-y-8">
-            <Badge variant="secondary" className="w-fit">
-              <Gavel className="w-3 h-3 mr-2" />
-              Terms of Service
-            </Badge>
-            <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">
-              Terms of Service
-              <span className="text-primary"> for CASER</span>
-            </h1>
-            <p className="text-xl text-muted-foreground leading-relaxed">
-              These terms govern your use of CASER court monitoring services. 
-              Please read them carefully before using our application.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" asChild>
-                <Link href="/privacy">
-                  View Privacy Policy
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Link>
-              </Button>
-              <Button variant="outline" size="lg" asChild>
-                <Link href="/support">
-                  Contact Legal Team
-                </Link>
-              </Button>
-            </div>
+      <section className="relative py-16 lg:py-24">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
+          <Badge variant="secondary" className="w-fit mb-4">
+            <Gavel className="w-3 h-3 mr-2" />
+            Terms of Service
+          </Badge>
+          <h1 className="text-4xl font-bold tracking-tight mb-2">Terms of Service</h1>
+          <p className="text-muted-foreground mb-8">Last Updated: May 2026</p>
+
+          <div className="space-y-8">
+            <LegalSection title="1. Acceptance of Terms">
+              <LegalParagraph>
+                By accessing and using CASER (Case Automated Search of Electronic Records), you
+                accept and agree to be bound by these Terms of Service. If you do not agree, do not
+                use this application.
+              </LegalParagraph>
+            </LegalSection>
+
+            <LegalSection title="2. Service Description">
+              <LegalParagraph>
+                CASER provides access to federal district and bankruptcy case filings through
+                search functionality, keyword monitoring alerts, AI-powered legal research
+                assistance (Atticus), and case management tools. Individual use is offered through
+                the CASER iOS app with a free tier and an optional CASER Pro annual subscription
+                purchased via the Apple App Store.
+              </LegalParagraph>
+            </LegalSection>
+
+            <LegalSection title="3. Legal Disclaimer">
+              <LegalParagraph>
+                CASER does not provide legal advice. This application is a monitoring and research
+                tool only. You should not rely on CASER as a substitute for professional legal
+                counsel. Always consult with a qualified attorney for legal advice specific to your
+                situation.
+              </LegalParagraph>
+            </LegalSection>
+
+            <LegalSection title="4. No Warranty on Accuracy">
+              <LegalParagraph>
+                While we strive for accuracy, CASER makes no warranties regarding the completeness,
+                accuracy, or timeliness of case information, search results, or alert notifications.
+                Case filings may be delayed, incomplete, or contain errors. Always verify critical
+                information with official court records.
+              </LegalParagraph>
+            </LegalSection>
+
+            <LegalSection title="5. Alert System Limitations">
+              <LegalParagraph>
+                The keyword monitoring system checks for new filings approximately every 5 minutes
+                but may experience delays or miss filings due to technical issues, data source
+                delays, or system maintenance. Do not rely solely on CASER alerts for time-sensitive
+                legal matters.
+              </LegalParagraph>
+            </LegalSection>
+
+            <LegalSection title="6. User Responsibilities">
+              <LegalParagraph>
+                You are responsible for: (a) maintaining the confidentiality of your device and
+                Apple ID, (b) all activities under your use of the app, (c) ensuring your use
+                complies with applicable laws, and (d) verifying all case information with official
+                sources.
+              </LegalParagraph>
+            </LegalSection>
+
+            <LegalSection title="7. Acceptable Use">
+              <LegalParagraph>
+                You may not: (a) share your subscription access with others in violation of Apple&apos;s
+                terms, (b) use automated systems to scrape or download bulk data, (c) reverse engineer
+                the application, (d) use the service for any unlawful purpose, or (e) interfere with
+                the service&apos;s operation.
+              </LegalParagraph>
+            </LegalSection>
+
+            <LegalSection title="8. Search Fees and Savings Tracker">
+              <LegalParagraph>
+                Searching cases and accessing PACER document links through CASER incurs no per-search
+                or per-result fees within the app. The PACER Savings Tracker shows what you would have
+                paid on PACER&apos;s uncapped search-result screens ($0.10 per result) if you had used
+                their system instead. CASER Pro is a yearly subscription ($19.99/year via the App
+                Store). The tracker is informational only and does not represent actual PACER bills.
+              </LegalParagraph>
+            </LegalSection>
+
+            <LegalSection title="9. Subscriptions and Billing">
+              <LegalParagraph>
+                CASER Pro subscriptions are processed by Apple. Payment, renewal, cancellation, and
+                refunds are governed by Apple&apos;s terms. Manage subscriptions in your Apple ID
+                settings or at{' '}
+                <a
+                  href="https://apps.apple.com/account/subscriptions"
+                  className="text-primary hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Apple Subscriptions
+                </a>
+                . See also the{' '}
+                <a
+                  href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/"
+                  className="text-primary hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Apple Media Services Terms
+                </a>
+                .
+              </LegalParagraph>
+            </LegalSection>
+
+            <LegalSection title="10. Account Termination">
+              <LegalParagraph>
+                We reserve the right to suspend access for violations of these terms or fraudulent
+                activity. Contact{' '}
+                <a href="mailto:hi@caserlegal.com" className="text-primary hover:underline">
+                  hi@caserlegal.com
+                </a>{' '}
+                with questions about your use of the service.
+              </LegalParagraph>
+            </LegalSection>
+
+            <LegalSection title="11. Limitation of Liability">
+              <LegalParagraph>
+                CASER and its operators shall not be liable for any indirect, incidental, special,
+                consequential, or punitive damages arising from your use of the service, including
+                but not limited to missed filings, inaccurate information, or service interruptions.
+              </LegalParagraph>
+            </LegalSection>
+
+            <LegalSection title="12. Changes to Terms">
+              <LegalParagraph>
+                We reserve the right to modify these terms at any time. Continued use of the service
+                after changes constitutes acceptance of the modified terms. Material changes will be
+                communicated when practicable.
+              </LegalParagraph>
+            </LegalSection>
+          </div>
+
+          <div className="flex gap-4 mt-12">
+            <Button asChild>
+              <Link href="/privacy">Privacy Policy</Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/support">Support</Link>
+            </Button>
           </div>
         </div>
       </section>
 
-      {/* Terms Content */}
-      <section className="py-20 lg:py-32 bg-muted/50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto space-y-12">
-            
-            {/* Agreement to Terms */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <LegalDocument className="w-5 h-5 text-primary" />
-                  <span>Agreement to Terms</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-muted-foreground">
-                  By accessing and using CASER (Case Automated Search of Electronic Records), 
-                  you accept and agree to be bound by the terms and provision of this agreement. 
-                  If you do not agree to abide by the above, please do not use this service.
-                </p>
-                <p className="text-muted-foreground">
-                  These Terms of Service ("Terms") govern your access to and use of the CASER 
-                  mobile application, website, and related services (collectively, the "Service") 
-                  operated by CASER ("we," "us," or "our").
-                </p>
-                <p className="text-muted-foreground">
-                  <strong>Effective Date:</strong> November 3, 2025
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Description of Service */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Description of Service</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-muted-foreground">
-                  CASER is a court monitoring service that provides:
-                </p>
-                <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
-                  <li>Real-time monitoring of 170+ U.S. federal courts</li>
-                  <li>Alert notifications for new court filings</li>
-                  <li>Direct links to PACER documents</li>
-                  <li>Search and filtering capabilities</li>
-                  <li>Analytics and reporting tools</li>
-                  <li>AI-powered legal research assistance</li>
-                </ul>
-                <p className="text-muted-foreground">
-                  CASER is a research tool designed to monitor publicly available court docket 
-                  information. We do not provide legal advice, and our service is not a substitute 
-                  for professional legal counsel or official court records.
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* User Responsibilities */}
-            <Card>
-              <CardHeader>
-                <CardTitle>User Responsibilities</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-muted-foreground">
-                  As a user of CASER, you agree to:
-                </p>
-                <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
-                  <li>Provide accurate and complete information when creating your account</li>
-                  <li>Maintain the security of your account credentials</li>
-                  <li>Use the service in compliance with all applicable laws and regulations</li>
-                  <li>Not use the service for any illegal or unauthorized purpose</li>
-                  <li>Not attempt to gain unauthorized access to our systems</li>
-                  <li>Not interfere with or disrupt the service or servers</li>
-                  <li>Verify all information through official court sources</li>
-                  <li>Use PACER links responsibly and in accordance with PACER terms</li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            {/* Account Terms */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Account Terms</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <h4 className="font-semibold mb-3">Registration</h4>
-                  <p className="text-muted-foreground">
-                    You must create an account to use certain features of CASER. You agree to:
-                  </p>
-                  <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4 mt-2">
-                    <li>Provide truthful, accurate, and complete information</li>
-                    <li>Update your information to keep it accurate</li>
-                    <li>Maintain the confidentiality of your account</li>
-                    <li>Accept responsibility for all activities under your account</li>
-                  </ul>
-                </div>
-
-                <div>
-                  <h4 className="font-semibold mb-3">Subscription and Payment</h4>
-                  <p className="text-muted-foreground">
-                    CASER offers subscription-based services. You agree to:
-                  </p>
-                  <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4 mt-2">
-                    <li>Provide current, complete, and accurate payment information</li>
-                    <li>Pay all charges incurred under your account</li>
-                    <li>Authorize automatic billing for subscription renewals</li>
-                    <li>Review and understand our refund policy</li>
-                  </ul>
-                </div>
-
-                <div>
-                  <h4 className="font-semibold mb-3">Cancellation</h4>
-                  <p className="text-muted-foreground">
-                    You may cancel your subscription at any time. Cancellation will take effect 
-                    at the end of the current billing period. No refunds will be provided for 
-                    partial months or unused portions of your subscription.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Intellectual Property */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Intellectual Property</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-muted-foreground">
-                  The service and its original content, features, and functionality are and 
-                  will remain the exclusive property of CASER and its licensors. The 
-                  service is protected by copyright, trademark, and other laws.
-                </p>
-                <p className="text-muted-foreground">
-                  You may not modify, reproduce, distribute, create derivative works, publicly 
-                  display, publicly perform, republish, download, store, or transmit any of the 
-                  material on our service, except as permitted by these Terms.
-                </p>
-                <p className="text-muted-foreground">
-                  Court data and documents accessed through CASER remain the property of 
-                  the respective courts and are subject to PACER terms and conditions.
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Privacy and Data Protection */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Privacy and Data Protection</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-muted-foreground">
-                  Your privacy is important to us. Please review our Privacy Policy, which also 
-                  governs your use of the service, to understand our practices.
-                </p>
-                <p className="text-muted-foreground">
-                  By using CASER, you consent to the collection and use of information 
-                  in accordance with our Privacy Policy.
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Disclaimers and Warranties */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Disclaimers and Warranties</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-muted-foreground">
-                  <strong>Important Disclaimer:</strong> CASER is a research tool and does 
-                  not provide legal advice. The information provided through our service is 
-                  for informational purposes only and should not be considered legal advice.
-                </p>
-                <p className="text-muted-foreground">
-                  We make no warranties or representations about the accuracy, completeness, 
-                  or timeliness of the information provided. You should always verify information 
-                  through official court sources and consult with qualified legal counsel for 
-                  specific legal matters.
-                </p>
-                <p className="text-muted-foreground">
-                  CASER is provided "as is" and "as available" without warranties of any 
-                  kind, either express or implied, including but not limited to warranties of 
-                  merchantability, fitness for a particular purpose, or non-infringement.
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Limitation of Liability */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Limitation of Liability</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-muted-foreground">
-                  In no event shall CASER, its directors, employees, partners, agents, 
-                  suppliers, or affiliates be liable for any indirect, incidental, special, 
-                  consequential, or punitive damages, including without limitation, loss of 
-                  profits, data, use, goodwill, or other intangible losses, resulting from 
-                  your use of the service.
-                </p>
-                <p className="text-muted-foreground">
-                  Our total liability to you for any cause of action whatsoever, and regardless 
-                  of the form of the action, will at all times be limited to the amount paid, 
-                  if any, by you to us for the service during the term of subscription.
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Indemnification */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Indemnification</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-muted-foreground">
-                  You agree to defend, indemnify, and hold harmless CASER and its licensee 
-                  and licensors, and their employees, contractors, agents, officers and directors, 
-                  from and against any and all claims, damages, obligations, losses, liabilities, 
-                  costs or debt, and expenses (including but not limited to attorney's fees).
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Termination */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Termination</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-muted-foreground">
-                  We may terminate or suspend your account and bar access to the service 
-                  immediately, without prior notice or liability, under our sole discretion, 
-                  for any reason whatsoever and without limitation.
-                </p>
-                <p className="text-muted-foreground">
-                  Upon termination, your right to use the service will cease immediately. 
-                  All provisions of the Terms which by their nature should survive termination 
-                  shall survive, including ownership provisions, warranty disclaimers, 
-                  indemnity, and limitations of liability.
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Governing Law */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Governing Law</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-muted-foreground">
-                  These Terms shall be interpreted and governed by the laws of the State of 
-                  New York, without regard to its conflict of law provisions.
-                </p>
-                <p className="text-muted-foreground">
-                  Any disputes arising from these Terms shall be resolved through binding 
-                  arbitration in New York, New York, in accordance with the rules of the 
-                  American Arbitration Association.
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Changes to Terms */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Changes to Terms</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-muted-foreground">
-                  We reserve the right, at our sole discretion, to modify or replace these 
-                  Terms at any time. If a revision is material, we will provide at least 
-                  30 days notice prior to any new terms taking effect.
-                </p>
-                <p className="text-muted-foreground">
-                  What constitutes a material change will be determined at our sole discretion. 
-                  By continuing to access or use our service after those revisions become 
-                  effective, you agree to be bound by the revised terms.
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Contact Information */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Contact Information</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-muted-foreground">
-                  If you have any questions about these Terms of Service, please contact us:
-                </p>
-                <div className="space-y-2 text-muted-foreground">
-                  <p><strong>Email:</strong> legal@caserlegal.com</p>
-                  <p><strong>Website:</strong> www.caserlegal.com</p>
-                  <p><strong>Address:</strong> Available upon request for legal correspondence</p>
-                </div>
-              </CardContent>
-            </Card>
-
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 lg:py-32">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center space-y-8">
-            <h2 className="text-3xl lg:text-4xl font-bold">
-              Questions About Our Terms?
-            </h2>
-            <p className="text-xl text-muted-foreground">
-              Our legal team is available to answer any questions about our Terms of Service.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" asChild>
-                <Link href="mailto:legal@caserlegal.com">
-                  Contact Legal Team
-                </Link>
-              </Button>
-              <Button variant="outline" size="lg" asChild>
-                <Link href="/privacy">
-                  View Privacy Policy
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="border-t bg-muted/30">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="space-y-2">
-              </div>
-
-            <div className="space-y-2">
-              <h4 className="font-semibold">Product</h4>
-              <ul className="space-y-1 text-sm text-muted-foreground">
-                <li><Link href="/features" className="hover:text-primary transition-colors">Features</Link></li>
-                <li><Link href="/pricing" className="hover:text-primary transition-colors">Pricing</Link></li>
-                <li><Link href="/about" className="hover:text-primary transition-colors">About</Link></li>
-              </ul>
-            </div>
-
-            <div className="space-y-2">
-              <h4 className="font-semibold">Legal</h4>
-              <ul className="space-y-1 text-sm text-muted-foreground">
-                <li><Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
-                <li><Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link></li>
-                <li><Link href="/support" className="hover:text-primary transition-colors">Support</Link></li>
-              </ul>
-            </div>
-
-            <div className="space-y-2">
-              <h4 className="font-semibold">Contact</h4>
-              <ul className="space-y-1 text-sm text-muted-foreground">
-                <li>Website: www.caserlegal.com</li>
-                <li>Available on iOS</li>
-                <li>MacOS and Web coming soon</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
-            <p>© 2025 CASER. All rights reserved. Supporting independent developers in legal technology.</p>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

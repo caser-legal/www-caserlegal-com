@@ -6,12 +6,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Progress } from '@/components/ui/progress';
 import { Calculator, FileSearch } from '@/components/ui/icons';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { formatNumber } from '@/lib/utils';
+import { DownloadButton } from '@/components/AppStoreLink';
 
 interface PACERCalculatorProps {
   standalone?: boolean;
@@ -22,17 +22,11 @@ export default function PACERCalculator({ standalone = false }: PACERCalculatorP
   const [pagesPerSearch, setPagesPerSearch] = useState([5]);
   const [documentsPerMonth, setDocumentsPerMonth] = useState([10]);
   const [hoursPerMonth, setHoursPerMonth] = useState([20]);
-  const [selectedPlan, setSelectedPlan] = useState('professional');
+  const CASER_PRO_ANNUAL = 19.99;
 
   const PACER_PAGE_COST = 0.10;
   const PACER_DOCUMENT_COST = 2.50;
   const PACER_QUARTERLY_CAP = 30;
-
-  const CASER_PRICING = {
-    professional: 49,
-    business: 149,
-    enterprise: 0,
-  };
 
   const calculatePACERCosts = () => {
     const pageCosts = monthlySearches[0] * pagesPerSearch[0] * PACER_PAGE_COST;
@@ -51,13 +45,10 @@ export default function PACERCalculator({ standalone = false }: PACERCalculatorP
     };
   };
 
-  const calculateCASERCosts = () => {
-    const monthlyCost = CASER_PRICING[selectedPlan];
-    return {
-      monthlyCost,
-      annualCost: monthlyCost * 12,
-    };
-  };
+  const calculateCASERCosts = () => ({
+    monthlyCost: CASER_PRO_ANNUAL / 12,
+    annualCost: CASER_PRO_ANNUAL,
+  });
 
   const calculateTimeSavings = () => {
     const hourlyRate = 250;
@@ -69,7 +60,7 @@ export default function PACERCalculator({ standalone = false }: PACERCalculatorP
   };
 
   const pacerCosts = useMemo(() => calculatePACERCosts(), [monthlySearches, pagesPerSearch, documentsPerMonth]);
-  const caserCosts = useMemo(() => calculateCASERCosts(), [selectedPlan]);
+  const caserCosts = useMemo(() => calculateCASERCosts(), []);
   const timeSavings = useMemo(() => calculateTimeSavings(), [hoursPerMonth]);
 
   const totalAnnualSavings = useMemo(
@@ -204,19 +195,14 @@ export default function PACERCalculator({ standalone = false }: PACERCalculatorP
                   </div>
                 </div>
 
-                {/* Plan Selection */}
-                <div className="space-y-3">
-                  <Label className="text-sm font-medium">Select CASER Plan</Label>
-                  <Select value={selectedPlan} onValueChange={setSelectedPlan}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="professional">Professional - $49/month</SelectItem>
-                      <SelectItem value="business">Business - $149/month</SelectItem>
-                      <SelectItem value="enterprise">Enterprise - Custom</SelectItem>
-                    </SelectContent>
-                  </Select>
+                <div className="p-3 border rounded-lg bg-muted/50">
+                  <p className="text-sm font-medium">CASER Pro (App Store)</p>
+                  <p className="text-lg font-semibold text-primary mt-1">
+                    ${CASER_PRO_ANNUAL}/year
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    Individual subscription purchased inside the iOS app after download.
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -344,17 +330,18 @@ export default function PACERCalculator({ standalone = false }: PACERCalculatorP
                 <Progress value={Math.min(roiPercentage, 100)} className="h-3" />
               </div>
 
-              <div className="text-center pt-4">
-                <Button size="lg" className="bg-primary text-primary-foreground" asChild>
+              <div className="text-center pt-4 flex flex-col sm:flex-row gap-3 justify-center items-center">
+                <DownloadButton size="lg" label="Download CASER" />
+                <Button size="lg" variant="outline" asChild>
                   <Link href="/contact">
-                    Purchase CASER Now
+                    Contact for Business
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
-                <p className="text-xs text-muted-foreground mt-3">
-                  AES-256 & TLS 1.3 &bull; Secure Purchase
-                </p>
               </div>
+              <p className="text-xs text-muted-foreground mt-3 text-center">
+                Subscribe to CASER Pro inside the app after download.
+              </p>
             </CardContent>
           </Card>
         </div>
