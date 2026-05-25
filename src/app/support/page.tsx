@@ -1,7 +1,8 @@
 'use client';
 
 import Navigation from '@/components/Navigation';
-
+import SiteFooter from '@/components/SiteFooter';
+import { DownloadButton } from '@/components/AppStoreLink';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -38,17 +39,10 @@ export default function SupportPage() {
               Comprehensive support resources designed for legal professionals. 
               From detailed documentation to personalized assistance, we're here to ensure your success.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" asChild>
-                <Link href="#documentation">
-                  Browse Documentation
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Link>
-              </Button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <DownloadButton size="lg" label="Download the App" />
               <Button variant="outline" size="lg" asChild>
-                <Link href="#contact">
-                  Contact Support
-                </Link>
+                <a href="mailto:hi@caserlegal.com">Contact Support</a>
               </Button>
             </div>
           </div>
@@ -79,8 +73,8 @@ export default function SupportPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Button variant="outline" className="w-full">
-                  View Guides
+                <Button variant="outline" className="w-full" asChild>
+                  <Link href="/download">Download &amp; setup</Link>
                 </Button>
               </CardContent>
             </Card>
@@ -96,8 +90,8 @@ export default function SupportPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Button variant="outline" className="w-full">
-                  Browse Docs
+                <Button variant="outline" className="w-full" asChild>
+                  <Link href="/features">View features</Link>
                 </Button>
               </CardContent>
             </Card>
@@ -113,8 +107,8 @@ export default function SupportPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Button variant="outline" className="w-full">
-                  View FAQs
+                <Button variant="outline" className="w-full" asChild>
+                  <Link href="#documentation">View help topics</Link>
                 </Button>
               </CardContent>
             </Card>
@@ -379,13 +373,13 @@ export default function SupportPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <p className="text-sm font-medium">support@caserlegal.com</p>
+                  <p className="text-sm font-medium">hi@caserlegal.com</p>
                   <p className="text-xs text-muted-foreground">
                     Response time: 24-48 hours
                   </p>
                 </div>
-                <Button variant="outline" size="sm" className="w-full">
-                  Send Email
+                <Button variant="outline" size="sm" className="w-full" asChild>
+                  <a href="mailto:hi@caserlegal.com?subject=CASER%20Support">Send Email</a>
                 </Button>
               </CardContent>
             </Card>
@@ -465,46 +459,7 @@ export default function SupportPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t bg-muted/30">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="space-y-2">
-              </div>
-
-            <div className="space-y-2">
-              <h4 className="font-semibold">Product</h4>
-              <ul className="space-y-1 text-sm text-muted-foreground">
-                <li><Link href="/features" className="hover:text-primary transition-colors">Features</Link></li>
-                <li><Link href="/pricing" className="hover:text-primary transition-colors">Pricing</Link></li>
-                <li><Link href="/about" className="hover:text-primary transition-colors">About</Link></li>
-              </ul>
-            </div>
-
-            <div className="space-y-2">
-              <h4 className="font-semibold">Support</h4>
-              <ul className="space-y-1 text-sm text-muted-foreground">
-                <li><Link href="/support" className="hover:text-primary transition-colors">Documentation</Link></li>
-                <li><Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
-                <li><Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link></li>
-              </ul>
-            </div>
-
-            <div className="space-y-2">
-              <h4 className="font-semibold">Contact</h4>
-              <ul className="space-y-1 text-sm text-muted-foreground">
-                <li>Website: www.caserlegal.com</li>
-                <li>Available on iOS</li>
-                <li>MacOS and Web coming soon</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
-            <p>© 2025 CASER. All rights reserved. Supporting independent developers in legal technology.</p>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

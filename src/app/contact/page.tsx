@@ -1,7 +1,8 @@
 'use client';
 
 import Navigation from '@/components/Navigation';
-
+import SiteFooter from '@/components/SiteFooter';
+import { DownloadButton } from '@/components/AppStoreLink';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -39,18 +40,13 @@ export default function ContactPage() {
               we're here to help you understand how CASER can eliminate wasteful PACER fees 
               and streamline your court monitoring workflow.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" asChild>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <DownloadButton size="lg" label="Download on the App Store" />
+              <Button variant="outline" size="lg" asChild>
                 <a href="mailto:hi@caserlegal.com">
                   <Mail className="w-4 h-4 mr-2" />
                   Email Us
                 </a>
-              </Button>
-              <Button variant="outline" size="lg" asChild>
-                <Link href="/pricing">
-                  View Pricing Plans
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Link>
               </Button>
             </div>
           </div>
@@ -69,7 +65,7 @@ export default function ContactPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
             {/* General Inquiries */}
             <Card className="text-center hover:shadow-lg transition-shadow">
               <CardHeader>
@@ -121,6 +117,46 @@ export default function ContactPage() {
                   <Link href="/support">
                     Visit Support Center
                   </Link>
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <Briefcase className="w-8 h-8 text-primary" />
+                </div>
+                <CardTitle>Business</CardTitle>
+                <CardDescription>
+                  Firm workflows, volume licensing, and custom alert programs
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button className="w-full" asChild>
+                  <a href="mailto:hi@caserlegal.com?subject=Business%20Inquiry%20-%20CASER">
+                    <Send className="w-4 h-4 mr-2" />
+                    Contact Sales
+                  </a>
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <ProfessionalBriefcase className="w-8 h-8 text-primary" />
+                </div>
+                <CardTitle>Enterprise</CardTitle>
+                <CardDescription>
+                  Custom integrations, data services, and enterprise deployments
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button className="w-full" variant="outline" asChild>
+                  <a href="mailto:hi@caserlegal.com?subject=Enterprise%20Inquiry%20-%20CASER">
+                    <Send className="w-4 h-4 mr-2" />
+                    Contact Sales
+                  </a>
                 </Button>
               </CardContent>
             </Card>
@@ -251,46 +287,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t bg-muted/30">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="space-y-2">
-              </div>
-
-            <div className="space-y-2">
-              <h4 className="font-semibold">Product</h4>
-              <ul className="space-y-1 text-sm text-muted-foreground">
-                <li><Link href="/features" className="hover:text-primary transition-colors">Features</Link></li>
-                <li><Link href="/pricing" className="hover:text-primary transition-colors">Pricing</Link></li>
-                <li><Link href="/download" className="hover:text-primary transition-colors">Download</Link></li>
-              </ul>
-            </div>
-
-            <div className="space-y-2">
-              <h4 className="font-semibold">Company</h4>
-              <ul className="space-y-1 text-sm text-muted-foreground">
-                <li><Link href="/about" className="hover:text-primary transition-colors">About</Link></li>
-                <li><Link href="/careers" className="hover:text-primary transition-colors">Careers</Link></li>
-                <li><Link href="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
-              </ul>
-            </div>
-
-            <div className="space-y-2">
-              <h4 className="font-semibold">Support</h4>
-              <ul className="space-y-1 text-sm text-muted-foreground">
-                <li><Link href="/support" className="hover:text-primary transition-colors">Support Center</Link></li>
-                <li><Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link></li>
-                <li><Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
-            <p>&copy; 2026 CASER. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

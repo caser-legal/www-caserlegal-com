@@ -1,8 +1,10 @@
 'use client';
 
 import Navigation from '@/components/Navigation';
+import SiteFooter from '@/components/SiteFooter';
 import Image from 'next/image';
 import PACERCalculator from '@/components/PACERCalculator';
+import { DownloadButton } from '@/components/AppStoreLink';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -47,18 +49,13 @@ export default function Home() {
                   <span className="text-primary"> Electronic Records</span>
                 </h1>
                 <p className="text-xl text-muted-foreground leading-relaxed">
-                  Monitor 170+ U.S. Courts in near real-time. Eliminate wasteful PACER search fees. 
-                  Receive instant alerts with direct document links. No PACER account required.
+                  Monitor 300+ U.S. federal court feeds. Eliminate wasteful PACER search fees.
+                  Push alerts for keyword matches with direct document links. No PACER account required.
                 </p>
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="text-lg px-8 py-6" asChild>
-                  <Link href="/contact">
-                    <DownloadDocument className="w-5 h-5 mr-2" />
-                    Join waitlist
-                  </Link>
-                </Button>
+                <DownloadButton size="lg" className="text-lg px-8 py-6 h-auto" label="Download on the App Store" />
                 <Button variant="outline" size="lg" className="text-lg px-8 py-6" asChild>
                   <a href="#features">
                     <LegalBookSearch className="w-5 h-5 mr-2" />
@@ -69,12 +66,12 @@ export default function Home() {
 
               <div className="grid grid-cols-3 gap-6 pt-8">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-primary">{formatNumber(170)}+</div>
+                  <div className="text-3xl font-bold text-primary">{formatNumber(300)}+</div>
                   <div className="text-sm text-muted-foreground">U.S. Courts</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-primary">Real-time</div>
-                  <div className="text-sm text-muted-foreground">Monitoring</div>
+                  <div className="text-3xl font-bold text-primary">Push</div>
+                  <div className="text-sm text-muted-foreground">Alerts</div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-primary">$0</div>
@@ -115,9 +112,9 @@ export default function Home() {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <CourthouseClock className="w-6 h-6 text-primary" />
                 </div>
-                <CardTitle>Near Real-Time Monitoring</CardTitle>
+                <CardTitle>Court monitoring &amp; push alerts</CardTitle>
                 <CardDescription>
-                  Receive instant notifications as new entries are docketed across 170+ U.S. courts
+                  Push notifications when filings match your keywords across 300+ federal court feeds
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -255,9 +252,9 @@ export default function Home() {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <BrainScales className="w-6 h-6 text-primary" />
                 </div>
-                <CardTitle>AI Assistant</CardTitle>
+                <CardTitle>Atticus AI (CASER Pro)</CardTitle>
                 <CardDescription>
-                  Powered by Atticus, your legal research expert
+                  Gemini-powered legal research assistant — not legal advice
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -314,10 +311,10 @@ export default function Home() {
                     <span className="text-primary-foreground text-sm font-bold">2</span>
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold mb-2">Real-Time Alert System</h3>
+                    <h3 className="text-lg font-semibold mb-2">Push alert system</h3>
                     <p className="text-muted-foreground">
-                      Instant push notifications when new filings match your criteria. 
-                      Includes direct PACER links for immediate document access.
+                      Push notifications when new filings match your keywords (scans run about every
+                      5 minutes). Includes direct PACER links for document access.
                     </p>
                   </div>
                 </div>
@@ -432,7 +429,7 @@ export default function Home() {
                     <div>
                       <h4 className="font-medium mb-1">Zero Search Fees</h4>
                       <p className="text-sm text-muted-foreground">
-                        Monitor 170+ courts without paying search fees. Only pay for documents 
+                        Monitor 300+ courts without paying search fees. Only pay for documents 
                         you actually need, eliminating surprise charges.
                       </p>
                     </div>
@@ -533,7 +530,7 @@ export default function Home() {
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>Monitor 170+ courts with zero search costs</span>
+                      <span>Monitor 300+ courts with zero search costs</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
@@ -636,12 +633,12 @@ export default function Home() {
                 <h3 className="text-xl font-semibold text-primary mb-4">Advanced Data Capabilities</h3>
                 <p className="text-muted-foreground mb-4">
                   Our proprietary monitoring system captures comprehensive docket information 
-                  from 170+ U.S. courts, providing insights unavailable through any other source.
+                  from 300+ U.S. courts, providing insights unavailable through any other source.
                 </p>
                 <div className="space-y-3">
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-sm">Real-time court monitoring across all federal jurisdictions</span>
+                    <span className="text-sm">Federal district and bankruptcy court feed monitoring</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-primary rounded-full"></div>
@@ -806,19 +803,13 @@ export default function Home() {
             <div className="bg-primary/5 border border-primary/20 rounded-lg p-8">
               <h3 className="text-2xl font-bold mb-4">Ready to Get Started?</h3>
               <p className="text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
-                We are looking to expand these services soon. Contact to Join Waitlist.
+                Enterprise data services and custom integrations are available by inquiry.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="lg" className="text-lg px-8 py-6" asChild>
-                  <Link href="/contact">
-                    Join Waitlist
-                  </Link>
+                  <Link href="/contact">Contact for Enterprise</Link>
                 </Button>
-                <Button variant="outline" size="lg" className="text-lg px-8 py-6" asChild>
-                  <a href="#download">
-                    Download CASER Pro
-                  </a>
-                </Button>
+                <DownloadButton size="lg" className="text-lg px-8 py-6 h-auto" label="Download CASER" />
               </div>
             </div>
           </div>
@@ -849,11 +840,7 @@ export default function Home() {
                   <p className="text-sm text-muted-foreground">
                     Available exclusively on the App Store for iOS devices
                   </p>
-                  <Button size="lg" className="w-full" asChild>
-                    <Link href="/contact">
-                      Join waitlist
-                    </Link>
-                  </Button>
+                  <DownloadButton className="w-full" size="lg" label="Download" />
                 </div>
               </Card>
 
@@ -900,16 +887,11 @@ export default function Home() {
               <span className="text-primary"> for iOS</span>
             </h2>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Start monitoring 170+ U.S. federal courts in real-time. Transform your court monitoring 
-              workflow and eliminate wasteful PACER fees today.
+              Download CASER on the App Store. Monitor 300+ federal court feeds and upgrade to CASER Pro
+              inside the app.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="text-lg px-8 py-6" asChild>
-                <Link href="/contact">
-                  <DownloadDocument className="w-5 h-5 mr-2" />
-                  Join waitlist
-                </Link>
-              </Button>
+              <DownloadButton size="lg" className="text-lg px-8 py-6 h-auto" label="Download on the App Store" />
               <Button variant="outline" size="lg" className="text-lg px-8 py-6" asChild>
                 <Link href="/download">
                   Learn More
@@ -934,43 +916,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t bg-muted/30">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="space-y-3">
-              <h4 className="font-semibold">Product</h4>
-              <ul className="space-y-1 text-sm text-muted-foreground">
-                <li><Link href="/features" className="hover:text-primary transition-colors">Features</Link></li>
-                <li><Link href="/pricing" className="hover:text-primary transition-colors">Pricing</Link></li>
-                <li><Link href="/download" className="hover:text-primary transition-colors">Download</Link></li>
-              </ul>
-            </div>
-
-            <div className="space-y-3">
-              <h4 className="font-semibold">Company</h4>
-              <ul className="space-y-1 text-sm text-muted-foreground">
-                <li><Link href="/about" className="hover:text-primary transition-colors">About</Link></li>
-                <li><Link href="/careers" className="hover:text-primary transition-colors">Careers</Link></li>
-                <li><Link href="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
-              </ul>
-            </div>
-
-            <div className="space-y-3">
-              <h4 className="font-semibold">Support</h4>
-              <ul className="space-y-1 text-sm text-muted-foreground">
-                <li><Link href="/support" className="hover:text-primary transition-colors">Support Center</Link></li>
-                <li><Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link></li>
-                <li><Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
-            <p>&copy; 2026 CASER. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
