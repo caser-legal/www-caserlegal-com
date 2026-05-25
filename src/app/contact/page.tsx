@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Mail, MessageCircle, ProfessionalBriefcase } from '@/components/ui/icons';
 import { Briefcase, Send } from 'lucide-react';
 import Link from 'next/link';
+import { CONTACT_EMAIL, mailto } from '@/lib/contact-email';
 
 export default function ContactPage() {
   return (
@@ -26,8 +27,8 @@ export default function ContactPage() {
             </h1>
             <p className="text-lg text-muted-foreground">
               Product questions, support, or firm and enterprise programs — we respond at{' '}
-              <a href="mailto:hi@caserlegal.com" className="text-primary font-medium hover:underline">
-                hi@caserlegal.com
+              <a href={`mailto:${CONTACT_EMAIL}`} className="text-primary font-medium hover:underline">
+                {CONTACT_EMAIL}
               </a>
               .
             </p>
@@ -35,7 +36,7 @@ export default function ContactPage() {
               badgeSize="lg"
               className="justify-center"
               secondary={
-                <MatchedOutlineButton href="mailto:hi@caserlegal.com" badgeSize="lg" internal={false}>
+                <MatchedOutlineButton href={mailto()} badgeSize="lg" internal={false}>
                   <Mail className="w-4 h-4" />
                   Email Us
                 </MatchedOutlineButton>
@@ -60,7 +61,7 @@ export default function ContactPage() {
               description={['Features, pricing, setup,', 'and troubleshooting']}
               icon={<Mail className="w-6 h-6 text-primary" />}
             >
-              <p className="text-sm font-medium text-center">hi@caserlegal.com</p>
+              <p className="text-sm font-medium text-center">{CONTACT_EMAIL}</p>
               <div className="mt-auto">
                 <ContactCardAction href="/support" label="Support Center" internal />
               </div>
@@ -73,7 +74,7 @@ export default function ContactPage() {
             >
               <div className="flex-1" />
               <ContactCardAction
-                href="mailto:hi@caserlegal.com?subject=Business%20Inquiry%20-%20CASER"
+                href={mailto({ subject: 'Business Inquiry - CASER' })}
                 label="Contact Sales"
                 icon={<Send className="w-4 h-4 mr-2" />}
               />
@@ -86,7 +87,7 @@ export default function ContactPage() {
             >
               <div className="flex-1" />
               <ContactCardAction
-                href="mailto:hi@caserlegal.com?subject=Enterprise%20Inquiry%20-%20CASER"
+                href={mailto({ subject: 'Enterprise Inquiry - CASER' })}
                 label="Contact Sales"
                 variant="outline"
                 icon={<Send className="w-4 h-4 mr-2" />}
@@ -105,7 +106,10 @@ export default function ContactPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto w-full">
               <ContactCardAction
-                href="mailto:hi@caserlegal.com?subject=CASER%20Firm%20Inquiry&body=Firm%20size%3A%0APractice%20areas%3A%0APACER%20usage%3A%0ANeeds%3A"
+                href={mailto({
+                  subject: 'CASER Firm Inquiry',
+                  body: 'Firm size:\nPractice areas:\nPACER usage:\nNeeds:',
+                })}
                 label="Email firm details"
                 icon={<Mail className="w-4 h-4 mr-2" />}
               />

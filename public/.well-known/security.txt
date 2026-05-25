@@ -1,4 +1,4 @@
-Contact: mailto:security@caserlegal.com
+Contact: mailto:caserlegal@proton.me
 Expires: 2027-03-28T23:59:59.000Z
 Preferred-Languages: en
 Canonical: https://www.caserlegal.com/.well-known/security.txt

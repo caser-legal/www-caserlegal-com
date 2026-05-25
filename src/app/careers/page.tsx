@@ -261,7 +261,7 @@ export default function CareersPage() {
               Don't see a specific role that matches your skills?
             </p>
             <p className="text-xs text-muted-foreground mb-3 max-w-md mx-auto">
-              Opens your email app with a pre-filled message to careers@caserlegal.com
+              Opens your email app with a pre-filled message to caserlegal@proton.me
             </p>
             <Button variant="outline" asChild>
               <a href={careersResumeMailto()}>
@@ -284,8 +284,8 @@ export default function CareersPage() {
               Join us in our mission to democratize access to court records and eliminate wasteful PACER fees
             </p>
             <p className="text-sm text-muted-foreground max-w-lg mx-auto">
-              Apply Today opens your email app with a pre-filled application template. Attach your resume
-              before sending.
+              Apply Today opens your email app to caserlegal@proton.me with a pre-filled application
+              template. Attach your resume before sending.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild>

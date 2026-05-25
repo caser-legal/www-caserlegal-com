@@ -4,6 +4,7 @@ import PageShell from '@/components/PageShell';
 import { LegalParagraph, LegalSection } from '@/components/LegalProse';
 import { Badge } from '@/components/ui/badge';
 import { Gavel } from '@/components/ui/icons';
+import { CONTACT_EMAIL } from '@/lib/contact-email';
 
 export default function TermsPage() {
   return (
@@ -121,8 +122,8 @@ export default function TermsPage() {
               <LegalParagraph>
                 We reserve the right to suspend access for violations of these terms or fraudulent
                 activity. Contact{' '}
-                <a href="mailto:hi@caserlegal.com" className="text-primary hover:underline">
-                  hi@caserlegal.com
+                <a href={`mailto:${CONTACT_EMAIL}`} className="text-primary hover:underline">
+                  {CONTACT_EMAIL}
                 </a>{' '}
                 with questions about your use of the service.
               </LegalParagraph>

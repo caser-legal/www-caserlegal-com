@@ -30,5 +30,4 @@ npm run build  # static export to out/
 
 ## Support
 
-- **General / support**: hi@caserlegal.com
-- **Privacy rights**: rights@caserlegal.com
+- **Contact (support, careers, privacy, security)**: caserlegal@proton.me

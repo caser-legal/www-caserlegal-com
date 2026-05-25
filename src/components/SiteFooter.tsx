@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { getCopyrightYear } from '@/lib/copyright';
+import { COPYRIGHT_HOLDER, getCopyrightYear } from '@/lib/copyright';
+import { CONTACT_EMAIL } from '@/lib/contact-email';
 
 const productLinks = [
   { href: '/features', label: 'Features' },
@@ -98,10 +99,10 @@ export default function SiteFooter() {
                 ))}
                 <li>
                   <a
-                    href="mailto:hi@caserlegal.com"
+                    href={`mailto:${CONTACT_EMAIL}`}
                     className="text-muted-foreground/45 hover:text-muted-foreground/65 transition-colors"
                   >
-                    hi@caserlegal.com
+                    {CONTACT_EMAIL}
                   </a>
                 </li>
               </ul>
@@ -111,11 +112,13 @@ export default function SiteFooter() {
 
         <div className="border-t border-border mt-10 pt-8 space-y-2 text-center text-xs sm:text-sm text-muted-foreground">
           <p>
-            <span suppressHydrationWarning>&copy; {year}</span> CASER, LLC. All rights reserved.
+            <span suppressHydrationWarning>&copy; {year}</span> {COPYRIGHT_HOLDER}. All rights
+            reserved.
           </p>
           <p className="max-w-3xl mx-auto leading-relaxed">
-            CASER and Case Automated Search of Electronic Records are trademarks of CASER, LLC.
-            Apple, App Store, and related marks are trademarks of Apple Inc.
+            CASER and Case Automated Search of Electronic Records are product names used on this
+            site and in the iOS app. Apple, App Store, and related marks are trademarks of Apple
+            Inc.
           </p>
         </div>
       </div>

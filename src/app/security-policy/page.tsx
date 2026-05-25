@@ -4,6 +4,7 @@ import PageShell from '@/components/PageShell';
 import { LegalParagraph, LegalSection } from '@/components/LegalProse';
 import { Badge } from '@/components/ui/badge';
 import { Shield } from 'lucide-react';
+import { CONTACT_EMAIL } from '@/lib/contact-email';
 
 export default function SecurityPolicyPage() {
   return (
@@ -21,7 +22,7 @@ export default function SecurityPolicyPage() {
             <LegalSection title="Scope">
               <LegalParagraph>
                 This policy applies to the CASER marketing website at caserlegal.com and related
-                static web properties operated by CASER, LLC. The CASER iOS application has its own
+                static web properties created and operated by Adam Doherty. The CASER iOS application has its own
                 security and privacy practices documented in the App Store listing and in-app Terms
                 &amp; Privacy.
               </LegalParagraph>
@@ -31,10 +32,10 @@ export default function SecurityPolicyPage() {
               <LegalParagraph>
                 If you believe you have found a security issue, please report it responsibly to{' '}
                 <a
-                  href="mailto:security@caserlegal.com"
+                  href={`mailto:${CONTACT_EMAIL}`}
                   className="text-primary hover:underline"
                 >
-                  security@caserlegal.com
+                  {CONTACT_EMAIL}
                 </a>
                 . Include a clear description, steps to reproduce, and impact assessment. We aim to
                 acknowledge reports within five business days.
