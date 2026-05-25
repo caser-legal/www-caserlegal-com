@@ -1,5 +1,8 @@
-/** Public contact address for CASER (support, careers, privacy, security). */
+/** Public contact address for CASER (support, careers, general inquiries). */
 export const CONTACT_EMAIL = 'caserlegal@proton.me';
+
+/** Privacy rights and data requests (matches in-app Privacy Policy). */
+export const PRIVACY_RIGHTS_EMAIL = 'rights@caserlegal.com';
 
 export function mailto(href: { subject?: string; body?: string } = {}): string {
   const params = new URLSearchParams();

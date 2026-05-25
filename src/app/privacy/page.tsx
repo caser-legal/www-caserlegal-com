@@ -4,7 +4,7 @@ import PageShell from '@/components/PageShell';
 import { LegalParagraph, LegalSection } from '@/components/LegalProse';
 import { Badge } from '@/components/ui/badge';
 import { Shield } from 'lucide-react';
-import { CONTACT_EMAIL } from '@/lib/contact-email';
+import { CONTACT_EMAIL, PRIVACY_RIGHTS_EMAIL } from '@/lib/contact-email';
 
 export default function PrivacyPage() {
   return (
@@ -93,8 +93,11 @@ export default function PrivacyPage() {
                 You have the right to: (a) access your personal data, (b) correct inaccurate data,
                 (c) request deletion of your data, (d) export your data, (e) opt-out of non-essential
                 communications, and (f) withdraw consent for data processing. Contact{' '}
-                <a href={`mailto:${CONTACT_EMAIL}`} className="text-primary hover:underline">
-                  {CONTACT_EMAIL}
+                <a
+                  href={`mailto:${PRIVACY_RIGHTS_EMAIL}`}
+                  className="text-primary hover:underline"
+                >
+                  {PRIVACY_RIGHTS_EMAIL}
                 </a>{' '}
                 to exercise these rights.
               </LegalParagraph>
@@ -127,6 +130,13 @@ export default function PrivacyPage() {
             <LegalSection title="13. Contact Information">
               <LegalParagraph>
                 For privacy-related questions, data requests, or to exercise your rights, contact{' '}
+                <a
+                  href={`mailto:${PRIVACY_RIGHTS_EMAIL}`}
+                  className="text-primary hover:underline"
+                >
+                  {PRIVACY_RIGHTS_EMAIL}
+                </a>
+                . For general support, use{' '}
                 <a href={`mailto:${CONTACT_EMAIL}`} className="text-primary hover:underline">
                   {CONTACT_EMAIL}
                 </a>
