@@ -3,9 +3,7 @@
 import PageShell from '@/components/PageShell';
 import { LegalParagraph, LegalSection } from '@/components/LegalProse';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Gavel } from '@/components/ui/icons';
-import Link from 'next/link';
 
 export default function TermsPage() {
   return (
@@ -147,14 +145,6 @@ export default function TermsPage() {
             </LegalSection>
           </div>
 
-          <div className="flex gap-4 mt-12">
-            <Button asChild>
-              <Link href="/privacy">Privacy Policy</Link>
-            </Button>
-            <Button variant="outline" asChild>
-              <Link href="/support">Support</Link>
-            </Button>
-          </div>
         </div>
       </section>
     </PageShell>

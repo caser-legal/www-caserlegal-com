@@ -61,7 +61,7 @@ export default function SupportPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-x-6 sm:gap-x-10 md:gap-x-14 gap-y-8 max-w-5xl mx-auto">
             <Card className="text-center hover:shadow-lg transition-shadow cursor-pointer">
               <CardHeader>
                 <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
@@ -447,8 +447,9 @@ export default function SupportPage() {
                 <CardTitle className="text-lg">Feedback</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Help us improve CASER
+                <p className="text-sm text-muted-foreground mb-4 min-h-[2.5rem]">
+                  Help us improve CASER.
+                  <span className="block">Share bugs, ideas, or feature requests.</span>
                 </p>
                 <Button variant="outline" size="sm" className="w-full">
                   Send Feedback

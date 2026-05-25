@@ -3,9 +3,7 @@
 import PageShell from '@/components/PageShell';
 import { LegalParagraph, LegalSection } from '@/components/LegalProse';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Shield } from 'lucide-react';
-import Link from 'next/link';
 
 export default function SecurityPolicyPage() {
   return (
@@ -67,14 +65,6 @@ export default function SecurityPolicyPage() {
             </LegalSection>
           </div>
 
-          <div className="flex gap-4 mt-12">
-            <Button asChild>
-              <a href="mailto:security@caserlegal.com">Report an issue</a>
-            </Button>
-            <Button variant="outline" asChild>
-              <Link href="/.well-known/security.txt">security.txt</Link>
-            </Button>
-          </div>
         </div>
       </section>
     </PageShell>

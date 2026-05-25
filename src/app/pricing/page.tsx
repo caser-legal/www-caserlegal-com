@@ -2,16 +2,12 @@
 
 import PageShell from '@/components/PageShell';
 import PricingTiers from '@/components/PricingTiers';
-import dynamic from 'next/dynamic';
+import PACERCalculator from '@/components/PACERCalculator';
+import ShowcaseLeftSlot from '@/components/ShowcaseLeftSlot';
 import { AppStoreCtaRow, MatchedOutlineButton } from '@/components/AppStoreLink';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { DollarDocument } from '@/components/ui/icons';
-import Link from 'next/link';
-
-const PACERCalculator = dynamic(() => import('@/components/PACERCalculator'), {
-  loading: () => <div className="py-16 lg:py-24 animate-pulse" />,
-});
+import { Calculator, DollarDocument } from '@/components/ui/icons';
+import { ArrowRight } from 'lucide-react';
 
 export default function PricingPage() {
   return (
@@ -50,7 +46,43 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <PACERCalculator standalone />
+      <section className="py-20 lg:py-32">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto space-y-12">
+            <div className="text-center space-y-4 max-w-3xl mx-auto">
+              <div className="flex items-center justify-center gap-2">
+                <Calculator className="w-5 h-5 text-primary" />
+                <Badge variant="secondary" className="w-fit">
+                  Interactive Calculator
+                </Badge>
+              </div>
+              <h2 className="text-3xl lg:text-4xl font-bold">PACER Savings Calculator</h2>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                Adjust the sliders to match your PACER usage. Savings and ROI update on the left;
+                usage inputs and traditional PACER costs stay on the right.
+              </p>
+            </div>
+
+            <PACERCalculator showcase leftSlot={<ShowcaseLeftSlot />} />
+
+            <div className="text-center space-y-3">
+              <AppStoreCtaRow
+                badgeSize="lg"
+                className="justify-center"
+                secondary={
+                  <MatchedOutlineButton href="/contact" badgeSize="lg">
+                    Contact for Business
+                    <ArrowRight className="w-4 h-4" />
+                  </MatchedOutlineButton>
+                }
+              />
+              <p className="text-xs text-muted-foreground">
+                Subscribe to CASER Pro inside the app after download.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
     </PageShell>
   );
 }

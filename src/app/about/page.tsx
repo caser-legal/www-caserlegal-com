@@ -10,7 +10,6 @@ import {
   ScalesOfJustice, 
   Gavel, 
   CourthouseClock, 
-  LegalDocument,
   ProfessionalBriefcase,
   BrainScales 
 } from '@/components/ui/icons';
@@ -20,10 +19,10 @@ export default function AboutPage() {
   return (
     <PageShell>
       {/* Hero Section */}
-      <section className="relative py-20 lg:py-32">
+      <section className="relative pt-10 pb-14 sm:pt-12 sm:pb-16 lg:pt-14 lg:pb-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
-            <Badge variant="secondary" className="w-fit">
+            <Badge variant="secondary" className="w-fit mx-auto">
               <ScalesOfJustice className="w-3 h-3 mr-2" />
               About CASER
             </Badge>
@@ -49,64 +48,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Mission Section */}
-      <section className="py-20 lg:py-32 bg-muted/50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <h2 className="text-3xl lg:text-4xl font-bold">
-                Our Mission: Democratizing Access to Court Intelligence
-              </h2>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                We believe that every legal professional deserves access to real-time court docket 
-                intelligence without the prohibitive costs and inefficiencies of traditional PACER research.
-              </p>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                CASER was engineered to eliminate the billions of dollars wasted annually on 
-                unnecessary PACER searches while providing the critical court monitoring capabilities 
-                that modern litigation demands.
-              </p>
-              <div className="space-y-2">
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-5 h-5 text-primary" />
-                  <span>300+ U.S. federal court feeds monitored</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-5 h-5 text-primary" />
-                  <span>Thousands saved annually per user</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-5 h-5 text-primary" />
-                  <span>Enterprise-grade security and privacy</span>
-                </div>
-              </div>
-            </div>
-            <div className="relative">
-              <div className="bg-gradient-to-br from-primary/20 to-primary/5 p-8 rounded-2xl border">
-                <div className="space-y-6">
-                  <div className="text-center">
-                    <div className="text-4xl font-bold text-primary mb-2">$2.3B+</div>
-                    <div className="text-sm text-muted-foreground">Wasted annually on PACER searches</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-4xl font-bold text-primary mb-2">300+</div>
-                    <div className="text-sm text-muted-foreground">Courts monitored</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-4xl font-bold text-primary mb-2">10K+</div>
-                    <div className="text-sm text-muted-foreground">Legal professionals served</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Origin Story Section */}
-      <section className="py-20 lg:py-32">
+      <section className="pt-10 pb-20 sm:pt-12 lg:pt-14 lg:pb-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center space-y-4 mb-16">
+          <div className="text-center space-y-3 mb-10">
             <h2 className="text-3xl lg:text-4xl font-bold">
               How CASER Was Born
             </h2>
@@ -164,62 +109,121 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Card className="text-center">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 items-stretch">
+            <Card className="text-center flex flex-col h-full">
               <CardHeader>
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
                   <ScalesOfJustice className="w-6 h-6 text-primary" />
                 </div>
-                <CardTitle className="text-lg">Integrity</CardTitle>
+                <CardTitle className="text-lg">Lived experience</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-1">
                 <p className="text-sm text-muted-foreground">
-                  Unwavering commitment to accuracy, transparency, and ethical conduct in all aspects of our service.
+                  CASER began after navigating federal courts Pro Se—when PACER made it hard to know
+                  what changed on a docket. We build for people who have lived that problem.
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="text-center">
+            <Card className="text-center flex flex-col h-full">
+              <CardHeader>
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <BrainScales className="w-6 h-6 text-primary" />
+                </div>
+                <CardTitle className="text-lg">Practical engineering</CardTitle>
+              </CardHeader>
+              <CardContent className="flex-1">
+                <p className="text-sm text-muted-foreground">
+                  The founder learned to code to solve real monitoring needs. The iOS app ships on the
+                  App Store—focused tools, not buzzwords.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center flex flex-col h-full">
               <CardHeader>
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
                   <CourthouseClock className="w-6 h-6 text-primary" />
                 </div>
-                <CardTitle className="text-lg">Timeliness</CardTitle>
+                <CardTitle className="text-lg">Open access</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-1">
                 <p className="text-sm text-muted-foreground">
-                  Real-time delivery of critical court information because in litigation, timing is everything.
+                  Monitor federal court feeds without a PACER account for in-app search. Open documents
+                  on PACER only when you choose—public docket data stays reachable.
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="text-center">
-              <CardHeader>
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <LegalDocument className="w-6 h-6 text-primary" />
-                </div>
-                <CardTitle className="text-lg">Precision</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Meticulous attention to detail ensuring every alert, document, and data point meets the highest standards.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center">
+            <Card className="text-center flex flex-col h-full">
               <CardHeader>
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
                   <ProfessionalBriefcase className="w-6 h-6 text-primary" />
                 </div>
-                <CardTitle className="text-lg">Excellence</CardTitle>
+                <CardTitle className="text-lg">Honest economics</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-1">
                 <p className="text-sm text-muted-foreground">
-                  Relentless pursuit of perfection in legal technology, matching the standards of top-tier law firms.
+                  CASER Pro is $19.99 per year with clear limits on the free tier—no surprise search
+                  bills from hunting filings across hundreds of courts.
                 </p>
               </CardContent>
             </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Mission Section */}
+      <section className="py-20 lg:py-32">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-6">
+              <h2 className="text-3xl lg:text-4xl font-bold">
+                Our Mission: Democratizing Access to Court Intelligence
+              </h2>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                We believe that every legal professional deserves access to real-time court docket 
+                intelligence without the prohibitive costs and inefficiencies of traditional PACER research.
+              </p>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                CASER was engineered to eliminate the billions of dollars wasted annually on 
+                unnecessary PACER searches while providing the critical court monitoring capabilities 
+                that modern litigation demands.
+              </p>
+              <div className="space-y-2">
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-primary" />
+                  <span>300+ U.S. federal court feeds monitored</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-primary" />
+                  <span>Thousands saved annually per user</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-primary" />
+                  <span>Enterprise-grade security and privacy</span>
+                </div>
+              </div>
+            </div>
+            <div className="relative">
+              <div className="bg-gradient-to-br from-primary/20 to-primary/5 p-8 rounded-2xl border">
+                <div className="space-y-6">
+                  <div className="text-center">
+                    <div className="text-4xl font-bold text-primary mb-2">$2.3B+</div>
+                    <div className="text-sm text-muted-foreground">Wasted annually on PACER searches</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-4xl font-bold text-primary mb-2">300+</div>
+                    <div className="text-sm text-muted-foreground leading-snug">Federal U.S.</div>
+                    <div className="text-sm text-muted-foreground leading-snug">Courts</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-4xl font-bold text-primary mb-2">10K+</div>
+                    <div className="text-sm text-muted-foreground">Legal professionals served</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -236,14 +240,14 @@ export default function AboutPage() {
               legal professionals, for legal professionals.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" asChild>
+              <Button variant="outline" size="lg" asChild>
                 <Link href="/download">
                   Download CASER
                 </Link>
               </Button>
-              <Button variant="outline" size="lg" asChild>
-                <Link href="/support">
-                  Contact Our Team
+              <Button size="lg" asChild>
+                <Link href="/careers#open-positions">
+                  Apply Today
                 </Link>
               </Button>
             </div>

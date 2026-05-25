@@ -4,6 +4,9 @@ import PageShell from '@/components/PageShell';
 import Image from 'next/image';
 import { AppStoreBadge, AppStoreCtaRow, MatchedOutlineButton } from '@/components/AppStoreLink';
 import { Badge } from '@/components/ui/badge';
+import { PlatformStatusBadge } from '@/components/PlatformStatusBadge';
+import { CheckCircle } from 'lucide-react';
+import { PRO_FEATURES } from '@/lib/pricing-features';
 import {
   Gavel,
   CourthouseClock,
@@ -126,10 +129,27 @@ export default function DownloadPage() {
               <span className="font-medium">Account</span>
               <Badge variant="secondary">No account required</Badge>
             </div>
+            <div className="flex justify-between items-center text-sm pt-2 border-t">
+              <span className="font-medium">Platform</span>
+              <PlatformStatusBadge status="available" />
+            </div>
             <p className="text-sm text-muted-foreground pt-4 border-t">
-              Free tier: 1 search (lifetime), 1 keyword alert, 5 saved cases. CASER Pro unlocks
-              unlimited search, alerts, saves, and Atticus AI.
+              Free tier: 1 search (lifetime), 1 keyword alert, 5 saved cases.
             </p>
+            <div className="pt-4 border-t space-y-3">
+              <p className="font-semibold text-sm">CASER Pro ($19.99/year)</p>
+              <p className="text-xs text-muted-foreground">
+                One-year subscription via the App Store. Includes:
+              </p>
+              <ul className="space-y-2">
+                {PRO_FEATURES.map((f) => (
+                  <li key={f} className="flex items-start gap-2 text-sm">
+                    <CheckCircle className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </section>
