@@ -31,7 +31,7 @@ export default function DownloadPage() {
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
               Monitor 300+ U.S. federal court feeds. Search filings, set keyword alerts, and upgrade
-              to CASER Pro ($19.99/year) inside the app after download.
+              to CASER Pro ($14.99/year) inside the app after download.
             </p>
             <AppStoreCtaRow
               badgeSize="lg"
@@ -137,7 +137,7 @@ export default function DownloadPage() {
               Free tier: 1 search (lifetime), 1 keyword alert, 5 saved cases.
             </p>
             <div className="pt-4 border-t space-y-3">
-              <p className="font-semibold text-sm">CASER Pro ($19.99/year)</p>
+              <p className="font-semibold text-sm">CASER Pro ($14.99/year)</p>
               <p className="text-xs text-muted-foreground">
                 One-year subscription via the App Store. Includes:
               </p>

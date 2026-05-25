@@ -87,7 +87,7 @@ export default function TermsPage() {
                 Searching cases and accessing PACER document links through CASER incurs no per-search
                 or per-result fees within the app. The PACER Savings Tracker shows what you would have
                 paid on PACER&apos;s uncapped search-result screens ($0.10 per result) if you had used
-                their system instead. CASER Pro is a yearly subscription ($19.99/year via the App
+                their system instead. CASER Pro is a yearly subscription ($14.99/year via the App
                 Store). The tracker is informational only and does not represent actual PACER bills.
               </LegalParagraph>
             </LegalSection>

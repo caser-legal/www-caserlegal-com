@@ -153,7 +153,7 @@ export default function AboutPage() {
               </CardHeader>
               <CardContent className="flex-1">
                 <p className="text-sm text-muted-foreground">
-                  CASER Pro is $19.99 per year with clear limits on the free tier—no surprise search
+                  CASER Pro is $14.99 per year with clear limits on the free tier—no surprise search
                   bills from hunting filings across hundreds of courts.
                 </p>
               </CardContent>

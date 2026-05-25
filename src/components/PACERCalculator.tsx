@@ -11,6 +11,7 @@ import { Calculator, FileSearch } from '@/components/ui/icons';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { cn, formatNumber } from '@/lib/utils';
+import { CASER_PRO_ANNUAL_PRICE } from '@/lib/branding';
 import { calculatePacerBilling } from '@/lib/pacer-fees';
 import { AppStoreCtaRow, MatchedOutlineButton } from '@/components/AppStoreLink';
 
@@ -34,7 +35,7 @@ export default function PACERCalculator({
   const [pagesPerSearch, setPagesPerSearch] = useState([5]);
   const [documentsPerMonth, setDocumentsPerMonth] = useState([10]);
   const [hoursPerMonth, setHoursPerMonth] = useState([20]);
-  const CASER_PRO_ANNUAL = 19.99;
+  const CASER_PRO_ANNUAL = CASER_PRO_ANNUAL_PRICE;
 
   const calculatePACERCosts = () =>
     calculatePacerBilling({
