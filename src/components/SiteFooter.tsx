@@ -20,6 +20,9 @@ const companyLinks = [
 
 const supportLinks = [
   { href: '/support', label: 'Help Center' },
+  { href: '/support/getting-started', label: 'Getting Started' },
+  { href: '/support/user-guide', label: 'User Guide' },
+  { href: '/support/troubleshooting', label: 'Troubleshooting' },
   { href: '/terms', label: 'Terms of Service' },
   { href: '/privacy', label: 'Privacy Policy' },
   { href: '/security-policy', label: 'Security Policy' },

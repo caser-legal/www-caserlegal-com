@@ -1,41 +1,39 @@
 'use client';
 
+import Link from 'next/link';
 import PageShell from '@/components/PageShell';
 import { AppStoreCtaRow, MatchedOutlineButton } from '@/components/AppStoreLink';
 import { CONTACT_EMAIL, mailto } from '@/lib/contact-email';
+import { supportFaqPreview, supportNav } from '@/lib/support-docs';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { 
-  ScalesOfJustice, 
-  LegalBookSearch, 
+import {
   DownloadDocument,
+  LegalBookSearch,
+  Mail,
   ProfessionalBriefcase,
   Gavel,
-  Mail,
-  ExternalLink
 } from '@/components/ui/icons';
-import { CheckCircle, ArrowRight, Star } from 'lucide-react';
-import Link from 'next/link';
+import { ArrowRight, HelpCircle } from 'lucide-react';
 
 export default function SupportPage() {
   return (
     <PageShell>
-      {/* Hero Section */}
       <section className="relative py-20 lg:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
-            <Badge variant="secondary" className="w-fit">
+            <Badge variant="secondary" className="w-fit mx-auto">
               <ProfessionalBriefcase className="w-3 h-3 mr-2" />
-              Support Center
+              Help Center
             </Badge>
             <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">
-              Professional Support
-              <span className="text-primary"> When You Need It</span>
+              CASER Support
+              <span className="text-primary"> for iOS</span>
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Comprehensive support resources designed for legal professionals. 
-              From detailed documentation to personalized assistance, we're here to ensure your success.
+              Guides for search, keyword alerts, Atticus AI, PACER savings, subscriptions, and
+              troubleshooting—based on the CASER app for iPhone and iPad.
             </p>
             <AppStoreCtaRow
               badgeSize="lg"
@@ -50,66 +48,66 @@ export default function SupportPage() {
         </div>
       </section>
 
-      {/* Quick Help Section */}
-      <section className="py-20 lg:py-32 bg-muted/50">
+      <section className="py-16 lg:py-24 bg-muted/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center space-y-4 mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold">
-              How Can We Help You?
-            </h2>
+          <div className="text-center space-y-4 mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold">Start here</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Quick access to the most common support resources and answers
+              New to CASER or need a specific feature? Pick a guide below.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-x-6 sm:gap-x-10 md:gap-x-14 gap-y-8 max-w-5xl mx-auto">
-            <Card className="text-center hover:shadow-lg transition-shadow cursor-pointer">
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <Card className="text-center hover:shadow-lg transition-shadow">
               <CardHeader>
                 <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
                   <DownloadDocument className="w-8 h-8 text-primary" />
                 </div>
                 <CardTitle>Getting Started</CardTitle>
-                <CardDescription>
-                  New to CASER? Start here with setup guides and tutorials
-                </CardDescription>
+                <CardDescription>Install, permissions, and your first search</CardDescription>
               </CardHeader>
               <CardContent>
                 <Button variant="outline" className="w-full" asChild>
-                  <Link href="/download">Download &amp; setup</Link>
+                  <Link href="/support/getting-started">
+                    Read guide
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Link>
                 </Button>
               </CardContent>
             </Card>
 
-            <Card className="text-center hover:shadow-lg transition-shadow cursor-pointer">
+            <Card className="text-center hover:shadow-lg transition-shadow">
               <CardHeader>
                 <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
                   <LegalBookSearch className="w-8 h-8 text-primary" />
                 </div>
-                <CardTitle>Documentation</CardTitle>
-                <CardDescription>
-                  Comprehensive guides for all features and functionality
-                </CardDescription>
+                <CardTitle>User Guide</CardTitle>
+                <CardDescription>Complete overview of every major feature</CardDescription>
               </CardHeader>
               <CardContent>
                 <Button variant="outline" className="w-full" asChild>
-                  <Link href="/features">View features</Link>
+                  <Link href="/support/user-guide">
+                    Read guide
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Link>
                 </Button>
               </CardContent>
             </Card>
 
-            <Card className="text-center hover:shadow-lg transition-shadow cursor-pointer">
+            <Card className="text-center hover:shadow-lg transition-shadow">
               <CardHeader>
                 <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <Mail className="w-8 h-8 text-primary" />
+                  <HelpCircle className="w-8 h-8 text-primary" />
                 </div>
-                <CardTitle>FAQs</CardTitle>
-                <CardDescription>
-                  Quick answers to commonly asked questions
-                </CardDescription>
+                <CardTitle>Troubleshooting</CardTitle>
+                <CardDescription>Common issues and fixes</CardDescription>
               </CardHeader>
               <CardContent>
                 <Button variant="outline" className="w-full" asChild>
-                  <Link href="#documentation">View help topics</Link>
+                  <Link href="/support/troubleshooting">
+                    View solutions
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Link>
                 </Button>
               </CardContent>
             </Card>
@@ -117,268 +115,86 @@ export default function SupportPage() {
         </div>
       </section>
 
-      {/* Documentation Section */}
-      <section id="documentation" className="py-20 lg:py-32">
+      <section id="documentation" className="py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center space-y-4 mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold">
-              Documentation Library
-            </h2>
+          <div className="text-center space-y-4 mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold">Documentation</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Detailed guides and resources for mastering CASER
+              Step-by-step help for each part of the CASER iOS app
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Gavel className="w-5 h-5 text-primary" />
-                  <span>User Guide</span>
-                </CardTitle>
-                <CardDescription>
-                  Complete user manual with step-by-step instructions
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <ul className="space-y-1 text-sm">
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    <span>Account setup and configuration</span>
-                  </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    <span>Case monitoring setup</span>
-                  </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    <span>Alert configuration</span>
-                  </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    <span>Document access workflow</span>
-                  </li>
-                </ul>
-                <Button variant="outline" size="sm" className="w-full">
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  View Guide
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <ScalesOfJustice className="w-5 h-5 text-primary" />
-                  <span>API Documentation</span>
-                </CardTitle>
-                <CardDescription>
-                  Technical documentation for developers
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <ul className="space-y-1 text-sm">
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    <span>Authentication methods</span>
-                  </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    <span>Endpoint reference</span>
-                  </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    <span>Rate limiting guidelines</span>
-                  </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    <span>Webhook configuration</span>
-                  </li>
-                </ul>
-                <Button variant="outline" size="sm" className="w-full">
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  View API Docs
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <ProfessionalBriefcase className="w-5 h-5 text-primary" />
-                  <span>Best Practices</span>
-                </CardTitle>
-                <CardDescription>
-                  Industry-standard workflows and optimization tips
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <ul className="space-y-1 text-sm">
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    <span>Keyword optimization</span>
-                  </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    <span>Alert management strategies</span>
-                  </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    <span>Team collaboration workflows</span>
-                  </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    <span>Cost optimization tips</span>
-                  </li>
-                </ul>
-                <Button variant="outline" size="sm" className="w-full">
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  View Best Practices
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Star className="w-5 h-5 text-primary" />
-                  <span>Video Tutorials</span>
-                </CardTitle>
-                <CardDescription>
-                  Visual guides for learning key features quickly
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <ul className="space-y-1 text-sm">
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    <span>Product overview (5 min)</span>
-                  </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    <span>Advanced filtering (8 min)</span>
-                  </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    <span>Analytics dashboard (6 min)</span>
-                  </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    <span>Mobile app tour (4 min)</span>
-                  </li>
-                </ul>
-                <Button variant="outline" size="sm" className="w-full">
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  Watch Videos
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Mail className="w-5 h-5 text-primary" />
-                  <span>Integration Guides</span>
-                </CardTitle>
-                <CardDescription>
-                  Connect CASER with your existing tools
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <ul className="space-y-1 text-sm">
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    <span>Email integration setup</span>
-                  </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    <span>Calendar synchronization</span>
-                  </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    <span>Document management systems</span>
-                  </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    <span>Practice management software</span>
-                  </li>
-                </ul>
-                <Button variant="outline" size="sm" className="w-full">
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  View Integrations
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Gavel className="w-5 h-5 text-primary" />
-                  <span>Troubleshooting</span>
-                </CardTitle>
-                <CardDescription>
-                  Common issues and their solutions
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <ul className="space-y-1 text-sm">
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    <span>Connection issues</span>
-                  </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    <span>Alert not working</span>
-                  </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    <span>Document access problems</span>
-                  </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    <span>Performance optimization</span>
-                  </li>
-                </ul>
-                <Button variant="outline" size="sm" className="w-full">
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  View Solutions
-                </Button>
-              </CardContent>
-            </Card>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {supportNav.map((item) => (
+              <Card key={item.path} className="flex flex-col">
+                <CardHeader>
+                  <CardTitle className="text-lg">{item.title}</CardTitle>
+                  <CardDescription>{item.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="mt-auto">
+                  <Button variant="outline" size="sm" className="w-full" asChild>
+                    <Link href={item.path}>
+                      Read guide
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-20 lg:py-32 bg-muted/50">
+      <section className="py-16 lg:py-24 bg-muted/50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
+          <div className="text-center space-y-4 mb-10">
+            <h2 className="text-3xl font-bold">Frequently asked questions</h2>
+            <p className="text-muted-foreground">
+              Quick answers from the in-app support FAQ.{' '}
+              <Link href="/support/troubleshooting" className="text-primary underline-offset-4 hover:underline">
+                Full troubleshooting guide
+              </Link>
+            </p>
+          </div>
+          <div className="space-y-3">
+            {supportFaqPreview.map((item) => (
+              <details
+                key={item.question}
+                className="group rounded-lg border border-border bg-background px-4 py-3"
+              >
+                <summary className="cursor-pointer font-medium text-foreground list-none flex items-center justify-between gap-4">
+                  {item.question}
+                  <span className="text-muted-foreground text-sm group-open:rotate-180 transition-transform">
+                    ▼
+                  </span>
+                </summary>
+                <p className="mt-3 text-sm text-muted-foreground leading-relaxed pb-1">{item.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" className="py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center space-y-4 mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold">
-              Contact Our Support Team
-            </h2>
+          <div className="text-center space-y-4 mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold">Contact support</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Multiple ways to reach us. Choose the option that works best for you.
+              Technical problems, billing questions, or feedback about CASER for iOS.
             </p>
           </div>
 
-          <div className="max-w-2xl mx-auto">
+          <div className="max-w-md mx-auto">
             <Card className="text-center">
               <CardHeader>
                 <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
                   <Mail className="w-8 h-8 text-primary" />
                 </div>
                 <CardTitle>Email Support</CardTitle>
-                <CardDescription>
-                  Get detailed help via email
-                </CardDescription>
+                <CardDescription>Typically 24–48 hour response</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <p className="text-sm font-medium">{CONTACT_EMAIL}</p>
-                  <p className="text-xs text-muted-foreground">
-                    Response time: 24-48 hours
-                  </p>
-                </div>
+                <p className="text-sm font-medium">{CONTACT_EMAIL}</p>
                 <Button variant="outline" size="sm" className="w-full" asChild>
                   <a href={mailto({ subject: 'CASER Support' })}>Send Email</a>
                 </Button>
@@ -388,57 +204,48 @@ export default function SupportPage() {
         </div>
       </section>
 
-      {/* Resources Section */}
-      <section className="py-20 lg:py-32">
+      <section className="py-16 lg:py-24 bg-muted/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center space-y-4 mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold">
-              Additional Resources
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Helpful links and resources to enhance your CASER experience
-            </p>
+          <div className="text-center space-y-4 mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold">More resources</h2>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
             <Card className="text-center">
               <CardHeader>
-                <CardTitle className="text-lg">System Status</CardTitle>
+                <CardTitle className="text-lg">Download</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Check real-time system status and uptime
-                </p>
-                <Button variant="outline" size="sm" className="w-full">
-                  View Status
+                <p className="text-sm text-muted-foreground mb-4">Get CASER on the App Store</p>
+                <Button variant="outline" size="sm" className="w-full" asChild>
+                  <Link href="/download">Download</Link>
                 </Button>
               </CardContent>
             </Card>
 
             <Card className="text-center">
               <CardHeader>
-                <CardTitle className="text-lg">Release Notes</CardTitle>
+                <CardTitle className="text-lg">Pricing</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Latest updates and feature releases
-                </p>
-                <Button variant="outline" size="sm" className="w-full">
-                  View Updates
+                <p className="text-sm text-muted-foreground mb-4">Free tier and CASER Pro</p>
+                <Button variant="outline" size="sm" className="w-full" asChild>
+                  <Link href="/pricing">View pricing</Link>
                 </Button>
               </CardContent>
             </Card>
 
             <Card className="text-center">
               <CardHeader>
-                <CardTitle className="text-lg">Community Forum</CardTitle>
+                <CardTitle className="text-lg flex items-center justify-center gap-2">
+                  <Gavel className="w-4 h-4 text-primary" />
+                  Security
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Connect with other legal professionals
-                </p>
-                <Button variant="outline" size="sm" className="w-full">
-                  Join Forum
+                <p className="text-sm text-muted-foreground mb-4">How we protect your data</p>
+                <Button variant="outline" size="sm" className="w-full" asChild>
+                  <Link href="/security-policy">Security Policy</Link>
                 </Button>
               </CardContent>
             </Card>
@@ -448,19 +255,15 @@ export default function SupportPage() {
                 <CardTitle className="text-lg">Feedback</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground mb-4 min-h-[2.5rem]">
-                  Help us improve CASER.
-                  <span className="block">Share bugs, ideas, or feature requests.</span>
-                </p>
-                <Button variant="outline" size="sm" className="w-full">
-                  Send Feedback
+                <p className="text-sm text-muted-foreground mb-4">Bugs, ideas, or feature requests</p>
+                <Button variant="outline" size="sm" className="w-full" asChild>
+                  <a href={mailto({ subject: 'CASER Feedback' })}>Send feedback</a>
                 </Button>
               </CardContent>
             </Card>
           </div>
         </div>
       </section>
-
     </PageShell>
   );
 }

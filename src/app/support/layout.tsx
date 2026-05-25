@@ -4,7 +4,7 @@ import { buildPageMetadata } from '@/lib/site-metadata';
 export const metadata: Metadata = buildPageMetadata({
   title: 'CASER Support & Help Center',
   description:
-    'CASER support for iOS: getting started, alerts, CASER Pro, PACER links, and troubleshooting. Contact caserlegal@proton.me.',
+    'CASER iOS help: getting started, user guide, search, alerts, Atticus AI, PACER savings, subscriptions, and troubleshooting. Contact caserlegal@proton.me.',
   path: '/support',
 });
 
