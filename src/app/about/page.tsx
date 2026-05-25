@@ -1,19 +1,17 @@
 'use client';
 
 import PageShell from '@/components/PageShell';
-import { AppStoreCtaRow, MatchedOutlineButton } from '@/components/AppStoreLink';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { 
-  ScalesOfJustice, 
-  Gavel, 
-  CourthouseClock, 
+import {
+  ScalesOfJustice,
+  CourthouseClock,
   ProfessionalBriefcase,
-  BrainScales 
+  BrainScales,
 } from '@/components/ui/icons';
-import { CheckCircle, ArrowRight } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 
 export default function AboutPage() {
   return (
@@ -35,21 +33,12 @@ export default function AboutPage() {
               CASER represents the culmination of extensive research into the evolving needs 
               of modern litigation teams and legal operations professionals.
             </p>
-            <AppStoreCtaRow
-              badgeSize="lg"
-              className="justify-center"
-              secondary={
-                <MatchedOutlineButton href="/features" badgeSize="lg">
-                  Explore Features
-                </MatchedOutlineButton>
-              }
-            />
           </div>
         </div>
       </section>
 
       {/* Origin Story Section */}
-      <section className="pt-10 pb-20 sm:pt-12 lg:pt-14 lg:pb-24">
+      <section className="py-20 lg:py-32 bg-muted/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-3 mb-10">
             <h2 className="text-3xl lg:text-4xl font-bold">
@@ -98,7 +87,7 @@ export default function AboutPage() {
       </section>
 
       {/* Values Section */}
-      <section className="py-20 lg:py-32 bg-muted/50">
+      <section className="py-20 lg:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold">
@@ -174,7 +163,7 @@ export default function AboutPage() {
       </section>
 
       {/* Mission Section */}
-      <section className="py-20 lg:py-32">
+      <section className="py-20 lg:py-32 bg-muted/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
