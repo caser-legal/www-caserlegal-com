@@ -1,7 +1,6 @@
 'use client';
 
-import Navigation from '@/components/Navigation';
-import SiteFooter from '@/components/SiteFooter';
+import PageShell from '@/components/PageShell';
 import Image from 'next/image';
 import { DownloadButton } from '@/components/AppStoreLink';
 import Link from 'next/link';
@@ -24,9 +23,7 @@ import { formatNumber } from '@/lib/utils';
 
 export default function FeaturesPage() {
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
-
+    <PageShell>
       {/* Hero Section */}
       <section className="relative py-20 lg:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -510,7 +507,6 @@ export default function FeaturesPage() {
         </div>
       </section>
 
-      <SiteFooter />
-    </div>
+    </PageShell>
   );
 }

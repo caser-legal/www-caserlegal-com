@@ -1,7 +1,6 @@
 'use client';
 
-import Navigation from '@/components/Navigation';
-import SiteFooter from '@/components/SiteFooter';
+import PageShell from '@/components/PageShell';
 import { DownloadButton } from '@/components/AppStoreLink';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -19,9 +18,7 @@ import { CheckCircle, ArrowRight } from 'lucide-react';
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
-
+    <PageShell>
       {/* Hero Section */}
       <section className="relative py-20 lg:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -251,7 +248,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <SiteFooter />
-    </div>
+    </PageShell>
   );
 }

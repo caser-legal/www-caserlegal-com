@@ -1,90 +1,120 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
+import { AppStoreBadgeLink } from '@/components/AppStoreLink';
+import { getCopyrightYear } from '@/lib/copyright';
+
+const productLinks = [
+  { href: '/features', label: 'Features' },
+  { href: '/pricing', label: 'Pricing' },
+  { href: '/download', label: 'Download' },
+] as const;
+
+const companyLinks = [
+  { href: '/about', label: 'About' },
+  { href: '/careers', label: 'Careers' },
+  { href: '/contact', label: 'Contact' },
+] as const;
+
+const supportLinks = [
+  { href: '/support', label: 'Help Center' },
+  { href: '/terms', label: 'Terms of Service' },
+  { href: '/privacy', label: 'Privacy Policy' },
+] as const;
+
+function FooterLinkColumn({
+  title,
+  links,
+}: {
+  title: string;
+  links: readonly { href: string; label: string }[];
+}) {
+  return (
+    <div>
+      <h2 className="text-sm font-semibold text-foreground tracking-tight mb-4">
+        {title}
+      </h2>
+      <ul className="space-y-2.5 text-sm text-muted-foreground">
+        {links.map(({ href, label }) => (
+          <li key={href}>
+            <Link
+              href={href}
+              className="hover:text-foreground transition-colors underline-offset-4 hover:underline"
+            >
+              {label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 export default function SiteFooter() {
+  const year = getCopyrightYear();
+
   return (
-    <footer className="border-t bg-muted/50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid md:grid-cols-4 gap-8">
-          <div className="space-y-4">
-            <Link href="/">
-              <Image src="/logo-full.png" alt="CASER" width={88} height={44} />
+    <footer className="border-t border-border bg-muted/50 mt-auto" role="contentinfo">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-14">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8">
+          <div className="sm:col-span-2 lg:col-span-5 space-y-5">
+            <Link href="/" className="inline-flex items-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+              <Image
+                src="/logo-full.png"
+                alt="CASER — Case Automated Search of Electronic Records"
+                width={120}
+                height={48}
+                className="h-10 w-auto max-w-[140px] object-contain object-left"
+                priority={false}
+              />
             </Link>
-            <p className="text-sm text-muted-foreground">
-              Federal court case search and alerts. Available on the App Store.
+            <p className="text-sm text-muted-foreground leading-relaxed max-w-sm">
+              Federal court case search and keyword alerts for iOS. Monitor 300+ court feeds with
+              no in-app search fees.
             </p>
+            <AppStoreBadgeLink className="opacity-90 hover:opacity-100 transition-opacity" />
           </div>
-          <div>
-            <h4 className="font-semibold mb-4">Product</h4>
-            <ul className="space-y-1 text-sm text-muted-foreground">
-              <li>
-                <Link href="/features" className="hover:text-primary transition-colors">
-                  Features
-                </Link>
-              </li>
-              <li>
-                <Link href="/pricing" className="hover:text-primary transition-colors">
-                  Pricing
-                </Link>
-              </li>
-              <li>
-                <Link href="/download" className="hover:text-primary transition-colors">
-                  Download
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-4">Company</h4>
-            <ul className="space-y-1 text-sm text-muted-foreground">
-              <li>
-                <Link href="/about" className="hover:text-primary transition-colors">
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link href="/careers" className="hover:text-primary transition-colors">
-                  Careers
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="hover:text-primary transition-colors">
-                  Contact
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-4">Support</h4>
-            <ul className="space-y-1 text-sm text-muted-foreground">
-              <li>
-                <Link href="/support" className="hover:text-primary transition-colors">
-                  Help Center
-                </Link>
-              </li>
-              <li>
-                <a
-                  href="mailto:hi@caserlegal.com"
-                  className="hover:text-primary transition-colors"
-                >
-                  hi@caserlegal.com
-                </a>
-              </li>
-              <li>
-                <Link href="/terms" className="hover:text-primary transition-colors">
-                  Terms
-                </Link>
-              </li>
-              <li>
-                <Link href="/privacy" className="hover:text-primary transition-colors">
-                  Privacy
-                </Link>
-              </li>
-            </ul>
+
+          <div className="grid grid-cols-2 gap-8 sm:col-span-2 lg:col-span-7 lg:grid-cols-3">
+            <FooterLinkColumn title="Product" links={productLinks} />
+            <FooterLinkColumn title="Company" links={companyLinks} />
+            <div>
+              <h2 className="text-sm font-semibold text-foreground tracking-tight mb-4">
+                Support
+              </h2>
+              <ul className="space-y-2.5 text-sm text-muted-foreground">
+                {supportLinks.map(({ href, label }) => (
+                  <li key={href}>
+                    <Link
+                      href={href}
+                      className="hover:text-foreground transition-colors underline-offset-4 hover:underline"
+                    >
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+                <li>
+                  <a
+                    href="mailto:hi@caserlegal.com"
+                    className="hover:text-foreground transition-colors underline-offset-4 hover:underline"
+                  >
+                    hi@caserlegal.com
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-        <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; 2026 CASER, LLC. All rights reserved.</p>
+
+        <div className="border-t border-border mt-10 pt-8 space-y-2 text-center text-xs sm:text-sm text-muted-foreground">
+          <p>
+            &copy; {year} CASER, LLC. All rights reserved.
+          </p>
+          <p className="max-w-3xl mx-auto leading-relaxed">
+            CASER and Case Automated Search of Electronic Records are trademarks of CASER, LLC.
+            Apple, App Store, and related marks are trademarks of Apple Inc.
+          </p>
         </div>
       </div>
     </footer>
