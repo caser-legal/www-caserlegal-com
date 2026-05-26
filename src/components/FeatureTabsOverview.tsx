@@ -1,9 +1,8 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { cn } from '@/lib/utils';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Gavel,
   CourthouseClock,
@@ -20,52 +19,17 @@ const TAB_PANEL_GRID =
   'grid lg:grid-cols-2 gap-8 items-stretch lg:min-h-[42rem]';
 const TAB_CARDS_COLUMN = 'grid gap-6 auto-rows-fr min-h-0';
 
-type FeatureTab = 'ai' | 'monitoring' | 'security' | 'analytics';
-
-const FEATURE_TABS: { id: FeatureTab; label: string }[] = [
-  { id: 'ai', label: 'AI Assistant' },
-  { id: 'monitoring', label: 'Monitoring' },
-  { id: 'security', label: 'Security' },
-  { id: 'analytics', label: 'Analytics' },
-];
-
-function tabTriggerClass(active: boolean) {
-  return cn(
-    'inline-flex min-h-10 flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-transparent px-3 py-2 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50',
-    active
-      ? 'bg-background text-foreground shadow-sm dark:border-input dark:bg-input/30 dark:text-foreground'
-      : 'text-foreground dark:text-muted-foreground'
-  );
-}
-
 export default function FeatureTabsOverview() {
-  const [activeTab, setActiveTab] = useState<FeatureTab>('ai');
-
   return (
-    <div className="max-w-6xl mx-auto w-full flex flex-col gap-2">
-      <div
-        role="tablist"
-        aria-label="Feature overview"
-        className="bg-muted text-muted-foreground relative z-10 grid w-full max-w-3xl mx-auto grid-cols-2 sm:grid-cols-4 h-auto gap-1 rounded-lg p-1 [&>button]:min-h-10"
-      >
-        {FEATURE_TABS.map(({ id, label }) => (
-          <button
-            key={id}
-            type="button"
-            role="tab"
-            aria-selected={activeTab === id}
-            aria-controls={`feature-panel-${id}`}
-            id={`feature-tab-${id}`}
-            className={tabTriggerClass(activeTab === id)}
-            onClick={() => setActiveTab(id)}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
+          <Tabs defaultValue="ai" className="max-w-6xl mx-auto w-full">
+            <TabsList className="grid w-full max-w-3xl mx-auto grid-cols-2 sm:grid-cols-4 h-auto [&>button]:min-h-10">
+              <TabsTrigger value="ai">AI Assistant</TabsTrigger>
+              <TabsTrigger value="monitoring">Monitoring</TabsTrigger>
+              <TabsTrigger value="security">Security</TabsTrigger>
+              <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            </TabsList>
 
-            {activeTab === 'monitoring' && (
-            <div id="feature-panel-monitoring" role="tabpanel" aria-labelledby="feature-tab-monitoring" className={TAB_CONTENT_CLASS}>
+            <TabsContent value="monitoring" className={TAB_CONTENT_CLASS}>
               <div className={TAB_PANEL_GRID}>
                 <div className={TAB_CARDS_COLUMN}>
                   <Card className="flex flex-col h-full">
@@ -147,11 +111,9 @@ export default function FeatureTabsOverview() {
                   <Image src="/search.png" alt="Search & Monitoring" width={1070} height={2149} className="max-w-sm w-full h-auto" />
                 </div>
               </div>
-            </div>
-            )}
+            </TabsContent>
 
-            {activeTab === 'analytics' && (
-            <div id="feature-panel-analytics" role="tabpanel" aria-labelledby="feature-tab-analytics" className={TAB_CONTENT_CLASS}>
+            <TabsContent value="analytics" className={TAB_CONTENT_CLASS}>
               <div className={TAB_PANEL_GRID}>
                 <div className={TAB_CARDS_COLUMN}>
                   <Card className="flex flex-col h-full">
@@ -233,11 +195,9 @@ export default function FeatureTabsOverview() {
                   <Image src="/dashboard.png" alt="Analytics Dashboard" width={1070} height={2149} className="max-w-sm w-full h-auto" />
                 </div>
               </div>
-            </div>
-            )}
+            </TabsContent>
 
-            {activeTab === 'security' && (
-            <div id="feature-panel-security" role="tabpanel" aria-labelledby="feature-tab-security" className={TAB_CONTENT_CLASS}>
+            <TabsContent value="security" className={TAB_CONTENT_CLASS}>
               <div className={TAB_PANEL_GRID}>
                 <div className={TAB_CARDS_COLUMN}>
                   <Card className="flex flex-col h-full">
@@ -319,11 +279,9 @@ export default function FeatureTabsOverview() {
                   <Image src="/security-screen.png" alt="CASER Security" width={1070} height={2149} className="max-w-sm w-full h-auto" />
                 </div>
               </div>
-            </div>
-            )}
+            </TabsContent>
 
-            {activeTab === 'ai' && (
-            <div id="feature-panel-ai" role="tabpanel" aria-labelledby="feature-tab-ai" className={TAB_CONTENT_CLASS}>
+            <TabsContent value="ai" className={TAB_CONTENT_CLASS}>
               <div className={TAB_PANEL_GRID}>
                 <div className={TAB_CARDS_COLUMN}>
                   <Card className="flex flex-col h-full">
@@ -402,8 +360,7 @@ export default function FeatureTabsOverview() {
                   <Image src="/ai.png" alt="Atticus AI Assistant" width={1070} height={2149} className="max-w-sm w-full h-auto" />
                 </div>
               </div>
-            </div>
-            )}
-    </div>
+            </TabsContent>
+          </Tabs>
   );
 }
