@@ -18,11 +18,11 @@ import { CheckCircle, Shield, Star, Zap } from 'lucide-react';
 export default function FeatureTabsOverview() {
   return (
     <Tabs defaultValue="ai" className="max-w-6xl mx-auto">
-      <TabsList className="grid w-full grid-cols-4">
-        <TabsTrigger value="ai">AI Assistant</TabsTrigger>
-        <TabsTrigger value="monitoring">Monitoring</TabsTrigger>
-        <TabsTrigger value="security">Security</TabsTrigger>
-        <TabsTrigger value="analytics">Analytics</TabsTrigger>
+      <TabsList className="grid h-auto w-full grid-cols-2 gap-1 sm:grid-cols-4">
+        <TabsTrigger value="ai" className="min-h-11 whitespace-normal">AI Assistant</TabsTrigger>
+        <TabsTrigger value="monitoring" className="min-h-11 whitespace-normal">Monitoring</TabsTrigger>
+        <TabsTrigger value="security" className="min-h-11 whitespace-normal">Security</TabsTrigger>
+        <TabsTrigger value="analytics" className="min-h-11 whitespace-normal">Analytics</TabsTrigger>
       </TabsList>
 
       <TabsContent value="monitoring" className="mt-12">
@@ -351,4 +351,3 @@ export default function FeatureTabsOverview() {
     </Tabs>
   );
 }
-
