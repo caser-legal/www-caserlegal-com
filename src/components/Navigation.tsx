@@ -63,7 +63,7 @@ export default function Navigation() {
 
           <button
             type="button"
-            className="relative z-10 md:hidden p-2"
+            className="relative z-10 md:hidden inline-flex h-11 w-11 items-center justify-center -mr-2"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
             aria-expanded={isOpen}
@@ -74,12 +74,12 @@ export default function Navigation() {
         </div>
 
         {isOpen && (
-          <div id="mobile-nav-menu" className="md:hidden py-4 space-y-3 border-t">
+          <div id="mobile-nav-menu" className="md:hidden py-4 space-y-1 border-t">
             {navLinks.map(({ href, label }) => (
               <Link
                 key={href}
                 href={href}
-                className="block py-2 text-sm font-medium hover:text-primary transition-colors"
+                className="flex min-h-11 items-center py-2 text-base font-medium hover:text-primary transition-colors"
                 onClick={() => setIsOpen(false)}
               >
                 {label}
@@ -87,12 +87,12 @@ export default function Navigation() {
             ))}
             <Link
               href="/contact"
-              className="block py-2 text-sm font-medium hover:text-primary transition-colors"
+              className="flex min-h-11 items-center py-2 text-base font-medium hover:text-primary transition-colors"
               onClick={() => setIsOpen(false)}
             >
               Contact
             </Link>
-            <div className="pt-2" onClick={() => setIsOpen(false)}>
+            <div className="pt-3" onClick={() => setIsOpen(false)}>
               <AppStoreNavBadge />
             </div>
           </div>

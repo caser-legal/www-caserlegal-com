@@ -666,7 +666,7 @@ export default function Home() {
                 </MatchedOutlineButton>
               }
             />
-            <div className="flex items-center justify-center space-x-6 text-sm text-muted-foreground">
+            <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
               <div className="flex items-center space-x-1">
                 <CheckCircle className="w-4 h-4 text-foreground" />
                 <span>AES-256 Encryption (app)</span>
