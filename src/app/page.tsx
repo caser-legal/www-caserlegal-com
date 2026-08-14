@@ -618,27 +618,27 @@ export default function Home() {
           </div>
 
           <div className="bg-background border rounded-lg p-8 mb-12">
-            <h4 className="text-lg font-semibold text-center mb-4">The CASER Impact</h4>
+            <h4 className="text-lg font-semibold text-center mb-4">PACER Fee Reference</h4>
             <div className="bg-primary/5 rounded-lg p-4 md:p-6">
               <StatHighlightGrid
                 items={[
                   {
-                    value: formatNumber(323560),
-                    lines: ['Documents', 'Monitored (3 days)'],
+                    value: '$0.10',
+                    lines: ['Per Page', 'For Billable Records'],
                   },
                   {
-                    value: `${formatNumber(100000)}+`,
-                    lines: ['Documents', 'Saved Daily'],
+                    value: '$3.00',
+                    lines: ['Maximum', 'Per Document'],
                   },
                   {
-                    value: `$${formatNumber(100000)}`,
-                    lines: ['Daily PACER', 'Costs Avoided'],
+                    value: '$30.00',
+                    lines: ['Quarterly', 'Waiver Threshold'],
                   },
                 ]}
               />
             </div>
             <p className="text-center text-sm text-muted-foreground mt-4">
-              Based on PACER pricing: $0.10 per page with $3 cap per document
+              PACER waives quarterly usage charges of $30 or less.
             </p>
           </div>
         </div>
