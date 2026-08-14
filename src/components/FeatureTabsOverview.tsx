@@ -141,7 +141,7 @@ export default function FeatureTabsOverview() {
                   <div className="flex items-start space-x-3">
                     <CheckCircle className="w-5 h-5 text-primary mt-0.5" />
                     <div>
-                      <div className="font-medium">ROI Tracking</div>
+                      <div className="font-medium">PACER Cost Comparison</div>
                       <div className="text-sm text-muted-foreground">Investment return analysis</div>
                     </div>
                   </div>

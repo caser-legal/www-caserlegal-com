@@ -39,7 +39,7 @@ export default function Home() {
                     height={12}
                     className="w-3 h-3 mr-2 rounded"
                   />
-                  Google Backed & Trusted Technology
+                  Built on Google Cloud
                 </Badge>
                 <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">
                   Case Alerts & Search of
@@ -426,23 +426,23 @@ export default function Home() {
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-2 h-2 bg-destructive rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>Total value: ~$910 million for complete access</span>
+                      <span>PACER charges apply to billable searches and documents</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-2 h-2 bg-destructive rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>Cloud storage would cost only {formatNumber(128000)}/year</span>
+                      <span>Quarterly PACER fees of $30 or less are waived</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-2 h-2 bg-destructive rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>PACER revenue: {formatNumber(142000000)} annually (FY 2025-26)</span>
+                      <span>Fee totals depend on each user&apos;s actual PACER activity</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-2 h-2 bg-destructive rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>{formatNumber(619000000)} requests processed in FY 2024 alone</span>
+                      <span>CASER helps reduce repeated manual searches</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-2 h-2 bg-destructive rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>${formatNumber(200000000)} modernization cost (FY 2026-27)</span>
+                      <span>Documents remain available through their source court systems</span>
                     </li>
                   </ul>
                 </div>
@@ -459,11 +459,11 @@ export default function Home() {
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>{formatNumber(323560)} documents monitored in first 3 days</span>
+                      <span>Keyword alerts across supported federal court feeds</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>Saving users ~{formatNumber(100000)} daily in PACER fees</span>
+                      <span>Potential savings depend on each user&apos;s PACER activity</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
@@ -477,9 +477,8 @@ export default function Home() {
                 </div>
               </div>
               <p className="text-sm text-muted-foreground mt-6">
-                PACER operates as an unchecked monopoly, charging <strong>1,109x more</strong> than cloud storage costs ($142M vs $128K). 
-                CASER breaks this monopoly by providing intelligent monitoring that eliminates wasteful searches 
-                while maintaining direct access to court documents when needed.
+                CASER monitors supported federal court feeds and alerts you to matching activity,
+                reducing the need for repeated manual searches. PACER fees and savings vary with actual usage.
               </p>
               
               <div className="mt-6 pt-6 border-t">
@@ -557,8 +556,8 @@ export default function Home() {
               <div className="bg-primary/5 border border-primary/20 rounded-lg p-6">
                 <h3 className="text-xl font-semibold text-primary mb-4">Advanced Data Capabilities</h3>
                 <p className="text-muted-foreground mb-4">
-                  Our proprietary monitoring system captures comprehensive docket information 
-                  from 300+ U.S. courts, providing insights unavailable through any other source.
+                  Our monitoring system collects docket information from supported U.S. federal court
+                  feeds for keyword alerts, research, and data services.
                 </p>
                 <div className="space-y-3">
                   <div className="flex items-center space-x-3">
