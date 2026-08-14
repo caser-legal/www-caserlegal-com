@@ -58,7 +58,7 @@ export default function PricingPage() {
               </div>
               <h2 className="text-3xl lg:text-4xl font-bold">PACER Savings Calculator</h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Adjust the sliders to match your PACER usage. Savings and ROI update on the left;
+                Adjust the sliders to match your PACER usage. Estimated savings update on the left;
                 usage inputs and traditional PACER costs stay on the right.
               </p>
             </div>

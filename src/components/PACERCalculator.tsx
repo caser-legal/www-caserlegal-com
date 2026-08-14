@@ -34,7 +34,6 @@ export default function PACERCalculator({
   const [monthlySearches, setMonthlySearches] = useState([100]);
   const [pagesPerSearch, setPagesPerSearch] = useState([5]);
   const [documentsPerMonth, setDocumentsPerMonth] = useState([10]);
-  const [hoursPerMonth, setHoursPerMonth] = useState([20]);
   const CASER_PRO_ANNUAL = CASER_PRO_ANNUAL_PRICE;
 
   const calculatePACERCosts = () =>
@@ -49,29 +48,20 @@ export default function PACERCalculator({
     annualCost: CASER_PRO_ANNUAL,
   });
 
-  const calculateTimeSavings = () => {
-    const hourlyRate = 250;
-    const timeSavedHours = hoursPerMonth[0] * 0.7;
-    return {
-      hoursSaved: timeSavedHours * 12,
-      monetaryValue: timeSavedHours * 12 * hourlyRate,
-    };
-  };
-
   const pacerCosts = useMemo(() => calculatePACERCosts(), [monthlySearches, pagesPerSearch, documentsPerMonth]);
   const caserCosts = useMemo(() => calculateCASERCosts(), []);
-  const timeSavings = useMemo(() => calculateTimeSavings(), [hoursPerMonth]);
-
   const totalAnnualSavings = useMemo(
-    () => pacerCosts.annualBillable + timeSavings.monetaryValue - caserCosts.annualCost,
-    [pacerCosts, caserCosts, timeSavings]
+    () => Math.max(0, pacerCosts.annualBillable - caserCosts.annualCost),
+    [pacerCosts.annualBillable, caserCosts.annualCost]
   );
   const monthlySavings = useMemo(() => totalAnnualSavings / 12, [totalAnnualSavings]);
-  const roiPercentage = useMemo(
-    () => (caserCosts.annualCost > 0 ? (totalAnnualSavings / caserCosts.annualCost) * 100 : 0),
-    [caserCosts.annualCost, totalAnnualSavings]
+  const costMultiple = useMemo(
+    () => (caserCosts.annualCost > 0 ? pacerCosts.annualBillable / caserCosts.annualCost : 0),
+    [caserCosts.annualCost, pacerCosts.annualBillable]
   );
-  const roiDisplay = Math.min(roiPercentage, 999);
+  const savingsPercentage = pacerCosts.annualBillable > 0
+    ? (totalAnnualSavings / pacerCosts.annualBillable) * 100
+    : 0;
 
   const sectionClass = standalone ? 'py-20 lg:py-32' : 'py-16 lg:py-24';
 
@@ -96,35 +86,20 @@ export default function PACERCalculator({
             <div className="text-xs text-muted-foreground">Monthly Savings</div>
           </div>
           <div className="text-center p-3 bg-background rounded-lg border">
-            <div className="text-2xl font-bold text-foreground mb-1">{formatNumber(roiDisplay)}%</div>
-            <div className="text-xs text-muted-foreground">ROI Percentage</div>
+            <div className="text-2xl font-bold text-foreground mb-1">{costMultiple.toFixed(1)}×</div>
+            <div className="text-xs text-muted-foreground">PACER Cost Multiple</div>
           </div>
     </div>
   );
 
   const savingsSummaryDetails = (
     <>
-      <div className="p-3 bg-background/80 rounded-lg border space-y-2">
-        <div className="flex items-center justify-between text-sm">
-          <span className="font-medium">Time Savings Value</span>
-          <span className="font-semibold">
-            ${formatNumber(Number(timeSavings.monetaryValue.toFixed(2)))}/year
-          </span>
-        </div>
-        <div className="flex items-center justify-between text-sm">
-          <span className="font-medium">Hours Saved Annually</span>
-          <span className="font-semibold">
-            {formatNumber(Number(timeSavings.hoursSaved.toFixed(0)))} hours
-          </span>
-        </div>
-      </div>
-
       <div className="space-y-2">
         <div className="flex justify-between text-sm">
-          <span>Savings Progress</span>
-          <span className="font-medium">{roiDisplay}% ROI</span>
+          <span>Estimated PACER fee reduction</span>
+          <span className="font-medium">{savingsPercentage.toFixed(0)}%</span>
         </div>
-        <Progress value={Math.min(roiPercentage, 100)} className="h-2.5" />
+        <Progress value={savingsPercentage} className="h-2.5" />
       </div>
     </>
   );
@@ -140,7 +115,7 @@ export default function PACERCalculator({
       <CardHeader className={cn('px-0 pt-0 text-left', compact ? 'pb-3' : 'pb-4')}>
         <CardTitle className="text-lg sm:text-xl">Your Annual Savings Summary</CardTitle>
         <CardDescription className="text-sm">
-          Total value including time savings and cost reduction
+          PACER fee estimate minus the CASER Pro annual price
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4 px-0">
@@ -223,31 +198,12 @@ export default function PACERCalculator({
 
         <div className="space-y-3">
           <div className="flex justify-between items-center">
-            <Label className="text-sm font-medium">Document Contacts per Month</Label>
+            <Label className="text-sm font-medium">Documents Opened per Month</Label>
             <span className="text-sm font-semibold text-primary">{documentsPerMonth[0]}</span>
           </div>
           <Slider
             value={documentsPerMonth}
             onValueChange={setDocumentsPerMonth}
-            max={100}
-            min={1}
-            step={1}
-            className="w-full"
-          />
-          <div className="flex justify-between text-xs text-muted-foreground">
-            <span>1</span>
-            <span>100</span>
-          </div>
-        </div>
-
-        <div className="space-y-3">
-          <div className="flex justify-between items-center">
-            <Label className="text-sm font-medium">Hours Spent on Research per Month</Label>
-            <span className="text-sm font-semibold text-primary">{hoursPerMonth[0]}</span>
-          </div>
-          <Slider
-            value={hoursPerMonth}
-            onValueChange={setHoursPerMonth}
             max={100}
             min={1}
             step={1}
@@ -333,7 +289,7 @@ export default function PACERCalculator({
           <h2 className="text-3xl lg:text-4xl font-bold">PACER Savings Calculator</h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Calculate your exact savings with CASER. Adjust the sliders to match your firm&apos;s
-            PACER usage and see the potential ROI.
+            PACER usage and see the estimated fee difference.
           </p>
         </div>
       )}
@@ -356,7 +312,7 @@ export default function PACERCalculator({
             <CardHeader className="text-center pb-6">
               <CardTitle className="text-2xl">Your Annual Savings Summary</CardTitle>
               <CardDescription className="text-base">
-                Total value including time savings and cost reduction
+                PACER fee estimate minus the CASER Pro annual price
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -375,31 +331,17 @@ export default function PACERCalculator({
                 </div>
                 <div className="text-center p-4 bg-background rounded-lg border">
                   <div className="text-3xl font-bold text-foreground mb-2">
-                    {formatNumber(roiDisplay)}%
+                    {costMultiple.toFixed(1)}×
                   </div>
-                  <div className="text-sm text-muted-foreground">ROI Percentage</div>
-                </div>
-              </div>
-              <div className="p-4 bg-background/80 rounded-lg border">
-                <div className="flex items-center justify-between mb-3 text-sm">
-                  <span className="font-medium">Time Savings Value</span>
-                  <span className="font-semibold">
-                    ${formatNumber(Number(timeSavings.monetaryValue.toFixed(2)))}/year
-                  </span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="font-medium">Hours Saved Annually</span>
-                  <span className="font-semibold">
-                    {formatNumber(Number(timeSavings.hoursSaved.toFixed(0)))} hours
-                  </span>
+                  <div className="text-sm text-muted-foreground">PACER Cost Multiple</div>
                 </div>
               </div>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span>Savings Progress</span>
-                  <span className="font-medium">{roiDisplay}% ROI</span>
+                  <span>Estimated PACER fee reduction</span>
+                  <span className="font-medium">{savingsPercentage.toFixed(0)}%</span>
                 </div>
-                <Progress value={Math.min(roiPercentage, 100)} className="h-3" />
+                <Progress value={savingsPercentage} className="h-3" />
               </div>
             </CardContent>
           </Card>
