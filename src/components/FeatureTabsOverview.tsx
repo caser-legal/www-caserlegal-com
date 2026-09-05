@@ -33,9 +33,9 @@ export default function FeatureTabsOverview() {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <CourthouseClock className="w-6 h-6 text-primary" />
                 </div>
-                <CardTitle>Real-Time Court Monitoring</CardTitle>
+                <CardTitle>Federal Court Feed Monitoring</CardTitle>
                 <CardDescription>
-                  Monitor 170+ U.S. Courts with near real-time docket updates
+                  Search 300+ public federal court feeds, including court RSS and GovInfo opinions. Feed availability and retention vary; this is not a complete docket archive.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -44,21 +44,21 @@ export default function FeatureTabsOverview() {
                     <CheckCircle className="w-5 h-5 text-primary mt-0.5" />
                     <div>
                       <div className="font-medium">Federal District Courts</div>
-                      <div className="text-sm text-muted-foreground">All 94 federal districts</div>
+                      <div className="text-sm text-muted-foreground">Participating district court feeds</div>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <CheckCircle className="w-5 h-5 text-primary mt-0.5" />
                     <div>
                       <div className="font-medium">Bankruptcy Courts</div>
-                      <div className="text-sm text-muted-foreground">Complete bankruptcy coverage</div>
+                      <div className="text-sm text-muted-foreground">Available bankruptcy court feeds</div>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <CheckCircle className="w-5 h-5 text-primary mt-0.5" />
                     <div>
                       <div className="font-medium">Appellate Courts</div>
-                      <div className="text-sm text-muted-foreground">Circuit and Supreme Court</div>
+                      <div className="text-sm text-muted-foreground">Participating federal circuit feeds</div>
                     </div>
                   </div>
                 </div>
@@ -70,9 +70,9 @@ export default function FeatureTabsOverview() {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <Gavel className="w-6 h-6 text-primary" />
                 </div>
-                <CardTitle>Instant Alert System</CardTitle>
+                <CardTitle>Keyword Alert System</CardTitle>
                 <CardDescription>
-                  Receive immediate notifications for relevant court filings
+                  Find relevant matches when CASER checks available feeds. Background checks depend on iOS scheduling; delivery times are not guaranteed.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -80,15 +80,15 @@ export default function FeatureTabsOverview() {
                   <div className="flex items-start space-x-3">
                     <CheckCircle className="w-5 h-5 text-primary mt-0.5" />
                     <div>
-                      <div className="font-medium">Push Notifications</div>
-                      <div className="text-sm text-muted-foreground">Real-time mobile alerts</div>
+                      <div className="font-medium">On-device Notifications</div>
+                      <div className="text-sm text-muted-foreground">Alerts after a completed scan</div>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <CheckCircle className="w-5 h-5 text-primary mt-0.5" />
                     <div>
-                      <div className="font-medium">Email Notifications</div>
-                      <div className="text-sm text-muted-foreground">Detailed filing summaries</div>
+                      <div className="font-medium">In-app Match History</div>
+                      <div className="text-sm text-muted-foreground">Review matched titles and source links</div>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
@@ -128,7 +128,7 @@ export default function FeatureTabsOverview() {
                     <CheckCircle className="w-5 h-5 text-primary mt-0.5" />
                     <div>
                       <div className="font-medium">Savings Reports</div>
-                      <div className="text-sm text-muted-foreground">Monthly cost analysis</div>
+                      <div className="text-sm text-muted-foreground">Illustrative quarterly fee estimates</div>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
@@ -142,7 +142,7 @@ export default function FeatureTabsOverview() {
                     <CheckCircle className="w-5 h-5 text-primary mt-0.5" />
                     <div>
                       <div className="font-medium">PACER Cost Comparison</div>
-                      <div className="text-sm text-muted-foreground">Investment return analysis</div>
+                      <div className="text-sm text-muted-foreground">Estimates based on stated assumptions</div>
                     </div>
                   </div>
                 </div>
@@ -172,14 +172,14 @@ export default function FeatureTabsOverview() {
                     <CheckCircle className="w-5 h-5 text-primary mt-0.5" />
                     <div>
                       <div className="font-medium">Alert History</div>
-                      <div className="text-sm text-muted-foreground">Complete notification log</div>
+                      <div className="text-sm text-muted-foreground">Recent matched feed entries</div>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <CheckCircle className="w-5 h-5 text-primary mt-0.5" />
                     <div>
-                      <div className="font-medium">Performance Metrics</div>
-                      <div className="text-sm text-muted-foreground">System efficiency data</div>
+                      <div className="font-medium">Scan Status</div>
+                      <div className="text-sm text-muted-foreground">Check recent scan activity</div>
                     </div>
                   </div>
                 </div>
@@ -201,9 +201,9 @@ export default function FeatureTabsOverview() {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <LegalSeal className="w-6 h-6 text-primary" />
                 </div>
-                <CardTitle>Enterprise Security</CardTitle>
+                <CardTitle>Device Security</CardTitle>
                 <CardDescription>
-                  Bank-grade security for your sensitive legal data
+                  iOS data protection, secure storage, and optional app locking
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -211,22 +211,22 @@ export default function FeatureTabsOverview() {
                   <div className="flex items-start space-x-3">
                     <Shield className="w-5 h-5 text-primary mt-0.5" />
                     <div>
-                      <div className="font-medium">End-to-End Encryption</div>
-                      <div className="text-sm text-muted-foreground">AES-256 encryption</div>
+                      <div className="font-medium">Protected Local Storage</div>
+                      <div className="text-sm text-muted-foreground">iOS data protection and Keychain</div>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <Shield className="w-5 h-5 text-primary mt-0.5" />
                     <div>
                       <div className="font-medium">Secure Data Transmission</div>
-                      <div className="text-sm text-muted-foreground">TLS 1.3 protocols</div>
+                      <div className="text-sm text-muted-foreground">HTTPS connections to supported services</div>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <Shield className="w-5 h-5 text-primary mt-0.5" />
                     <div>
                       <div className="font-medium">Privacy-First Design</div>
-                      <div className="text-sm text-muted-foreground">No data sharing</div>
+                      <div className="text-sm text-muted-foreground">Local history; AI requests processed by Google</div>
                     </div>
                   </div>
                 </div>
@@ -238,9 +238,9 @@ export default function FeatureTabsOverview() {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <LegalDocument className="w-6 h-6 text-primary" />
                 </div>
-                <CardTitle>Compliance & Verification</CardTitle>
+                <CardTitle>Sources & Verification</CardTitle>
                 <CardDescription>
-                  Maintain compliance with legal industry standards
+                  Review official records and verify AI-assisted research before relying on it
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -249,7 +249,7 @@ export default function FeatureTabsOverview() {
                     <CheckCircle className="w-5 h-5 text-primary mt-0.5" />
                     <div>
                       <div className="font-medium">Official Source Links</div>
-                      <div className="text-sm text-muted-foreground">Direct PACER integration</div>
+                      <div className="text-sm text-muted-foreground">Links to court and GovInfo records</div>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
@@ -262,8 +262,8 @@ export default function FeatureTabsOverview() {
                   <div className="flex items-start space-x-3">
                     <CheckCircle className="w-5 h-5 text-primary mt-0.5" />
                     <div>
-                      <div className="font-medium">Audit Trail</div>
-                      <div className="text-sm text-muted-foreground">Complete activity logging</div>
+                      <div className="font-medium">Local Activity History</div>
+                      <div className="text-sm text-muted-foreground">Recent activity stored on your device</div>
                     </div>
                   </div>
                 </div>
@@ -321,7 +321,7 @@ export default function FeatureTabsOverview() {
                     </li>
                     <li className="flex items-center space-x-2">
                       <Zap className="w-4 h-4 text-primary" />
-                      <span>Document summarization</span>
+                      <span>Case summary assistance</span>
                     </li>
                     <li className="flex items-center space-x-2">
                       <Zap className="w-4 h-4 text-primary" />

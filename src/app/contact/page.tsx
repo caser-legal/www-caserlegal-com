@@ -51,7 +51,7 @@ export default function ContactPage() {
           <div className="text-center mb-10 max-w-2xl mx-auto">
             <h2 className="text-2xl lg:text-3xl font-bold">How can we help?</h2>
             <p className="text-muted-foreground mt-2">
-              Three paths — same aligned actions on every card.
+              Get help using CASER, discuss your team’s needs, or share feedback.
             </p>
           </div>
 
