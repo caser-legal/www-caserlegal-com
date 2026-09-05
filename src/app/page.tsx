@@ -154,7 +154,7 @@ export default function Home() {
                 </div>
                 <CardTitle>Professional Security</CardTitle>
                 <CardDescription>
-                  Enterprise-grade security with complete privacy protection
+                  Protected local records and encrypted network connections
                 </CardDescription>
               </CardHeader>
               <CardContent>

@@ -44,6 +44,14 @@ export default function TermsPage() {
                 counsel. Always consult with a qualified attorney for legal advice specific to your
                 situation.
               </LegalParagraph>
+              <LegalParagraph>
+                Atticus sends your question and relevant context to Google for AI processing and
+                public-web research. Review the{' '}
+                <a href="/privacy" className="text-primary hover:underline">Privacy Policy</a>{' '}
+                before use, including Google&apos;s retention and data-use terms. Do not submit
+                confidential, privileged, or sensitive information. AI answers can be incomplete or
+                incorrect; verify the case identity, citations, and any deadlines independently.
+              </LegalParagraph>
             </LegalSection>
 
             <LegalSection title="4. No Warranty on Accuracy">
