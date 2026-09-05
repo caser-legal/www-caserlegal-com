@@ -29,8 +29,8 @@ export default function AboutPage() {
               <span className="text-primary"> for Modern Practice</span>
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Born from firsthand experience navigating the federal court system, 
-              CASER represents the culmination of extensive research into the evolving needs 
+              Born from firsthand experience navigating the federal court system,
+              CASER represents the culmination of extensive research into the evolving needs
               of modern litigation teams and legal operations professionals.
             </p>
           </div>
@@ -53,31 +53,31 @@ export default function AboutPage() {
             <Card className="p-8">
               <CardContent className="space-y-6 text-lg leading-relaxed text-muted-foreground">
                 <p>
-                  It started with countless nights studying law, drafting page after page of documents, 
-                  navigating the federal court system Pro Se for the very first time. The complexity 
+                  It started with countless nights studying law, drafting page after page of documents,
+                  navigating the federal court system Pro Se for the very first time. The complexity
                   was overwhelming, but the real challenge came after filing.
                 </p>
                 <p>
-                  What happens next? How do you monitor your case? How do you know when something changes? 
-                  The PACER system was expensive, confusing, and seemed designed to keep people out rather 
+                  What happens next? How do you monitor your case? How do you know when something changes?
+                  The PACER system was expensive, confusing, and seemed designed to keep people out rather
                   than provide access to justice.
                 </p>
                 <p>
-                  That's when the idea sparked: if the system won't work for regular people, maybe 
-                  technology could bridge that gap. So I started learning to code—because I needed 
+                  That's when the idea sparked: if the system won't work for regular people, maybe
+                  technology could bridge that gap. So I started learning to code—because I needed
                   solutions to problems that didn't exist yet.
                 </p>
                 <p className="text-primary font-semibold text-xl">
                   And so, CASER was born.
                 </p>
                 <p>
-                  What began as a personal tool to monitor a single case evolved into a platform that 
-                  can now serve thousands of legal professionals, Pro Se litigants, and anyone who believes 
+                  What began as a personal tool to monitor a single case evolved into a platform that
+                  can now serve thousands of legal professionals, Pro Se litigants, and anyone who believes
                   that access to court information shouldn't require a law degree to navigate.
                 </p>
                 <p>
-                  CASER represents more than just technology—it's proof that when the system fails, 
-                  innovation can succeed. It's a solution built by someone who lived the problem, 
+                  CASER represents more than just technology—it's proof that when the system fails,
+                  innovation can succeed. It's a solution built by someone who lived the problem,
                   for everyone who faces the same challenges.
                 </p>
               </CardContent>
@@ -171,13 +171,12 @@ export default function AboutPage() {
                 Our Mission: Democratizing Access to Court Intelligence
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                We believe that every legal professional deserves access to real-time court docket 
+                We believe that everyone deserves access to public court
                 intelligence without the prohibitive costs and inefficiencies of traditional PACER research.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                CASER was engineered to eliminate the billions of dollars wasted annually on 
-                unnecessary PACER searches while providing the critical court monitoring capabilities 
-                that modern litigation demands.
+                CASER helps people avoid unnecessary PACER searches and organize public court updates,
+                with tools useful to both legal professionals and people following their own matters.
               </p>
               <div className="space-y-2">
                 <div className="flex items-center space-x-3">
@@ -186,11 +185,11 @@ export default function AboutPage() {
                 </div>
                 <div className="flex items-center space-x-3">
                   <CheckCircle className="w-5 h-5 text-primary" />
-                  <span>Thousands saved annually per user</span>
+                  <span>Potential PACER savings based on your usage</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <CheckCircle className="w-5 h-5 text-primary" />
-                  <span>Enterprise-grade security and privacy</span>
+                  <span>Protected local storage and optional app lock</span>
                 </div>
               </div>
             </div>
@@ -198,17 +197,17 @@ export default function AboutPage() {
               <div className="bg-gradient-to-br from-primary/20 to-primary/5 p-8 rounded-2xl border">
                 <div className="space-y-6">
                   <div className="text-center">
-                    <div className="text-4xl font-bold text-primary mb-2">$2.3B+</div>
-                    <div className="text-sm text-muted-foreground">Wasted annually on PACER searches</div>
+                    <div className="text-4xl font-bold text-primary mb-2">$0</div>
+                    <div className="text-sm text-muted-foreground">Per-search fees inside CASER</div>
                   </div>
                   <div className="text-center">
                     <div className="text-4xl font-bold text-primary mb-2">300+</div>
                     <div className="text-sm text-muted-foreground leading-snug">Federal U.S.</div>
-                    <div className="text-sm text-muted-foreground leading-snug">Courts</div>
+                    <div className="text-sm text-muted-foreground leading-snug">Court feeds</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-4xl font-bold text-primary mb-2">10K+</div>
-                    <div className="text-sm text-muted-foreground">Legal professionals served</div>
+                    <div className="text-4xl font-bold text-primary mb-2">$14.99</div>
+                    <div className="text-sm text-muted-foreground">Annual CASER Pro subscription</div>
                   </div>
                 </div>
               </div>
@@ -225,7 +224,7 @@ export default function AboutPage() {
               Join the Future of Legal Technology
             </h2>
             <p className="text-xl text-muted-foreground">
-              Experience the power of professional-grade court monitoring designed by 
+              Experience the power of professional-grade court monitoring designed by
               legal professionals, for legal professionals.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

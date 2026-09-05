@@ -33,7 +33,7 @@ export default function SupportPage() {
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
               Guides for search, keyword alerts, Atticus AI, PACER savings, subscriptions, and
-              troubleshooting—based on the CASER app for iPhone and iPad.
+              troubleshooting—based on the CASER app for iPhone.
             </p>
             <AppStoreCtaRow
               badgeSize="lg"
