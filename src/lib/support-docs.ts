@@ -380,7 +380,8 @@ export const atticusGuide: SupportDoc = {
     {
       heading: 'Data handling',
       paragraphs: [
-        'Your questions are sent to Google’s servers for processing. Conversation history is stored locally on your device. See Data & Privacy and the Privacy Policy for full details on Gemini and data rights.',
+        'Atticus sends your question, relevant conversation context, and included case details to Google, including the request-size check before generation. Google Search may use that context to find public sources.',
+        'Google retains grounding prompts, context, and output for 30 days. Local chat deletion does not delete provider-retained copies. See the Privacy Policy for Google’s data-use terms; do not submit confidential, privileged, or sensitive information.',
       ],
     },
   ],
@@ -601,13 +602,13 @@ export const dataPrivacy: SupportDoc = {
       heading: 'Local-first storage',
       paragraphs: [
         'No account is required. Search queries, keyword monitors, saved cases, search history, and Atticus conversation history are stored locally on your device.',
-        'Uninstalling the app removes local data. You can erase data from within Settings at any time.',
+        'Use Settings to erase app content. Some Keychain records, including purchase-credit accounting, may remain after uninstalling; clearing local content does not delete Google-retained AI requests or cancel an Apple subscription.',
       ],
     },
     {
       heading: 'Security',
       bullets: [
-        'TLS 1.3 for network requests to court feeds and services.',
+        'HTTPS with TLS protects network requests to court feeds and services.',
         'iOS Keychain for sensitive data with strong encryption.',
         'Local storage protected by iOS data protection APIs.',
         'No sale of personal information to third parties for marketing.',
@@ -616,7 +617,7 @@ export const dataPrivacy: SupportDoc = {
     {
       heading: 'Third-party services',
       bullets: [
-        'Google Gemini AI processes Atticus questions (see Privacy Policy).',
+        'Google Gemini through Firebase AI Logic processes Atticus questions and relevant context. Google Search grounding retains prompts, context, and output for 30 days (see Privacy Policy).',
         'iOS presents local notifications after CASER finds a match during a scan, when permission is enabled.',
       ],
     },

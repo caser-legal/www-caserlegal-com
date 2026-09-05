@@ -27,8 +27,10 @@ export default function PrivacyPage() {
                 to Atticus is processed remotely as described below.
               </LegalParagraph>
               <LegalParagraph>
-                Apple and Google may process device, app, network, purchase, and integrity information
-                needed to distribute the app, verify purchases, and operate or protect their services.
+                Apple processes App Store purchases; CASER keeps subscription and credit accounting
+                on your device. Google receives Atticus requests and associated app, network, model-use,
+                and integrity information to operate and protect its services. CASER does not include
+                advertising, Firebase Analytics, or Crashlytics in the current iPhone app.
               </LegalParagraph>
             </LegalSection>
 
@@ -45,7 +47,8 @@ export default function PrivacyPage() {
               <LegalParagraph>
                 Your data is stored securely on your device using: (a) iOS Keychain for sensitive
                 data, (b) TLS encryption for network requests, (c) local storage with iOS data
-                protection. Search history and settings remain on your device.
+                protection. The local history and settings stay on your device; content included in
+                an Atticus request is also processed by Google.
               </LegalParagraph>
             </LegalSection>
 
@@ -69,12 +72,30 @@ export default function PrivacyPage() {
 
             <LegalSection title="6. AI Assistant (Atticus)">
               <LegalParagraph>
-                When you use Atticus, your question, relevant conversation context, and any case
-                information included in the request are sent to Google for processing. Grounded answers
-                may use Google Search. The local conversation is stored on your device, but AI
-                processing is not end-to-end encrypted between conversation participants: the provider
-                processes the request. Deleting local history does not retract requests already processed
-                by a provider. Avoid sending information you are not authorized to share.
+                Atticus sends your question, relevant conversation context, and included case information
+                to Google through Firebase AI Logic. This includes the request-size check before an
+                answer is generated. Google may create web search queries from that content to find
+                public sources. The provider processes the content; this is not end-to-end encrypted
+                messaging. Using Atticus is optional.
+              </LegalParagraph>
+              <LegalParagraph>
+                Google retains prompts, context, and output used for Google Search grounding for 30 days,
+                including for debugging and testing its grounding systems. Other handling follows{' '}
+                <a href="https://ai.google.dev/gemini-api/terms" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">
+                  Google&apos;s Gemini API terms
+                </a>
+                . Those terms distinguish paid and unpaid processing; unpaid processing can include
+                product improvement and human review. CASER does not promise zero provider retention
+                or that AI content will never be used to improve Google&apos;s services. Do not send
+                confidential, privileged, or sensitive information to Atticus.
+              </LegalParagraph>
+              <LegalParagraph>
+                Your local chat history is separate from Google&apos;s processing. Deleting it does not
+                delete copies retained by Google. See{' '}
+                <a href="https://firebase.google.com/docs/ai-logic/data-governance" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">
+                  Firebase AI Logic data governance
+                </a>{' '}
+                and the Google terms linked above for provider handling and available rights.
               </LegalParagraph>
             </LegalSection>
 
@@ -83,8 +104,8 @@ export default function PrivacyPage() {
                 The current iPhone app schedules local notifications after feed scans. It does not
                 register an APNs device token with a CASER monitoring server. iOS controls background
                 execution, so notifications are not guaranteed at a fixed interval. You can disable
-                notifications or lock-screen previews in iOS Settings; previews may contain case titles
-                and matched keywords.
+                notifications or lock-screen previews in iOS Settings. Match notifications use a generic
+                message; case titles and matched keywords remain inside CASER.
               </LegalParagraph>
             </LegalSection>
 
