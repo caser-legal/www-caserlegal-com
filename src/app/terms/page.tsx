@@ -17,7 +17,7 @@ export default function TermsPage() {
             Terms of Service
           </Badge>
           <h1 className="text-4xl font-bold tracking-tight mb-2">Terms of Service</h1>
-          <p className="text-muted-foreground mb-8">Last Updated: May 2026</p>
+          <p className="text-muted-foreground mb-8">Last Updated: September 4, 2026</p>
 
           <div className="space-y-8">
             <LegalSection title="1. Acceptance of Terms">
@@ -44,6 +44,14 @@ export default function TermsPage() {
                 counsel. Always consult with a qualified attorney for legal advice specific to your
                 situation.
               </LegalParagraph>
+              <LegalParagraph>
+                Atticus sends your question and relevant context to Google for AI processing and
+                public-web research. Review the{' '}
+                <a href="/privacy" className="text-primary hover:underline">Privacy Policy</a>{' '}
+                before use, including Google&apos;s retention and data-use terms. Do not submit
+                confidential, privileged, or sensitive information. AI answers can be incomplete or
+                incorrect; verify the case identity, citations, and any deadlines independently.
+              </LegalParagraph>
             </LegalSection>
 
             <LegalSection title="4. No Warranty on Accuracy">
@@ -57,8 +65,9 @@ export default function TermsPage() {
 
             <LegalSection title="5. Alert System Limitations">
               <LegalParagraph>
-                The keyword monitoring system checks for new filings approximately every 5 minutes
-                but may experience delays or miss filings due to technical issues, data source
+                The keyword monitoring system targets checks every 15 minutes while the app is open.
+                iOS controls background timing; force-quitting stops background checks. Checks
+                may be delayed or miss filings due to technical issues, data source
                 delays, or system maintenance. Do not rely solely on CASER alerts for time-sensitive
                 legal matters.
               </LegalParagraph>
@@ -85,9 +94,9 @@ export default function TermsPage() {
             <LegalSection title="8. Search Fees and Savings Tracker">
               <LegalParagraph>
                 Searching cases and accessing PACER document links through CASER incurs no per-search
-                or per-result fees within the app. The PACER Savings Tracker shows what you would have
-                paid on PACER&apos;s uncapped search-result screens ($0.10 per result) if you had used
-                their system instead. CASER Pro is a yearly subscription ($14.99/year via the App
+                or per-result fees within the app. The PACER Savings Tracker provides illustrative estimates based on assumed billable
+                search pages at $0.10 per page, with PACER&apos;s $30 quarterly waiver. A case result is
+                not a billable page. Estimates exclude document fees and do not measure actual bills. CASER Pro is a yearly subscription ($14.99/year via the App
                 Store). The tracker is informational only and does not represent actual PACER bills.
               </LegalParagraph>
             </LegalSection>

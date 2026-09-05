@@ -30,7 +30,7 @@ function IndividualPricing() {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       <div className="text-center space-y-2">
-        <p className="text-sm font-medium text-primary uppercase tracking-wide">Individual · iOS</p>
+        <p className="text-sm font-medium text-primary uppercase tracking-wide">For individuals and legal professionals · iOS</p>
         <h2 className="text-2xl lg:text-3xl font-bold">Download free, upgrade in the app</h2>
         <p className="text-muted-foreground max-w-lg mx-auto text-sm lg:text-base">
           CASER is on the App Store. Start on the free tier, then subscribe to CASER Pro inside
@@ -53,7 +53,7 @@ function IndividualPricing() {
           <CardContent className="flex flex-col flex-1 pt-0">
             <FeatureList items={FREE_FEATURES} />
             <p className="text-xs text-muted-foreground mt-6 pt-4 border-t">
-              Lifetime limits apply to searches and alerts as listed above.
+              The search allowance is lifetime; the alert allowance is one active monitor.
             </p>
           </CardContent>
         </Card>
@@ -66,7 +66,7 @@ function IndividualPricing() {
           </div>
           <CardHeader className="pb-4 pt-2">
             <CardTitle className="text-xl">CASER Pro</CardTitle>
-            <CardDescription>Full monitoring and Atticus AI for one year</CardDescription>
+            <CardDescription>Up to 100 alerts with an annual Atticus credit allowance</CardDescription>
             <div className="pt-4">
               <div className="flex items-baseline gap-1">
                 <span className="text-4xl font-bold tracking-tight text-primary">$14.99</span>
@@ -105,9 +105,9 @@ export default function PricingTiers() {
           <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
             Firms &amp; organizations
           </p>
-          <h2 className="text-2xl font-bold">Business and Enterprise</h2>
+          <h2 className="text-2xl font-bold">Using CASER with your team</h2>
           <p className="text-muted-foreground text-sm max-w-xl mx-auto">
-            Volume licensing, custom workflows, and integrations — priced per engagement.
+            The same CASER Pro app is available to professionals and individuals for $14.99/year per subscription. Contact us about additional team services; availability and scope are agreed separately.
           </p>
         </div>
 
@@ -117,7 +117,7 @@ export default function PricingTiers() {
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <CourthouseClock className="w-6 h-6 text-primary" />
               </div>
-              <CardTitle className="text-2xl">Business</CardTitle>
+              <CardTitle className="text-2xl">Team onboarding</CardTitle>
               <CardDescription className="text-base min-h-[3.25rem] flex items-center justify-center">
                 <span>
                   Firm workflows and volume licensing
@@ -126,7 +126,7 @@ export default function PricingTiers() {
               </CardDescription>
               <div className="mt-4">
                 <div className="text-4xl font-bold">Custom</div>
-                <p className="text-sm text-muted-foreground mt-1">Contact for quote</p>
+                <p className="text-sm text-muted-foreground mt-1">Discuss availability</p>
               </div>
             </CardHeader>
             <CardContent className="space-y-6 flex flex-col flex-1 pt-0">
@@ -149,7 +149,7 @@ export default function PricingTiers() {
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <LegalSeal className="w-6 h-6 text-primary" />
               </div>
-              <CardTitle className="text-2xl">Enterprise</CardTitle>
+              <CardTitle className="text-2xl">Integration requests</CardTitle>
               <CardDescription className="text-base min-h-[3.25rem] flex items-center justify-center">
                 <span>
                   Custom integrations and deployments
@@ -158,7 +158,7 @@ export default function PricingTiers() {
               </CardDescription>
               <div className="mt-4">
                 <div className="text-4xl font-bold">Custom</div>
-                <p className="text-sm text-muted-foreground mt-1">Contact for quote</p>
+                <p className="text-sm text-muted-foreground mt-1">Discuss availability</p>
               </div>
             </CardHeader>
             <CardContent className="space-y-6 flex flex-col flex-1 pt-0">

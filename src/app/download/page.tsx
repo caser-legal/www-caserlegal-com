@@ -58,8 +58,8 @@ export default function DownloadPage() {
                   <div>
                     <h3 className="text-xl font-semibold mb-2">Court search &amp; alerts</h3>
                     <p className="text-muted-foreground">
-                      Search federal district and bankruptcy filings. Keyword alerts with push
-                      notifications (scans run approximately every 5 minutes while the app is active).
+                      Search supported federal court feeds and receive local filing notifications.
+                      CASER targets checks every 15 minutes while open; iOS controls background timing.
                     </p>
                   </div>
                 </div>
@@ -71,7 +71,7 @@ export default function DownloadPage() {
                     <h3 className="text-xl font-semibold mb-2">PACER savings tracker</h3>
                     <p className="text-muted-foreground">
                       No per-search fees in CASER. Pay PACER only when you open document links. Track
-                      hypothetical savings vs PACER search-result pricing.
+                      estimated fee reductions using PACER billable-page pricing.
                     </p>
                   </div>
                 </div>
@@ -119,7 +119,7 @@ export default function DownloadPage() {
           <div className="rounded-lg border bg-card p-6 space-y-4">
             <div className="flex items-center space-x-3">
               <Smartphone className="w-6 h-6 text-primary" />
-              <span className="font-semibold">iPhone &amp; iPad</span>
+              <span className="font-semibold">iPhone</span>
             </div>
             <div className="flex justify-between items-center text-sm">
               <span className="font-medium">iOS Version</span>

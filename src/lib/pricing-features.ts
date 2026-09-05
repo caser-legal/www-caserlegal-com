@@ -9,25 +9,21 @@ export const FREE_FEATURES = [
 
 export const PRO_FEATURES = [
   'Unlimited searches',
-  'Unlimited keyword alerts',
+  'Up to 100 keyword alerts',
   'Unlimited saved cases',
-  'Atticus AI legal assistant',
-  'Push notifications for matches',
+  'Atticus AI with annual credits; top-ups available',
+  'On-device alerts after scans',
   'PDF export (legal brief layout)',
 ] as const;
 
 export const BUSINESS_FEATURES = [
-  'Multi-attorney firm workflows',
-  'Priority onboarding & training',
-  'Custom alert workflows',
-  'Dedicated account contact',
-  'Volume licensing options',
+  'Discuss onboarding and training',
+  'Explore your firm’s monitoring needs',
+  'Use the same CASER Pro app',
 ] as const;
 
 export const ENTERPRISE_FEATURES = [
-  'Enterprise volume licensing',
-  'Custom integrations & data services',
-  'Dedicated support & SLA options',
-  'White-label & API discussions',
-  'On-premise / compliance consulting',
+  'Share your integration requirements',
+  'Discuss support needs and feasibility',
+  'Custom services subject to agreement',
 ] as const;

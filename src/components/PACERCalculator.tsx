@@ -1,15 +1,11 @@
 'use client';
 
-import { useState, useMemo, type ReactNode } from 'react';
-import { Button } from '@/components/ui/button';
+import { useState, useId, type ReactNode } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Label } from '@/components/ui/label';
-import { Slider } from '@/components/ui/slider';
 import { Progress } from '@/components/ui/progress';
 import { Calculator, FileSearch } from '@/components/ui/icons';
 import { ArrowRight } from 'lucide-react';
-import Link from 'next/link';
 import { cn, formatNumber } from '@/lib/utils';
 import { CASER_PRO_ANNUAL_PRICE } from '@/lib/branding';
 import { calculatePacerBilling } from '@/lib/pacer-fees';
@@ -31,37 +27,21 @@ export default function PACERCalculator({
   showcase = false,
   leftSlot,
 }: PACERCalculatorProps) {
-  const [monthlySearches, setMonthlySearches] = useState([100]);
-  const [pagesPerSearch, setPagesPerSearch] = useState([5]);
-  const [documentsPerMonth, setDocumentsPerMonth] = useState([10]);
+  const inputId = useId();
+  const [monthlySearches, setMonthlySearches] = useState(100);
+  const [pagesPerSearch, setPagesPerSearch] = useState(5);
+  const [documentsPerMonth, setDocumentsPerMonth] = useState(10);
+  const [pagesPerDocument, setPagesPerDocument] = useState(5);
+  const [searchesReplacedPercent, setSearchesReplacedPercent] = useState(100);
   const CASER_PRO_ANNUAL = CASER_PRO_ANNUAL_PRICE;
-
-  const calculatePACERCosts = () =>
-    calculatePacerBilling({
-      monthlySearches: monthlySearches[0],
-      pagesPerSearch: pagesPerSearch[0],
-      documentsPerMonth: documentsPerMonth[0],
-    });
-
-  const calculateCASERCosts = () => ({
-    monthlyCost: CASER_PRO_ANNUAL / 12,
-    annualCost: CASER_PRO_ANNUAL,
-  });
-
-  const pacerCosts = useMemo(() => calculatePACERCosts(), [monthlySearches, pagesPerSearch, documentsPerMonth]);
-  const caserCosts = useMemo(() => calculateCASERCosts(), []);
-  const totalAnnualSavings = useMemo(
-    () => Math.max(0, pacerCosts.annualBillable - caserCosts.annualCost),
-    [pacerCosts.annualBillable, caserCosts.annualCost]
-  );
-  const monthlySavings = useMemo(() => totalAnnualSavings / 12, [totalAnnualSavings]);
-  const costMultiple = useMemo(
-    () => (caserCosts.annualCost > 0 ? pacerCosts.annualBillable / caserCosts.annualCost : 0),
-    [caserCosts.annualCost, pacerCosts.annualBillable]
-  );
+  const pacerCosts = calculatePacerBilling({ monthlySearches, pagesPerSearch, documentsPerMonth,
+    pagesPerDocument, searchesReplacedPercent, annualSubscription: CASER_PRO_ANNUAL });
+  const caserCosts = { monthlyCost: pacerCosts.annualWithCaser / 12, annualCost: pacerCosts.annualWithCaser };
+  const totalAnnualSavings = pacerCosts.netAnnualSavings;
+  const monthlySavings = totalAnnualSavings / 12;
+  const costMultiple = pacerCosts.annualBillable / caserCosts.annualCost;
   const savingsPercentage = pacerCosts.annualBillable > 0
-    ? (totalAnnualSavings / pacerCosts.annualBillable) * 100
-    : 0;
+    ? Math.max(0, totalAnnualSavings / pacerCosts.annualBillable * 100) : 0;
 
   const sectionClass = standalone ? 'py-20 lg:py-32' : 'py-16 lg:py-24';
 
@@ -75,19 +55,19 @@ export default function PACERCalculator({
     >
           <div className="text-center p-3 bg-background rounded-lg border">
             <div className="text-2xl font-bold text-foreground mb-1">
-              ${formatNumber(Number(totalAnnualSavings.toFixed(0)))}
+              ${formatNumber(Number(totalAnnualSavings.toFixed(2)))}
             </div>
-            <div className="text-xs text-muted-foreground">Total Annual Savings</div>
+            <div className="text-xs text-muted-foreground">Estimated Annual Savings</div>
           </div>
           <div className="text-center p-3 bg-background rounded-lg border">
             <div className="text-2xl font-bold text-foreground mb-1">
-              ${formatNumber(Number(monthlySavings.toFixed(0)))}
+              ${formatNumber(Number(monthlySavings.toFixed(2)))}
             </div>
-            <div className="text-xs text-muted-foreground">Monthly Savings</div>
+            <div className="text-xs text-muted-foreground">Estimated Monthly Savings</div>
           </div>
           <div className="text-center p-3 bg-background rounded-lg border">
             <div className="text-2xl font-bold text-foreground mb-1">{costMultiple.toFixed(1)}×</div>
-            <div className="text-xs text-muted-foreground">PACER Cost Multiple</div>
+            <div className="text-xs text-muted-foreground">Cost Comparison</div>
           </div>
     </div>
   );
@@ -96,7 +76,7 @@ export default function PACERCalculator({
     <>
       <div className="space-y-2">
         <div className="flex justify-between text-sm">
-          <span>Estimated PACER fee reduction</span>
+          <span>Estimated total cost reduction</span>
           <span className="font-medium">{savingsPercentage.toFixed(0)}%</span>
         </div>
         <Progress value={savingsPercentage} className="h-2.5" />
@@ -115,7 +95,7 @@ export default function PACERCalculator({
       <CardHeader className={cn('px-0 pt-0 text-left', compact ? 'pb-3' : 'pb-4')}>
         <CardTitle className="text-lg sm:text-xl">Your Annual Savings Summary</CardTitle>
         <CardDescription className="text-sm">
-          PACER fee estimate minus the CASER Pro annual price
+          Compares PACER charges with CASER Pro plus the PACER charges you would still pay
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4 px-0">
@@ -128,17 +108,18 @@ export default function PACERCalculator({
   const caserInvestmentCard = (compactShowcase = false) => (
     <Card className={compactShowcase ? 'p-4 sm:p-5' : 'p-5 sm:p-6'}>
       <CardHeader className="px-0 pt-0 pb-3">
-        <CardTitle className="text-lg">CASER Investment</CardTitle>
+        <CardTitle className="text-lg">Estimated Cost with CASER</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3 px-0">
+        <p className="text-sm text-muted-foreground">${CASER_PRO_ANNUAL.toFixed(2)} subscription + ${pacerCosts.remainingAnnualPacer.toFixed(2)} remaining PACER charges per year.</p>
         <div className="p-3 border rounded-lg flex justify-between items-center">
-          <span className="text-sm font-medium">Monthly Cost</span>
+          <span className="text-sm font-medium">Monthly Equivalent</span>
           <span className="text-lg font-semibold">
             ${formatNumber(Number(caserCosts.monthlyCost.toFixed(2)))}
           </span>
         </div>
         <div className="p-3 border rounded-lg flex justify-between items-center">
-          <span className="text-sm font-medium">Annual Cost</span>
+          <span className="text-sm font-medium">Annual Total</span>
           <span className="text-lg font-semibold">
             ${formatNumber(Number(caserCosts.annualCost.toFixed(2)))}
           </span>
@@ -147,6 +128,13 @@ export default function PACERCalculator({
     </Card>
   );
 
+  const usageInputs = [
+    { key: 'searches', label: 'Monthly PACER searches', value: monthlySearches, set: setMonthlySearches, min: 0, max: 500, step: 10 },
+    { key: 'search-pages', label: 'Average billable pages per search', value: pagesPerSearch, set: setPagesPerSearch, min: 1, max: 50, step: 1 },
+    { key: 'documents', label: 'Paid PACER documents opened per month', value: documentsPerMonth, set: setDocumentsPerMonth, min: 0, max: 100, step: 1 },
+    { key: 'document-pages', label: 'Average pages per paid document', value: pagesPerDocument, set: setPagesPerDocument, min: 1, max: 100, step: 1 },
+    { key: 'replacement', label: 'PACER searches you could replace with CASER (%)', value: searchesReplacedPercent, set: setSearchesReplacedPercent, min: 0, max: 100, step: 5 },
+  ];
   const inputsCard = (
     <Card className="p-6">
       <CardHeader className="px-0 pt-0">
@@ -154,73 +142,30 @@ export default function PACERCalculator({
           <FileSearch className="w-5 h-5 text-primary" />
           <CardTitle className="text-xl">Your PACER Usage</CardTitle>
         </div>
-        <CardDescription>Enter your current monthly PACER usage patterns</CardDescription>
+        <CardDescription>Estimate the activity you expect each month</CardDescription>
       </CardHeader>
-
       <CardContent className="space-y-6 px-0">
-        <div className="space-y-3">
-          <div className="flex justify-between items-center">
-            <Label className="text-sm font-medium">Monthly Searches</Label>
-            <span className="text-sm font-semibold text-primary">{monthlySearches[0]}</span>
+        {usageInputs.map(({ key, label, value, set, min, max, step }) => (
+          <div className="space-y-2" key={key}>
+            <div className="flex justify-between items-center gap-3">
+              <label htmlFor={`${inputId}-${key}`} className="text-sm font-medium">{label}</label>
+              <output htmlFor={`${inputId}-${key}`} className="text-sm font-semibold text-primary">{value}</output>
+            </div>
+            <input id={`${inputId}-${key}`} type="range" min={min} max={max} step={step}
+              value={value} onChange={event => set(Number(event.target.value))}
+              className="w-full h-7 accent-primary cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary" />
+            <div className="flex justify-between text-xs text-muted-foreground"><span>{min}</span><span>{max}</span></div>
           </div>
-          <Slider
-            value={monthlySearches}
-            onValueChange={setMonthlySearches}
-            max={500}
-            min={10}
-            step={10}
-            className="w-full"
-          />
-          <div className="flex justify-between text-xs text-muted-foreground">
-            <span>10</span>
-            <span>500</span>
-          </div>
-        </div>
-
-        <div className="space-y-3">
-          <div className="flex justify-between items-center">
-            <Label className="text-sm font-medium">Average Pages per Search</Label>
-            <span className="text-sm font-semibold text-primary">{pagesPerSearch[0]}</span>
-          </div>
-          <Slider
-            value={pagesPerSearch}
-            onValueChange={setPagesPerSearch}
-            max={50}
-            min={1}
-            step={1}
-            className="w-full"
-          />
-          <div className="flex justify-between text-xs text-muted-foreground">
-            <span>1</span>
-            <span>50</span>
-          </div>
-        </div>
-
-        <div className="space-y-3">
-          <div className="flex justify-between items-center">
-            <Label className="text-sm font-medium">Documents Opened per Month</Label>
-            <span className="text-sm font-semibold text-primary">{documentsPerMonth[0]}</span>
-          </div>
-          <Slider
-            value={documentsPerMonth}
-            onValueChange={setDocumentsPerMonth}
-            max={100}
-            min={1}
-            step={1}
-            className="w-full"
-          />
-          <div className="flex justify-between text-xs text-muted-foreground">
-            <span>1</span>
-            <span>100</span>
-          </div>
-        </div>
-
-        <div className="p-3 border rounded-lg bg-muted/50">
-          <p className="text-sm font-medium">CASER Pro (App Store)</p>
-          <p className="text-lg font-semibold text-primary mt-1">${CASER_PRO_ANNUAL}/year</p>
-          <p className="text-xs text-muted-foreground mt-2">
-            Individual subscription purchased inside the iOS app after download.
+        ))}
+        <div className="p-3 border rounded-lg bg-muted/50 space-y-2">
+          <p className="text-sm font-medium">CASER Pro: ${CASER_PRO_ANNUAL}/year</p>
+          <p className="text-xs text-muted-foreground">
+            This estimate assumes the same usage every month. CASER searches current public feeds;
+            it does not replace every PACER search or provide a complete historical docket archive.
+            Paid PACER documents remain a separate expense. Opinions and eligible free copies are excluded.
+            Other PACER activity can affect your quarterly waiver.
           </p>
+          <a className="text-xs text-primary underline" href="https://pacer.uscourts.gov/pacer-pricing-how-fees-work" target="_blank" rel="noopener noreferrer">PACER fee rules and exemptions</a>
         </div>
       </CardContent>
     </Card>
@@ -234,7 +179,7 @@ export default function PACERCalculator({
       <CardContent className="space-y-4 px-0">
         <div className="grid grid-cols-2 gap-4">
           <div className="p-3 border rounded-lg">
-            <div className="text-xs text-muted-foreground">Page Fees</div>
+            <div className="text-xs text-muted-foreground">Search Page Fees</div>
             <div className="text-lg font-semibold">${pacerCosts.pageCosts.toFixed(2)}/mo</div>
           </div>
           <div className="p-3 border rounded-lg">
@@ -250,7 +195,7 @@ export default function PACERCalculator({
         </div>
         <div className="p-3 border rounded-lg">
           <div className="flex justify-between items-center">
-            <span className="text-sm font-medium">Annual Total (with caps)</span>
+            <span className="text-sm font-medium">Annual Total (after quarterly waiver)</span>
             <span className="text-xl font-bold">
               ${formatNumber(Number(pacerCosts.annualBillable.toFixed(2)))}
             </span>
@@ -288,7 +233,7 @@ export default function PACERCalculator({
           </div>
           <h2 className="text-3xl lg:text-4xl font-bold">PACER Savings Calculator</h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Calculate your exact savings with CASER. Adjust the sliders to match your firm&apos;s
+            Estimate your potential savings with CASER. Adjust the sliders to match your
             PACER usage and see the estimated fee difference.
           </p>
         </div>
@@ -312,33 +257,33 @@ export default function PACERCalculator({
             <CardHeader className="text-center pb-6">
               <CardTitle className="text-2xl">Your Annual Savings Summary</CardTitle>
               <CardDescription className="text-base">
-                PACER fee estimate minus the CASER Pro annual price
+                Compares PACER charges with CASER Pro plus the PACER charges you would still pay
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="text-center p-4 bg-background rounded-lg border">
                   <div className="text-3xl font-bold text-foreground mb-2">
-                    ${formatNumber(Number(totalAnnualSavings.toFixed(0)))}
+                    ${formatNumber(Number(totalAnnualSavings.toFixed(2)))}
                   </div>
-                  <div className="text-sm text-muted-foreground">Total Annual Savings</div>
+                  <div className="text-sm text-muted-foreground">Estimated Annual Savings</div>
                 </div>
                 <div className="text-center p-4 bg-background rounded-lg border">
                   <div className="text-3xl font-bold text-foreground mb-2">
-                    ${formatNumber(Number(monthlySavings.toFixed(0)))}
+                    ${formatNumber(Number(monthlySavings.toFixed(2)))}
                   </div>
-                  <div className="text-sm text-muted-foreground">Monthly Savings</div>
+                  <div className="text-sm text-muted-foreground">Estimated Monthly Savings</div>
                 </div>
                 <div className="text-center p-4 bg-background rounded-lg border">
                   <div className="text-3xl font-bold text-foreground mb-2">
                     {costMultiple.toFixed(1)}×
                   </div>
-                  <div className="text-sm text-muted-foreground">PACER Cost Multiple</div>
+                  <div className="text-sm text-muted-foreground">Cost Comparison</div>
                 </div>
               </div>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span>Estimated PACER fee reduction</span>
+                  <span>Estimated total cost reduction</span>
                   <span className="font-medium">{savingsPercentage.toFixed(0)}%</span>
                 </div>
                 <Progress value={savingsPercentage} className="h-3" />
@@ -357,7 +302,7 @@ export default function PACERCalculator({
               badgeSize="lg"
               secondary={
                 <MatchedOutlineButton href="/contact" badgeSize="lg">
-                  Contact for Business
+                  For Firms & Individuals
                   <ArrowRight className="w-4 h-4" />
                 </MatchedOutlineButton>
               }

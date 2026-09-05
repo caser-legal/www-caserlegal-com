@@ -1,3 +1,19 @@
+# Dependency and build verification — September 4, 2026
+
+The marketing site is a static Next.js 16 export. After compatible dependency updates,
+`npm audit` reported zero known advisories. This is a dependency snapshot, not an
+independent security certification. `npm run test` (5 fee-regression tests),
+`npm run lint`, and `npm run build` passed during remediation.
+
+Re-run these commands for every dependency change. Security statements on the site
+now describe implemented iOS data protection, Keychain, HTTPS, and provider processing;
+they do not claim end-to-end AI encryption or a complete audit trail.
+
+The older report below is retained as historical evidence only. Its versions and
+scan counts are not current.
+
+---
+
 # Security Scan Report
 **Date:** November 1, 2025  
 **Project:** Caser Legal Website (Static Next.js 15)

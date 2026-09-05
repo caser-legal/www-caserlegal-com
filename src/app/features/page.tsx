@@ -18,11 +18,11 @@ export default function FeaturesPage() {
             </Badge>
             <h1 className="text-4xl lg:text-6xl font-bold tracking-tight" suppressHydrationWarning>
               Comprehensive Court Monitoring
-              <span className="text-primary"> for Legal Professionals</span>
+              <span className="text-primary"> for Everyone</span>
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Engineered with precision for litigation teams, paralegals, and legal operations professionals. 
-              Every feature designed to eliminate inefficiency and maximize competitive advantage.
+              Built for attorneys, paralegals, legal teams, and anyone following a federal case.
+              Search, save, monitor, and research from an approachable iPhone app.
             </p>
             <AppStoreCtaRow
               badgeSize="lg"
@@ -45,8 +45,7 @@ export default function FeaturesPage() {
               Feature Overview
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Explore the comprehensive capabilities that make CASER the preferred choice 
-              for legal professionals across law firms and legal practices.
+              Explore the search, monitoring, and research tools available in CASER today.
             </p>
           </div>
 
@@ -77,8 +76,8 @@ export default function FeaturesPage() {
                   <PlatformStatusBadge status="available" />
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm">iPadOS</span>
-                  <PlatformStatusBadge status="available" />
+                  <span className="text-sm">Dedicated iPad app</span>
+                  <PlatformStatusBadge status="planned" />
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm">macOS</span>
@@ -98,19 +97,19 @@ export default function FeaturesPage() {
               <CardContent className="space-y-3">
                 <div className="flex justify-between items-center">
                   <span className="text-sm">Update Frequency</span>
-                  <span className="text-sm font-medium">~5 min scans</span>
+                  <span className="text-sm font-medium">~5 min while active</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm">Response Time</span>
-                  <span className="text-sm font-medium">Instant</span>
+                  <span className="text-sm">Search Speed</span>
+                  <span className="text-sm font-medium">Source-dependent</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm">Uptime</span>
-                  <span className="text-sm font-medium">99.9%</span>
+                  <span className="text-sm">Background Checks</span>
+                  <span className="text-sm font-medium">Scheduled by iOS</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm">Data Freshness</span>
-                  <span className="text-sm font-medium">&lt; 1,000 seconds</span>
+                  <span className="text-sm">Feed Retention</span>
+                  <span className="text-sm font-medium">Varies by court</span>
                 </div>
               </CardContent>
             </Card>
@@ -122,7 +121,7 @@ export default function FeaturesPage() {
               <CardContent className="space-y-3">
                 <div className="flex justify-between items-center">
                   <span className="text-sm">PACER</span>
-                  <Badge variant="secondary">Integrated</Badge>
+                  <Badge variant="secondary">Source links</Badge>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm">PDF Export</span>
@@ -130,11 +129,11 @@ export default function FeaturesPage() {
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm">API Access</span>
-                  <Badge variant="outline">Enterprise</Badge>
+                  <Badge variant="outline">By request</Badge>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm">SSO</span>
-                  <Badge variant="outline">Enterprise</Badge>
+                  <Badge variant="outline">By request</Badge>
                 </div>
               </CardContent>
             </Card>
@@ -150,8 +149,7 @@ export default function FeaturesPage() {
               Ready to Transform Your Court Monitoring?
             </h2>
             <p className="text-xl text-muted-foreground">
-              Join thousands of legal professionals who have already elevated their practice 
-              with CASER's professional-grade court monitoring capabilities.
+              Use CASER to follow federal court updates, organize cases, and research with Atticus.
             </p>
             <AppStoreCtaRow
               badgeSize="lg"
