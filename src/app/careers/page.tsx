@@ -84,7 +84,7 @@ export default function CareersPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">
-                  Make a real impact by democratizing access to justice and eliminating billions in wasteful fees
+                  Make a real impact by democratizing access to justice and reducing avoidable research costs
                 </p>
               </CardContent>
             </Card>

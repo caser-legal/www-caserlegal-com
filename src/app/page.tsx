@@ -47,10 +47,10 @@ export default function Home() {
                 </h1>
                 <p className="text-xl text-muted-foreground leading-relaxed">
                   Monitor 300+ U.S. federal court feeds. Eliminate wasteful PACER search fees.
-                  Push alerts for keyword matches with direct document links. No PACER account required.
+                  Filing notifications for keyword matches with direct document links. No PACER account required.
                 </p>
               </div>
-              
+
               <AppStoreCtaRow
                 badgeSize="lg"
                 secondary={
@@ -85,7 +85,7 @@ export default function Home() {
               Professional-Grade Court Monitoring
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Engineered for litigation teams, paralegals, and legal operations professionals 
+              Engineered for litigation teams, paralegals, and legal operations professionals
               who require precision, efficiency, and competitive advantage.
             </p>
           </div>
@@ -96,9 +96,9 @@ export default function Home() {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <CourthouseClock className="w-6 h-6 text-primary" />
                 </div>
-                <CardTitle>Court monitoring &amp; push alerts</CardTitle>
+                <CardTitle>Court monitoring &amp; filing notifications</CardTitle>
                 <CardDescription>
-                  Push notifications when filings match your keywords across 300+ federal court feeds
+                  On-device alerts after scans find matching filings across 300+ federal court feeds
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -126,7 +126,7 @@ export default function Home() {
                 </div>
                 <CardTitle>Eliminate PACER Waste</CardTitle>
                 <CardDescription>
-                  Save thousands annually by paying only for relevant documents
+                  Reduce avoidable search charges based on your PACER usage
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -210,7 +210,7 @@ export default function Home() {
                 </div>
                 <CardTitle>Direct Document Access</CardTitle>
                 <CardDescription>
-                  Instant access to court documents through verified PACER links
+                  Open available court documents through source links
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -296,7 +296,7 @@ export default function Home() {
             <div className="bg-muted/50 border rounded-lg p-6 h-full flex flex-col">
                 <h3 className="text-xl font-semibold mb-4">The Challenge</h3>
                 <p className="text-muted-foreground mb-4">
-                  The federal PACER system, designed to provide Public Access to Court Electronic Records, 
+                  The federal PACER system, designed to provide Public Access to Court Electronic Records,
                   presents significant barriers that prevent meaningful public access to justice.
                 </p>
                 <div className="space-y-2">
@@ -305,7 +305,7 @@ export default function Home() {
                     <div>
                       <h4 className="font-medium mb-1">Unpredictable Search Costs</h4>
                       <p className="text-sm text-muted-foreground">
-                        Users face unknown charges until after searches are completed, with simple typos 
+                        Users face unknown charges until after searches are completed, with simple typos
                         potentially costing hundreds. This creates financial barriers to research.
                       </p>
                     </div>
@@ -315,7 +315,7 @@ export default function Home() {
                     <div>
                       <h4 className="font-medium mb-1">Outdated Interface</h4>
                       <p className="text-sm text-muted-foreground">
-                        The user interface remains fundamentally unusable for modern legal research, 
+                        The user interface remains fundamentally unusable for modern legal research,
                         lacking intuitive design and efficient workflows.
                       </p>
                     </div>
@@ -325,7 +325,7 @@ export default function Home() {
                     <div>
                       <h4 className="font-medium mb-1">Limited Search Capabilities</h4>
                       <p className="text-sm text-muted-foreground">
-                        No document-level search exists. Users cannot search for legal concepts or 
+                        No document-level search exists. Users cannot search for legal concepts or
                         phrases—only known case names or docket numbers.
                       </p>
                     </div>
@@ -335,7 +335,7 @@ export default function Home() {
                     <div>
                       <h4 className="font-medium mb-1">No Accountability</h4>
                       <p className="text-sm text-muted-foreground">
-                        Without external oversight, document availability cannot be verified, 
+                        Without external oversight, document availability cannot be verified,
                         compromising transparency in the justice system.
                       </p>
                     </div>
@@ -346,7 +346,7 @@ export default function Home() {
             <div className="bg-primary/5 border border-primary/20 rounded-lg p-6 h-full flex flex-col">
                 <h3 className="text-xl font-semibold text-primary mb-4">The CASER Solution</h3>
                 <p className="text-muted-foreground mb-4">
-                  CASER addresses these fundamental issues by providing intelligent monitoring 
+                  CASER addresses these fundamental issues by providing intelligent monitoring
                   and eliminating wasteful PACER searches through advanced technology.
                 </p>
                 <div className="space-y-2">
@@ -355,7 +355,7 @@ export default function Home() {
                     <div>
                       <h4 className="font-medium mb-1">Zero Search Fees</h4>
                       <p className="text-sm text-muted-foreground">
-                        Monitor 300+ courts without paying search fees. Only pay for documents 
+                        Monitor 300+ court feeds without paying search fees. Only pay for documents
                         you actually need, eliminating surprise charges.
                       </p>
                     </div>
@@ -365,7 +365,7 @@ export default function Home() {
                     <div>
                       <h4 className="font-medium mb-1">Professional Interface</h4>
                       <p className="text-sm text-muted-foreground">
-                        Modern, intuitive design built for legal professionals. Efficient workflows 
+                        Modern, intuitive design built for legal professionals. Efficient workflows
                         that save time and reduce frustration.
                       </p>
                     </div>
@@ -375,7 +375,7 @@ export default function Home() {
                     <div>
                       <h4 className="font-medium mb-1">Advanced Keyword Monitoring</h4>
                       <p className="text-sm text-muted-foreground">
-                        Monitor specific legal concepts, parties, or topics across all courts. 
+                        Monitor specific legal concepts, parties, or topics across all courts.
                         Receive alerts when relevant documents are filed.
                       </p>
                     </div>
@@ -385,7 +385,7 @@ export default function Home() {
                     <div>
                       <h4 className="font-medium mb-1">Complete Transparency</h4>
                       <p className="text-sm text-muted-foreground">
-                        Track all monitoring activities, cost savings, and document access. 
+                        Track all monitoring activities, cost savings, and document access.
                         Full accountability for your court research.
                       </p>
                     </div>
@@ -397,15 +397,15 @@ export default function Home() {
           <div className="bg-background border rounded-lg p-8 text-center">
             <h3 className="text-2xl font-bold mb-4">Access to Justice is Fundamental</h3>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-6">
-              Meaningful public access to court records is essential for democracy, transparency, 
-              and the rule of law. When barriers prevent citizens, journalists, and legal professionals 
+              Meaningful public access to court records is essential for democracy, transparency,
+              and the rule of law. When barriers prevent citizens, journalists, and legal professionals
               from observing our justice system, we all lose.
             </p>
             <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-              CASER represents a technological solution to the PACER Problem—democratizing access 
+              CASER represents a technological solution to the PACER Problem—democratizing access
               to federal court records while eliminating wasteful costs and inefficiencies.
             </p>
-            
+
             <div className="bg-muted/50 border rounded-lg p-6 max-w-4xl mx-auto">
               <h4 className="text-xl font-semibold mb-4">The PACER Cost Crisis</h4>
               <div className="grid md:grid-cols-2 gap-8 text-left">
@@ -455,7 +455,7 @@ export default function Home() {
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>Monitor 300+ courts with zero search costs</span>
+                      <span>Monitor 300+ court feeds with zero search costs</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
@@ -480,57 +480,57 @@ export default function Home() {
                 CASER monitors supported federal court feeds and alerts you to matching activity,
                 reducing the need for repeated manual searches. PACER fees and savings vary with actual usage.
               </p>
-              
+
               <div className="mt-6 pt-6 border-t">
-                <h5 className="font-medium mb-4 text-center">The Systemic Failure</h5>
+                <h5 className="font-medium mb-4 text-center">Understand Your Research Costs</h5>
                 <div className="grid md:grid-cols-2 gap-6 text-sm text-muted-foreground">
                   <div>
-                    <h6 className="font-medium mb-2">Government Mismanagement</h6>
+                    <h6 className="font-medium mb-2">PACER Fee Rules</h6>
                     <ul className="space-y-1">
                       <li className="flex items-start space-x-2">
                         <div className="w-2 h-2 bg-destructive rounded-full mt-1.5 flex-shrink-0"></div>
-                        <span>$125 million lawsuit settlement for overcharging</span>
+                        <span>PACER charges $0.10 per billable page</span>
                       </li>
                       <li className="flex items-start space-x-2">
                         <div className="w-2 h-2 bg-destructive rounded-full mt-1.5 flex-shrink-0"></div>
-                        <span>$200M modernization while still charging monopoly fees</span>
+                        <span>Search results are not covered by the $3 document cap</span>
                       </li>
                       <li className="flex items-start space-x-2">
                         <div className="w-2 h-2 bg-destructive rounded-full mt-1.5 flex-shrink-0"></div>
-                        <span>Only 14% of 4.48M accounts are active</span>
+                        <span>Charges of $30 or less in a quarter are waived</span>
                       </li>
                       <li className="flex items-start space-x-2">
                         <div className="w-2 h-2 bg-destructive rounded-full mt-1.5 flex-shrink-0"></div>
-                        <span>84% of users get free access - proving fees are unnecessary</span>
+                        <span>Opinions and eligible free copies carry no fee</span>
                       </li>
                     </ul>
                   </div>
                   <div>
-                    <h6 className="font-medium mb-2">CASER's Revolutionary Impact</h6>
+                    <h6 className="font-medium mb-2">How CASER Helps</h6>
                     <ul className="space-y-1">
                       <li className="flex items-start space-x-2">
                         <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
-                        <span>Immediate savings without government bureaucracy</span>
+                        <span>No per-search fees within the app</span>
                       </li>
                       <li className="flex items-start space-x-2">
                         <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
-                        <span>Technology solution vs $200M government modernization</span>
+                        <span>Monitor keywords across available public feeds</span>
                       </li>
                       <li className="flex items-start space-x-2">
                         <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
-                        <span>Proven results: {formatNumber(100000)}+ documents saved daily</span>
+                        <span>Search, save, and monitor public court updates in one app</span>
                       </li>
                       <li className="flex items-start space-x-2">
                         <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
-                        <span>Private innovation solving public access crisis</span>
+                        <span>One annual Pro price for individuals and professionals</span>
                       </li>
                     </ul>
                   </div>
                 </div>
                 <p className="text-sm text-muted-foreground mt-4 text-center">
-                  While the judiciary spends $200M on modernization and fights legislation to eliminate fees, 
-                  CASER already delivers the solution: free search monitoring with pay-per-document access. 
-                  This is how innovation should work—solving problems faster, cheaper, and better than government bureaucracy.
+                  CASER can reduce repeated PACER searches when the information you need is in public feeds.
+                  It does not replace a complete docket search or change PACER document fees.
+                  Review the assumptions in the calculator to estimate your own costs.
                 </p>
               </div>
             </div>
@@ -543,21 +543,21 @@ export default function Home() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold">
-              Enterprise Data Services
+              Team & Integration Requests
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Bulk court data, custom research, and professional consulting for organizations 
-              that need comprehensive legal intelligence beyond standard monitoring.
+              Tell us about your team’s research needs. Additional services and integrations are
+              discussed individually and are not included features of the current app.
             </p>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-12 mb-16">
             <div className="space-y-6">
               <div className="bg-primary/5 border border-primary/20 rounded-lg p-6">
-                <h3 className="text-xl font-semibold text-primary mb-4">Advanced Data Capabilities</h3>
+                <h3 className="text-xl font-semibold text-primary mb-4">Your Research Requirements</h3>
                 <p className="text-muted-foreground mb-4">
-                  Our monitoring system collects docket information from supported U.S. federal court
-                  feeds for keyword alerts, research, and data services.
+                  CASER searches current public feeds. If your workflow needs historical archives or
+                  data delivery, contact us to discuss scope and availability.
                 </p>
                 <div className="space-y-3">
                   <div className="flex items-center space-x-3">
@@ -570,15 +570,15 @@ export default function Home() {
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-sm">Historical docket data analysis</span>
+                    <span className="text-sm">Historical data requirements (by request)</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-sm">Automated report generation</span>
+                    <span className="text-sm">PDF exports from current case information</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-sm">API integration and data delivery</span>
+                    <span className="text-sm">Discuss integration and data-delivery requirements</span>
                   </div>
                 </div>
               </div>
@@ -588,8 +588,8 @@ export default function Home() {
               <div className="bg-primary/5 border border-primary/20 rounded-lg p-6 h-full">
                 <h3 className="text-xl font-semibold text-primary mb-4">Professional Services</h3>
                 <p className="text-muted-foreground mb-4">
-                  From data extraction to strategic analysis, we deliver actionable insights 
-                  tailored to your specific requirements.
+                  Share your requirements for onboarding, data extraction, or analysis. We will confirm
+                  what is available and any separate scope before an engagement.
                 </p>
                 <div className="space-y-3">
                   <div className="flex items-center space-x-3">

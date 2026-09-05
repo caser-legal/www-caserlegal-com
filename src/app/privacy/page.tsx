@@ -16,17 +16,19 @@ export default function PrivacyPage() {
             Privacy Policy
           </Badge>
           <h1 className="text-4xl font-bold tracking-tight mb-2">Privacy Policy</h1>
-          <p className="text-muted-foreground mb-8">Last Updated: May 2026</p>
+          <p className="text-muted-foreground mb-8">Last Updated: September 4, 2026</p>
 
           <div className="space-y-8">
             <LegalSection title="1. Information We Collect">
               <LegalParagraph>
-                Usage Data: Search queries, keyword monitors, saved cases, search history, AI
-                assistant conversations, and usage statistics (search counts, monitor matches, pages
-                viewed). All data is stored locally on your device.
+                The iPhone app stores search history, keyword monitors, saved cases, Atticus
+                conversations, settings, and activity statistics locally. Requests to court feeds
+                disclose network information such as your IP address to the source. Content you send
+                to Atticus is processed remotely as described below.
               </LegalParagraph>
               <LegalParagraph>
-                Technical Data: Device type, iOS version, app version, and performance metrics.
+                Apple and Google may process device, app, network, purchase, and integrity information
+                needed to distribute the app, verify purchases, and operate or protect their services.
               </LegalParagraph>
             </LegalSection>
 
@@ -49,8 +51,10 @@ export default function PrivacyPage() {
 
             <LegalSection title="4. Third-Party Services">
               <LegalParagraph>
-                We use Google Gemini AI for the Atticus assistant and Apple for push notifications.
-                These services have their own privacy policies and data handling practices.
+                Atticus uses Google Gemini through Firebase AI Logic, including app integrity verification
+                and Google Search grounding. Apple processes App Store subscriptions and purchases.
+                Court RSS, PACER, and GovInfo provide source records. These providers apply their own
+                privacy policies to requests they receive.
               </LegalParagraph>
             </LegalSection>
 
@@ -65,26 +69,33 @@ export default function PrivacyPage() {
 
             <LegalSection title="6. AI Assistant (Atticus)">
               <LegalParagraph>
-                Conversations with Atticus are processed using Google&apos;s Gemini AI. Your questions
-                are sent to Google&apos;s servers for processing. AI responses and conversation history
-                are stored locally on your device. Case information provided to the AI is limited to
-                search results from our database.
+                When you use Atticus, your question, relevant conversation context, and any case
+                information included in the request are sent to Google for processing. Grounded answers
+                may use Google Search. The local conversation is stored on your device, but AI
+                processing is not end-to-end encrypted between conversation participants: the provider
+                processes the request. Deleting local history does not retract requests already processed
+                by a provider. Avoid sending information you are not authorized to share.
               </LegalParagraph>
             </LegalSection>
 
-            <LegalSection title="7. Push Notifications">
+            <LegalSection title="7. Notifications">
               <LegalParagraph>
-                If you enable push notifications for case alerts, we collect your device push token
-                to deliver notifications. You can disable notifications at any time in iOS Settings.
-                Notification content includes matched keywords and case titles.
+                The current iPhone app schedules local notifications after feed scans. It does not
+                register an APNs device token with a CASER monitoring server. iOS controls background
+                execution, so notifications are not guaranteed at a fixed interval. You can disable
+                notifications or lock-screen previews in iOS Settings; previews may contain case titles
+                and matched keywords.
               </LegalParagraph>
             </LegalSection>
 
             <LegalSection title="8. Data Retention">
               <LegalParagraph>
-                Your data is stored locally on your device and retained until you delete it. Search
-                history, saved cases, and settings can be cleared from within the app. Uninstalling the
-                app removes all local data.
+                Search history, saved cases, conversations, and settings can be cleared in the app.
+                Protected local files are excluded from device backups. Keychain records, including
+                purchase-credit accounting, may survive an uninstall on the same device but are not
+                portable to a different device. Restore Purchases restores eligible subscriptions; it
+                does not restore spent consumables or provide cloud recovery of local history. Clearing
+                app content does not cancel an Apple subscription or erase its purchase records.
               </LegalParagraph>
             </LegalSection>
 

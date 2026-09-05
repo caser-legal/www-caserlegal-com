@@ -40,7 +40,7 @@ export default function Navigation() {
             />
           </Link>
 
-          <div className="pointer-events-none absolute inset-x-0 hidden md:flex justify-center">
+          <div className="pointer-events-none absolute inset-x-0 hidden lg:flex justify-center">
             <div className="pointer-events-auto flex items-center gap-6">
               {navLinks.map(({ href, label }) => (
                 <Link
@@ -54,7 +54,7 @@ export default function Navigation() {
             </div>
           </div>
 
-          <div className="relative z-10 hidden md:flex items-center gap-2 min-w-[120px] justify-end">
+          <div className="relative z-10 hidden lg:flex items-center gap-2 min-w-[120px] justify-end">
             <Button variant="ghost" size="sm" asChild>
               <Link href="/contact">Contact</Link>
             </Button>
@@ -63,7 +63,7 @@ export default function Navigation() {
 
           <button
             type="button"
-            className="relative z-10 md:hidden inline-flex h-11 w-11 items-center justify-center -mr-2"
+            className="relative z-10 lg:hidden inline-flex h-11 w-11 items-center justify-center -mr-2"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
             aria-expanded={isOpen}
@@ -74,7 +74,7 @@ export default function Navigation() {
         </div>
 
         {isOpen && (
-          <div id="mobile-nav-menu" className="md:hidden py-4 space-y-1 border-t">
+          <div id="mobile-nav-menu" className="lg:hidden py-4 space-y-1 border-t">
             {navLinks.map(({ href, label }) => (
               <Link
                 key={href}

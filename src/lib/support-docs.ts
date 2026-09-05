@@ -103,7 +103,7 @@ export const supportFaqPreview: FaqItem[] = [
   {
     question: 'Why am I missing alerts?',
     answer:
-      'Verify your keyword monitor is enabled. Check notification permissions in iOS Settings. Monitor scans run roughly every 5 minutes when CASER is in the background.',
+      'Verify your keyword monitor is enabled. Check notification permissions in iOS Settings. CASER targets a check every 15 minutes while open and requests background checks from iOS. iOS decides background timing; force-quitting stops those checks.',
   },
   {
     question: 'Why is Atticus not responding well?',
@@ -149,9 +149,9 @@ export const gettingStarted: SupportDoc = {
     {
       heading: 'Enable notifications (recommended)',
       paragraphs: [
-        'For keyword alerts, allow push notifications when iOS prompts you, or enable them later in CASER Settings > Notifications.',
-        'You need system push notifications enabled before monitor alerts can fire. If notifications were denied, the app can open iOS Settings for you to turn them on.',
-        'Monitor scans run roughly every 5 minutes when CASER is in the background.',
+        'For keyword alerts, allow notifications when iOS prompts you, or enable them later in CASER Settings > Notifications.',
+        'You need system notifications enabled before monitor alerts can fire. If notifications were denied, the app can open iOS Settings for you to turn them on.',
+        'CASER targets a check every 15 minutes while open and requests background checks from iOS. iOS decides background timing; force-quitting stops those checks.',
       ],
     },
     {
@@ -159,7 +159,7 @@ export const gettingStarted: SupportDoc = {
       bullets: [
         'Open the Search tab and enter keywords, party names, or case identifiers.',
         'Search covers federal district and bankruptcy filings across U.S. jurisdictions.',
-        'The free tier includes 1 lifetime case search, 1 keyword alert, and up to 5 saved cases. Upgrade to CASER Pro for unlimited use.',
+        'The free tier includes 1 lifetime case search, 1 keyword alert, and up to 5 saved cases. CASER Pro adds unlimited searches and saved cases, more alerts, and an annual Atticus credit allowance.',
         'Tap a result for details and direct links to court documents where available.',
       ],
     },
@@ -202,9 +202,9 @@ export const userGuide: SupportDoc = {
       heading: 'Main tabs and tools',
       bullets: [
         'Search — Find cases across federal courts; filter by jurisdiction; save cases; export PDFs (Pro).',
-        'Monitor — Keyword alerts on new filings; push notifications when matches occur (Pro for unlimited monitors).',
+        'Monitor — Keyword alerts on new filings; notifications when matches occur (Pro for up to 100 monitors).',
         'Atticus — AI legal research assistant powered by Google Gemini with search grounding (CASER Pro).',
-        'PACER Savings Tracker — Compares your activity to PACER’s $0.10-per-result uncapped search screens (Settings > PACER Savings Tracker).',
+        'PACER Savings Tracker — Compares your activity to PACER’s $0.10-per-billable-page uncapped search screens (Settings > PACER Savings Tracker).',
         'Settings — Subscription, notifications, recent searches/matches, saved cases, About, Support, Terms & Privacy, and erase-all data.',
       ],
     },
@@ -293,14 +293,14 @@ export const alertsGuide: SupportDoc = {
   path: '/support/alerts',
   title: 'Keyword Alerts',
   description:
-    'Set up keyword monitors, push notifications, scan frequency, and understand alert limitations.',
+    'Set up keyword monitors, notifications, scan frequency, and understand alert limitations.',
   badgeLabel: 'Keyword Alerts',
   sections: [
     {
       heading: 'How monitors work',
       paragraphs: [
-        'The Monitor tab lets you define keywords CASER watches across federal court RSS feeds. When a new filing matches, you can receive a push notification (with CASER Pro for unlimited monitors).',
-        'Monitor scans run roughly every 5 minutes when CASER is in the background. Delays can occur due to feed latency, iOS background limits, or maintenance.',
+        'The Monitor tab lets you define keywords CASER watches across federal court RSS feeds. When a new filing matches, you can receive a local notification (with CASER Pro for up to 100 monitors).',
+        'CASER targets a check every 15 minutes while open and requests background checks from iOS. iOS decides background timing; force-quitting stops those checks. Delays can occur due to feed latency, iOS background limits, or maintenance.',
       ],
     },
     {
@@ -312,7 +312,7 @@ export const alertsGuide: SupportDoc = {
     {
       heading: 'Notifications setup',
       bullets: [
-        'Enable push notifications in CASER Settings > Notifications.',
+        'Enable notifications in CASER Settings > Notifications.',
         'Turn on Monitor Alerts after system notifications are allowed.',
         'If notifications are denied, open iOS Settings from the toggle to enable them for CASER.',
         'Notification content includes matched keywords and case titles.',
@@ -321,7 +321,7 @@ export const alertsGuide: SupportDoc = {
     {
       heading: 'Free tier limits',
       paragraphs: [
-        'The free tier includes 1 keyword alert. CASER Pro includes unlimited keyword alerts and push notifications for matches.',
+        'The free tier includes 1 keyword alert. CASER Pro includes up to 100 keyword alerts and notifications for matches.',
       ],
     },
     {
@@ -396,13 +396,13 @@ export const pacerSavingsGuide: SupportDoc = {
   path: '/support/pacer-savings',
   title: 'PACER Savings Tracker',
   description:
-    'Understand how CASER estimates PACER savings, $0.10-per-result screens, and CASER Pro break-even.',
+    'Understand how CASER estimates PACER savings, $0.10-per-billable-page screens, and estimated fees and the separate annual Pro price.',
   badgeLabel: 'PACER Savings',
   sections: [
     {
       heading: 'What the tracker shows',
       paragraphs: [
-        'CASER has no per-search or per-result fees. The PACER Savings Tracker compares your searches and monitor matches to what you would have paid on PACER’s uncapped search-result screens ($0.10 per result, with no $3 document cap on those screens).',
+        'CASER has no per-search or per-result fees. The PACER Savings Tracker compares your searches and monitor matches to an estimate of what similar PACER activity could cost on PACER’s uncapped search-result screens ($0.10 per billable page, with no $3 document cap on those screens).',
         'The tracker is informational only—it does not represent actual PACER bills you received elsewhere.',
       ],
     },
@@ -411,11 +411,11 @@ export const pacerSavingsGuide: SupportDoc = {
       bullets: [
         'Each manual search and each monitor poll can count as billable PACER “pages” in the estimate.',
         'Monitor alert matches count as 1 billable result per match in the tracker model.',
-        'PACER search-result screens are not covered by the $3 per-document cap—name searches and similar reports bill $0.10 per result with no ceiling.',
+        'PACER search-result screens are not covered by the $3 per-document cap—name searches and similar reports bill $0.10 per billable page with no ceiling.',
       ],
     },
     {
-      heading: 'CASER Pro break-even',
+      heading: 'estimated fees and the separate annual Pro price',
       paragraphs: [
         'CASER Pro is an annual subscription purchased through the Apple App Store (see Pricing for current price). The tracker notes that Pro typically pays for itself at roughly $14.99 of avoided PACER charges per year in this estimate model.',
       ],
@@ -511,7 +511,7 @@ export const bestPractices: SupportDoc = {
     {
       heading: 'Cost awareness',
       bullets: [
-        'Use CASER search and monitors to avoid PACER’s $0.10-per-result search screens where possible.',
+        'Use CASER search and monitors to avoid PACER’s $0.10-per-billable-page search screens where possible.',
         'Use the PACER Savings Tracker to see cumulative estimated savings—not as a tax or billing document.',
         'When you need official certified records, use PACER or the court directly and follow their fee rules.',
       ],
@@ -550,8 +550,8 @@ export const troubleshooting: SupportDoc = {
       heading: 'Missing alerts',
       paragraphs: [
         'Verify the keyword monitor is enabled in the Monitor tab.',
-        'Confirm push notifications and Monitor Alerts are on in Settings > Notifications.',
-        'Remember: only future filings after monitor creation trigger alerts; scans run about every 5 minutes in the background.',
+        'Confirm notifications and Monitor Alerts are on in Settings > Notifications.',
+        'Remember: only future filings after monitor creation trigger alerts; CASER requests checks at a 15-minute target, but iOS controls when background checks run.',
         'Check iOS Focus modes or notification summaries that may hide CASER alerts.',
       ],
     },
@@ -617,7 +617,7 @@ export const dataPrivacy: SupportDoc = {
       heading: 'Third-party services',
       bullets: [
         'Google Gemini AI processes Atticus questions (see Privacy Policy).',
-        'Apple provides push notification delivery when enabled.',
+        'iOS presents local notifications after CASER finds a match during a scan, when permission is enabled.',
       ],
     },
     {

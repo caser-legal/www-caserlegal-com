@@ -25,7 +25,8 @@ export default function PricingPage() {
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
               Download CASER free on the App Store. Upgrade to CASER Pro for $14.99/year inside
-              the app. Business and Enterprise plans are available by inquiry.
+              the app. Individuals and firms use the same professional tools;
+              contact us to discuss additional team services.
             </p>
             <AppStoreCtaRow
               badgeSize="lg"
@@ -58,8 +59,7 @@ export default function PricingPage() {
               </div>
               <h2 className="text-3xl lg:text-4xl font-bold">PACER Savings Calculator</h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Adjust the sliders to match your PACER usage. Estimated savings update on the left;
-                usage inputs and traditional PACER costs stay on the right.
+                Adjust your usage and see how CASER could change your total annual costs.
               </p>
             </div>
 
