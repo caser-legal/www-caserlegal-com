@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "src/app/v1/docket-search/route.ts": {
+      "maxDuration": 60
+    }
+  },
   "headers": [
     {
       "source": "/(.*)",

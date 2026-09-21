@@ -10,6 +10,7 @@ const productLinks = [
   { href: '/features', label: 'Features' },
   { href: '/pricing', label: 'Pricing' },
   { href: '/download', label: 'Download' },
+  { href: '/muse', label: 'Muse Connector' },
 ] as const;
 
 const companyLinks = [
