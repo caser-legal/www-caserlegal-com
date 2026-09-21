@@ -42,6 +42,17 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+@keyframes muse-rise {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);

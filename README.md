@@ -10,7 +10,7 @@ Marketing site for **CASER** — **Case Alerts & Search of Electronic Records** 
 ```bash
 npm install
 npm run dev    # http://localhost:3000
-npm run build  # static export to out/
+npm run build  # Vercel server build. /v1/docket-search runs only after this project is deployed, not from a static out/ folder.
 ```
 
 ## Pricing (website)
