@@ -12,14 +12,14 @@ import { ArrowRight } from 'lucide-react';
 export default function PricingPage() {
   return (
     <PageShell>
-      <section className="relative py-20 lg:py-32">
+      <section className="route-hero relative py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <Badge variant="secondary" className="w-fit mx-auto">
               <DollarDocument className="w-3 h-3 mr-2" />
               Pricing
             </Badge>
-            <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">
+            <h1 className="text-4xl lg:text-6xl font-bold tracking-tight route-title">
               Simple pricing
               <span className="text-primary"> for individuals and firms</span>
             </h1>

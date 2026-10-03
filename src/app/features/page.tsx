@@ -9,14 +9,14 @@ export default function FeaturesPage() {
   return (
     <PageShell>
       {/* Hero Section */}
-      <section className="relative py-20 lg:py-32">
+      <section className="route-hero relative py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <Badge variant="secondary" className="mx-auto gap-1.5">
               <Scale className="w-3 h-3 shrink-0" aria-hidden />
               Professional Features
             </Badge>
-            <h1 className="text-4xl lg:text-6xl font-bold tracking-tight" suppressHydrationWarning>
+            <h1 className="text-4xl lg:text-6xl font-bold tracking-tight route-title" suppressHydrationWarning>
               Comprehensive Court Monitoring
               <span className="text-primary"> for Everyone</span>
             </h1>

@@ -1,687 +1,96 @@
 'use client';
 
+import React from 'react';
+
 import PageShell from '@/components/PageShell';
 import Image from 'next/image';
-import ShowcaseSection from '@/components/ShowcaseSection';
 import { AppStoreCtaRow, MatchedOutlineButton } from '@/components/AppStoreLink';
-import { ProductStatRow, StatHighlightGrid } from '@/components/ProductStatRow';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import {
-  CourthouseClock,
-  LegalBriefChart,
-  KeyDocument,
-  BrainScales,
-  DollarDocument,
-  LegalSeal,
-  ProfessionalBriefcase,
-  LegalBookSearch,
-} from '@/components/ui/icons';
-import { AlertCircle, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
-import { formatNumber } from '@/lib/utils';
+import { CheckCircle } from 'lucide-react';
 
 export default function Home() {
+  const [headlineIndex, setHeadlineIndex] = React.useState(0);
+  React.useEffect(() => {
+    const timer = window.setInterval(() => setHeadlineIndex(index => (index + 1) % 3), 3200);
+    return () => window.clearInterval(timer);
+  }, []);
   return (
     <PageShell mainUnpadded>
       {/* Hero Section */}
-      <section className="relative pt-8 pb-20 lg:pt-12 lg:pb-32 overflow-hidden">
+      <section className="caser-hero overflow-hidden py-10 lg:py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <div className="space-y-2">
-                <Badge variant="secondary" className="w-fit">
-                  <Image
-                    src="/google-cloud-badge.webp"
-                    alt="Google Cloud"
-                    width={12}
-                    height={12}
-                    className="w-3 h-3 mr-2 rounded"
-                  />
-                  Built on Google Cloud
-                </Badge>
-                <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">
-                  Case Alerts & Search of
-                  <span className="text-primary"> Electronic Records</span>
+          <div className="grid items-center gap-8 lg:grid-cols-[.88fr_1.12fr] lg:gap-10">
+            <div className="relative z-20 space-y-7 lg:py-8">
+              <div className="space-y-4">
+                <p className="text-xs font-semibold uppercase tracking-[.18em] text-muted-foreground">Federal court monitoring for iPhone</p>
+                <h1 className="max-w-[13ch] text-5xl font-bold leading-[1.02] tracking-[-.06em] sm:text-6xl lg:text-[4.4rem]">
+                  <span className="block">Know what moved</span>
+                  <span key={headlineIndex} className="hero-rotating-line block text-primary">
+                    {['in the cases you follow.','across 300+ federal feeds.','when a filing matches.'][headlineIndex]}
+                  </span>
                 </h1>
-                <p className="text-xl text-muted-foreground leading-relaxed">
-                  Monitor 300+ U.S. federal court feeds. Eliminate wasteful PACER search fees.
-                  Filing notifications for keyword matches with direct document links. No PACER account required.
-                </p>
+                <p className="max-w-xl text-lg leading-relaxed text-muted-foreground sm:text-xl">Search federal court feeds, set keyword monitors, and open filing sources—all from CASER on iPhone.</p>
               </div>
-
-              <AppStoreCtaRow
-                badgeSize="lg"
-                secondary={
-                  <MatchedOutlineButton href="#features" badgeSize="lg">
-                    <LegalBookSearch className="w-5 h-5" />
-                    Learn More
-                  </MatchedOutlineButton>
-                }
-              />
-
-              <ProductStatRow className="pt-8" />
+              <AppStoreCtaRow badgeSize="lg" secondary={<MatchedOutlineButton href="#features" badgeSize="lg">Explore CASER</MatchedOutlineButton>}/>
+              <div className="flex gap-7 border-t border-border pt-5 text-left"><div><b className="text-2xl">300+</b><div className="mt-1 text-xs text-muted-foreground">federal court feeds</div></div><div><b className="text-2xl">$0</b><div className="mt-1 text-xs text-muted-foreground">in-app search fees</div></div></div>
             </div>
-
-            <div className="relative flex justify-center">
-              <Image
-                src="/screenshot-5.png"
-                alt="CASER App Interface"
-                width={1070}
-                height={2149}
-                className="max-w-sm w-full h-auto"
-              />
+            <div className="phone-stage relative mx-auto flex min-h-[520px] w-full max-w-[650px] items-end justify-center sm:min-h-[650px] lg:min-h-[690px]">
+              <div className="phone-glow" aria-hidden="true"/>
+              <Image src="/search.png" alt="CASER feature 01, federal case search on iPhone" width={1070} height={2149} priority className="phone-shot phone-shot-left absolute bottom-[-15px] left-[3%] z-10 hidden h-[460px] w-auto object-contain sm:block lg:h-[560px]"/>
+              <Image src="/screenshot-3.png" alt="CASER feature 06, case dashboard on iPhone" width={1070} height={2149} className="phone-shot phone-shot-center relative z-20 -mb-6 h-[520px] w-auto object-contain sm:h-[610px] lg:h-[680px]"/>
+              <Image src="/security-screen.png" alt="CASER feature 04, privacy and security on iPhone" width={1070} height={2149} className="phone-shot phone-shot-right absolute bottom-[-15px] right-[3%] z-10 hidden h-[460px] w-auto object-contain sm:block lg:h-[560px]"/>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="py-20 lg:py-32 bg-muted/50">
+
+      <section id="features" className="py-20 lg:py-28">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center space-y-4 mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold">
-              Professional-Grade Court Monitoring
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Engineered for litigation teams, paralegals, and legal operations professionals
-              who require precision, efficiency, and competitive advantage.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="relative overflow-hidden">
-              <CardHeader>
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <CourthouseClock className="w-6 h-6 text-primary" />
-                </div>
-                <CardTitle>Court monitoring &amp; filing notifications</CardTitle>
-                <CardDescription>
-                  On-device alerts after scans find matching filings across 300+ federal court feeds
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-1 text-sm">
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-foreground mr-2" />
-                    Federal courts coverage
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-foreground mr-2" />
-                    Bankruptcy courts included
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-foreground mr-2" />
-                    Custom keyword alerts
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="relative overflow-hidden">
-              <CardHeader>
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <DollarDocument className="w-6 h-6 text-primary" />
-                </div>
-                <CardTitle>Eliminate PACER Waste</CardTitle>
-                <CardDescription>
-                  Reduce avoidable search charges based on your PACER usage
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-1 text-sm">
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-foreground mr-2" />
-                    Zero search fees
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-foreground mr-2" />
-                    Direct document links
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-foreground mr-2" />
-                    Cost tracking analytics
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="relative overflow-hidden">
-              <CardHeader>
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <LegalSeal className="w-6 h-6 text-primary" />
-                </div>
-                <CardTitle>Professional Security</CardTitle>
-                <CardDescription>
-                  Protected local records and encrypted network connections
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-1 text-sm">
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-foreground mr-2" />
-                    No PACER account required
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-foreground mr-2" />
-                    Secure data transmission
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-foreground mr-2" />
-                    Privacy-first design
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="relative overflow-hidden">
-              <CardHeader>
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <LegalBriefChart className="w-6 h-6 text-primary" />
-                </div>
-                <CardTitle>Advanced Analytics</CardTitle>
-                <CardDescription>
-                  Comprehensive insights into your docket monitoring activities
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-1 text-sm">
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-foreground mr-2" />
-                    Usage statistics
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-foreground mr-2" />
-                    Cost savings reports
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-foreground mr-2" />
-                    Activity monitoring
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="relative overflow-hidden">
-              <CardHeader>
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <KeyDocument className="w-6 h-6 text-primary" />
-                </div>
-                <CardTitle>Direct Document Access</CardTitle>
-                <CardDescription>
-                  Open available court documents through source links
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-1 text-sm">
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-foreground mr-2" />
-                    One-click document viewing
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-foreground mr-2" />
-                    PDF export capabilities
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-foreground mr-2" />
-                    Document organization
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="relative overflow-hidden">
-              <CardHeader>
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <BrainScales className="w-6 h-6 text-primary" />
-                </div>
-                <CardTitle>Atticus AI (CASER Pro)</CardTitle>
-                <CardDescription>
-                  Gemini-powered legal research assistant — not legal advice
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-1 text-sm">
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-foreground mr-2" />
-                    Legal concept research
-                    </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-foreground mr-2" />
-                    Term definitions
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-foreground mr-2" />
-                    Neutral information provider
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
+          <div className="mx-auto mb-12 max-w-3xl space-y-4 text-center"><p className="text-xs font-semibold uppercase tracking-[.16em] text-primary">Court monitoring, made practical</p><h2 className="text-4xl font-bold leading-tight sm:text-5xl">Everything you need to follow a case.</h2><p className="mx-auto max-w-2xl text-base leading-relaxed text-muted-foreground">Search current public feeds, keep the cases that matter close, and let keyword monitoring surface new activity.</p></div>
+          <div className="mx-auto grid max-w-6xl gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {[
+              {n:'01', title:'Search across federal courts', body:'Look up parties, case titles, and keywords across 300+ supported feeds.', img:'/search.png', alt:'Federal court case search results in the CASER iPhone app'},
+              {n:'02', title:'Monitor keywords', body:'Create monitors for names and topics. CASER checks feeds and schedules local alerts when it finds a match.', img:'/screenshot-3.png', alt:'CASER iPhone dashboard with monitor status'},
+              {n:'03', title:'Open the source filing', body:'Follow direct document links to the source court when you need to review a filing.', img:'/dashboard.png', alt:'CASER case details and source document access'},
+              {n:'04', title:'Understand your usage', body:'Review search activity and estimate PACER costs with transparent assumptions.', img:'/security-screen.png', alt:'CASER privacy and security controls on iPhone'},
+              {n:'05', title:'Ask Atticus', body:'Explore legal concepts and terms with the optional AI research assistant. It is not legal advice.', img:'/ai.png', alt:'Atticus AI research assistant inside CASER for iPhone'},
+              {n:'06', title:'Keep your research close', body:'Search history, saved cases, and settings stay on your device. Verify important filings with official sources.', img:'/screenshot-3.png', alt:'CASER local case research tools on iPhone'},
+            ].map((item)=><article key={item.n} className="feature-tile overflow-hidden rounded-2xl border bg-card"><div className="flex min-h-[190px] items-center justify-center overflow-hidden bg-[#f2eee7] px-4 pt-6"><Image src={item.img} alt={item.alt} width={1070} height={2149} className="h-[220px] w-auto object-contain object-top"/></div><div className="p-5 sm:p-6"><div className="mb-3 text-[10px] font-semibold tracking-[.16em] text-primary">{item.n} / CASER FOR IOS</div><h3 className="text-xl font-semibold">{item.title}</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.body}</p></div></article>)}
           </div>
         </div>
       </section>
 
-      {/* App Showcase Section */}
-      <section id="showcase" className="py-20 lg:py-32">
+
+
+      <section id="pacer-problem" className="py-12 lg:py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center space-y-3 mb-12 max-w-3xl mx-auto">
-            <h2 className="text-3xl lg:text-4xl font-bold">
-              Experience Professional Court Monitoring
-            </h2>
-            <p className="text-lg text-muted-foreground">
-              Precision court monitoring for legal professionals — search, alerts, and savings in one app.
-            </p>
-          </div>
-
-          <div className="max-w-6xl mx-auto">
-            <ShowcaseSection />
+          <div className="mx-auto flex max-w-5xl flex-col gap-8 rounded-3xl border bg-[#f5f0e4] p-6 sm:p-9 lg:flex-row lg:items-start">
+            <div className="max-w-sm lg:pt-1"><p className="text-xs font-semibold uppercase tracking-[.16em] text-primary">PACER, clearly explained</p><h2 className="mt-3 text-3xl font-bold sm:text-4xl">Keep up without repeat searching.</h2><p className="mt-4 leading-relaxed text-muted-foreground">PACER remains the official source. CASER monitors current public feeds to help you spot updates and avoid unnecessary manual searches.</p><Link href="/support/pacer-savings" className="mt-4 inline-flex items-center gap-2 text-sm font-semibold underline underline-offset-4">How fees work <span aria-hidden="true">→</span></Link></div>
+            <div className="grid flex-1 grid-cols-3 gap-2 sm:gap-3">{[['$0.10','per billable page'],['$3','document cap'],['$30','quarterly waiver threshold']].map(([value,label])=><div key={label} className="rounded-2xl border border-black/5 bg-white/80 p-4 sm:p-5"><b className="block text-2xl font-bold sm:text-3xl">{value}</b><span className="mt-1 block text-xs leading-snug text-muted-foreground sm:text-sm">{label}</span></div>)}<p className="col-span-3 pt-2 text-xs leading-relaxed text-muted-foreground">Search-result charges and eligible free copies affect totals. Actual fees depend on your use. CASER is not a complete historical docket archive; verify records with official sources.</p></div>
           </div>
         </div>
       </section>
 
-      {/* PACER Problem Section */}
-      <section id="pacer-problem" className="py-20 lg:py-32 bg-muted/50">
+      <section id="savings" className="py-10 lg:py-12">
+        <div className="container mx-auto flex max-w-5xl flex-col items-center justify-between gap-6 rounded-3xl border bg-card px-6 py-7 sm:flex-row sm:px-9">
+          <div><p className="text-xs font-semibold uppercase tracking-[.16em] text-primary">Simple pricing · flexible team services</p><h2 className="mt-2 text-2xl font-bold">Details for your practice.</h2><p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">Pro is $14.99 per year. Business workflows, integrations, historical data, research, and consulting are scoped individually.</p></div>
+          <div className="flex shrink-0 flex-wrap justify-center gap-3"><MatchedOutlineButton href="/pricing">Pricing</MatchedOutlineButton><MatchedOutlineButton href="/contact">Team inquiries</MatchedOutlineButton></div>
+        </div>
+      </section>
+
+      <section id="download" className="py-14 lg:py-18 bg-muted/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center space-y-4 mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold">
-              The PACER Problem
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              How systemic barriers in federal court access create inequity—and how CASER provides the solution.
-            </p>
-          </div>
-
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-10 mb-16 items-stretch">
-            <div className="bg-muted/50 border rounded-lg p-6 h-full flex flex-col">
-                <h3 className="text-xl font-semibold mb-4">The Challenge</h3>
-                <p className="text-muted-foreground mb-4">
-                  The federal PACER system, designed to provide Public Access to Court Electronic Records,
-                  presents significant barriers that prevent meaningful public access to justice.
-                </p>
-                <div className="space-y-2">
-                  <div className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-destructive rounded-full mt-2 flex-shrink-0"></div>
-                    <div>
-                      <h4 className="font-medium mb-1">Unpredictable Search Costs</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Users face unknown charges until after searches are completed, with simple typos
-                        potentially costing hundreds. This creates financial barriers to research.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-destructive rounded-full mt-2 flex-shrink-0"></div>
-                    <div>
-                      <h4 className="font-medium mb-1">Outdated Interface</h4>
-                      <p className="text-sm text-muted-foreground">
-                        The user interface remains fundamentally unusable for modern legal research,
-                        lacking intuitive design and efficient workflows.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-destructive rounded-full mt-2 flex-shrink-0"></div>
-                    <div>
-                      <h4 className="font-medium mb-1">Limited Search Capabilities</h4>
-                      <p className="text-sm text-muted-foreground">
-                        No document-level search exists. Users cannot search for legal concepts or
-                        phrases—only known case names or docket numbers.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-destructive rounded-full mt-2 flex-shrink-0"></div>
-                    <div>
-                      <h4 className="font-medium mb-1">No Accountability</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Without external oversight, document availability cannot be verified,
-                        compromising transparency in the justice system.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-            </div>
-
-            <div className="bg-primary/5 border border-primary/20 rounded-lg p-6 h-full flex flex-col">
-                <h3 className="text-xl font-semibold text-primary mb-4">The CASER Solution</h3>
-                <p className="text-muted-foreground mb-4">
-                  CASER addresses these fundamental issues by providing intelligent monitoring
-                  and eliminating wasteful PACER searches through advanced technology.
-                </p>
-                <div className="space-y-2">
-                  <div className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-green-600 rounded-full mt-2 flex-shrink-0"></div>
-                    <div>
-                      <h4 className="font-medium mb-1">Zero Search Fees</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Monitor 300+ court feeds without paying search fees. Only pay for documents
-                        you actually need, eliminating surprise charges.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-green-600 rounded-full mt-2 flex-shrink-0"></div>
-                    <div>
-                      <h4 className="font-medium mb-1">Professional Interface</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Modern, intuitive design built for legal professionals. Efficient workflows
-                        that save time and reduce frustration.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-green-600 rounded-full mt-2 flex-shrink-0"></div>
-                    <div>
-                      <h4 className="font-medium mb-1">Advanced Keyword Monitoring</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Monitor specific legal concepts, parties, or topics across all courts.
-                        Receive alerts when relevant documents are filed.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-green-600 rounded-full mt-2 flex-shrink-0"></div>
-                    <div>
-                      <h4 className="font-medium mb-1">Complete Transparency</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Track all monitoring activities, cost savings, and document access.
-                        Full accountability for your court research.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-            </div>
-          </div>
-
-          <div className="bg-background border rounded-lg p-8 text-center">
-            <h3 className="text-2xl font-bold mb-4">Access to Justice is Fundamental</h3>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-6">
-              Meaningful public access to court records is essential for democracy, transparency,
-              and the rule of law. When barriers prevent citizens, journalists, and legal professionals
-              from observing our justice system, we all lose.
-            </p>
-            <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-              CASER represents a technological solution to the PACER Problem—democratizing access
-              to federal court records while eliminating wasteful costs and inefficiencies.
-            </p>
-
-            <div className="bg-muted/50 border rounded-lg p-6 max-w-4xl mx-auto">
-              <h4 className="text-xl font-semibold mb-4">The PACER Cost Crisis</h4>
-              <div className="grid md:grid-cols-2 gap-8 text-left">
-                <div>
-                  <h5 className="font-medium mb-3">The Problem</h5>
-                  <ul className="space-y-1 text-sm text-muted-foreground">
-                    <li className="flex items-start space-x-2">
-                      <div className="w-2 h-2 bg-destructive rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>1+ billion documents in PACER system</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <div className="w-2 h-2 bg-destructive rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>Average 9.1 pages per document</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <div className="w-2 h-2 bg-destructive rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>$0.10 per page = $0.91 average per document</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <div className="w-2 h-2 bg-destructive rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>PACER charges apply to billable searches and documents</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <div className="w-2 h-2 bg-destructive rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>Quarterly PACER fees of $30 or less are waived</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <div className="w-2 h-2 bg-destructive rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>Fee totals depend on each user&apos;s actual PACER activity</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <div className="w-2 h-2 bg-destructive rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>CASER helps reduce repeated manual searches</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <div className="w-2 h-2 bg-destructive rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>Documents remain available through their source court systems</span>
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <h5 className="font-medium mb-3">The CASER Solution</h5>
-                  <ul className="space-y-1 text-sm text-muted-foreground">
-                    <li className="flex items-start space-x-2">
-                      <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>Eliminate search fees entirely</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>Monitor 300+ court feeds with zero search costs</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>Keyword alerts across supported federal court feeds</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>Potential savings depend on each user&apos;s PACER activity</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>Pay only for documents you actually need</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
-                      <span>Democratizing access to justice</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <p className="text-sm text-muted-foreground mt-6">
-                CASER monitors supported federal court feeds and alerts you to matching activity,
-                reducing the need for repeated manual searches. PACER fees and savings vary with actual usage.
-              </p>
-
-              <div className="mt-6 pt-6 border-t">
-                <h5 className="font-medium mb-4 text-center">Understand Your Research Costs</h5>
-                <div className="grid md:grid-cols-2 gap-6 text-sm text-muted-foreground">
-                  <div>
-                    <h6 className="font-medium mb-2">PACER Fee Rules</h6>
-                    <ul className="space-y-1">
-                      <li className="flex items-start space-x-2">
-                        <div className="w-2 h-2 bg-destructive rounded-full mt-1.5 flex-shrink-0"></div>
-                        <span>PACER charges $0.10 per billable page</span>
-                      </li>
-                      <li className="flex items-start space-x-2">
-                        <div className="w-2 h-2 bg-destructive rounded-full mt-1.5 flex-shrink-0"></div>
-                        <span>Search results are not covered by the $3 document cap</span>
-                      </li>
-                      <li className="flex items-start space-x-2">
-                        <div className="w-2 h-2 bg-destructive rounded-full mt-1.5 flex-shrink-0"></div>
-                        <span>Charges of $30 or less in a quarter are waived</span>
-                      </li>
-                      <li className="flex items-start space-x-2">
-                        <div className="w-2 h-2 bg-destructive rounded-full mt-1.5 flex-shrink-0"></div>
-                        <span>Opinions and eligible free copies carry no fee</span>
-                      </li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h6 className="font-medium mb-2">How CASER Helps</h6>
-                    <ul className="space-y-1">
-                      <li className="flex items-start space-x-2">
-                        <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
-                        <span>No per-search fees within the app</span>
-                      </li>
-                      <li className="flex items-start space-x-2">
-                        <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
-                        <span>Monitor keywords across available public feeds</span>
-                      </li>
-                      <li className="flex items-start space-x-2">
-                        <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
-                        <span>Search, save, and monitor public court updates in one app</span>
-                      </li>
-                      <li className="flex items-start space-x-2">
-                        <div className="w-2 h-2 bg-green-600 rounded-full mt-1.5 flex-shrink-0"></div>
-                        <span>One annual Pro price for individuals and professionals</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <p className="text-sm text-muted-foreground mt-4 text-center">
-                  CASER can reduce repeated PACER searches when the information you need is in public feeds.
-                  It does not replace a complete docket search or change PACER document fees.
-                  Review the assumptions in the calculator to estimate your own costs.
-                </p>
-              </div>
-            </div>
+          <div className="mx-auto max-w-4xl rounded-[2rem] bg-[#f5f0e4] px-6 py-10 text-center sm:px-12">
+            <p className="text-xs font-semibold uppercase tracking-[.16em] text-primary">Court research, in your pocket</p>
+            <h2 className="mt-3 text-4xl font-bold sm:text-5xl">Follow the cases that matter.</h2>
+            <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">Search, save, and monitor public federal court updates from your iPhone. Your case history stays on your device; see the privacy policy for provider and network details.</p>
+            <div className="mt-7"><AppStoreCtaRow badgeSize="lg" className="justify-center" secondary={<MatchedOutlineButton href="/support" badgeSize="lg">Visit Support</MatchedOutlineButton>}/></div>
+            <div className="mt-6 flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-muted-foreground"><Link href="/privacy" className="underline underline-offset-4">Privacy</Link><Link href="/features" className="underline underline-offset-4">All features</Link><Link href="/download" className="underline underline-offset-4">Download details</Link></div>
           </div>
         </div>
       </section>
 
-      {/* Data Services Section */}
-      <section id="data-services" className="py-20 lg:py-32">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center space-y-4 mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold">
-              Team & Integration Requests
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Tell us about your team’s research needs. Additional services and integrations are
-              discussed individually and are not included features of the current app.
-            </p>
-          </div>
-
-          <div className="grid lg:grid-cols-2 gap-12 mb-16">
-            <div className="space-y-6">
-              <div className="bg-primary/5 border border-primary/20 rounded-lg p-6">
-                <h3 className="text-xl font-semibold text-primary mb-4">Your Research Requirements</h3>
-                <p className="text-muted-foreground mb-4">
-                  CASER searches current public feeds. If your workflow needs historical archives or
-                  data delivery, contact us to discuss scope and availability.
-                </p>
-                <div className="space-y-3">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-sm">Federal district and bankruptcy court feed monitoring</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-sm">Custom keyword and entity tracking</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-sm">Historical data requirements (by request)</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-sm">PDF exports from current case information</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-sm">Discuss integration and data-delivery requirements</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-6">
-              <div className="bg-primary/5 border border-primary/20 rounded-lg p-6 h-full">
-                <h3 className="text-xl font-semibold text-primary mb-4">Professional Services</h3>
-                <p className="text-muted-foreground mb-4">
-                  Share your requirements for onboarding, data extraction, or analysis. We will confirm
-                  what is available and any separate scope before an engagement.
-                </p>
-                <div className="space-y-3">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-sm">Custom data research and extraction</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-sm">Litigation trend analysis</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-sm">Competitive intelligence reports</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-sm">Regulatory compliance monitoring</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-sm">Strategic consulting services</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-background border rounded-lg p-8 mb-12">
-            <h4 className="text-lg font-semibold text-center mb-4">PACER Fee Reference</h4>
-            <div className="bg-primary/5 rounded-lg p-4 md:p-6">
-              <StatHighlightGrid
-                items={[
-                  {
-                    value: '$0.10',
-                    lines: ['Per Page', 'For Billable Records'],
-                  },
-                  {
-                    value: '$3.00',
-                    lines: ['Maximum', 'Per Document'],
-                  },
-                  {
-                    value: '$30.00',
-                    lines: ['Quarterly', 'Waiver Threshold'],
-                  },
-                ]}
-              />
-            </div>
-            <p className="text-center text-sm text-muted-foreground mt-4">
-              PACER waives quarterly usage charges of $30 or less.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Download Section */}
-      <section id="download" className="py-20 lg:py-32 bg-muted/50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center space-y-8">
-            <h2 className="text-3xl lg:text-4xl font-bold">
-              Download CASER
-              <span className="text-primary"> for iOS</span>
-            </h2>
-            <p className="text-xl text-muted-foreground leading-relaxed">
-              Download CASER on the App Store. Monitor 300+ federal court feeds and upgrade to CASER Pro
-              inside the app.
-            </p>
-            <AppStoreCtaRow
-              badgeSize="lg"
-              className="justify-center"
-              secondary={
-                <MatchedOutlineButton href="/download" badgeSize="lg">
-                  Learn More
-                </MatchedOutlineButton>
-              }
-            />
-            <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
-              <div className="flex items-center space-x-1">
-                <CheckCircle className="w-4 h-4 text-foreground" />
-                <span>AES-256 Encryption (app)</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <CheckCircle className="w-4 h-4 text-foreground" />
-                <span>TLS 1.3 Security (app)</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <CheckCircle className="w-4 h-4 text-foreground" />
-                <span>Fee Free</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
     </PageShell>
   );

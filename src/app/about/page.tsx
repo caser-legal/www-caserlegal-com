@@ -17,14 +17,14 @@ export default function AboutPage() {
   return (
     <PageShell>
       {/* Hero Section */}
-      <section className="relative pt-10 pb-14 sm:pt-12 sm:pb-16 lg:pt-14 lg:pb-20">
+      <section className="route-hero relative pt-12 pb-12 sm:pt-14 sm:pb-14 lg:pt-16 lg:pb-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <Badge variant="secondary" className="w-fit mx-auto">
               <ScalesOfJustice className="w-3 h-3 mr-2" />
               About CASER
             </Badge>
-            <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">
+            <h1 className="text-4xl lg:text-6xl font-bold tracking-tight route-title">
               Pioneering Legal Technology
               <span className="text-primary"> for Modern Practice</span>
             </h1>
@@ -50,7 +50,7 @@ export default function AboutPage() {
           </div>
 
           <div className="max-w-4xl mx-auto">
-            <Card className="p-8">
+            <Card className="route-card p-8">
               <CardContent className="space-y-6 text-lg leading-relaxed text-muted-foreground">
                 <p>
                   It started with countless nights studying law, drafting page after page of documents,

@@ -15,7 +15,7 @@ import { CONTACT_EMAIL, mailto } from '@/lib/contact-email';
 export default function ContactPage() {
   return (
     <PageShell>
-      <section className="relative py-16 lg:py-24">
+      <section className="route-hero relative py-14 lg:py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <Badge variant="secondary" className="w-fit mx-auto">
