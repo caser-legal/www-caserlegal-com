@@ -8,10 +8,9 @@ import { AppStoreNavBadge } from '@/components/AppStoreLink';
 import { Menu, X } from 'lucide-react';
 
 const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About' },
   { href: '/features', label: 'Features' },
   { href: '/pricing', label: 'Pricing' },
+  { href: '/about', label: 'About' },
   { href: '/download', label: 'Download' },
   { href: '/support', label: 'Support' },
 ] as const;
@@ -21,10 +20,10 @@ export default function Navigation() {
 
   return (
     <nav
-      className="sticky top-0 z-50 border-b border-foreground/10 bg-background/95 shadow-[0_1px_0_0_oklch(0.82_0_0)] backdrop-blur-md supports-[backdrop-filter]:bg-background/80"
+      className="sticky top-0 z-50 border-b border-foreground/10 bg-background/95 backdrop-blur-md supports-[backdrop-filter]:bg-background/80"
       aria-label="Main navigation"
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto max-w-[1320px] px-4 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
           <Link
             href="/"
@@ -34,14 +33,14 @@ export default function Navigation() {
               src="/logo-full.png"
               alt="CASER"
               width={120}
-              height={48}
-              className="h-9 w-auto max-w-[120px] object-contain"
+              height={58}
+              className="h-8 w-auto max-w-[108px] object-contain"
               priority
             />
           </Link>
 
-          <div className="pointer-events-none absolute inset-x-0 hidden lg:flex justify-center">
-            <div className="pointer-events-auto flex items-center gap-6">
+          <div className="pointer-events-none absolute inset-x-[150px] hidden xl:flex justify-center">
+            <div className="pointer-events-auto flex items-center gap-5">
               {navLinks.map(({ href, label }) => (
                 <Link
                   key={href}
@@ -54,7 +53,7 @@ export default function Navigation() {
             </div>
           </div>
 
-          <div className="relative z-10 hidden lg:flex items-center gap-2 min-w-[120px] justify-end">
+          <div className="relative z-10 hidden xl:flex items-center gap-2 min-w-[180px] justify-end">
             <Button variant="ghost" size="sm" asChild>
               <Link href="/contact">Contact</Link>
             </Button>
@@ -92,9 +91,7 @@ export default function Navigation() {
             >
               Contact
             </Link>
-            <div className="pt-3" onClick={() => setIsOpen(false)}>
-              <AppStoreNavBadge />
-            </div>
+            <div className="pt-3" onClick={() => setIsOpen(false)}><AppStoreNavBadge /></div>
           </div>
         )}
       </div>

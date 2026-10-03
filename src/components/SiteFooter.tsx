@@ -64,17 +64,17 @@ export default function SiteFooter() {
     <footer className="border-t border-border bg-muted/50 mt-auto" role="contentinfo">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8">
-          <div className="sm:col-span-2 lg:col-span-5 flex flex-col items-center text-center space-y-5">
+          <div className="sm:col-span-2 lg:col-span-5 flex flex-col items-start text-left space-y-5">
             <Link
               href="/"
-              className="inline-flex justify-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              className="inline-flex justify-start rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               <Image
                 src="/logo-full.png"
                 alt={LOGO_ALT}
                 width={120}
                 height={48}
-                className="h-10 w-auto max-w-[140px] object-contain object-center mx-auto"
+                className="h-10 w-auto max-w-[140px] object-contain object-left"
                 priority={false}
               />
             </Link>
