@@ -28,6 +28,36 @@ npm run build  # Vercel server build. /v1/docket-search runs only after this pro
 - `src/components/PricingTiers.tsx` — three-column pricing
 - `src/components/SiteFooter.tsx` — shared footer
 
+## Muse connector
+
+CASER's Muse connector is a server route in this site and deploys with it, so every push to `main` redeploys the connector. While Muse is reviewing it, avoid pushing changes that affect the route.
+
+- **Endpoint:** `POST https://www.caserlegal.com/v1/docket-search` (`src/app/v1/docket-search/route.ts`)
+- **Search logic:** `src/lib/docket-search.ts`, using the court feed lists in `data/courts/` (the same lists the iOS app ships)
+- **Landing page:** `/muse` (`src/app/muse/page.tsx`, `src/components/MuseLockup.tsx`, assets in `public/muse/`)
+- **Connector icon** for the Muse submission (512×512 PNG): `docs/caser-muse-connector-icon.png`
+- **Tests:** `npm run test` (`tests/docket-search.test.ts`)
+
+Request body (JSON):
+
+| Field | Required | Values |
+|---|---|---|
+| `query` | Yes | Party, keyword or case title. Anything past 200 characters is cut. |
+| `states` | No | State names or two-letter codes, or `National`, e.g. `["WY"]` |
+| `court_types` | No | Any of `district`, `bankruptcy`, `appellate` |
+| `date_range` | No | `Last 24 hours`, `Last 7 days`, `Last 30 days` (default), `Last 90 days`, `All time` |
+| `limit` | No | A positive integer, capped at 25 (the default) |
+
+The response has `matches` (each with `id`, `title`, `description`, `court`, `state`, `court_type`, `published_at`, `parties`, `link`), plus `match_count`, `truncated`, `scanned_courts`, `failed_courts`, `total_courts`, `incomplete` and `disclaimer`.
+
+Errors: `400` for bad input, `429` after 10 searches in a minute from one IP (counted per server instance), and `500` if search fails. A request can run for up to 60 seconds.
+
+```bash
+curl -X POST https://www.caserlegal.com/v1/docket-search \
+  -H 'content-type: application/json' \
+  -d '{"query":"order","states":["IL"],"court_types":["district"],"date_range":"Last 7 days","limit":3}'
+```
+
 ## Support
 
 - **Contact (support, careers, privacy, security)**: caserlegal@proton.me
