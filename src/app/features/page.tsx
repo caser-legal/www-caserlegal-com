@@ -12,18 +12,10 @@ export default function FeaturesPage() {
       <section className="route-hero relative py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
-            <Badge variant="secondary" className="mx-auto gap-1.5">
-              <Scale className="w-3 h-3 shrink-0" aria-hidden />
-              Professional Features
-            </Badge>
             <h1 className="text-4xl lg:text-6xl font-bold tracking-tight route-title" suppressHydrationWarning>
               Comprehensive Court Monitoring
               <span className="text-primary"> for Everyone</span>
             </h1>
-            <p className="text-xl text-muted-foreground leading-relaxed">
-              Built for attorneys, paralegals, legal teams, and anyone following a federal case.
-              Search, save, monitor, and research from an approachable iPhone app.
-            </p>
             <AppStoreCtaRow
               badgeSize="lg"
               className="justify-center"
@@ -38,15 +30,12 @@ export default function FeaturesPage() {
       </section>
 
       {/* Core Features Tabs */}
-      <section className="py-20 lg:py-32 bg-muted/50">
+      <section className="py-16 lg:py-24 bg-muted/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold">
               Feature Overview
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Explore the search, monitoring, and research tools available in CASER today.
-            </p>
           </div>
 
           <FeatureTabsOverview />
@@ -54,15 +43,12 @@ export default function FeaturesPage() {
       </section>
 
       {/* Technical Specifications */}
-      <section className="py-20 lg:py-32">
+      <section className="py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold">
               Technical Specifications
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Built with cutting-edge technology to ensure reliability, performance, and security
-            </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-x-6 sm:gap-x-10 md:gap-x-14 gap-y-8 max-w-5xl mx-auto">
@@ -142,15 +128,12 @@ export default function FeaturesPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 lg:py-32 bg-muted/50">
+      <section className="py-16 lg:py-24 bg-muted/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h2 className="text-3xl lg:text-4xl font-bold">
               Ready to Transform Your Court Monitoring?
             </h2>
-            <p className="text-xl text-muted-foreground">
-              Use CASER to follow federal court updates, organize cases, and research with Atticus.
-            </p>
             <AppStoreCtaRow
               badgeSize="lg"
               className="justify-center"

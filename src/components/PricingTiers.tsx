@@ -30,19 +30,14 @@ function IndividualPricing() {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       <div className="text-center space-y-2">
-        <p className="text-sm font-medium text-primary uppercase tracking-wide">For individuals and legal professionals · iOS</p>
         <h2 className="text-2xl lg:text-3xl font-bold">Download free, upgrade in the app</h2>
-        <p className="text-muted-foreground max-w-lg mx-auto text-sm lg:text-base">
-          CASER is on the App Store. Start on the free tier, then subscribe to CASER Pro inside
-          the app when you need more capacity.
-        </p>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6 items-stretch">
         <Card className="flex flex-col h-full border-border/80">
           <CardHeader className="pb-4">
             <CardTitle className="text-xl">Free</CardTitle>
-            <CardDescription>Try federal court monitoring at no cost</CardDescription>
+            <CardDescription className="min-h-[2.5rem]">Try federal court monitoring at no cost</CardDescription>
             <div className="pt-4">
               <div className="flex items-baseline gap-1">
                 <span className="text-4xl font-bold tracking-tight">$0</span>
@@ -61,12 +56,12 @@ function IndividualPricing() {
         <Card className="flex flex-col h-full border-primary shadow-md relative">
           <div className="absolute -top-3 left-1/2 -translate-x-1/2">
             <Badge className="bg-primary text-primary-foreground px-3 py-0.5 text-xs">
-              Recommended
+              PRO
             </Badge>
           </div>
-          <CardHeader className="pb-4 pt-2">
+          <CardHeader className="pb-4">
             <CardTitle className="text-xl">CASER Pro</CardTitle>
-            <CardDescription>Up to 100 alerts with an annual Atticus credit allowance</CardDescription>
+            <CardDescription className="min-h-[2.5rem]">Up to 100 alerts with an annual Atticus credit allowance</CardDescription>
             <div className="pt-4">
               <div className="flex items-baseline gap-1">
                 <span className="text-4xl font-bold tracking-tight text-primary">$14.99</span>
@@ -102,13 +97,7 @@ export default function PricingTiers() {
 
       <div className="space-y-4">
         <div className="text-center space-y-2">
-          <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
-            Firms &amp; organizations
-          </p>
           <h2 className="text-2xl font-bold">Using CASER with your team</h2>
-          <p className="text-muted-foreground text-sm max-w-xl mx-auto">
-            The same CASER Pro app is available to professionals and individuals for $14.99/year per subscription. Contact us about additional team services; availability and scope are agreed separately.
-          </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-x-6 sm:gap-x-10 md:gap-x-14 gap-y-8 items-stretch">

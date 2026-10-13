@@ -16,13 +16,10 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <PageShell>
-      <section className="py-24 lg:py-32">
+      <section className="py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-lg text-center space-y-6">
           <p className="text-sm font-medium text-primary">404</p>
           <h1 className="text-3xl lg:text-4xl font-bold tracking-tight">Page not found</h1>
-          <p className="text-muted-foreground leading-relaxed">
-            This URL is not on our site. Return home or download CASER on the App Store.
-          </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
             <Button asChild>
               <Link href="/">Back to home</Link>

@@ -32,18 +32,10 @@ export default function CareersPage() {
       <section className="route-hero relative py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
-            <Badge variant="secondary" className="w-fit mx-auto">
-              <ProfessionalBriefcase className="w-3 h-3 mr-2" />
-              Join Our Team
-            </Badge>
             <h1 className="text-4xl lg:text-6xl font-bold tracking-tight route-title">
               Shape the Future of
               <span className="text-primary"> Legal Technology</span>
             </h1>
-            <p className="text-xl text-muted-foreground leading-relaxed">
-              Join a team of legal technology pioneers dedicated to democratizing access to court records 
-              and eliminating wasteful PACER fees for legal professionals across the country.
-            </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
               <Button size="lg" className="w-full sm:w-auto" asChild>
                 <a href="#open-positions">
@@ -63,15 +55,12 @@ export default function CareersPage() {
       </section>
 
       {/* Why Join Us */}
-      <section className="py-20 lg:py-32 bg-muted/50">
+      <section className="py-16 lg:py-24 bg-muted/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold">
               Why Join CASER?
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Be part of a mission-driven company that's transforming how legal professionals access court information
-            </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
@@ -141,9 +130,6 @@ export default function CareersPage() {
             <h2 className="text-3xl lg:text-4xl font-bold">
               Open Positions
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              We're always looking for talented individuals who share our vision
-            </p>
           </div>
 
           <div className="max-w-4xl mx-auto space-y-6">
@@ -274,19 +260,12 @@ export default function CareersPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 lg:py-32">
+      <section className="py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h2 className="text-3xl lg:text-4xl font-bold">
               Ready to Shape the Future of Legal Tech?
             </h2>
-            <p className="text-xl text-muted-foreground">
-              Join us in our mission to democratize access to court records and eliminate wasteful PACER fees
-            </p>
-            <p className="text-sm text-muted-foreground max-w-lg mx-auto">
-              Apply Today opens your email app to caserlegal@proton.me with a pre-filled application
-              template. Attach your resume before sending.
-            </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild>
                 <a href={careersApplicationMailto()}>

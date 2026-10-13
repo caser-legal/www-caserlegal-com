@@ -17,36 +17,24 @@ export default function AboutPage() {
   return (
     <PageShell>
       {/* Hero Section */}
-      <section className="route-hero relative pt-12 pb-12 sm:pt-14 sm:pb-14 lg:pt-16 lg:pb-16">
+      <section className="route-hero relative py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
-            <Badge variant="secondary" className="w-fit mx-auto">
-              <ScalesOfJustice className="w-3 h-3 mr-2" />
-              About CASER
-            </Badge>
             <h1 className="text-4xl lg:text-6xl font-bold tracking-tight route-title">
               Pioneering Legal Technology
               <span className="text-primary"> for Modern Practice</span>
             </h1>
-            <p className="text-xl text-muted-foreground leading-relaxed">
-              Born from firsthand experience navigating the federal court system,
-              CASER represents the culmination of extensive research into the evolving needs
-              of modern litigation teams and legal operations professionals.
-            </p>
           </div>
         </div>
       </section>
 
       {/* Origin Story Section */}
-      <section className="py-20 lg:py-32 bg-muted/50">
+      <section className="py-16 lg:py-24 bg-muted/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-3 mb-10">
             <h2 className="text-3xl lg:text-4xl font-bold">
               How CASER Was Born
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              A personal journey through the federal court system that sparked a technological revolution.
-            </p>
           </div>
 
           <div className="max-w-4xl mx-auto">
@@ -87,15 +75,12 @@ export default function AboutPage() {
       </section>
 
       {/* Values Section */}
-      <section className="py-20 lg:py-32">
+      <section className="py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold">
               Our Values
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              The principles that guide everything we do at CASER
-            </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 items-stretch">
@@ -163,21 +148,13 @@ export default function AboutPage() {
       </section>
 
       {/* Mission Section */}
-      <section className="py-20 lg:py-32 bg-muted/50">
+      <section className="py-16 lg:py-24 bg-muted/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <h2 className="text-3xl lg:text-4xl font-bold">
                 Our Mission: Democratizing Access to Court Intelligence
               </h2>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                We believe that everyone deserves access to public court
-                intelligence without the prohibitive costs and inefficiencies of traditional PACER research.
-              </p>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                CASER helps people avoid unnecessary PACER searches and organize public court updates,
-                with tools useful to both legal professionals and people following their own matters.
-              </p>
               <div className="space-y-2">
                 <div className="flex items-center space-x-3">
                   <CheckCircle className="w-5 h-5 text-primary" />
@@ -217,16 +194,12 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 lg:py-32">
+      <section className="py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h2 className="text-3xl lg:text-4xl font-bold">
               Join the Future of Legal Technology
             </h2>
-            <p className="text-xl text-muted-foreground">
-              Experience the power of professional-grade court monitoring designed by
-              legal professionals, for legal professionals.
-            </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="outline" size="lg" asChild>
                 <Link href="/download">

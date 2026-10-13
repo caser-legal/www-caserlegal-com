@@ -23,18 +23,10 @@ export default function SupportPage() {
       <section className="route-hero relative py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
-            <Badge variant="secondary" className="w-fit mx-auto">
-              <ProfessionalBriefcase className="w-3 h-3 mr-2" />
-              Help Center
-            </Badge>
             <h1 className="text-4xl lg:text-6xl font-bold tracking-tight route-title">
               CASER Support
               <span className="text-primary"> for iOS</span>
             </h1>
-            <p className="text-xl text-muted-foreground leading-relaxed">
-              Guides for search, keyword alerts, Atticus AI, PACER savings, subscriptions, and
-              troubleshooting—based on the CASER app for iPhone.
-            </p>
             <AppStoreCtaRow
               badgeSize="lg"
               className="justify-center"
@@ -52,9 +44,6 @@ export default function SupportPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold">Start here</h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              New to CASER or need a specific feature? Pick a guide below.
-            </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -119,9 +108,6 @@ export default function SupportPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold">Documentation</h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Step-by-step help for each part of the CASER iOS app
-            </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
@@ -149,12 +135,6 @@ export default function SupportPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
           <div className="text-center space-y-4 mb-10">
             <h2 className="text-3xl font-bold">Frequently asked questions</h2>
-            <p className="text-muted-foreground">
-              Quick answers from the in-app support FAQ.{' '}
-              <Link href="/support/troubleshooting" className="text-primary underline-offset-4 hover:underline">
-                Full troubleshooting guide
-              </Link>
-            </p>
           </div>
           <div className="space-y-3">
             {supportFaqPreview.map((item) => (
@@ -179,9 +159,6 @@ export default function SupportPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold">Contact support</h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Technical problems, billing questions, or feedback about CASER for iOS.
-            </p>
           </div>
 
           <div className="max-w-md mx-auto">

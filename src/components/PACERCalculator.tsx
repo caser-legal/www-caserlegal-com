@@ -227,15 +227,8 @@ export default function PACERCalculator({
         <div className="text-center space-y-4 mb-16">
           <div className="flex items-center justify-center space-x-2">
             <Calculator className="w-5 h-5 text-primary" />
-            <Badge variant="secondary" className="w-fit">
-              Interactive Calculator
-            </Badge>
           </div>
           <h2 className="text-3xl lg:text-4xl font-bold">PACER Savings Calculator</h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Estimate your potential savings with CASER. Adjust the sliders to match your
-            PACER usage and see the estimated fee difference.
-          </p>
         </div>
       )}
 
