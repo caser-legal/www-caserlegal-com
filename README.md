@@ -58,6 +58,23 @@ curl -X POST https://www.caserlegal.com/v1/docket-search \
   -d '{"query":"order","states":["IL"],"court_types":["district"],"date_range":"Last 7 days","limit":3}'
 ```
 
+## CASER web app (`/search`)
+
+The header's Login button opens Privy sign-in; signed-in users land on `/search`, the browser version of the iOS app (Dashboard, Search, Alerts, Atticus, Saved, Search fees, Settings).
+
+- **Sign-in:** Privy (`src/components/PrivyProviders.tsx`). The API routes verify the Privy access token against the app's JWKS (`src/lib/privy-server.ts`); the Privy app secret is not used.
+- **Search:** `POST /api/caser/search`, signed-in only, same search logic as the Muse connector.
+- **Alerts:** custom check intervals (5 minutes to 7 days). Alerts, matches, saved cases and chats are stored in the browser per account, and checks run while a CASER tab is open.
+- **Atticus:** `POST /api/caser/atticus` streams Gemini with Google Search grounding, using the iOS system prompt and prompt guard (`src/lib/atticus.ts`). Needs `GEMINI_API_KEY`; `GEMINI_MODEL` defaults to `gemini-2.5-flash`.
+
+Environment variables (set in `.env.local` and in Vercel):
+
+| Variable | Required | Purpose |
+|---|---|---|
+| `GEMINI_API_KEY` | For Atticus | Google AI Studio API key |
+| `GEMINI_MODEL` | No | Override the Gemini model |
+| `NEXT_PUBLIC_PRIVY_APP_ID` | No | Defaults to the production Privy app |
+
 ## Support
 
 - **Contact (support, careers, privacy, security)**: caserlegal@proton.me

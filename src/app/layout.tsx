@@ -3,6 +3,7 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import JsonLd from '@/components/JsonLd';
 import SiteMotion from '@/components/SiteMotion';
+import PrivyProviders from '@/components/PrivyProviders';
 import { homeMetadata, SITE_URL } from '@/lib/site-metadata';
 
 export const metadataBase = new URL(SITE_URL);
@@ -44,8 +45,10 @@ export default function RootLayout({
       <body className="antialiased bg-background text-foreground font-sans">
         <JsonLd />
         <SiteMotion />
-        {children}
-        <Toaster />
+        <PrivyProviders>
+          {children}
+          <Toaster />
+        </PrivyProviders>
       </body>
     </html>
   );

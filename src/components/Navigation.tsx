@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { AppStoreNavBadge } from '@/components/AppStoreLink';
 import { Menu, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useLogin, usePrivy } from '@privy-io/react-auth';
 
 const navLinks = [
   { href: '/features', label: 'Features' },
@@ -17,6 +19,14 @@ const navLinks = [
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+  const { ready, authenticated } = usePrivy();
+  const { login } = useLogin({
+    onComplete: ({ wasAlreadyAuthenticated }) => {
+      if (!wasAlreadyAuthenticated) router.push('/search');
+    },
+  });
+  const handleLogin = () => (authenticated ? router.push('/search') : login());
 
   return (
     <nav
@@ -53,16 +63,24 @@ export default function Navigation() {
             </div>
           </div>
 
-          <div className="relative z-10 hidden xl:flex items-center gap-2 min-w-[180px] justify-end">
+          <div className="relative z-10 hidden xl:flex items-center gap-2 min-w-[180px] justify-end mr-[max(0px,calc(31px_-_max(0px,(100vw_-_1320px)/2)))]">
             <Button variant="ghost" size="sm" asChild>
               <Link href="/contact">Contact</Link>
             </Button>
             <AppStoreNavBadge />
+            <button
+              type="button"
+              onClick={handleLogin}
+              disabled={!ready}
+              className="absolute left-full top-1/2 ml-3 -translate-y-1/2 whitespace-nowrap text-sm font-medium text-muted-foreground/60 hover:text-foreground transition-colors"
+            >
+              Login
+            </button>
           </div>
 
           <button
             type="button"
-            className="relative z-10 lg:hidden inline-flex h-11 w-11 items-center justify-center -mr-2"
+            className="relative z-10 xl:hidden inline-flex h-11 w-11 items-center justify-center -mr-2"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
             aria-expanded={isOpen}
@@ -73,7 +91,7 @@ export default function Navigation() {
         </div>
 
         {isOpen && (
-          <div id="mobile-nav-menu" className="lg:hidden py-4 space-y-1 border-t">
+          <div id="mobile-nav-menu" className="xl:hidden py-4 space-y-1 border-t">
             {navLinks.map(({ href, label }) => (
               <Link
                 key={href}
@@ -91,7 +109,17 @@ export default function Navigation() {
             >
               Contact
             </Link>
-            <div className="pt-3" onClick={() => setIsOpen(false)}><AppStoreNavBadge /></div>
+            <button
+              type="button"
+              onClick={() => {
+                setIsOpen(false);
+                handleLogin();
+              }}
+              disabled={!ready}
+              className="flex min-h-11 w-full items-center py-2 text-left text-base font-medium text-muted-foreground/60 hover:text-foreground transition-colors"
+            >
+              Login
+            </button>
           </div>
         )}
       </div>

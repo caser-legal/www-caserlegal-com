@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
   },
   outputFileTracingIncludes: {
     '/v1/docket-search': ['./data/courts/**/*'],
+    '/api/caser/search': ['./data/courts/**/*'],
   },
   poweredByHeader: false,
   reactStrictMode: true,
