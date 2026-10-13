@@ -22,17 +22,10 @@ export default function DownloadPage() {
       <section className="route-hero relative py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
-            <Badge variant="secondary" className="w-fit mx-auto">
-              Available on the App Store
-            </Badge>
             <h1 className="text-4xl lg:text-6xl font-bold tracking-tight route-title">
               Download CASER
               <span className="text-primary"> for iOS</span>
             </h1>
-            <p className="text-xl text-muted-foreground leading-relaxed">
-              Monitor 300+ U.S. federal court feeds. Search filings, set keyword alerts, and upgrade
-              to CASER Pro ($14.99/year) inside the app after download.
-            </p>
             <AppStoreCtaRow
               badgeSize="lg"
               className="justify-center"
@@ -46,74 +39,39 @@ export default function DownloadPage() {
         </div>
       </section>
 
-      <section className="py-20 lg:py-32 bg-muted/50">
+      <section className="py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-            <div className="space-y-8">
-              <div className="space-y-6">
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
-                    <CourthouseClock className="w-6 h-6 text-primary-foreground" />
+          <div className="mx-auto grid max-w-5xl gap-10 rounded-3xl border bg-[#f5f0e4] p-6 sm:p-9 lg:grid-cols-[1.1fr_.9fr] lg:items-center">
+            <div className="grid gap-4 sm:grid-cols-2">
+              {[
+                { icon: CourthouseClock, title: 'Court search & alerts' },
+                { icon: DollarDocument, title: 'PACER savings tracker' },
+                { icon: Gavel, title: 'Atticus AI (CASER Pro)' },
+                { icon: LegalDocument, title: 'PDF export' },
+              ].map(({ icon: Icon, title }) => (
+                <div key={title} className="route-card flex items-center gap-4 border p-5">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary">
+                    <Icon className="h-6 w-6 text-primary-foreground" />
                   </div>
-                  <div>
-                    <h3 className="text-xl font-semibold mb-2">Court search &amp; alerts</h3>
-                    <p className="text-muted-foreground">
-                      Search supported federal court feeds and receive local filing notifications.
-                      CASER targets checks every 15 minutes while open; iOS controls background timing.
-                    </p>
-                  </div>
+                  <h3 className="text-lg font-semibold leading-snug">{title}</h3>
                 </div>
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
-                    <DollarDocument className="w-6 h-6 text-primary-foreground" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold mb-2">PACER savings tracker</h3>
-                    <p className="text-muted-foreground">
-                      No per-search fees in CASER. Pay PACER only when you open document links. Track
-                      estimated fee reductions using PACER billable-page pricing.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Gavel className="w-6 h-6 text-primary-foreground" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold mb-2">Atticus AI (CASER Pro)</h3>
-                    <p className="text-muted-foreground">
-                      AI legal research assistant powered by Gemini. Not legal advice — for research
-                      and education only. Included with CASER Pro.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
-                    <LegalDocument className="w-6 h-6 text-primary-foreground" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold mb-2">PDF export</h3>
-                    <p className="text-muted-foreground">
-                      Export search results and case details as PDF with a legal-brief style layout.
-                    </p>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
-            <div className="relative flex justify-center">
+            <div className="phone-stage relative flex min-h-[460px] items-end justify-center">
+              <div className="phone-glow" aria-hidden="true" />
               <Image
                 src="/screenshot-3.png"
-                alt="CASER App Screenshot"
+                alt="CASER dashboard on iPhone"
                 width={1070}
                 height={2149}
-                className="max-w-sm w-full h-auto"
+                className="phone-shot relative z-10 h-[460px] w-auto object-contain sm:h-[520px]"
               />
             </div>
           </div>
         </div>
       </section>
 
-      <section className="py-20 lg:py-32">
+      <section className="py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
           <h2 className="text-3xl font-bold text-center mb-12">System Requirements</h2>
           <div className="rounded-lg border bg-card p-6 space-y-4">
@@ -134,7 +92,7 @@ export default function DownloadPage() {
               <PlatformStatusBadge status="available" />
             </div>
             <p className="text-sm text-muted-foreground pt-4 border-t">
-              Free tier: 1 search (lifetime), 1 keyword alert, 5 saved cases.
+              Free tier: 1 search, 1 keyword alert, 5 saved cases.
             </p>
             <div className="pt-4 border-t space-y-3">
               <p className="font-semibold text-sm">CASER Pro ($14.99/year)</p>
@@ -154,16 +112,9 @@ export default function DownloadPage() {
         </div>
       </section>
 
-      <section className="py-20 lg:py-32 bg-muted/50">
+      <section className="py-16 lg:py-24 bg-muted/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
           <h2 className="text-3xl font-bold">Ready to get started?</h2>
-          <p className="text-muted-foreground max-w-xl mx-auto">
-            Need Business or Enterprise?{' '}
-            <Link href="/contact" className="text-primary hover:underline">
-              Contact us
-            </Link>
-            .
-          </p>
           <div className="flex justify-center">
             <AppStoreBadge size="lg" />
           </div>

@@ -41,22 +41,11 @@ const steps = [
 export default function MusePage() {
   return (
     <PageShell mainUnpadded>
-      <section className="relative pt-8 pb-20 lg:pt-12 lg:pb-32 overflow-hidden">
+      <section className="relative py-16 lg:py-24 overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">
             <div className="space-y-4">
-              <Badge variant="secondary" className="w-fit">
-                  <Image
-                    src="/google-cloud-badge.webp"
-                    alt="Google Cloud"
-                    width={12}
-                    height={12}
-                    className="w-3 h-3 mr-2 rounded"
-                  />
-                  <img src="/muse/meta.svg" alt="" className="w-3 h-3 mr-2" />
-                  backed technologies
-                </Badge>
                 <MuseLockup />
                 <p className="text-xl text-muted-foreground leading-relaxed">
                   CASER is a Muse connector from Meta. A party, keyword, or case title
@@ -91,9 +80,6 @@ export default function MusePage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold">How CASER on Muse works</h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              CASER looks across federal courts and brings the matches back.
-            </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {steps.map((step) => (
@@ -111,7 +97,7 @@ export default function MusePage() {
         </div>
       </section>
 
-      <section className="py-20 lg:py-32">
+      <section className="py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
             <div className="flex justify-center">

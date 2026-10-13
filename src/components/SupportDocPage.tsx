@@ -19,7 +19,7 @@ type SupportDocPageProps = {
 export default function SupportDocPage({ doc }: SupportDocPageProps) {
   return (
     <PageShell>
-      <section className="relative py-12 lg:py-16 border-b border-border">
+      <section className="relative py-16 lg:py-24 border-b border-border">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-12">
             <aside className="lg:col-span-3">
@@ -34,12 +34,7 @@ export default function SupportDocPage({ doc }: SupportDocPageProps) {
                 </Link>
               </Button>
 
-              <Badge variant="secondary" className="w-fit mb-4">
-                <Gavel className="w-3 h-3 mr-2" />
-                {doc.badgeLabel}
-              </Badge>
               <h1 className="text-3xl lg:text-4xl font-bold tracking-tight mb-2">{doc.title}</h1>
-              <p className="text-muted-foreground mb-2">{doc.description}</p>
               <p className="text-sm text-muted-foreground mb-8">
                 Last updated: {SUPPORT_LAST_UPDATED}
               </p>

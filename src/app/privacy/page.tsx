@@ -9,12 +9,8 @@ import { CONTACT_EMAIL, PRIVACY_RIGHTS_EMAIL } from '@/lib/contact-email';
 export default function PrivacyPage() {
   return (
     <PageShell>
-      <section className="route-hero relative py-14 lg:py-20">
+      <section className="route-hero relative py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
-          <Badge variant="secondary" className="w-fit mb-4">
-            <Shield className="w-3 h-3 mr-2" />
-            Privacy Policy
-          </Badge>
           <h1 className="text-4xl font-bold tracking-tight mb-2">Privacy Policy</h1>
           <p className="text-muted-foreground mb-8">Last Updated: September 4, 2026</p>
 

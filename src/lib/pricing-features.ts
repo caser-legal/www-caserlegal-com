@@ -1,5 +1,5 @@
 export const FREE_FEATURES = [
-  '1 case search (lifetime)',
+  '1 case search',
   '1 keyword alert',
   '5 saved cases',
   'Federal court RSS search',

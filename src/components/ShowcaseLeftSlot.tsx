@@ -8,9 +8,6 @@ export default function ShowcaseLeftSlot() {
           </div>
           <div>
             <h3 className="font-semibold mb-1">Search & monitoring</h3>
-            <p className="text-sm text-muted-foreground">
-              Keyword alerts across 300+ federal court feeds with exact and case-sensitive matching.
-            </p>
           </div>
         </div>
 
@@ -20,9 +17,6 @@ export default function ShowcaseLeftSlot() {
           </div>
           <div>
             <h3 className="font-semibold mb-1">Filing notifications</h3>
-            <p className="text-sm text-muted-foreground">
-              Notifications when filings match your keywords, with direct PACER links.
-            </p>
           </div>
         </div>
 
@@ -32,9 +26,6 @@ export default function ShowcaseLeftSlot() {
           </div>
           <div>
             <h3 className="font-semibold mb-1">Dashboard</h3>
-            <p className="text-sm text-muted-foreground">
-              Track cases, alerts, and PACER savings from a single interface.
-            </p>
           </div>
         </div>
       </div>
