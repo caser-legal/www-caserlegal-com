@@ -49,7 +49,7 @@ export default function Home() {
           <div className="grid items-center gap-8 lg:grid-cols-[.88fr_1.12fr] lg:gap-10">
             <div className="relative z-20 space-y-7 lg:py-8">
               <div className="space-y-4">
-                <p className="text-xs font-semibold uppercase tracking-[.18em] text-muted-foreground">Federal court monitoring for iPhone</p>
+                <p className="text-xs font-semibold uppercase tracking-[.18em] text-muted-foreground">Case Automated Search of Electronic Records</p>
                 <h1 className="max-w-[13ch] text-5xl font-bold leading-[1.02] tracking-[-.06em] sm:text-6xl lg:text-[4.4rem]">
                   <span className="block">Know what moved</span>
                   <span key={headlineIndex} className="hero-rotating-line block text-primary">
