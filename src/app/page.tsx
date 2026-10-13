@@ -58,7 +58,7 @@ export default function Home() {
                 </h1>
                 <p className="max-w-xl text-lg leading-relaxed text-muted-foreground sm:text-xl">Search federal court feeds, set keyword monitors, and open filing sources—all from CASER on iPhone.</p>
               </div>
-              <AppStoreCtaRow badgeSize="lg" secondary={<MatchedOutlineButton href="#features" badgeSize="lg">Explore CASER</MatchedOutlineButton>}/>
+              <AppStoreCtaRow badgeSize="lg" secondary={<MatchedOutlineButton href="#features" badgeSize="lg">Learn More</MatchedOutlineButton>}/>
               <div className="flex gap-7 border-t border-border pt-5 text-left"><div><b className="text-2xl">300+</b><div className="mt-1 text-xs text-muted-foreground">federal court feeds</div></div><div><b className="text-2xl">$0</b><div className="mt-1 text-xs text-muted-foreground">in-app search fees</div></div></div>
             </div>
             <div ref={heroPhoneRef} className={`phone-stage relative mx-auto flex min-h-[520px] w-full max-w-[650px] items-end justify-center transition-opacity duration-500 sm:min-h-[650px] lg:min-h-[690px] ${heroPhonesReady ? 'opacity-100' : 'opacity-0'}`}>
