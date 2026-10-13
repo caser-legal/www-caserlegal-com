@@ -20,13 +20,18 @@ const navLinks = [
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-  const { ready, authenticated } = usePrivy();
+  const { ready, authenticated, logout } = usePrivy();
   const { login } = useLogin({
     onComplete: ({ wasAlreadyAuthenticated }) => {
       if (!wasAlreadyAuthenticated) router.push('/search');
     },
   });
-  const handleLogin = () => (authenticated ? router.push('/search') : login());
+  const authLabel = authenticated ? 'Logout' : 'Login';
+  const handleLogin = async () => {
+    if (!authenticated) return login();
+    await logout();
+    router.push('/');
+  };
 
   return (
     <nav
@@ -74,7 +79,7 @@ export default function Navigation() {
               disabled={!ready}
               className="absolute left-full top-1/2 ml-3 -translate-y-1/2 whitespace-nowrap text-sm font-medium text-muted-foreground/60 hover:text-foreground transition-colors"
             >
-              Login
+              {authLabel}
             </button>
           </div>
 
@@ -118,7 +123,7 @@ export default function Navigation() {
               disabled={!ready}
               className="flex min-h-11 w-full items-center py-2 text-left text-base font-medium text-muted-foreground/60 hover:text-foreground transition-colors"
             >
-              Login
+              {authLabel}
             </button>
           </div>
         )}

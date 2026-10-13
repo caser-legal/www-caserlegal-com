@@ -11,12 +11,6 @@ export type SearchRequest = {
   dateRange?: DateRange;
 };
 
-export type AtticusEvent =
-  | { type: 'text'; text: string }
-  | { type: 'sources'; sources: { title: string; url: string }[] }
-  | { type: 'error'; error: string }
-  | { type: 'done' };
-
 export class ApiError extends Error {
   constructor(message: string, readonly status: number) {
     super(message);
@@ -65,36 +59,5 @@ export function useCaserApi() {
     [authedFetch],
   );
 
-  const askAtticus = useCallback(
-    async (
-      body: { message?: string; analyze?: { title: string; description: string }; history: { role: 'user' | 'assistant'; text: string }[] },
-      onEvent: (event: AtticusEvent) => void,
-      signal?: AbortSignal,
-    ) => {
-      const response = await authedFetch('/api/caser/atticus', body, signal);
-      if (!response.ok || !response.body) throw await readError(response, 'Atticus is unavailable right now.');
-
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = '';
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split('\n');
-        buffer = lines.pop() ?? '';
-        for (const line of lines) {
-          if (!line.trim()) continue;
-          try {
-            onEvent(JSON.parse(line) as AtticusEvent);
-          } catch {
-            // Ignore a malformed line rather than dropping the whole answer.
-          }
-        }
-      }
-    },
-    [authedFetch],
-  );
-
-  return { search, askAtticus };
+  return { search };
 }
