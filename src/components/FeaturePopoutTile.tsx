@@ -23,13 +23,13 @@ export default function FeaturePopoutTile({ n, title, img, alt, howTo }: Feature
         onClick={() => setOpen(true)}
         className="group feature-tile w-full overflow-hidden rounded-2xl border bg-card text-left transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
-        <div className="flex h-[300px] items-end justify-center overflow-hidden bg-[#f2eee7] px-4 pt-6 sm:h-[340px]">
+        <div className="flex h-[300px] items-center justify-center overflow-hidden bg-[#f2eee7] px-4 py-5 sm:h-[340px]">
           <Image
             src={img}
             alt={alt}
             width={1070}
             height={2149}
-            className="h-full w-auto object-contain object-top transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+            className="h-full w-auto object-contain transition-transform duration-500 ease-out group-hover:scale-[1.03]"
           />
         </div>
         <div className="p-5 sm:p-6">
