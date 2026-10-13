@@ -14,6 +14,33 @@ export default function Home() {
     const timer = window.setInterval(() => setHeadlineIndex(index => (index + 1) % 3), 3200);
     return () => window.clearInterval(timer);
   }, []);
+
+  // Keep the three hero phones hidden until all of them have loaded, then reveal them together.
+  const [heroPhonesReady, setHeroPhonesReady] = React.useState(false);
+  const heroPhoneRef = React.useRef<HTMLDivElement>(null);
+  React.useEffect(() => {
+    const stage = heroPhoneRef.current;
+    if (!stage) return;
+    const images = Array.from(stage.querySelectorAll('img'));
+    let pending = images.filter((img) => !img.complete).length;
+    const reveal = () => setHeroPhonesReady(true);
+    if (pending === 0) {
+      reveal();
+      return;
+    }
+    const onSettled = () => {
+      pending -= 1;
+      if (pending <= 0) reveal();
+    };
+    images.forEach((img) => {
+      if (img.complete) return;
+      img.addEventListener('load', onSettled, { once: true });
+      img.addEventListener('error', onSettled, { once: true });
+    });
+    const fallback = window.setTimeout(reveal, 3000);
+    return () => window.clearTimeout(fallback);
+  }, []);
+
   return (
     <PageShell mainUnpadded>
       {/* Hero Section */}
@@ -34,11 +61,11 @@ export default function Home() {
               <AppStoreCtaRow badgeSize="lg" secondary={<MatchedOutlineButton href="#features" badgeSize="lg">Explore CASER</MatchedOutlineButton>}/>
               <div className="flex gap-7 border-t border-border pt-5 text-left"><div><b className="text-2xl">300+</b><div className="mt-1 text-xs text-muted-foreground">federal court feeds</div></div><div><b className="text-2xl">$0</b><div className="mt-1 text-xs text-muted-foreground">in-app search fees</div></div></div>
             </div>
-            <div className="phone-stage relative mx-auto flex min-h-[520px] w-full max-w-[650px] items-end justify-center sm:min-h-[650px] lg:min-h-[690px]">
+            <div ref={heroPhoneRef} className={`phone-stage relative mx-auto flex min-h-[520px] w-full max-w-[650px] items-end justify-center transition-opacity duration-500 sm:min-h-[650px] lg:min-h-[690px] ${heroPhonesReady ? 'opacity-100' : 'opacity-0'}`}>
               <div className="phone-glow" aria-hidden="true"/>
               <Image src="/search.png" alt="CASER feature 01, federal case search on iPhone" width={1070} height={2149} priority className="phone-shot phone-shot-left absolute bottom-[-15px] left-[3%] z-10 hidden h-[460px] w-auto object-contain sm:block lg:h-[560px]"/>
-              <Image src="/screenshot-3.png" alt="CASER feature 06, case dashboard on iPhone" width={1070} height={2149} className="phone-shot phone-shot-center relative z-20 -mb-6 h-[520px] w-auto object-contain sm:h-[610px] lg:h-[680px]"/>
-              <Image src="/security-screen.png" alt="CASER feature 04, privacy and security on iPhone" width={1070} height={2149} className="phone-shot phone-shot-right absolute bottom-[-15px] right-[3%] z-10 hidden h-[460px] w-auto object-contain sm:block lg:h-[560px]"/>
+              <Image src="/security-screen.png" alt="CASER feature 04, privacy and security on iPhone" width={1070} height={2149} priority className="phone-shot phone-shot-center relative z-20 -mb-6 h-[520px] w-auto object-contain sm:h-[610px] lg:h-[680px]"/>
+              <Image src="/screenshot-3.png" alt="CASER feature 06, case dashboard on iPhone" width={1070} height={2149} priority className="phone-shot phone-shot-right absolute bottom-[-15px] right-[3%] z-10 hidden h-[460px] w-auto object-contain sm:block lg:h-[560px]"/>
             </div>
           </div>
         </div>
