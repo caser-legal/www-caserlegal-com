@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import type { AtticusPassage, AtticusSource } from './firebase-atticus';
 
 export type CourtType = 'district' | 'bankruptcy' | 'appellate';
 
@@ -88,7 +89,11 @@ export type ChatMessage = {
   id: string;
   role: 'user' | 'assistant' | 'system';
   text: string;
-  sources?: { title: string; url: string }[];
+  /** What was actually sent to Gemini when it differs from the visible text (case analysis). */
+  prompt?: string;
+  sources?: AtticusSource[];
+  passages?: AtticusPassage[];
+  searchEntryPointHTML?: string | null;
 };
 
 // Every search result and alert match counts as one PACER page; a search with no results still costs one.

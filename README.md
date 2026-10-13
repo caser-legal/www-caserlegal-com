@@ -65,14 +65,19 @@ The header's Login button opens Privy sign-in; signed-in users land on `/search`
 - **Sign-in:** Privy (`src/components/PrivyProviders.tsx`). The API routes verify the Privy access token against the app's JWKS (`src/lib/privy-server.ts`); the Privy app secret is not used.
 - **Search:** `POST /api/caser/search`, signed-in only, same search logic as the Muse connector.
 - **Alerts:** custom check intervals (5 minutes to 7 days). Alerts, matches, saved cases and chats are stored in the browser per account, and checks run while a CASER tab is open.
-- **Atticus:** `POST /api/caser/atticus` streams Gemini with Google Search grounding, using the iOS system prompt and prompt guard (`src/lib/atticus.ts`). Needs `GEMINI_API_KEY`; `GEMINI_MODEL` defaults to `gemini-2.5-flash`.
+- **Atticus:** same as iOS: Firebase AI Logic (Gemini Developer API) on the `caser-legal1` project and iOS app config, with Google Search grounding (`src/components/caser-app/firebase-atticus.ts`). Gemini 2.5 Flash with a Flash-Lite retry on rate limits, the iOS system prompt and prompt guard (`src/lib/atticus.ts`), sources, exact passages and Google Search suggestions.
 
 Environment variables (set in `.env.local` and in Vercel):
 
 | Variable | Required | Purpose |
 |---|---|---|
-| `GEMINI_API_KEY` | For Atticus | Google AI Studio API key |
-| `GEMINI_MODEL` | No | Override the Gemini model |
+| `NEXT_PUBLIC_FIREBASE_API_KEY` | No | Defaults to the iOS app's `caser-legal1` config |
+| `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` | No | Defaults to the iOS app's `caser-legal1` config |
+| `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | No | Defaults to the iOS app's `caser-legal1` config |
+| `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET` | No | Defaults to the iOS app's `caser-legal1` config |
+| `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | No | Defaults to the iOS app's `caser-legal1` config |
+| `NEXT_PUBLIC_FIREBASE_APP_ID` | No | Defaults to the iOS app's `caser-legal1` config |
+| `NEXT_PUBLIC_FIREBASE_APP_CHECK_RECAPTCHA_SITE_KEY` | No | Turns on web App Check. Without it, Firebase AI Logic must not enforce App Check |
 | `NEXT_PUBLIC_PRIVY_APP_ID` | No | Defaults to the production Privy app |
 
 ## Support

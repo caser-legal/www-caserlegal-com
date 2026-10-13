@@ -72,7 +72,7 @@ export function SearchPanel({ filters, onFiltersChange, recent, onClearRecent, o
         </div>
         <div className="flex gap-2">
           <Select value={filters.dateRange} onValueChange={(value) => onFiltersChange({ ...filters, dateRange: value as DateRange })}>
-            <SelectTrigger className="h-11 w-[150px]" aria-label="Date range">
+            <SelectTrigger className="w-[150px] data-[size=default]:h-11" aria-label="Date range">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

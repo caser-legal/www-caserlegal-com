@@ -20,6 +20,8 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { useCaserApi } from './api';
+import { friendlyAtticusError, streamAtticus } from './firebase-atticus';
+import { caseAnalysisPrompt, guardUserInput } from '@/lib/atticus';
 import { SearchPanel } from './SearchPanel';
 import { AlertsPanel, createAlert, MAX_ALERTS } from './AlertsPanel';
 import { AtticusPanel } from './AtticusPanel';
@@ -73,7 +75,7 @@ export default function CaserWebApp() {
 
   if (!ready) {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center">
+      <div className="flex min-h-[calc(100dvh-4rem)] items-center justify-center">
         <Loader2 className="size-6 animate-spin text-primary" aria-label="Loading" />
       </div>
     );
@@ -81,7 +83,7 @@ export default function CaserWebApp() {
 
   if (!authenticated || !user) {
     return (
-      <div className="mx-auto flex min-h-[60vh] max-w-md flex-col items-center justify-center px-4 text-center">
+      <div className="mx-auto flex min-h-[calc(100dvh-4rem)] max-w-md flex-col items-center justify-center px-4 text-center">
         <h1 className="text-3xl font-bold tracking-tight">
           Sign in to <span className="text-primary">CASER</span>
         </h1>
@@ -101,7 +103,7 @@ export default function CaserWebApp() {
 function Workspace({ userId, account, onLogout }: { userId: string; account: string; onLogout: () => Promise<void> }) {
   const router = useRouter();
   const { toast } = useToast();
-  const { search, askAtticus } = useCaserApi();
+  const { search } = useCaserApi();
   const key = (name: string) => `caser:v1:${userId}:${name}`;
 
   const [tab, setTab] = useState<Tab>('dashboard');
@@ -281,21 +283,19 @@ function Workspace({ userId, account, onLogout }: { userId: string; account: str
 
   // ---- Atticus ------------------------------------------------------------
 
-  const sendToAtticus = async (body: { message?: string; analyze?: { title: string; description: string } }, shown: string) => {
+  const sendToAtticus = async (prompt: string, shown: string) => {
     atticusAbort.current?.abort();
     const abort = new AbortController();
     atticusAbort.current = abort;
 
-    const history = messages
-      .filter((message): message is ChatMessage & { role: 'user' | 'assistant' } => message.role !== 'system' && !!message.text)
-      .slice(-20)
-      .map(({ role, text }) => ({ role, text }));
+    const turns = messages
+      .filter((message) => message.role !== 'system' && message.text)
+      .map((message) => ({ role: message.role as 'user' | 'assistant', text: message.prompt ?? message.text }));
     const reply: ChatMessage = { id: newId(), role: 'assistant', text: '' };
-    setMessages((prev) => [...prev, { id: newId(), role: 'user' as const, text: shown }, reply].slice(-MAX_CHAT));
+    const asked: ChatMessage = { id: newId(), role: 'user', text: shown, ...(prompt !== shown && { prompt }) };
+    setMessages((prev) => [...prev, asked, reply].slice(-MAX_CHAT));
     setSending(true);
 
-    const update = (patch: (message: ChatMessage) => ChatMessage) =>
-      setMessages((prev) => prev.map((message) => (message.id === reply.id ? patch(message) : message)));
     const fail = (text: string) =>
       setMessages((prev) =>
         prev.flatMap((message) =>
@@ -308,26 +308,48 @@ function Workspace({ userId, account, onLogout }: { userId: string; account: str
       );
 
     try {
-      await askAtticus(
-        { ...body, history },
-        (event) => {
-          if (event.type === 'text') update((message) => ({ ...message, text: message.text + event.text }));
-          if (event.type === 'sources') update((message) => ({ ...message, sources: event.sources }));
-          if (event.type === 'error') fail(event.error);
-        },
+      // Like iOS: text accumulates, the latest non-empty grounding replaces the previous one.
+      await streamAtticus(
+        prompt,
+        turns,
+        (chunk) =>
+          setMessages((prev) =>
+            prev.map((message) =>
+              message.id !== reply.id
+                ? message
+                : {
+                    ...message,
+                    text: message.text + chunk.text,
+                    sources: chunk.sources.length ? chunk.sources : message.sources,
+                    passages: chunk.passages.length ? chunk.passages : message.passages,
+                    searchEntryPointHTML: chunk.searchEntryPointHTML || message.searchEntryPointHTML,
+                  },
+            ),
+          ),
         abort.signal,
       );
     } catch (error) {
-      fail(abort.signal.aborted ? 'Stopped.' : error instanceof Error ? error.message : 'Atticus is unavailable right now.');
+      fail(abort.signal.aborted ? 'Stopped.' : friendlyAtticusError(error));
     } finally {
       if (atticusAbort.current === abort) setSending(false);
       setMessages((prev) => prev.filter((message) => message.id !== reply.id || message.text));
     }
   };
 
+  const addSystemMessage = (text: string) =>
+    setMessages((prev) => [...prev, { id: newId(), role: 'system' as const, text }].slice(-MAX_CHAT));
+
+  const askAtticus = (text: string) => {
+    const guarded = guardUserInput(text);
+    if (!guarded.ok) return addSystemMessage(guarded.message);
+    sendToAtticus(guarded.text, guarded.text);
+  };
+
   const analyzeCase = (match: DocketMatch) => {
     setTab('atticus');
-    sendToAtticus({ analyze: { title: match.title, description: match.description } }, 'Analyze this case for me');
+    const guarded = caseAnalysisPrompt(match.title, match.description);
+    if (!guarded.ok) return addSystemMessage(guarded.message);
+    sendToAtticus(guarded.text, 'Analyze this case for me');
   };
 
   // ---- Shared card wiring -------------------------------------------------
@@ -356,7 +378,7 @@ function Workspace({ userId, account, onLogout }: { userId: string; account: str
   ];
 
   return (
-    <div className="container mx-auto max-w-[1100px] px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
+    <div className="container mx-auto min-h-[calc(100dvh-4rem)] max-w-[1100px] px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
       <Tabs value={tab} onValueChange={(value) => setTab(value as Tab)} className="gap-8">
         <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
           <TabsList className="w-max">
@@ -462,7 +484,7 @@ function Workspace({ userId, account, onLogout }: { userId: string; account: str
           <AtticusPanel
             messages={messages}
             sending={sending}
-            onSend={(text) => sendToAtticus({ message: text }, text)}
+            onSend={askAtticus}
             onStop={() => atticusAbort.current?.abort()}
             onReset={() => {
               atticusAbort.current?.abort();

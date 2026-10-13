@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Markdown from 'react-markdown';
-import { ArrowUp, Loader2, RotateCcw, Sparkles, Square } from 'lucide-react';
+import { ArrowUp, ChevronDown, ChevronUp, ExternalLink, Link2, Loader2, Quote, RotateCcw, Sparkles, Square } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import type { AtticusPassage, AtticusSource } from './firebase-atticus';
 import type { ChatMessage } from './store';
 
 const SUGGESTIONS = [
@@ -38,6 +39,96 @@ function AssistantMarkdown({ text }: { text: string }) {
   );
 }
 
+/** iOS ChatSourcesView: a collapsed "N sources" toggle that lists [n] title links. */
+function SourcesList({ sources }: { sources: AtticusSource[] }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="mt-3">
+      <button
+        type="button"
+        aria-expanded={open}
+        onClick={() => setOpen((value) => !value)}
+        className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground"
+      >
+        <Link2 className="size-3.5" />
+        {sources.length} source{sources.length === 1 ? '' : 's'}
+        {open ? <ChevronUp className="size-3" /> : <ChevronDown className="size-3" />}
+      </button>
+      {open && (
+        <ul className="mt-2 space-y-1.5">
+          {sources.map((source) => (
+            <li key={`${source.index}-${source.url}`}>
+              <a
+                href={source.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-1.5 text-xs text-foreground hover:underline"
+              >
+                <span className="font-bold text-primary">[{source.index + 1}]</span>
+                <span className="line-clamp-2 flex-1">{source.title}</span>
+                <ExternalLink className="mt-0.5 size-3 shrink-0 text-muted-foreground" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+/** iOS GroundingPassagesView: "Show exact passage" reveals each quoted passage and its source numbers. */
+function PassagesList({ passages }: { passages: AtticusPassage[] }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="mt-2">
+      <button
+        type="button"
+        aria-expanded={open}
+        onClick={() => setOpen((value) => !value)}
+        className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground"
+      >
+        <Quote className="size-3.5" />
+        Show exact passage
+      </button>
+      {open && (
+        <div className="mt-2 space-y-2">
+          {passages.map((passage, index) => (
+            <div key={index} className="rounded-lg bg-muted px-3 py-2">
+              <p className="text-xs italic text-muted-foreground">“{passage.text}”</p>
+              {passage.sourceIndices.length > 0 && (
+                <p className="mt-1 text-[11px] font-bold text-primary">
+                  {passage.sourceIndices.map((sourceIndex) => `[${sourceIndex + 1}]`).join(' ')}
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Google Search suggestions, which Google requires to be shown with grounded answers. Like the iOS
+ * WebView, the provided HTML is rendered as-is but isolated (here in a shadow root) from the page.
+ */
+function SearchSuggestions({ html }: { html: string }) {
+  const hostRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const host = hostRef.current;
+    if (!host) return;
+    const root = host.shadowRoot ?? host.attachShadow({ mode: 'open' });
+    root.innerHTML = html;
+    root.querySelectorAll('a').forEach((link) => {
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+    });
+  }, [html]);
+
+  return <div ref={hostRef} className="mt-3" aria-label="Google Search suggestions" />;
+}
+
 type AtticusPanelProps = {
   messages: ChatMessage[];
   sending: boolean;
@@ -62,7 +153,7 @@ export function AtticusPanel({ messages, sending, onSend, onStop, onReset }: Att
   }
 
   return (
-    <div className="flex min-h-[60vh] flex-col rounded-xl border bg-card shadow-sm">
+    <div className="flex h-[calc(100dvh-14rem)] min-h-[480px] flex-col rounded-xl border bg-card shadow-sm">
       <div className="flex items-center justify-between border-b px-5 py-3">
         <div className="flex items-center gap-2">
           <Sparkles className="size-4 text-primary" />
@@ -112,20 +203,9 @@ export function AtticusPanel({ messages, sending, onSend, onStop, onReset }: Att
                   ) : (
                     <Loader2 className="size-4 animate-spin text-primary" aria-label="Atticus is thinking" />
                   )}
-                  {message.sources && message.sources.length > 0 && (
-                    <div className="mt-3 border-t pt-3">
-                      <p className="text-xs font-medium text-muted-foreground">Sources</p>
-                      <ol className="mt-1 list-decimal space-y-1 pl-5 text-xs">
-                        {message.sources.map((source) => (
-                          <li key={source.url}>
-                            <a href={source.url} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">
-                              {source.title}
-                            </a>
-                          </li>
-                        ))}
-                      </ol>
-                    </div>
-                  )}
+                  {message.sources && message.sources.length > 0 && <SourcesList sources={message.sources} />}
+                  {message.passages && message.passages.length > 0 && <PassagesList passages={message.passages} />}
+                  {message.searchEntryPointHTML && <SearchSuggestions html={message.searchEntryPointHTML} />}
                 </div>
               )}
             </div>
