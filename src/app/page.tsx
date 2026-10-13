@@ -64,9 +64,9 @@ export default function Home() {
             </div>
             <div ref={heroPhoneRef} className={`phone-stage relative mx-auto flex min-h-[520px] w-full max-w-[650px] items-end justify-center transition-opacity duration-500 sm:min-h-[650px] lg:min-h-[690px] ${heroPhonesReady ? 'opacity-100' : 'opacity-0'}`}>
               <div className="phone-glow" aria-hidden="true"/>
-              <Image src="/search.png" alt="CASER feature 01, federal case search on iPhone" width={1070} height={2149} priority className="phone-shot phone-shot-left absolute bottom-[-15px] left-[3%] z-10 hidden h-[460px] w-auto object-contain sm:block lg:h-[560px]"/>
-              <Image src="/security-screen.png" alt="CASER feature 04, privacy and security on iPhone" width={1070} height={2149} priority className="phone-shot phone-shot-center relative z-20 -mb-6 h-[520px] w-auto object-contain sm:h-[610px] lg:h-[680px]"/>
-              <Image src="/screenshot-3.png" alt="CASER feature 06, case dashboard on iPhone" width={1070} height={2149} priority className="phone-shot phone-shot-right absolute bottom-[-15px] right-[3%] z-10 hidden h-[460px] w-auto object-contain sm:block lg:h-[560px]"/>
+              <Image src="/search.png?v=2" alt="CASER feature 01, federal case search on iPhone" width={1070} height={2149} priority className="phone-shot phone-shot-left absolute bottom-[-15px] left-[3%] z-10 hidden h-[460px] w-auto object-contain sm:block lg:h-[560px]"/>
+              <Image src="/security-screen.png?v=2" alt="CASER feature 04, privacy and security on iPhone" width={1070} height={2149} priority className="phone-shot phone-shot-center relative z-20 -mb-6 h-[520px] w-auto object-contain sm:h-[610px] lg:h-[680px]"/>
+              <Image src="/screenshot-3.png?v=2" alt="CASER feature 06, case dashboard on iPhone" width={1070} height={2149} priority className="phone-shot phone-shot-right absolute bottom-[-15px] right-[3%] z-10 hidden h-[460px] w-auto object-contain sm:block lg:h-[560px]"/>
             </div>
           </div>
         </div>

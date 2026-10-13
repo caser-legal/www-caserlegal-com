@@ -104,7 +104,7 @@ export default function FeatureTabsOverview() {
           </div>
 
           <div className="flex justify-center lg:justify-start">
-            <Image src="/search.png" alt="Search & Monitoring" width={1070} height={2149} className="max-w-sm w-full h-auto" />
+            <Image src="/search.png?v=2" alt="Search & Monitoring" width={1070} height={2149} className="max-w-sm w-full h-auto" />
           </div>
         </div>
       </TabsContent>
@@ -188,7 +188,7 @@ export default function FeatureTabsOverview() {
           </div>
 
           <div className="flex justify-center lg:justify-start">
-            <Image src="/dashboard.png" alt="Analytics Dashboard" width={1070} height={2149} className="max-w-sm w-full h-auto" />
+            <Image src="/dashboard.png?v=2" alt="Analytics Dashboard" width={1070} height={2149} className="max-w-sm w-full h-auto" />
           </div>
         </div>
       </TabsContent>
@@ -272,7 +272,7 @@ export default function FeatureTabsOverview() {
           </div>
 
           <div className="flex justify-center lg:justify-start">
-            <Image src="/security-screen.png" alt="CASER Security" width={1070} height={2149} className="max-w-sm w-full h-auto" />
+            <Image src="/security-screen.png?v=2" alt="CASER Security" width={1070} height={2149} className="max-w-sm w-full h-auto" />
           </div>
         </div>
       </TabsContent>
@@ -344,7 +344,7 @@ export default function FeatureTabsOverview() {
           </Card>
 
           <div className="flex justify-center lg:justify-start">
-            <Image src="/ai.png" alt="Atticus AI Assistant" width={1070} height={2149} className="max-w-sm w-full h-auto" />
+            <Image src="/ai.png?v=2" alt="Atticus AI Assistant" width={1070} height={2149} className="max-w-sm w-full h-auto" />
           </div>
         </div>
       </TabsContent>
