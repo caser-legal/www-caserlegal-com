@@ -12,7 +12,7 @@ export default function PrivacyPage() {
       <section className="route-hero relative py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
           <h1 className="text-4xl font-bold tracking-tight mb-2">Privacy Policy</h1>
-          <p className="text-muted-foreground mb-8">Last Updated: September 4, 2026</p>
+          <p className="text-muted-foreground mb-8">Last Updated: October 20, 2026</p>
 
           <div className="space-y-8">
             <LegalSection title="1. Information We Collect">
@@ -92,6 +92,15 @@ export default function PrivacyPage() {
                   Firebase AI Logic data governance
                 </a>{' '}
                 and the Google terms linked above for provider handling and available rights.
+              </LegalParagraph>
+              <LegalParagraph>
+                Before Atticus sends anything, the app shows a disclaimer that explains Atticus is AI,
+                is not legal advice, and sends your questions to Google (Gemini). Atticus stays off until
+                you tap Accept. When you accept, the app saves a record on your device of the disclaimer
+                version and text you accepted, the time, a random install identifier, and your app version,
+                iOS version, device model, locale, and time zone. This record is encrypted on your device,
+                is not sent to CASER or Google, and is kept if you erase app data so there is a history of
+                what you agreed to. Deleting the app removes it.
               </LegalParagraph>
             </LegalSection>
 
