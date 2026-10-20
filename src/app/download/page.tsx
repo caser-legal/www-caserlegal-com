@@ -60,7 +60,7 @@ export default function DownloadPage() {
             <div className="phone-stage relative flex min-h-[460px] items-end justify-center">
               <div className="phone-glow" aria-hidden="true" />
               <Image
-                src="/screenshot-3.png?v=2"
+                src="/screenshot-3.png?v=3"
                 alt="CASER dashboard on iPhone"
                 width={1070}
                 height={2149}
@@ -81,7 +81,7 @@ export default function DownloadPage() {
             </div>
             <div className="flex justify-between items-center text-sm">
               <span className="font-medium">iOS Version</span>
-              <Badge variant="secondary">iOS 26.0+</Badge>
+              <Badge variant="secondary">iOS 17.6+</Badge>
             </div>
             <div className="flex justify-between items-center text-sm">
               <span className="font-medium">Account</span>
@@ -92,7 +92,7 @@ export default function DownloadPage() {
               <PlatformStatusBadge status="available" />
             </div>
             <p className="text-sm text-muted-foreground pt-4 border-t">
-              Free tier: 1 search, 1 keyword alert, 5 saved cases.
+              Free tier: 1 lifetime search and up to 5 saved cases. Keyword alerts need CASER Pro.
             </p>
             <div className="pt-4 border-t space-y-3">
               <p className="font-semibold text-sm">CASER Pro ($14.99/year)</p>
