@@ -135,7 +135,7 @@ export const gettingStarted: SupportDoc = {
     {
       heading: 'Requirements',
       paragraphs: [
-        'CASER requires iOS 26.0 or later. Download the app from the App Store. No account or PACER login is required to use CASER.',
+        'CASER requires iOS 17.6 or later. Download the app from the App Store. No account or PACER login is required to use CASER.',
       ],
     },
     {
@@ -159,7 +159,7 @@ export const gettingStarted: SupportDoc = {
       bullets: [
         'Open the Search tab and enter keywords, party names, or case identifiers.',
         'Search covers federal district and bankruptcy filings across U.S. jurisdictions.',
-        'The free tier includes 1 lifetime case search, 1 keyword alert, and up to 5 saved cases. CASER Pro adds unlimited searches and saved cases, more alerts, and an annual Atticus credit allowance.',
+        'The free tier includes 1 lifetime case search and up to 5 saved cases. CASER Pro adds unlimited searches and saved cases, up to 100 keyword alerts, and an annual Atticus credit allowance.',
         'Tap a result for details and direct links to court documents where available.',
       ],
     },
@@ -321,7 +321,7 @@ export const alertsGuide: SupportDoc = {
     {
       heading: 'Free tier limits',
       paragraphs: [
-        'The free tier includes 1 keyword alert. CASER Pro includes up to 100 keyword alerts and notifications for matches.',
+        'Keyword alerts are not part of the free tier. CASER Pro includes up to 100 keyword alerts and notifications for matches.',
       ],
     },
     {
