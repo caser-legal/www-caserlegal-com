@@ -158,7 +158,7 @@ export default function AboutPage() {
               <div className="space-y-2">
                 <div className="flex items-center space-x-3">
                   <CheckCircle className="w-5 h-5 text-primary" />
-                  <span>300+ U.S. federal court feeds monitored</span>
+                  <span>400+ U.S. federal court feeds monitored</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <CheckCircle className="w-5 h-5 text-primary" />
@@ -178,7 +178,7 @@ export default function AboutPage() {
                     <div className="text-sm text-muted-foreground">Per-search fees inside CASER</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-4xl font-bold text-primary mb-2">300+</div>
+                    <div className="text-4xl font-bold text-primary mb-2">400+</div>
                     <div className="text-sm text-muted-foreground leading-snug">Federal U.S.</div>
                     <div className="text-sm text-muted-foreground leading-snug">Court feeds</div>
                   </div>

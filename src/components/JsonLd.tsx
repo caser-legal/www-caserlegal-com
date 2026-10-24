@@ -30,7 +30,7 @@ const softwareJsonLd = {
     priceCurrency: 'USD',
   },
   description:
-    `${PRODUCT_FULL_NAME} (${PRODUCT_SHORT_NAME}). Federal court alerts and search. Monitor 300+ U.S. federal court feeds with no in-app search fees.`,
+    `${PRODUCT_FULL_NAME} (${PRODUCT_SHORT_NAME}). Federal court alerts and search. Monitor 400+ U.S. federal court feeds with no in-app search fees.`,
   url: APP_STORE_URL,
 };
 

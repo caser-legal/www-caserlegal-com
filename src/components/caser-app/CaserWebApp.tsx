@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { useCaserApi } from './api';
 import { friendlyAtticusError, streamAtticus } from './firebase-atticus';
@@ -106,7 +106,16 @@ function Workspace({ userId, account, onLogout }: { userId: string; account: str
   const { search } = useCaserApi();
   const key = (name: string) => `caser:v1:${userId}:${name}`;
 
-  const [tab, setTab] = useState<Tab>('dashboard');
+  const [tab, setTabState] = useState<Tab>('dashboard');
+  const setTab = (next: Tab) => {
+    window.location.hash = next;
+  };
+  useEffect(() => {
+    const sync = () => setTabState((window.location.hash.slice(1) as Tab) || 'dashboard');
+    sync();
+    window.addEventListener('hashchange', sync);
+    return () => window.removeEventListener('hashchange', sync);
+  }, []);
   const [filters, setFilters] = usePersistentState<SearchFilters>(key('filters'), DEFAULT_FILTERS);
   const [recent, setRecent] = usePersistentState<string[]>(key('recent'), []);
   const [saved, setSaved] = usePersistentState<DocketMatch[]>(key('saved'), []);
@@ -367,31 +376,9 @@ function Workspace({ userId, account, onLogout }: { userId: string; account: str
 
   const activeAlerts = alerts.filter((alert) => alert.enabled).length;
 
-  const tabs: { value: Tab; label: string; icon: React.ReactNode; badge?: number }[] = [
-    { value: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard /> },
-    { value: 'search', label: 'Search', icon: <Search /> },
-    { value: 'alerts', label: 'Alerts', icon: <Bell />, badge: unread },
-    { value: 'atticus', label: 'Atticus', icon: <Sparkles /> },
-    { value: 'saved', label: 'Saved', icon: <Bookmark /> },
-    { value: 'fees', label: 'Search fees', icon: <PiggyBank /> },
-    { value: 'settings', label: 'Settings', icon: <Settings /> },
-  ];
-
   return (
     <div className="container mx-auto min-h-[calc(100dvh-4rem)] max-w-[1100px] px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
       <Tabs value={tab} onValueChange={(value) => setTab(value as Tab)} className="gap-8">
-        <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
-          <TabsList className="w-max">
-            {tabs.map((item) => (
-              <TabsTrigger key={item.value} value={item.value} className="gap-1.5 px-3">
-                {item.icon}
-                {item.label}
-                {!!item.badge && <Badge className="ml-1 px-1.5 py-0 text-[10px]">{item.badge}</Badge>}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </div>
-
         <TabsContent value="dashboard" className="space-y-6">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">

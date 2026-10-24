@@ -16,7 +16,7 @@ const MUSE_APP_STORE = 'https://muse.ai/';
 export const metadata: Metadata = buildPageMetadata({
   title: 'CASER × Muse',
   description:
-    'CASER federal case search on Muse. Ask for a party, keyword, or case title across 300+ U.S. federal courts. Search only. No PACER account and no legal advice.',
+    'CASER federal case search on Muse. Ask for a party, keyword, or case title across 400+ U.S. federal courts. Search only. No PACER account and no legal advice.',
   path: '/muse',
 });
 
@@ -29,7 +29,7 @@ const steps = [
   {
     n: '02',
     title: 'CASER searches',
-    body: 'CASER searches 300+ U.S. federal courts, including bankruptcy and appellate, the same way case search works in the app.',
+    body: 'CASER searches 400+ U.S. federal courts, including bankruptcy and appellate, the same way case search works in the app.',
   },
   {
     n: '03',
