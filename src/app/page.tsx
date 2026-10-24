@@ -54,13 +54,13 @@ export default function Home() {
                 <h1 className="max-w-[13ch] text-5xl font-bold leading-[1.02] tracking-[-.06em] sm:text-6xl lg:text-[4.4rem]">
                   <span className="block">Know what moved</span>
                   <span key={headlineIndex} className="hero-rotating-line block text-primary">
-                    {['in the cases you follow.','across 300+ federal feeds.','when a filing matches.'][headlineIndex]}
+                    {['in the cases you follow.','across 400+ federal feeds.','when a filing matches.'][headlineIndex]}
                   </span>
                 </h1>
                 
               </div>
               <AppStoreCtaRow badgeSize="lg" secondary={<MatchedOutlineButton href="#features" badgeSize="lg">Learn More</MatchedOutlineButton>}/>
-              <div className="flex gap-7 border-t border-border pt-5 text-left"><div><b className="text-2xl">300+</b><div className="mt-1 text-xs text-muted-foreground">federal court feeds</div></div><div><b className="text-2xl">$0</b><div className="mt-1 text-xs text-muted-foreground">in-app search fees</div></div></div>
+              <div className="flex gap-7 border-t border-border pt-5 text-left"><div><b className="text-2xl">400+</b><div className="mt-1 text-xs text-muted-foreground">federal court feeds</div></div><div><b className="text-2xl">$0</b><div className="mt-1 text-xs text-muted-foreground">in-app search fees</div></div><div><b className="text-2xl">Unlimited</b><div className="mt-1 text-xs text-muted-foreground">filing searches</div></div></div>
             </div>
             <div ref={heroPhoneRef} className={`phone-stage relative mx-auto hidden min-h-[520px] sm:flex w-full max-w-[650px] items-end justify-center transition-opacity duration-500 sm:min-h-[650px] lg:min-h-[690px] ${heroPhonesReady ? 'opacity-100' : 'opacity-0'}`}>
               <div className="phone-glow" aria-hidden="true"/>
@@ -78,7 +78,7 @@ export default function Home() {
           <div className="mx-auto mb-12 max-w-3xl space-y-4 text-center"><h2 className="text-4xl font-bold leading-tight sm:text-5xl">Everything you need to follow a case.</h2></div>
           <div className="mx-auto grid max-w-6xl gap-4 md:grid-cols-2 lg:grid-cols-3">
             {[
-              {n:'01', title:'Search across federal courts', body:'Look up parties, case titles, and keywords across 300+ supported feeds.', img:'/screens/01-search.png?v=3', alt:'Federal court case search results for Apple in the CASER iPhone app', howTo:'Type a party, case title or keyword, choose states and court types, then open any match for details.'},
+              {n:'01', title:'Search across federal courts', body:'Look up parties, case titles, and keywords across 400+ supported feeds.', img:'/screens/01-search.png?v=3', alt:'Federal court case search results for Apple in the CASER iPhone app', howTo:'Type a party, case title or keyword, choose states and court types, then open any match for details.'},
               {n:'02', title:'Monitor keywords', body:'Create monitors for names and topics. CASER checks feeds and schedules local alerts when it finds a match.', img:'/screens/02-alerts.png?v=3', alt:'CASER keyword alert with matching federal filings on iPhone', howTo:'Add a name or topic as a monitor. CASER checks the feeds and sends a local alert when something matches.'},
               {n:'03', title:'Open the source filing', body:'Follow direct document links to the source court when you need to review a filing.', img:'/screens/03-case-details.png?v=3', alt:'CASER case details with docket, document and PDF export options', howTo:'Open a case to view its docket or filing on PACER, or tap Export PDF for a free case report with the PACER links.'},
               {n:'04', title:'Understand your usage', body:'Review search activity and estimate PACER costs with transparent assumptions.', img:'/screens/04-pacer-savings.png?v=3', alt:'CASER PACER savings tracker on iPhone', howTo:'See your search activity and estimated PACER costs, with the assumptions shown, so you know what you would save.'},

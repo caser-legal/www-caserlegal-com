@@ -79,7 +79,7 @@ export default function SiteFooter() {
               />
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-sm">
-              Federal court case search and keyword alerts for iOS. Monitor 300+ court feeds with
+              Federal court case search and keyword alerts for iOS. Monitor 400+ court feeds with
               no in-app search fees.
             </p>
           </div>

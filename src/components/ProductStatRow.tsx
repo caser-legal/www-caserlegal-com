@@ -7,7 +7,7 @@ export type ProductStat = {
 };
 
 export const PRODUCT_STATS: ProductStat[] = [
-  { value: '300+', lines: ['Federal Court', 'Feeds'] },
+  { value: '400+', lines: ['Federal Court', 'Feeds'] },
   { value: 'No', lines: ['Account or', 'Sign Up'] },
   { value: '$0', lines: ['Search', 'Fees'] },
 ];

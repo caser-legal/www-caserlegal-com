@@ -195,7 +195,7 @@ export const userGuide: SupportDoc = {
       heading: 'What CASER does',
       paragraphs: [
         'CASER (Case Alerts & Search of Electronic Records) helps you search federal district and bankruptcy case filings, monitor keywords for new filings, research with the Atticus AI assistant (Pro), save cases, track estimated PACER savings, and export PDFs (Pro).',
-        'CASER monitors 300+ federal court RSS feeds. Searching and browsing in the app has no per-search or per-result fees. Document access may link to official PACER or court sources where applicable.',
+        'CASER monitors 400+ federal court RSS feeds. Searching and browsing in the app has no per-search or per-result fees. Document access may link to official PACER or court sources where applicable.',
       ],
     },
     {

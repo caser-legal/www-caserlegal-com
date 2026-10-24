@@ -35,7 +35,7 @@ export default function FeatureTabsOverview() {
                 </div>
                 <CardTitle>Federal Court Feed Monitoring</CardTitle>
                 <CardDescription>
-                  Search 300+ public federal court feeds, including court RSS and GovInfo opinions. Feed availability and retention vary; this is not a complete docket archive.
+                  Search 400+ public federal court feeds, including court RSS and GovInfo opinions. Feed availability and retention vary; this is not a complete docket archive.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">

@@ -1,12 +1,21 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { AppStoreNavBadge } from '@/components/AppStoreLink';
 import { Menu, X } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { usePathname, useRouter } from 'next/navigation';
 import { useLogin, usePrivy } from '@privy-io/react-auth';
 
 const navLinks = [
@@ -17,6 +26,16 @@ const navLinks = [
   { href: '/support', label: 'Support' },
 ] as const;
 
+const appLinks = [
+  { href: '#dashboard', label: 'Dashboard' },
+  { href: '#search', label: 'Search' },
+  { href: '#alerts', label: 'Alerts' },
+  { href: '#atticus', label: 'Atticus' },
+  { href: '#saved', label: 'Saved' },
+  { href: '#fees', label: 'Search fees' },
+  { href: '#settings', label: 'Settings' },
+];
+
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
@@ -26,9 +45,26 @@ export default function Navigation() {
       if (!wasAlreadyAuthenticated) router.push('/search');
     },
   });
+  const pathname = usePathname();
+  const [hash, setHash] = useState('');
+  useEffect(() => {
+    const sync = () => setHash(window.location.hash || '#dashboard');
+    sync();
+    window.addEventListener('hashchange', sync);
+    return () => window.removeEventListener('hashchange', sync);
+  }, [pathname]);
+  const inApp = authenticated && pathname === '/search';
+  const links = inApp
+    ? appLinks
+    : authenticated
+      ? [...navLinks, { href: '/search', label: 'Dashboard' }]
+      : navLinks;
+  const NavLink = inApp ? 'a' : Link;
   const authLabel = authenticated ? 'Logout' : 'Login';
-  const handleLogin = async () => {
-    if (!authenticated) return login();
+  const [confirmLogout, setConfirmLogout] = useState(false);
+  const handleLogin = () => (authenticated ? setConfirmLogout(true) : login());
+  const handleLogout = async () => {
+    setConfirmLogout(false);
     await logout();
     router.push('/');
   };
@@ -56,14 +92,14 @@ export default function Navigation() {
 
           <div className="pointer-events-none absolute inset-x-[150px] hidden xl:flex justify-center">
             <div className="pointer-events-auto flex items-center gap-5">
-              {navLinks.map(({ href, label }) => (
-                <Link
+              {links.map(({ href, label }) => (
+                <NavLink
                   key={href}
                   href={href}
-                  className="text-sm font-medium hover:text-primary transition-colors"
+                  className={`text-sm font-medium hover:text-primary transition-colors${inApp && href === hash ? ' text-primary' : ''}`}
                 >
                   {label}
-                </Link>
+                </NavLink>
               ))}
             </div>
           </div>
@@ -97,15 +133,15 @@ export default function Navigation() {
 
         {isOpen && (
           <div id="mobile-nav-menu" className="xl:hidden py-4 space-y-1 border-t">
-            {navLinks.map(({ href, label }) => (
-              <Link
+            {links.map(({ href, label }) => (
+              <NavLink
                 key={href}
                 href={href}
-                className="flex min-h-11 items-center py-2 text-base font-medium hover:text-primary transition-colors"
+                className={`flex min-h-11 items-center py-2 text-base font-medium hover:text-primary transition-colors${inApp && href === hash ? ' text-primary' : ''}`}
                 onClick={() => setIsOpen(false)}
               >
                 {label}
-              </Link>
+              </NavLink>
             ))}
             <Link
               href="/contact"
@@ -128,6 +164,21 @@ export default function Navigation() {
           </div>
         )}
       </div>
+
+      <Dialog open={confirmLogout} onOpenChange={setConfirmLogout}>
+        <DialogContent className="sm:max-w-sm">
+          <DialogHeader>
+            <DialogTitle>Log out of CASER?</DialogTitle>
+            <DialogDescription>You can log back in anytime to see your searches, alerts, and saved cases.</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DialogClose>
+            <Button onClick={handleLogout}>Log out</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </nav>
   );
 }
