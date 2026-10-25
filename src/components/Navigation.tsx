@@ -96,7 +96,7 @@ export default function Navigation() {
                 <NavLink
                   key={href}
                   href={href}
-                  className={`text-sm font-medium hover:text-primary transition-colors${inApp && href === hash ? ' text-primary' : ''}`}
+                  className={`rounded-full px-3 py-2 text-sm font-medium transition-colors hover:bg-foreground/[.045]${(inApp && href === hash) || (!inApp && pathname === href) ? ' bg-foreground/[.055]' : ''}`}
                 >
                   {label}
                 </NavLink>

@@ -4,7 +4,6 @@ import { APP_STORE_URL } from '@/lib/app-store';
 import { CONTACT_EMAIL } from '@/lib/contact-email';
 
 const organizationJsonLd = {
-  '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'CASER',
   founder: {
@@ -18,7 +17,6 @@ const organizationJsonLd = {
 };
 
 const softwareJsonLd = {
-  '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
   name: 'CASER',
   alternateName: [PRODUCT_FULL_NAME, PRODUCT_SHORT_NAME],
@@ -35,20 +33,22 @@ const softwareJsonLd = {
 };
 
 const websiteJsonLd = {
-  '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: 'CASER',
   url: SITE_URL,
 };
 
 export default function JsonLd() {
-  const graphs = [organizationJsonLd, softwareJsonLd, websiteJsonLd];
+  const schema = {
+    '@context': 'https://schema.org',
+    '@graph': [organizationJsonLd, softwareJsonLd, websiteJsonLd],
+  };
 
   return (
     <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{
-        __html: JSON.stringify(graphs).replace(/</g, '\\u003c'),
+        __html: JSON.stringify(schema).replace(/</g, '\\u003c'),
       }}
     />
   );
