@@ -6,12 +6,12 @@ import PageShell from '@/components/PageShell';
 import Image from 'next/image';
 import { AppStoreCtaRow, MatchedOutlineButton } from '@/components/AppStoreLink';
 import Link from 'next/link';
-import { CheckCircle } from 'lucide-react';
 import FeaturePopoutTile from '@/components/FeaturePopoutTile';
 
 export default function Home() {
   const [headlineIndex, setHeadlineIndex] = React.useState(0);
   React.useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const timer = window.setInterval(() => setHeadlineIndex(index => (index + 1) % 3), 3200);
     return () => window.clearInterval(timer);
   }, []);
@@ -50,19 +50,18 @@ export default function Home() {
           <div className="grid items-center gap-8 lg:grid-cols-[.88fr_1.12fr] lg:gap-10">
             <div className="relative z-20 space-y-7 lg:py-8">
               <div className="space-y-4">
-                <p className="text-xs font-semibold uppercase tracking-[.18em] text-muted-foreground">Case Automated Search of Electronic Records</p>
-                <h1 className="max-w-[13ch] text-5xl font-bold leading-[1.02] tracking-[-.06em] sm:text-6xl lg:text-[4.4rem]">
+                <p className="hero-kicker text-xs font-semibold uppercase tracking-[.18em] text-muted-foreground"><span aria-hidden="true" />Case Automated Search of Electronic Records</p>
+                <h1 className="max-w-[14ch] text-5xl font-bold leading-[1.02] tracking-[-.06em] sm:text-6xl lg:text-[4.4rem]">
                   <span className="block">Know what moved</span>
                   <span key={headlineIndex} className="hero-rotating-line block text-primary">
                     {['in the cases you follow.','across 400+ federal feeds.','when a filing matches.'][headlineIndex]}
                   </span>
                 </h1>
-                
               </div>
               <AppStoreCtaRow badgeSize="lg" secondary={<MatchedOutlineButton href="#features" badgeSize="lg">Learn More</MatchedOutlineButton>}/>
-              <div className="flex gap-7 border-t border-border pt-5 text-left"><div><b className="text-2xl">400+</b><div className="mt-1 text-xs text-muted-foreground">federal court feeds</div></div><div><b className="text-2xl">$0</b><div className="mt-1 text-xs text-muted-foreground">in-app search fees</div></div><div><b className="text-2xl">Unlimited</b><div className="mt-1 text-xs text-muted-foreground">filing searches</div></div></div>
+              <div className="hero-stats flex gap-5 border-t border-border pt-5 text-left sm:gap-7"><div><b className="text-2xl">400+</b><div className="mt-1 text-xs text-muted-foreground">federal court feeds</div></div><div><b className="text-2xl">$0</b><div className="mt-1 text-xs text-muted-foreground">in-app search fees</div></div><div><b className="text-2xl">Unlimited</b><div className="mt-1 text-xs text-muted-foreground">filing searches</div></div></div>
             </div>
-            <div ref={heroPhoneRef} className={`phone-stage relative mx-auto hidden min-h-[520px] sm:flex w-full max-w-[650px] items-end justify-center transition-opacity duration-500 sm:min-h-[650px] lg:min-h-[690px] ${heroPhonesReady ? 'opacity-100' : 'opacity-0'}`}>
+            <div ref={heroPhoneRef} className={`phone-stage relative mx-auto flex min-h-[430px] w-full max-w-[650px] items-end justify-center transition-opacity duration-500 sm:min-h-[650px] lg:min-h-[690px] ${heroPhonesReady ? 'opacity-100' : 'opacity-0'}`}>
               <div className="phone-glow" aria-hidden="true"/>
               <Image src="/search.png?v=3" alt="CASER feature 01, federal case search on iPhone" width={1070} height={2149} priority className="phone-shot phone-shot-left absolute bottom-[-15px] left-[3%] z-10 hidden h-[460px] w-auto object-contain sm:block lg:h-[560px]"/>
               <Image src="/launch-screen.png?v=1" alt="CASER launch screen on iPhone" width={1070} height={2149} priority className="phone-shot phone-shot-center relative z-20 -mb-6 h-[520px] w-auto object-contain sm:h-[610px] lg:h-[680px]"/>
@@ -75,7 +74,7 @@ export default function Home() {
 
       <section id="features" className="py-20 lg:py-28">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto mb-12 max-w-3xl space-y-4 text-center"><h2 className="text-4xl font-bold leading-tight sm:text-5xl">Everything you need to follow a case.</h2></div>
+          <div className="mx-auto mb-12 max-w-3xl space-y-4 text-center"><p className="section-kicker">From search to saved case</p><h2 className="text-4xl font-bold leading-tight sm:text-5xl">Everything you need to follow a case.</h2><p className="mx-auto max-w-2xl text-base leading-relaxed text-muted-foreground">A clearer way to search federal court activity, monitor what matters, and keep your research close.</p></div>
           <div className="mx-auto grid max-w-6xl gap-4 md:grid-cols-2 lg:grid-cols-3">
             {[
               {n:'01', title:'Search across federal courts', body:'Look up parties, case titles, and keywords across 400+ supported feeds.', img:'/screens/01-search.png?v=3', alt:'Federal court case search results for Apple in the CASER iPhone app', howTo:'Type a party, case title or keyword, choose states and court types, then open any match for details.'},

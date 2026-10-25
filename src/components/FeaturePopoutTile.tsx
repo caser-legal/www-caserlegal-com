@@ -7,13 +7,14 @@ import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 type FeaturePopoutTileProps = {
   n: string;
   title: string;
+  body: string;
   img: string;
   alt: string;
   howTo: string;
 };
 
 /** Feature card that opens a larger screenshot with a short how-to. */
-export default function FeaturePopoutTile({ n, title, img, alt, howTo }: FeaturePopoutTileProps) {
+export default function FeaturePopoutTile({ n, title, body, img, alt, howTo }: FeaturePopoutTileProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -32,10 +33,11 @@ export default function FeaturePopoutTile({ n, title, img, alt, howTo }: Feature
             className="h-full w-auto object-contain transition-transform duration-500 ease-out group-hover:scale-[1.03]"
           />
         </div>
-        <div className="p-5 sm:p-6">
+        <div className="flex min-h-[230px] flex-col p-5 sm:p-6">
           <div className="mb-3 text-[10px] font-semibold tracking-[.16em] text-primary">{n} /</div>
           <span className="block text-xl font-semibold">{title}</span>
-          <span className="mt-3 inline-block text-xs font-semibold text-muted-foreground transition-colors group-hover:text-foreground">
+          <span className="mt-3 block text-sm leading-relaxed text-muted-foreground">{body}</span>
+          <span className="mt-auto inline-block pt-5 text-xs font-semibold text-muted-foreground transition-colors group-hover:text-foreground">
             See how it works →
           </span>
         </div>
