@@ -586,6 +586,15 @@ function pairList(value: unknown, first: string, second: string, maxItems: numbe
     .slice(0, maxItems);
 }
 
+export function extractJSON(text: string): string {
+  const trimmed = text.trim();
+  const fenced = trimmed.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  const candidate = (fenced?.[1] ?? trimmed).trim();
+  const start = candidate.indexOf('{');
+  const end = candidate.lastIndexOf('}');
+  return start >= 0 && end > start ? candidate.slice(start, end + 1) : candidate;
+}
+
 export function shapeResearch(output: unknown): CaseAbout {
   if (!output || typeof output !== 'object') throw new CaseIntelligenceError(502, 'ai_invalid_output');
   const input = output as Record<string, unknown>;
@@ -692,13 +701,9 @@ export async function caseResearch(body: Record<string, unknown>, fetcher: typeo
   if (!text) throw new CaseIntelligenceError(502, 'ai_incomplete');
   let about: CaseAbout;
   try {
-    about = shapeResearch(JSON.parse(text));
-  } catch (error) {
-    if (error instanceof CaseIntelligenceError) {
-      about = parseLegacyBrief(text);
-    } else {
-      about = parseLegacyBrief(text);
-    }
+    about = shapeResearch(JSON.parse(extractJSON(text)));
+  } catch {
+    about = parseLegacyBrief(text);
   }
   const research: CaseResearchData = { about, brief: briefFromAbout(about), citations, thinking };
   return { research, model };
