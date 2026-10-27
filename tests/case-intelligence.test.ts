@@ -4,13 +4,11 @@ import {
   CaseIntelligenceError,
   caseInsights,
   caseArtwork,
-  extractJSON,
   caseQuestion,
   caseQuestionStream,
   caseResearch,
-  parseLegacyBrief,
-  parseModelJSON,
-  salvageAbout,
+  citeFields,
+  stripCitationMarkers,
   shapeResearch,
   createMuseResponse,
   docketBlock,
@@ -172,11 +170,9 @@ test('caseResearch uses web search with structured output and returns an About a
   assert.equal(sent.reasoning.summary, 'auto');
 });
 
-test('shapeResearch rejects output without a story and parseLegacyBrief splits headings', () => {
+test('shapeResearch rejects output without a story or with JSON as the story', () => {
   assert.throws(() => shapeResearch({ story: '' }), /ai_invalid_output/);
-  const about = parseLegacyBrief('**The story**\nDoe sued Acme.\n**Timeline**\n2026-01-02 — Filed.');
-  assert.equal(about.story, 'Doe sued Acme.');
-  assert.deepEqual(about.timeline, [{ date: '2026-01-02', event: 'Filed.' }]);
+  assert.throws(() => shapeResearch({ story: '{"in_the_news": [], "story": "cut off' }), /ai_invalid_output/);
 });
 
 test('caseArtwork asks Muse Image and returns base64 art', async () => {
@@ -346,13 +342,8 @@ test('readMuseOutput falls back to web search results when there are no inline c
 
 test('caseResearch asks Muse for web search results', async () => {
   const calls: RequestInit[] = [];
-  await caseResearch({ entry }, fakeFetch([Response.json(messageResponse('**The story**\nx'))], calls));
+  await caseResearch({ entry }, fakeFetch([Response.json(messageResponse(JSON.stringify({ story: 'x' })))], calls));
   assert.deepEqual(JSON.parse(String(calls[0].body)).include, ['web_search_call.results']);
-});
-
-test('extractJSON unwraps fenced and padded model JSON', () => {
-  assert.equal(extractJSON('```json\n{"story":"x"}\n```'), '{"story":"x"}');
-  assert.equal(extractJSON('Here is the result: {"story":"x"} done'), '{"story":"x"}');
 });
 
 test('shapeResearch unwraps a double-encoded story', () => {
@@ -361,23 +352,75 @@ test('shapeResearch unwraps a double-encoded story', () => {
   assert.equal(about.story, 'Real story.');
 });
 
-test('parseModelJSON unwraps string-encoded JSON', () => {
-  const payload = { story: 'A story.', whos_who: [], where_it_stands: '', timeline: [], in_the_news: [] };
-  assert.deepEqual(parseModelJSON(JSON.stringify(JSON.stringify(payload))), payload);
-  assert.equal(shapeResearch(parseModelJSON(JSON.stringify(JSON.stringify(payload)))).story, 'A story.');
-});
-
-test('salvageAbout recovers fields from invalid nested JSON text', () => {
-  const broken = '{"in_the_news": [], "story": "Brenda sued over a shooting.\nSecond line."}';
-  const about = salvageAbout(broken);
-  assert.ok(about.story.startsWith('Brenda sued'));
-});
-
 test('shapeResearch unwraps payloads nested several layers deep', () => {
   const innermost = { story: 'Deep story.', whos_who: [], where_it_stands: 'Pending.', timeline: [], in_the_news: [] };
   let payload: unknown = innermost;
   for (let i = 0; i < 5; i += 1) payload = { ...innermost, story: JSON.stringify(payload) };
-  const about = shapeResearch(parseModelJSON(JSON.stringify(payload)));
+  const about = shapeResearch(JSON.parse(JSON.stringify(payload)));
   assert.equal(about.story, 'Deep story.');
   assert.equal(about.where_it_stands, 'Pending.');
+});
+
+// The text from the broken About card: Muse stopped partway through the object.
+const truncatedResearch =
+  '{"in_the_news": [], "story": "The filing is listed as Doherty v. Navy Federal Credit Union [1].", "timeline": [{"date": "2026-10-23", "event": "The court dismissed the complaint [1]."}], "where_it_stands": "The plaintiff may amend [1].",';
+
+test('caseResearch rejects an incomplete response instead of showing raw JSON', async () => {
+  const response = { ...messageResponse(truncatedResearch), status: 'incomplete', incomplete_details: { reason: 'max_output_tokens' } };
+  await assert.rejects(
+    caseResearch({ entry }, fakeFetch([Response.json(response)])),
+    (error: unknown) => error instanceof CaseIntelligenceError && error.code === 'ai_incomplete',
+  );
+});
+
+test('caseResearch rejects unparseable text even when marked completed', async () => {
+  await assert.rejects(
+    caseResearch({ entry }, fakeFetch([Response.json(messageResponse(truncatedResearch))])),
+    (error: unknown) => error instanceof CaseIntelligenceError && error.code === 'ai_invalid_output',
+  );
+});
+
+test('caseResearch asks for enough output tokens to cover reasoning and the answer', async () => {
+  const calls: RequestInit[] = [];
+  await caseResearch({ entry }, fakeFetch([Response.json(messageResponse(JSON.stringify({ story: 'x' })))], calls));
+  assert.equal(JSON.parse(String(calls[0].body)).max_output_tokens, 8000);
+});
+
+test('stripCitationMarkers drops model-typed markers', () => {
+  assert.equal(stripCitationMarkers('Doe sued Acme [1]. It is pending [2, 3].'), 'Doe sued Acme. It is pending.');
+  assert.equal(stripCitationMarkers('Filed in 2026 under Rule 12(b)(6).'), 'Filed in 2026 under Rule 12(b)(6).');
+});
+
+test('citeFields maps url_citation offsets in the raw JSON onto story segments', () => {
+  const about = {
+    story: 'Navy Federal is the largest credit union. Doe says "fees" were hidden.',
+    where_it_stands: 'Dismissed with leave to amend.',
+  };
+  const raw = JSON.stringify(about);
+  const chars = Array.from(raw);
+  const at = (needle: string) => Array.from(raw.slice(0, raw.indexOf(needle))).length;
+  const span = (needle: string) => ({ start_index: at(needle), end_index: at(needle) + Array.from(needle).length });
+  const citations = [
+    { title: 'NFCU', url: 'https://www.navyfederal.org/' },
+    { title: 'Docket', url: 'https://www.courtlistener.com/x' },
+  ];
+  const cited = citeFields(raw, about, [
+    { type: 'url_citation', url: 'https://www.navyfederal.org/', title: 'NFCU', ...span('largest credit union') },
+    { type: 'url_citation', url: 'https://www.courtlistener.com/x', title: 'Docket', ...span('Doe says \\"fees') },
+    { type: 'url_citation', url: 'https://unknown.example.com/', title: 'Not a source', ...span('Dismissed') },
+    { type: 'url_citation', url: 'https://www.navyfederal.org/', title: 'Whole', start_index: 0, end_index: chars.length },
+  ], citations);
+  assert.deepEqual(cited.story, [
+    { text: 'Navy Federal is the largest credit union.', sources: [0] },
+    { text: ' Doe says "fees"', sources: [1] },
+    { text: ' were hidden.', sources: [] },
+  ]);
+  assert.deepEqual(cited.where_it_stands, []);
+  const shaped = shapeResearch({ ...about, whos_who: [], timeline: [], in_the_news: [] }, cited);
+  assert.equal(shaped.story, about.story);
+  assert.equal(shaped.story_segments.length, 3);
+});
+
+test('docketBlock labels the feed date as the docket entry date, not the case filing date', () => {
+  assert.ok(docketBlock(parseEntry(entry)).includes('Docket entry date: 2026-10-24'));
 });

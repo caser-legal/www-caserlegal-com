@@ -50,10 +50,15 @@ export type CaseInsights = {
   what_to_watch: string[];
 };
 
+// A run of prose followed by the sources (indexes into citations) that back it.
+export type CitedText = { text: string; sources: number[] };
+
 export type CaseAbout = {
   story: string;
+  story_segments: CitedText[];
   whos_who: { name: string; role: string }[];
   where_it_stands: string;
+  where_it_stands_segments: CitedText[];
   timeline: { date: string; event: string }[];
   in_the_news: { outlet: string; summary: string }[];
 };
@@ -65,7 +70,7 @@ export type CaseResearchData = {
   thinking: string;
 };
 
-type MuseAnnotation = { type?: string; url?: unknown; title?: unknown };
+type MuseAnnotation = { type?: string; url?: unknown; title?: unknown; start_index?: unknown; end_index?: unknown };
 type MuseContent = { type?: string; text?: unknown; annotations?: MuseAnnotation[] };
 type MuseSearchResult = { title?: unknown; url?: unknown };
 type MuseSummaryPart = { type?: string; text?: unknown };
@@ -80,7 +85,14 @@ type MuseOutputItem = {
   arguments?: string;
   result?: string;
 };
-export type MuseResponse = { id?: string; status?: string; output?: MuseOutputItem[] };
+export type MuseResponse = {
+  id?: string;
+  status?: string;
+  incomplete_details?: { reason?: string } | null;
+  usage?: { output_tokens?: number; output_tokens_details?: { reasoning_tokens?: number } };
+  output?: MuseOutputItem[];
+};
+type MuseTextPart = { text: string; annotations: MuseAnnotation[] };
 
 const requestLog = new Map<string, number[]>();
 
@@ -290,7 +302,7 @@ export const RESEARCH_INSTRUCTIONS = `${SHARED_RULES}
 Task: brief the reader on the full story behind this filing, fast. Search the web for every person and company named in <docket_entry> (alone and together with the court or case number) and for the case caption. Find who they are, what they are accused or alleged to have done, the backstory, related cases or controversies, and the latest news coverage. Prefer court records, official agency releases (for example DOJ and SEC press releases) and established news outlets.
 - Say "alleged" or "accused" for anything not proven by a conviction, plea or judgment.
 - Ignore results about different people who share a name. If you cannot tell whether a result is the same person, leave it out.
-- Cite every factual claim in the text with [1], [2] markers matching your sources. Only report what your sources support.
+- Base every factual claim on a source you found, and only report what your sources support. Do not write citation markers such as [1] in any field; the app attaches your sources itself.
 - If the search finds nothing reliable beyond the docket, say so in one sentence in story and still fill where_it_stands and timeline from the docket entry.
 
 Reply with JSON matching the provided schema. Every field value is plain prose text — never put JSON, code fences or escaped objects inside a field:
@@ -388,7 +400,7 @@ export function docketBlock(entry: CaseEntry): string {
       ['Court', entry.court],
       ['Case number', entry.caseNumber],
       ['Citation', entry.citation],
-      ['Filed', entry.filedDate],
+      ['Docket entry date', entry.filedDate],
       ['Case type', entry.caseType],
       ['State', entry.state],
       ['Parties', entry.parties.join('; ')],
@@ -486,7 +498,12 @@ export async function createMuseResponse(
   throw new CaseIntelligenceError(502, 'ai_unavailable');
 }
 
-export function readMuseOutput(response: MuseResponse): { text: string; citations: Citation[]; thinking: string } {
+export function readMuseOutput(response: MuseResponse): {
+  text: string;
+  parts: MuseTextPart[];
+  citations: Citation[];
+  thinking: string;
+} {
   const thinking = (response?.output ?? [])
     .filter((item) => item?.type === 'reasoning')
     .flatMap((item) => item.summary ?? [])
@@ -494,16 +511,14 @@ export function readMuseOutput(response: MuseResponse): { text: string; citation
     .join(' ')
     .trim()
     .slice(0, 1200);
-  const texts: string[] = [];
+  const parts: MuseTextPart[] = [];
   const citations: Citation[] = [];
   const seen = new Set<string>();
-  const messages = (response?.output ?? []).filter((item) => item?.type === 'message');
-  const finalAnswers = messages.filter((item) => item.phase === 'final_answer');
-  const answers = finalAnswers.length ? finalAnswers : messages.filter((item) => item.phase !== 'commentary');
+  const answers = (response?.output ?? []).filter((item) => item?.type === 'message' && item.phase !== 'commentary');
   for (const item of answers) {
     for (const part of item.content ?? []) {
       if (part?.type !== 'output_text' || typeof part.text !== 'string') continue;
-      texts.push(part.text);
+      parts.push({ text: part.text, annotations: part.annotations ?? [] });
       for (const annotation of part.annotations ?? []) {
         if (annotation?.type !== 'url_citation') continue;
         const url = safeHttpsUrl(annotation.url);
@@ -529,11 +544,155 @@ export function readMuseOutput(response: MuseResponse): { text: string; citation
       }
     }
   }
-  return { text: texts.join('\n').trim(), citations: citations.slice(0, 12), thinking };
+  return {
+    text: parts.map((part) => part.text).join('\n').trim(),
+    parts,
+    citations: citations.slice(0, 12),
+    thinking,
+  };
 }
 
 function boundedText(value: unknown, maxLength: number): string {
   return typeof value === 'string' ? value.trim().slice(0, maxLength) : '';
+}
+
+const CITATION_MARKER = /\s*\[\d{1,2}(?:\s*[,–-]\s*\d{1,2})*\]/g;
+
+// Sources are attached from Meta's url_citation annotations, so any [1]-style
+// markers the model types itself are dropped rather than shown.
+export function stripCitationMarkers(value: string): string {
+  return value.replace(CITATION_MARKER, '');
+}
+
+function proseText(value: unknown, maxLength: number): string {
+  return typeof value === 'string' ? boundedText(stripCitationMarkers(value), maxLength) : '';
+}
+
+type DecodedString = { text: string; points: string[]; start: number; end: number; offsets: number[] };
+
+const JSON_ESCAPES: Record<string, string> = { '"': '"', '\\': '\\', '/': '/', b: '\b', f: '\f', n: '\n', r: '\r', t: '\t' };
+
+// Decodes the JSON string opening at chars[open], recording for every raw code point
+// offset inside it the matching code point offset in the decoded value.
+function readJSONString(chars: string[], open: number): DecodedString {
+  const points: string[] = [];
+  const offsets: number[] = [];
+  let index = open + 1;
+  while (index < chars.length && chars[index] !== '"') {
+    let width = 1;
+    let decoded = chars[index];
+    if (decoded === '\\') {
+      const kind = chars[index + 1];
+      if (kind === 'u') {
+        let code = parseInt(chars.slice(index + 2, index + 6).join(''), 16);
+        width = 6;
+        if (code >= 0xd800 && code <= 0xdbff && chars[index + 6] === '\\' && chars[index + 7] === 'u') {
+          code = 0x10000 + ((code - 0xd800) << 10) + (parseInt(chars.slice(index + 8, index + 12).join(''), 16) - 0xdc00);
+          width = 12;
+        }
+        decoded = String.fromCodePoint(code);
+      } else {
+        decoded = JSON_ESCAPES[kind] ?? kind;
+        width = 2;
+      }
+    }
+    for (let step = 0; step < width; step += 1) offsets.push(points.length);
+    points.push(decoded);
+    index += width;
+  }
+  offsets.push(points.length);
+  return { text: points.join(''), points, start: open + 1, end: index, offsets };
+}
+
+// Locates each top-level string field in the raw text of a JSON object.
+function topLevelStrings(chars: string[]): Map<string, DecodedString> {
+  const fields = new Map<string, DecodedString>();
+  let depth = 0;
+  let key: string | null = null;
+  let expectKey = false;
+  for (let index = 0; index < chars.length; index += 1) {
+    const char = chars[index];
+    if (char === '"') {
+      const value = readJSONString(chars, index);
+      if (depth === 1 && expectKey) key = value.text;
+      else if (depth === 1 && key !== null) fields.set(key, value);
+      if (depth === 1) expectKey = false;
+      index = value.end;
+    } else if (char === '{' || char === '[') {
+      depth += 1;
+      if (depth === 1) expectKey = true;
+    } else if (char === '}' || char === ']') {
+      depth -= 1;
+    } else if (depth === 1 && char === ',') {
+      expectKey = true;
+      key = null;
+    }
+  }
+  return fields;
+}
+
+const WORD_CHARACTER = /[\p{L}\p{N}]/u;
+const CLOSING_PUNCTUATION = /[.,;:!?)"'”’]/u;
+
+function citedSegments(points: string[], cites: { end: number; source: number }[], maxLength: number): CitedText[] {
+  const marks = new Map<number, Set<number>>();
+  for (const cite of cites) {
+    let end = cite.end;
+    while (end > 0 && end < points.length && WORD_CHARACTER.test(points[end]) && WORD_CHARACTER.test(points[end - 1])) end += 1;
+    while (end < points.length && CLOSING_PUNCTUATION.test(points[end])) end += 1;
+    marks.set(end, (marks.get(end) ?? new Set<number>()).add(cite.source));
+  }
+  if (!marks.size) return [];
+  const segments: CitedText[] = [];
+  let from = 0;
+  for (const end of [...marks.keys()].sort((a, b) => a - b)) {
+    segments.push({ text: points.slice(from, end).join(''), sources: [...marks.get(end)!].sort((a, b) => a - b) });
+    from = end;
+  }
+  segments.push({ text: points.slice(from).join(''), sources: [] });
+  const cleaned = segments.map((segment) => ({ ...segment, text: stripCitationMarkers(segment.text) }));
+  cleaned[0].text = cleaned[0].text.trimStart();
+  cleaned[cleaned.length - 1].text = cleaned[cleaned.length - 1].text.trimEnd();
+  const kept = cleaned.filter((segment) => segment.text || segment.sources.length);
+  const length = kept.reduce((total, segment) => total + segment.text.length, 0);
+  return length > 0 && length <= maxLength ? kept : [];
+}
+
+const CITED_FIELDS = { story: 2500, where_it_stands: 1500 } as const;
+type CitedField = keyof typeof CITED_FIELDS;
+
+// Meta's url_citation offsets point into the raw output text, which for structured
+// output is the JSON itself. This maps them onto the decoded story and where_it_stands.
+export function citeFields(
+  raw: string,
+  parsed: Record<string, unknown>,
+  annotations: MuseAnnotation[],
+  citations: Citation[],
+): Partial<Record<CitedField, CitedText[]>> {
+  const sourceIndex = new Map(citations.map((citation, index) => [citation.url, index]));
+  let fields: Map<string, DecodedString>;
+  try {
+    fields = topLevelStrings(Array.from(raw));
+  } catch {
+    return {};
+  }
+  const result: Partial<Record<CitedField, CitedText[]>> = {};
+  for (const name of Object.keys(CITED_FIELDS) as CitedField[]) {
+    const field = fields.get(name);
+    if (!field || field.text !== parsed[name]) continue;
+    const cites: { end: number; source: number }[] = [];
+    for (const annotation of annotations) {
+      if (annotation?.type !== 'url_citation') continue;
+      const source = sourceIndex.get(safeHttpsUrl(annotation.url));
+      const start = annotation.start_index;
+      const end = annotation.end_index;
+      if (source === undefined || typeof start !== 'number' || typeof end !== 'number') continue;
+      if (!Number.isInteger(start) || !Number.isInteger(end) || start < field.start || end > field.end || end <= start) continue;
+      cites.push({ end: field.offsets[end - field.start], source });
+    }
+    result[name] = citedSegments(field.points, cites, CITED_FIELDS[name]);
+  }
+  return result;
 }
 
 export function shapeInsights(output: unknown): CaseInsights {
@@ -580,139 +739,43 @@ function pairList(value: unknown, first: string, second: string, maxItems: numbe
   return (Array.isArray(value) ? value : [])
     .map((item) => {
       const record = item && typeof item === 'object' ? (item as Record<string, unknown>) : {};
-      return { [first]: boundedText(record[first], firstMax), [second]: boundedText(record[second], secondMax) };
+      return { [first]: proseText(record[first], firstMax), [second]: proseText(record[second], secondMax) };
     })
     .filter((item) => item[first] && item[second])
     .slice(0, maxItems);
 }
 
-export function parseModelJSON(text: string): unknown {
-  let current: unknown = text;
-  for (let depth = 0; depth < 6 && typeof current === 'string'; depth += 1) {
-    try {
-      current = JSON.parse(current.trim());
-    } catch {
-      current = JSON.parse(extractJSON(current as string));
-    }
-  }
-  return current;
-}
-
-export function extractJSON(text: string): string {
-  const trimmed = text.trim();
-  const fenced = trimmed.match(/```(?:json)?\s*([\s\S]*?)```/i);
-  const candidate = (fenced?.[1] ?? trimmed).trim();
-  const start = candidate.indexOf('{');
-  const end = candidate.lastIndexOf('}');
-  return start >= 0 && end > start ? candidate.slice(start, end + 1) : candidate;
-}
-
-function unescapeJSONString(raw: string): string {
-  try {
-    return JSON.parse(`"${raw.replace(/"/g, '\\"').replace(/\n/g, '\\n')}"`) as string;
-  } catch {
-    return raw.replace(/\\n/g, ' ').replace(/\\"/g, '"').replace(/\\\\/g, '\\');
-  }
-}
-
-export function salvageAbout(raw: string): CaseAbout {
-  const field = (name: string): string => {
-    const match = raw.match(new RegExp(`"${name}"\\s*:\\s*"((?:\\\\.|[^"\\\\])*)"`));
-    return match ? unescapeJSONString(match[1]).slice(0, 2500) : '';
-  };
-  const objects = (name: string, first: string, second: string) => {
-    const block = raw.match(new RegExp(`"${name}"\\s*:\\s*\\[([\\s\\S]*?)\\]`))?.[1] ?? '';
-    const items: Record<string, string>[] = [];
-    const pattern = new RegExp(`"${first}"\\s*:\\s*"((?:\\\\.|[^"\\\\])*)"\\s*,\\s*"${second}"\\s*:\\s*"((?:\\\\.|[^"\\\\])*)"`, 'g');
-    for (const match of block.matchAll(pattern)) {
-      items.push({ [first]: unescapeJSONString(match[1]), [second]: unescapeJSONString(match[2]) });
-    }
-    return items;
-  };
-  return {
-    story: field('story'),
-    whos_who: objects('whos_who', 'name', 'role') as CaseAbout['whos_who'],
-    where_it_stands: field('where_it_stands'),
-    timeline: objects('timeline', 'date', 'event') as CaseAbout['timeline'],
-    in_the_news: objects('in_the_news', 'outlet', 'summary') as CaseAbout['in_the_news'],
-  };
-}
-
-export function shapeResearch(output: unknown): CaseAbout {
-  if (!output || typeof output !== 'object') throw new CaseIntelligenceError(502, 'ai_invalid_output');
+export function shapeResearch(output: unknown, cited: Partial<Record<CitedField, CitedText[]>> = {}): CaseAbout {
+  if (!output || typeof output !== 'object' || Array.isArray(output)) throw new CaseIntelligenceError(502, 'ai_invalid_output');
   let input = output as Record<string, unknown>;
-  for (let depth = 0; depth < 6; depth += 1) {
-    if (typeof input.story !== 'string' || !input.story.trim().startsWith('{')) break;
+  // Some answers arrive with the whole payload double-encoded as a JSON string in story.
+  for (let depth = 0; depth < 6 && typeof input.story === 'string' && input.story.trim().startsWith('{'); depth += 1) {
+    let inner: unknown;
     try {
-      const inner = parseModelJSON(input.story) as Record<string, unknown>;
-      if (typeof inner.story !== 'string' || !inner.story.trim()) break;
-      input = { ...input, ...inner };
+      inner = JSON.parse(input.story);
     } catch {
-      const salvaged = salvageAbout(input.story as string);
-      if (salvaged.story) {
-        input = {
-          ...input,
-          story: salvaged.story,
-          whos_who: salvaged.whos_who.length ? salvaged.whos_who : input.whos_who,
-          where_it_stands: salvaged.where_it_stands || input.where_it_stands,
-          timeline: salvaged.timeline.length ? salvaged.timeline : input.timeline,
-          in_the_news: salvaged.in_the_news.length ? salvaged.in_the_news : input.in_the_news,
-        };
-      }
       break;
     }
+    if (!inner || typeof inner !== 'object' || typeof (inner as Record<string, unknown>).story !== 'string') break;
+    input = { ...input, ...(inner as Record<string, unknown>) };
+    cited = {};
   }
-  const story = boundedText(input.story, 2500);
-  if (!story) throw new CaseIntelligenceError(502, 'ai_invalid_output');
+  const story = proseText(input.story, CITED_FIELDS.story);
+  if (!story || story.startsWith('{')) throw new CaseIntelligenceError(502, 'ai_invalid_output');
+  const storySegments = cited.story ?? [];
+  const standsSegments = cited.where_it_stands ?? [];
   return {
-    story,
+    story: storySegments.length ? storySegments.map((segment) => segment.text).join('') : story,
+    story_segments: storySegments,
     whos_who: pairList(input.whos_who, 'name', 'role', 12, 200, 400) as CaseAbout['whos_who'],
-    where_it_stands: boundedText(input.where_it_stands, 1500),
+    where_it_stands: standsSegments.length
+      ? standsSegments.map((segment) => segment.text).join('')
+      : proseText(input.where_it_stands, CITED_FIELDS.where_it_stands),
+    where_it_stands_segments: standsSegments,
     timeline: (pairList(input.timeline, 'date', 'event', 10, 40, 500) as CaseAbout['timeline']).sort((a, b) =>
       a.date.localeCompare(b.date),
     ),
     in_the_news: pairList(input.in_the_news, 'outlet', 'summary', 4, 200, 500) as CaseAbout['in_the_news'],
-  };
-}
-
-export function parseLegacyBrief(text: string): CaseAbout {
-  const sections: Record<string, string> = {};
-  let current = 'story';
-  sections[current] = '';
-  for (const line of text.split('\n')) {
-    const heading = line.replace(/\*/g, '').trim().toLowerCase();
-    if (heading === 'the story') current = 'story';
-    else if (heading === "who's who") current = 'whos';
-    else if (heading === 'where it stands') current = 'stands';
-    else if (heading === 'timeline') current = 'timeline';
-    else if (heading === 'in the news') current = 'news';
-    else sections[current] = `${sections[current] ?? ''}${line}\n`;
-  }
-  const lines = (key: string) => (sections[key] ?? '').split('\n').map((line) => line.trim()).filter(Boolean);
-  return {
-    story: (sections.story ?? text).trim().slice(0, 2500) || text.slice(0, 2500),
-    whos_who: lines('whos')
-      .map((line) => {
-        const [name, ...rest] = line.split(' — ');
-        return { name: (name ?? '').trim(), role: rest.join(' — ').trim() };
-      })
-      .filter((item) => item.name && item.role)
-      .slice(0, 12),
-    where_it_stands: (sections.stands ?? '').trim().slice(0, 1500),
-    timeline: lines('timeline')
-      .map((line) => {
-        const [date, ...rest] = line.split(' — ');
-        return { date: (date ?? '').trim(), event: rest.join(' — ').trim() };
-      })
-      .filter((item) => item.date && item.event)
-      .slice(0, 10),
-    in_the_news: lines('news')
-      .map((line) => {
-        const [outlet, ...rest] = line.split(' — ');
-        return { outlet: (outlet ?? '').trim(), summary: rest.join(' — ').trim() };
-      })
-      .filter((item) => item.outlet && item.summary)
-      .slice(0, 4),
   };
 }
 
@@ -756,19 +819,32 @@ export async function caseResearch(body: Record<string, unknown>, fetcher: typeo
       tools: [{ type: 'web_search', search_context_size: 'medium' }],
       include: ['web_search_call.results'],
       reasoning: { effort: 'medium', summary: 'auto' },
-      max_output_tokens: 3000,
+      max_output_tokens: 8000,
       store: false,
     },
     fetcher,
   );
-  const { text, citations, thinking } = readMuseOutput(response);
-  if (!text) throw new CaseIntelligenceError(502, 'ai_incomplete');
-  let about: CaseAbout;
+  const { parts, citations, thinking } = readMuseOutput(response);
+  const answer = parts.at(-1);
+  let parsed: unknown;
   try {
-    about = shapeResearch(parseModelJSON(text));
+    parsed = answer ? JSON.parse(answer.text) : undefined;
   } catch {
-    about = parseLegacyBrief(text);
+    parsed = undefined;
   }
+  console.info(
+    'muse_research',
+    response.status,
+    response.incomplete_details?.reason ?? '-',
+    response.usage?.output_tokens ?? '-',
+    response.usage?.output_tokens_details?.reasoning_tokens ?? '-',
+    answer?.annotations.length ?? 0,
+    parsed === undefined ? 'unparsed' : 'parsed',
+  );
+  if (response.status !== 'completed' || !answer?.text.trim()) throw new CaseIntelligenceError(502, 'ai_incomplete');
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) throw new CaseIntelligenceError(502, 'ai_invalid_output');
+  const fields = parsed as Record<string, unknown>;
+  const about = shapeResearch(fields, citeFields(answer.text, fields, answer.annotations, citations));
   const research: CaseResearchData = { about, brief: briefFromAbout(about), citations, thinking };
   return { research, model };
 }
@@ -861,7 +937,7 @@ export async function caseQuestion(body: Record<string, unknown>, fetcher: typeo
     }
   }
   const { text, citations, thinking } = readMuseOutput(response);
-  if (!text) throw new CaseIntelligenceError(502, 'ai_incomplete');
+  if (response.status !== 'completed' || !text) throw new CaseIntelligenceError(502, 'ai_incomplete');
   return { answer: { text: text.slice(0, 4000), citations, thinking, tool_used: toolUsed }, model: museModel() };
 }
 
