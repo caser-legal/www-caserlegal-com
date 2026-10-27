@@ -588,7 +588,7 @@ function pairList(value: unknown, first: string, second: string, maxItems: numbe
 
 export function parseModelJSON(text: string): unknown {
   let current: unknown = text;
-  for (let depth = 0; depth < 3 && typeof current === 'string'; depth += 1) {
+  for (let depth = 0; depth < 6 && typeof current === 'string'; depth += 1) {
     try {
       current = JSON.parse(current.trim());
     } catch {
@@ -641,7 +641,7 @@ export function salvageAbout(raw: string): CaseAbout {
 export function shapeResearch(output: unknown): CaseAbout {
   if (!output || typeof output !== 'object') throw new CaseIntelligenceError(502, 'ai_invalid_output');
   let input = output as Record<string, unknown>;
-  for (let depth = 0; depth < 3; depth += 1) {
+  for (let depth = 0; depth < 6; depth += 1) {
     if (typeof input.story !== 'string' || !input.story.trim().startsWith('{')) break;
     try {
       const inner = parseModelJSON(input.story) as Record<string, unknown>;
@@ -649,7 +649,16 @@ export function shapeResearch(output: unknown): CaseAbout {
       input = { ...input, ...inner };
     } catch {
       const salvaged = salvageAbout(input.story as string);
-      if (salvaged.story) input = { ...salvaged, ...input, story: salvaged.story };
+      if (salvaged.story) {
+        input = {
+          ...input,
+          story: salvaged.story,
+          whos_who: salvaged.whos_who.length ? salvaged.whos_who : input.whos_who,
+          where_it_stands: salvaged.where_it_stands || input.where_it_stands,
+          timeline: salvaged.timeline.length ? salvaged.timeline : input.timeline,
+          in_the_news: salvaged.in_the_news.length ? salvaged.in_the_news : input.in_the_news,
+        };
+      }
       break;
     }
   }

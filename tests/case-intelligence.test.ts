@@ -372,3 +372,12 @@ test('salvageAbout recovers fields from invalid nested JSON text', () => {
   const about = salvageAbout(broken);
   assert.ok(about.story.startsWith('Brenda sued'));
 });
+
+test('shapeResearch unwraps payloads nested several layers deep', () => {
+  const innermost = { story: 'Deep story.', whos_who: [], where_it_stands: 'Pending.', timeline: [], in_the_news: [] };
+  let payload: unknown = innermost;
+  for (let i = 0; i < 5; i += 1) payload = { ...innermost, story: JSON.stringify(payload) };
+  const about = shapeResearch(parseModelJSON(JSON.stringify(payload)));
+  assert.equal(about.story, 'Deep story.');
+  assert.equal(about.where_it_stands, 'Pending.');
+});
