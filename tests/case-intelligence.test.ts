@@ -9,6 +9,7 @@ import {
   caseQuestionStream,
   caseResearch,
   parseLegacyBrief,
+  parseModelJSON,
   shapeResearch,
   createMuseResponse,
   docketBlock,
@@ -357,4 +358,10 @@ test('shapeResearch unwraps a double-encoded story', () => {
   const inner = { story: 'Real story.', whos_who: [], where_it_stands: '', timeline: [], in_the_news: [] };
   const about = shapeResearch({ ...inner, story: JSON.stringify(inner) });
   assert.equal(about.story, 'Real story.');
+});
+
+test('parseModelJSON unwraps string-encoded JSON', () => {
+  const payload = { story: 'A story.', whos_who: [], where_it_stands: '', timeline: [], in_the_news: [] };
+  assert.deepEqual(parseModelJSON(JSON.stringify(JSON.stringify(payload))), payload);
+  assert.equal(shapeResearch(parseModelJSON(JSON.stringify(JSON.stringify(payload)))).story, 'A story.');
 });
