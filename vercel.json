@@ -71,7 +71,7 @@
   "crons": [
     {
       "path": "/api/cron/feed-archive",
-      "schedule": "17 */12 * * *"
+      "schedule": "17 5 * * *"
     }
   ]
 }
