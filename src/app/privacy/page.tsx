@@ -12,7 +12,7 @@ export default function PrivacyPage() {
       <section className="route-hero relative py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
           <h1 className="text-4xl font-bold tracking-tight mb-2">Privacy Policy</h1>
-          <p className="text-muted-foreground mb-8">Last Updated: October 20, 2026</p>
+          <p className="text-muted-foreground mb-8">Last Updated: October 27, 2026</p>
 
           <div className="space-y-8">
             <LegalSection title="1. Information We Collect">
@@ -73,6 +73,13 @@ export default function PrivacyPage() {
                 answer is generated. Google may create web search queries from that content to find
                 public sources. The provider processes the content; this is not end-to-end encrypted
                 messaging. Using Atticus is optional.
+              </LegalParagraph>
+              <LegalParagraph>
+                In CASER version 8.0 and later, Atticus uses Meta&apos;s Muse AI instead of Google. When you
+                open a case&apos;s Details or ask a follow-up question, the public case details you opened and
+                your question are sent through CASER&apos;s server to Meta for processing, and Meta may search
+                the web for public sources. CASER&apos;s server does not store this content, and Atticus results
+                are saved only on your device.
               </LegalParagraph>
               <LegalParagraph>
                 Google retains prompts, context, and output used for Google Search grounding for 30 days,
