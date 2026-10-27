@@ -610,12 +610,14 @@ export function extractJSON(text: string): string {
 export function shapeResearch(output: unknown): CaseAbout {
   if (!output || typeof output !== 'object') throw new CaseIntelligenceError(502, 'ai_invalid_output');
   let input = output as Record<string, unknown>;
-  if (typeof input.story === 'string' && input.story.trim().startsWith('{')) {
+  for (let depth = 0; depth < 3; depth += 1) {
+    if (typeof input.story !== 'string' || !input.story.trim().startsWith('{')) break;
     try {
-      const inner = JSON.parse(extractJSON(input.story)) as Record<string, unknown>;
-      if (typeof inner.story === 'string' && inner.story.trim()) input = { ...input, ...inner };
+      const inner = parseModelJSON(input.story) as Record<string, unknown>;
+      if (typeof inner.story !== 'string' || !inner.story.trim()) break;
+      input = { ...input, ...inner };
     } catch {
-      // Keep the outer fields; the app also guards against raw JSON stories.
+      break;
     }
   }
   const story = boundedText(input.story, 2500);
