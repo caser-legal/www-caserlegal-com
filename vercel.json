@@ -11,6 +11,18 @@
     },
     "src/app/v1/case-question/route.ts": {
       "maxDuration": 60
+    },
+    "src/app/api/cron/feed-archive/route.ts": {
+      "maxDuration": 300
+    },
+    "src/app/v1/docket-archive/route.ts": {
+      "maxDuration": 60
+    },
+    "src/app/v1/case-artwork/route.ts": {
+      "maxDuration": 60
+    },
+    "src/app/v1/case-question-stream/route.ts": {
+      "maxDuration": 60
     }
   },
   "headers": [
@@ -54,6 +66,12 @@
           "value": "credentialless"
         }
       ]
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron/feed-archive",
+      "schedule": "17 */12 * * *"
     }
   ]
 }

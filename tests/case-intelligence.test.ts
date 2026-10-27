@@ -3,8 +3,12 @@ import test from 'node:test';
 import {
   CaseIntelligenceError,
   caseInsights,
+  caseArtwork,
   caseQuestion,
+  caseQuestionStream,
   caseResearch,
+  parseLegacyBrief,
+  shapeResearch,
   createMuseResponse,
   docketBlock,
   enforceRateLimit,
@@ -135,19 +139,73 @@ test('caseInsights rejects malformed model output', async () => {
   );
 });
 
-test('caseResearch uses web search and returns citations', async () => {
+test('caseResearch uses web search with structured output and returns an About artifact', async () => {
   const calls: RequestInit[] = [];
+  const about = {
+    story: 'Jane Doe sued Acme Corp over a contract dispute.',
+    whos_who: [{ name: 'Jane Doe', role: 'Plaintiff' }],
+    where_it_stands: 'A motion to dismiss is pending.',
+    timeline: [
+      { date: '2026-10-24', event: 'The docket entry was filed.' },
+      { date: '2026-09-01', event: 'The case was filed.' },
+    ],
+    in_the_news: [],
+  };
   const result = await caseResearch(
     { entry },
     fakeFetch(
-      [Response.json(messageResponse('**Where it stands**\nPending.', [{ type: 'url_citation', url: 'https://www.courtlistener.com/x', title: 'Docket' }]))],
+      [Response.json(messageResponse(JSON.stringify(about), [{ type: 'url_citation', url: 'https://www.courtlistener.com/x', title: 'Docket' }]))],
       calls,
     ),
   );
   assert.equal(result.research.citations.length, 1);
+  assert.equal(result.research.about.story, about.story);
+  assert.equal(result.research.about.timeline[0].date, '2026-09-01');
+  assert.ok(result.research.brief.includes("**Who's who**"));
   const sent = JSON.parse(String(calls[0].body));
   assert.deepEqual(sent.tools, [{ type: 'web_search', search_context_size: 'medium' }]);
-  assert.equal(sent.text, undefined);
+  assert.equal(sent.text.format.type, 'json_schema');
+  assert.equal(sent.text.format.name, 'case_research');
+  assert.equal(sent.reasoning.summary, 'auto');
+});
+
+test('shapeResearch rejects output without a story and parseLegacyBrief splits headings', () => {
+  assert.throws(() => shapeResearch({ story: '' }), /ai_invalid_output/);
+  const about = parseLegacyBrief('**The story**\nDoe sued Acme.\n**Timeline**\n2026-01-02 — Filed.');
+  assert.equal(about.story, 'Doe sued Acme.');
+  assert.deepEqual(about.timeline, [{ date: '2026-01-02', event: 'Filed.' }]);
+});
+
+test('caseArtwork asks Muse Image and returns base64 art', async () => {
+  const calls: RequestInit[] = [];
+  const payload = { status: 'completed', output: [{ type: 'image_generation_call', result: 'aGVsbG8=' }] };
+  const result = await caseArtwork({ entry, story: 'A contract dispute.' }, fakeFetch([Response.json(payload)], calls));
+  assert.equal(result.artwork.image_b64, 'aGVsbG8=');
+  const sent = JSON.parse(String(calls[0].body));
+  assert.equal(sent.model, 'muse-image-1.0');
+});
+
+test('caseQuestionStream forwards text deltas and final sources', async () => {
+  const events = [
+    { type: 'response.output_text.delta', delta: 'Responses ' },
+    { type: 'response.output_text.delta', delta: 'are due 11/10/2026.' },
+    {
+      type: 'response.completed',
+      response: messageResponse('Responses are due 11/10/2026.', [
+        { type: 'url_citation', url: 'https://www.uscourts.gov/a', title: 'Courts' },
+      ]),
+    },
+  ];
+  const sse = events.map((event) => `data: ${JSON.stringify(event)}\n\n`).join('');
+  const response = await caseQuestionStream(
+    { entry, question: 'When is the response due?' },
+    fakeFetch([new Response(sse, { headers: { 'content-type': 'text/event-stream' } })]),
+  );
+  const body = await response.text();
+  assert.ok(body.includes('"type":"text"'));
+  assert.ok(body.includes('are due 11/10/2026.'));
+  assert.ok(body.includes('"type":"sources"'));
+  assert.ok(body.includes('"type":"done"'));
 });
 
 test('caseQuestion wraps context and validates the question', async () => {
