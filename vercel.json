@@ -2,6 +2,15 @@
   "functions": {
     "src/app/v1/docket-search/route.ts": {
       "maxDuration": 60
+    },
+    "src/app/v1/case-insights/route.ts": {
+      "maxDuration": 60
+    },
+    "src/app/v1/case-research/route.ts": {
+      "maxDuration": 60
+    },
+    "src/app/v1/case-question/route.ts": {
+      "maxDuration": 60
     }
   },
   "headers": [
