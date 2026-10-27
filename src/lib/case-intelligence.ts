@@ -50,11 +50,37 @@ export type CaseInsights = {
   what_to_watch: string[];
 };
 
+export type CaseAbout = {
+  story: string;
+  whos_who: { name: string; role: string }[];
+  where_it_stands: string;
+  timeline: { date: string; event: string }[];
+  in_the_news: { outlet: string; summary: string }[];
+};
+
+export type CaseResearchData = {
+  about: CaseAbout;
+  brief: string;
+  citations: Citation[];
+  thinking: string;
+};
+
 type MuseAnnotation = { type?: string; url?: unknown; title?: unknown };
 type MuseContent = { type?: string; text?: unknown; annotations?: MuseAnnotation[] };
 type MuseSearchResult = { title?: unknown; url?: unknown };
-type MuseOutputItem = { type?: string; phase?: string | null; content?: MuseContent[]; results?: MuseSearchResult[] };
-export type MuseResponse = { status?: string; output?: MuseOutputItem[] };
+type MuseSummaryPart = { type?: string; text?: unknown };
+type MuseOutputItem = {
+  type?: string;
+  phase?: string | null;
+  content?: MuseContent[];
+  results?: MuseSearchResult[];
+  summary?: MuseSummaryPart[];
+  name?: string;
+  call_id?: string;
+  arguments?: string;
+  result?: string;
+};
+export type MuseResponse = { id?: string; status?: string; output?: MuseOutputItem[] };
 
 const requestLog = new Map<string, number[]>();
 
@@ -264,20 +290,15 @@ export const RESEARCH_INSTRUCTIONS = `${SHARED_RULES}
 Task: brief the reader on the full story behind this filing, fast. Search the web for every person and company named in <docket_entry> (alone and together with the court or case number) and for the case caption. Find who they are, what they are accused or alleged to have done, the backstory, related cases or controversies, and the latest news coverage. Prefer court records, official agency releases (for example DOJ and SEC press releases) and established news outlets.
 - Say "alleged" or "accused" for anything not proven by a conviction, plea or judgment.
 - Ignore results about different people who share a name. If you cannot tell whether a result is the same person, leave it out.
-- Cite every factual claim. Only report what your sources support.
-- If the search finds nothing reliable beyond the docket, say so in one sentence under The story and still fill Where it stands and Timeline from the docket entry.
+- Cite every factual claim in the text with [1], [2] markers matching your sources. Only report what your sources support.
+- If the search finds nothing reliable beyond the docket, say so in one sentence in story and still fill where_it_stands and timeline from the docket entry.
 
-Reply in Markdown using these bold headings in this order, each on its own line. Leave out Who's who or In the news when you have nothing for them.
-**The story**
-Two to five plain-English sentences: who is involved and what this is about.
-**Who's who**
-One line per party: "Name — who they are".
-**Where it stands**
-One to three sentences.
-**Timeline**
-One line per event in the form "YYYY-MM-DD — event", oldest first, at most 10 lines, including the docket entry itself when its date is known.
-**In the news**
-Up to 4 lines in the form "Outlet — one-sentence summary".`;
+Reply with JSON matching the provided schema:
+- story: two to five plain-English sentences: who is involved and what this is about.
+- whos_who: one item per party, name plus who they are in a short phrase. Empty list if unknown.
+- where_it_stands: one to three sentences on the current procedural state.
+- timeline: one item per event with date as YYYY-MM-DD and a one-sentence event, oldest first, at most 10 items, including the docket entry itself when its date is known.
+- in_the_news: up to 4 items with outlet and a one-sentence summary. Empty list if none.`;
 
 export const QUESTION_INSTRUCTIONS = `${SHARED_RULES}
 
@@ -303,6 +324,56 @@ export const INSIGHTS_SCHEMA = {
       },
     },
     what_to_watch: { type: 'array', items: { type: 'string' } },
+  },
+} as const;
+
+export const RESEARCH_SCHEMA = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['story', 'whos_who', 'where_it_stands', 'timeline', 'in_the_news'],
+  properties: {
+    story: { type: 'string' },
+    whos_who: {
+      type: 'array',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        required: ['name', 'role'],
+        properties: { name: { type: 'string' }, role: { type: 'string' } },
+      },
+    },
+    where_it_stands: { type: 'string' },
+    timeline: {
+      type: 'array',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        required: ['date', 'event'],
+        properties: { date: { type: 'string' }, event: { type: 'string' } },
+      },
+    },
+    in_the_news: {
+      type: 'array',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        required: ['outlet', 'summary'],
+        properties: { outlet: { type: 'string' }, summary: { type: 'string' } },
+      },
+    },
+  },
+} as const;
+
+export const RELATED_DOCKETS_TOOL = {
+  type: 'function',
+  name: 'search_related_dockets',
+  description:
+    'Search CASER federal court docket feeds for related filings. Use when the answer needs other entries in this case or related cases involving the same parties. Returns matching docket titles, courts and dates.',
+  parameters: {
+    type: 'object',
+    additionalProperties: false,
+    required: ['query'],
+    properties: { query: { type: 'string', description: 'Party name, case number or keyword to search for' } },
   },
 } as const;
 
@@ -415,7 +486,14 @@ export async function createMuseResponse(
   throw new CaseIntelligenceError(502, 'ai_unavailable');
 }
 
-export function readMuseOutput(response: MuseResponse): { text: string; citations: Citation[] } {
+export function readMuseOutput(response: MuseResponse): { text: string; citations: Citation[]; thinking: string } {
+  const thinking = (response?.output ?? [])
+    .filter((item) => item?.type === 'reasoning')
+    .flatMap((item) => item.summary ?? [])
+    .map((part) => (typeof part?.text === 'string' ? part.text : ''))
+    .join(' ')
+    .trim()
+    .slice(0, 1200);
   const texts: string[] = [];
   const citations: Citation[] = [];
   const seen = new Set<string>();
@@ -451,7 +529,7 @@ export function readMuseOutput(response: MuseResponse): { text: string; citation
       }
     }
   }
-  return { text: texts.join('\n').trim(), citations: citations.slice(0, 12) };
+  return { text: texts.join('\n').trim(), citations: citations.slice(0, 12), thinking };
 }
 
 function boundedText(value: unknown, maxLength: number): string {
@@ -479,6 +557,89 @@ export function shapeInsights(output: unknown): CaseInsights {
     filing_explained: boundedText(input.filing_explained, 1200),
     key_terms: keyTerms,
     what_to_watch: whatToWatch,
+  };
+}
+
+export function briefFromAbout(about: CaseAbout): string {
+  const parts: string[] = [];
+  if (about.story) parts.push(`**The story**\n${about.story}`);
+  if (about.whos_who.length) {
+    parts.push(`**Who's who**\n${about.whos_who.map((person) => `${person.name} — ${person.role}`).join('\n')}`);
+  }
+  if (about.where_it_stands) parts.push(`**Where it stands**\n${about.where_it_stands}`);
+  if (about.timeline.length) {
+    parts.push(`**Timeline**\n${about.timeline.map((item) => `${item.date} — ${item.event}`).join('\n')}`);
+  }
+  if (about.in_the_news.length) {
+    parts.push(`**In the news**\n${about.in_the_news.map((item) => `${item.outlet} — ${item.summary}`).join('\n')}`);
+  }
+  return parts.join('\n\n').slice(0, 8000);
+}
+
+function pairList(value: unknown, first: string, second: string, maxItems: number, firstMax: number, secondMax: number) {
+  return (Array.isArray(value) ? value : [])
+    .map((item) => {
+      const record = item && typeof item === 'object' ? (item as Record<string, unknown>) : {};
+      return { [first]: boundedText(record[first], firstMax), [second]: boundedText(record[second], secondMax) };
+    })
+    .filter((item) => item[first] && item[second])
+    .slice(0, maxItems);
+}
+
+export function shapeResearch(output: unknown): CaseAbout {
+  if (!output || typeof output !== 'object') throw new CaseIntelligenceError(502, 'ai_invalid_output');
+  const input = output as Record<string, unknown>;
+  const story = boundedText(input.story, 2500);
+  if (!story) throw new CaseIntelligenceError(502, 'ai_invalid_output');
+  return {
+    story,
+    whos_who: pairList(input.whos_who, 'name', 'role', 12, 200, 400) as CaseAbout['whos_who'],
+    where_it_stands: boundedText(input.where_it_stands, 1500),
+    timeline: (pairList(input.timeline, 'date', 'event', 10, 40, 500) as CaseAbout['timeline']).sort((a, b) =>
+      a.date.localeCompare(b.date),
+    ),
+    in_the_news: pairList(input.in_the_news, 'outlet', 'summary', 4, 200, 500) as CaseAbout['in_the_news'],
+  };
+}
+
+export function parseLegacyBrief(text: string): CaseAbout {
+  const sections: Record<string, string> = {};
+  let current = 'story';
+  sections[current] = '';
+  for (const line of text.split('\n')) {
+    const heading = line.replace(/\*/g, '').trim().toLowerCase();
+    if (heading === 'the story') current = 'story';
+    else if (heading === "who's who") current = 'whos';
+    else if (heading === 'where it stands') current = 'stands';
+    else if (heading === 'timeline') current = 'timeline';
+    else if (heading === 'in the news') current = 'news';
+    else sections[current] = `${sections[current] ?? ''}${line}\n`;
+  }
+  const lines = (key: string) => (sections[key] ?? '').split('\n').map((line) => line.trim()).filter(Boolean);
+  return {
+    story: (sections.story ?? text).trim().slice(0, 2500) || text.slice(0, 2500),
+    whos_who: lines('whos')
+      .map((line) => {
+        const [name, ...rest] = line.split(' — ');
+        return { name: (name ?? '').trim(), role: rest.join(' — ').trim() };
+      })
+      .filter((item) => item.name && item.role)
+      .slice(0, 12),
+    where_it_stands: (sections.stands ?? '').trim().slice(0, 1500),
+    timeline: lines('timeline')
+      .map((line) => {
+        const [date, ...rest] = line.split(' — ');
+        return { date: (date ?? '').trim(), event: rest.join(' — ').trim() };
+      })
+      .filter((item) => item.date && item.event)
+      .slice(0, 10),
+    in_the_news: lines('news')
+      .map((line) => {
+        const [outlet, ...rest] = line.split(' — ');
+        return { outlet: (outlet ?? '').trim(), summary: rest.join(' — ').trim() };
+      })
+      .filter((item) => item.outlet && item.summary)
+      .slice(0, 4),
   };
 }
 
@@ -516,46 +677,255 @@ export async function caseResearch(body: Record<string, unknown>, fetcher: typeo
     {
       model,
       instructions: RESEARCH_INSTRUCTIONS,
-      prompt_cache_key: 'caser-case-research',
+      prompt_cache_key: 'caser-case-research-v2',
       input: [{ role: 'user', content: `Today is ${new Date().toISOString().slice(0, 10)}.\n\n${docketBlock(entry)}` }],
+      text: { format: { type: 'json_schema', name: 'case_research', strict: true, schema: RESEARCH_SCHEMA } },
       tools: [{ type: 'web_search', search_context_size: 'medium' }],
       include: ['web_search_call.results'],
-      reasoning: { effort: 'low' },
-      max_output_tokens: 2500,
+      reasoning: { effort: 'medium', summary: 'auto' },
+      max_output_tokens: 3000,
       store: false,
     },
     fetcher,
   );
-  const { text, citations } = readMuseOutput(response);
+  const { text, citations, thinking } = readMuseOutput(response);
   if (!text) throw new CaseIntelligenceError(502, 'ai_incomplete');
-  return { research: { brief: text.slice(0, 8000), citations }, model };
+  let about: CaseAbout;
+  try {
+    about = shapeResearch(JSON.parse(text));
+  } catch (error) {
+    if (error instanceof CaseIntelligenceError) {
+      about = parseLegacyBrief(text);
+    } else {
+      about = parseLegacyBrief(text);
+    }
+  }
+  const research: CaseResearchData = { about, brief: briefFromAbout(about), citations, thinking };
+  return { research, model };
 }
 
-export async function caseQuestion(body: Record<string, unknown>, fetcher: typeof fetch = fetch) {
+function questionBody(body: Record<string, unknown>, overrides: Record<string, unknown> = {}) {
   const entry = parseEntry(body.entry);
   const notes = parseNotes(body.notes);
   const history = parseHistory(body.history);
   const question = parseQuestion(body.question);
-  const model = museModel();
   const context = [docketBlock(entry), notesBlock(notes), historyBlock(history)].filter(Boolean).join('\n\n');
-  const response = await createMuseResponse(
-    {
-      model,
+  return {
+    entry,
+    question,
+    request: {
+      model: museModel(),
       instructions: QUESTION_INSTRUCTIONS,
       prompt_cache_key: 'caser-case-question',
       input: [
         { role: 'user', content: context },
         { role: 'user', content: question },
       ],
-      tools: [{ type: 'web_search', search_context_size: 'low' }],
+      tools: [{ type: 'web_search', search_context_size: 'low' }, RELATED_DOCKETS_TOOL],
       include: ['web_search_call.results'],
-      reasoning: { effort: 'low' },
+      reasoning: { effort: 'low', summary: 'auto' },
       max_output_tokens: 1800,
       store: false,
-    },
-    fetcher,
-  );
-  const { text, citations } = readMuseOutput(response);
+      ...overrides,
+    } as Record<string, unknown>,
+  };
+}
+
+async function runRelatedDocketsTool(call: MuseOutputItem): Promise<string> {
+  let query = '';
+  try {
+    query = String((JSON.parse(call.arguments ?? '{}') as { query?: unknown }).query ?? '').slice(0, 200);
+  } catch {
+    query = '';
+  }
+  if (!query) return JSON.stringify({ matches: [] });
+  try {
+    const { searchDockets } = await import('./docket-search');
+    const result = await searchDockets(
+      { query, states: [], court_types: [], date_range: 'Last 90 days' },
+      { deadlineMs: 8000 },
+    );
+    return JSON.stringify({
+      matches: result.matches.slice(0, 8).map((match) => ({
+        title: match.title,
+        court: match.court,
+        published_at: match.published_at,
+      })),
+    });
+  } catch {
+    return JSON.stringify({ matches: [] });
+  }
+}
+
+export async function caseQuestion(body: Record<string, unknown>, fetcher: typeof fetch = fetch) {
+  const { request } = questionBody(body);
+  const model = museModel();
+  let response = await createMuseResponse(request, fetcher);
+  let toolUsed = '';
+  const call = (response.output ?? []).find((item) => item?.type === 'function_call' && item?.name === 'search_related_dockets');
+  if (call?.call_id && response.id) {
+    toolUsed = 'search_related_dockets';
+    const output = await runRelatedDocketsTool(call);
+    response = await createMuseResponse(
+      {
+        model,
+        previous_response_id: response.id,
+        input: [{ type: 'function_call_output', call_id: call.call_id, output }],
+        tools: [{ type: 'web_search', search_context_size: 'low' }, RELATED_DOCKETS_TOOL],
+        include: ['web_search_call.results'],
+        reasoning: { effort: 'low', summary: 'auto' },
+        max_output_tokens: 1800,
+        store: false,
+      },
+      fetcher,
+    );
+  }
+  const { text, citations, thinking } = readMuseOutput(response);
   if (!text) throw new CaseIntelligenceError(502, 'ai_incomplete');
-  return { answer: { text: text.slice(0, 4000), citations }, model };
+  return { answer: { text: text.slice(0, 4000), citations, thinking, tool_used: toolUsed }, model };
+}
+
+export async function caseArtwork(body: Record<string, unknown>, fetcher: typeof fetch = fetch) {
+  const entry = parseEntry(body.entry);
+  const story = cleanText((body as Record<string, unknown>).story, 'story', 2000);
+  const apiKey = process.env.MODEL_API_KEY?.trim();
+  if (!apiKey) throw new CaseIntelligenceError(503, 'ai_not_configured');
+  const subject = [entry.title, entry.court, entry.caseType, story].filter(Boolean).join('. ').slice(0, 1200);
+  const prompt = [
+    'Create a dark, cinematic editorial illustration for a U.S. federal court case briefing app. No text, no words, no letters anywhere in the image.',
+    'Moody courthouse columns, subtle gold accent light, deep charcoal background, premium magazine-cover style, dignified and serious.',
+    `Case subject: ${tagSafe(subject)}`,
+  ].join('\n');
+  let response: Response;
+  try {
+    response = await fetcher('https://api.meta.ai/v1/responses', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'muse-image-1.0', input: prompt, store: false }),
+      signal: AbortSignal.timeout(60_000),
+    });
+  } catch (error) {
+    if (error instanceof Error && error.name === 'TimeoutError') throw new CaseIntelligenceError(504, 'ai_timeout');
+    throw new CaseIntelligenceError(502, 'ai_unavailable');
+  }
+  if (!response.ok) throw new CaseIntelligenceError(response.status === 429 ? 429 : 502, response.status === 429 ? 'ai_busy' : 'ai_failed');
+  const payload = (await response.json()) as MuseResponse;
+  const image = (payload?.output ?? []).find((item) => item?.type === 'image_generation_call' && typeof item.result === 'string');
+  if (!image?.result || image.result.length > 8 * 1024 * 1024) throw new CaseIntelligenceError(502, 'ai_incomplete');
+  return { artwork: { image_b64: image.result, format: 'webp' }, model: 'muse-image-1.0' };
+}
+
+type StreamEvent =
+  | { type: 'text'; delta: string }
+  | { type: 'thinking'; delta: string }
+  | { type: 'tool'; name: string }
+  | { type: 'sources'; citations: Citation[] }
+  | { type: 'done' };
+
+export async function caseQuestionStream(body: Record<string, unknown>, fetcher: typeof fetch = fetch): Promise<Response> {
+  const { request } = questionBody(body);
+  const apiKey = process.env.MODEL_API_KEY?.trim();
+  if (!apiKey) throw new CaseIntelligenceError(503, 'ai_not_configured');
+  const encoder = new TextEncoder();
+
+  async function* events(round: Record<string, unknown>, allowTool: boolean): AsyncGenerator<StreamEvent> {
+    const response = await fetcher(MUSE_ENDPOINT, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...round, stream: true }),
+      signal: AbortSignal.timeout(90_000),
+    });
+    if (!response.ok || !response.body) {
+      throw new CaseIntelligenceError(response.status === 429 ? 429 : 502, response.status === 429 ? 'ai_busy' : 'ai_failed');
+    }
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+    let completed: MuseResponse | null = null;
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop() ?? '';
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed.startsWith('data:')) continue;
+        const data = trimmed.slice(5).trim();
+        if (!data || data === '[DONE]') continue;
+        let event: Record<string, unknown>;
+        try {
+          event = JSON.parse(data) as Record<string, unknown>;
+        } catch {
+          continue;
+        }
+        if (event.type === 'response.output_text.delta' && typeof event.delta === 'string') {
+          yield { type: 'text', delta: event.delta };
+        } else if (event.type === 'response.reasoning_summary_text.delta' && typeof event.delta === 'string') {
+          yield { type: 'thinking', delta: event.delta };
+        } else if (event.type === 'response.completed') {
+          completed = (event.response as MuseResponse) ?? null;
+        }
+      }
+    }
+    if (!completed) throw new CaseIntelligenceError(502, 'ai_incomplete');
+    const call = (completed.output ?? []).find(
+      (item) => item?.type === 'function_call' && item?.name === 'search_related_dockets',
+    );
+    if (allowTool && call?.call_id && completed.id) {
+      yield { type: 'tool', name: 'search_related_dockets' };
+      const output = await runRelatedDocketsTool(call);
+      yield* events(
+        {
+          model: museModel(),
+          previous_response_id: completed.id,
+          input: [{ type: 'function_call_output', call_id: call.call_id, output }],
+          tools: request.tools,
+          include: ['web_search_call.results'],
+          reasoning: { effort: 'low', summary: 'auto' },
+          max_output_tokens: 1800,
+          store: false,
+        },
+        false,
+      );
+      return;
+    }
+    const { citations } = readMuseOutput(completed);
+    if (citations.length) yield { type: 'sources', citations };
+  }
+
+  const stream = new ReadableStream<Uint8Array>({
+    async start(controller) {
+      try {
+        for await (const event of events(request, true)) {
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify(event)}\n\n`));
+        }
+        controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'done' })}\n\n`));
+      } catch (error) {
+        const code = error instanceof CaseIntelligenceError ? error.code : 'ai_unavailable';
+        controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'error', code })}\n\n`));
+      } finally {
+        controller.close();
+      }
+    },
+  });
+  return new Response(stream, {
+    headers: { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-store', Connection: 'keep-alive' },
+  });
+}
+
+export async function handleStream(
+  request: Request,
+  handle: (body: Record<string, unknown>) => Promise<Response>,
+): Promise<Response> {
+  try {
+    enforceRateLimit(clientKey(request));
+    const body = await readJsonBody(request);
+    if (!body || typeof body !== 'object' || Array.isArray(body)) {
+      throw new CaseIntelligenceError(400, 'invalid_json');
+    }
+    return await handle(body as Record<string, unknown>);
+  } catch (error) {
+    return errorResponse(error);
+  }
 }
