@@ -96,6 +96,7 @@ export async function ingestArchive(
   const store = options.store ?? blobArchiveStore();
   const feeds = options.feedList ?? courts();
   const cutoffDay = dayOf(new Date(now.getTime() - ARCHIVE_DAYS * 24 * 60 * 60 * 1000));
+  const latestDay = dayOf(new Date(now.getTime() + 24 * 60 * 60 * 1000));
 
   const byDay = new Map<string, DocketMatch[]>();
   let courtsOk = 0;
@@ -110,7 +111,7 @@ export async function ingestArchive(
         courtsOk += 1;
         for (const entry of entries) {
           const day = entry.published_at ? entry.published_at.slice(0, 10) : dayOf(now);
-          if (day < cutoffDay) continue;
+          if (day < cutoffDay || day > latestDay) continue;
           const list = byDay.get(day) ?? [];
           list.push(entry);
           byDay.set(day, list);
@@ -127,9 +128,9 @@ export async function ingestArchive(
     days: [],
     total: 0,
   };
-  const keptDays = manifest.days.filter((item) => item.day >= cutoffDay);
+  const keptDays = manifest.days.filter((item) => item.day >= cutoffDay && item.day <= latestDay);
   for (const dropped of manifest.days) {
-    if (dropped.day < cutoffDay) await store.remove(dropped.pathname);
+    if (dropped.day < cutoffDay || dropped.day > latestDay) await store.remove(dropped.pathname);
   }
 
   let added = 0;
