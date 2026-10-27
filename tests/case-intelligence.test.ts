@@ -265,3 +265,26 @@ test('readMuseOutput ignores commentary even without a final_answer phase', () =
   });
   assert.equal(output.text, 'answer');
 });
+
+test('readMuseOutput falls back to web search results when there are no inline citations', () => {
+  const output = readMuseOutput({
+    output: [
+      {
+        type: 'web_search_call',
+        results: [
+          { title: 'DOJ release', url: 'https://www.justice.gov/a' },
+          { title: 'Duplicate', url: 'https://www.justice.gov/a' },
+          { title: 'Insecure', url: 'http://example.com' },
+        ],
+      },
+      { type: 'message', phase: 'final_answer', content: [{ type: 'output_text', text: 'answer' }] },
+    ],
+  });
+  assert.deepEqual(output.citations, [{ title: 'DOJ release', url: 'https://www.justice.gov/a' }]);
+});
+
+test('caseResearch asks Muse for web search results', async () => {
+  const calls: RequestInit[] = [];
+  await caseResearch({ entry }, fakeFetch([Response.json(messageResponse('**The story**\nx'))], calls));
+  assert.deepEqual(JSON.parse(String(calls[0].body)).include, ['web_search_call.results']);
+});

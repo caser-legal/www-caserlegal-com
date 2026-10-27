@@ -52,7 +52,8 @@ export type CaseInsights = {
 
 type MuseAnnotation = { type?: string; url?: unknown; title?: unknown };
 type MuseContent = { type?: string; text?: unknown; annotations?: MuseAnnotation[] };
-type MuseOutputItem = { type?: string; phase?: string | null; content?: MuseContent[] };
+type MuseSearchResult = { title?: unknown; url?: unknown };
+type MuseOutputItem = { type?: string; phase?: string | null; content?: MuseContent[]; results?: MuseSearchResult[] };
 export type MuseResponse = { status?: string; output?: MuseOutputItem[] };
 
 const requestLog = new Map<string, number[]>();
@@ -438,6 +439,18 @@ export function readMuseOutput(response: MuseResponse): { text: string; citation
       }
     }
   }
+  if (!citations.length) {
+    for (const item of response?.output ?? []) {
+      if (item?.type !== 'web_search_call') continue;
+      for (const result of item.results ?? []) {
+        const url = safeHttpsUrl(result?.url);
+        if (!url || seen.has(url)) continue;
+        seen.add(url);
+        const title = typeof result.title === 'string' && result.title.trim() ? result.title.trim() : new URL(url).hostname;
+        citations.push({ title: title.slice(0, 300), url });
+      }
+    }
+  }
   return { text: texts.join('\n').trim(), citations: citations.slice(0, 12) };
 }
 
@@ -506,6 +519,7 @@ export async function caseResearch(body: Record<string, unknown>, fetcher: typeo
       prompt_cache_key: 'caser-case-research',
       input: [{ role: 'user', content: `Today is ${new Date().toISOString().slice(0, 10)}.\n\n${docketBlock(entry)}` }],
       tools: [{ type: 'web_search', search_context_size: 'medium' }],
+      include: ['web_search_call.results'],
       reasoning: { effort: 'low' },
       max_output_tokens: 2500,
       store: false,
@@ -534,6 +548,7 @@ export async function caseQuestion(body: Record<string, unknown>, fetcher: typeo
         { role: 'user', content: question },
       ],
       tools: [{ type: 'web_search', search_context_size: 'low' }],
+      include: ['web_search_call.results'],
       reasoning: { effort: 'low' },
       max_output_tokens: 1800,
       store: false,
