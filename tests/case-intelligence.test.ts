@@ -10,6 +10,7 @@ import {
   caseResearch,
   parseLegacyBrief,
   parseModelJSON,
+  salvageAbout,
   shapeResearch,
   createMuseResponse,
   docketBlock,
@@ -364,4 +365,10 @@ test('parseModelJSON unwraps string-encoded JSON', () => {
   const payload = { story: 'A story.', whos_who: [], where_it_stands: '', timeline: [], in_the_news: [] };
   assert.deepEqual(parseModelJSON(JSON.stringify(JSON.stringify(payload))), payload);
   assert.equal(shapeResearch(parseModelJSON(JSON.stringify(JSON.stringify(payload)))).story, 'A story.');
+});
+
+test('salvageAbout recovers fields from invalid nested JSON text', () => {
+  const broken = '{"in_the_news": [], "story": "Brenda sued over a shooting.\nSecond line."}';
+  const about = salvageAbout(broken);
+  assert.ok(about.story.startsWith('Brenda sued'));
 });

@@ -293,7 +293,7 @@ Task: brief the reader on the full story behind this filing, fast. Search the we
 - Cite every factual claim in the text with [1], [2] markers matching your sources. Only report what your sources support.
 - If the search finds nothing reliable beyond the docket, say so in one sentence in story and still fill where_it_stands and timeline from the docket entry.
 
-Reply with JSON matching the provided schema:
+Reply with JSON matching the provided schema. Every field value is plain prose text — never put JSON, code fences or escaped objects inside a field:
 - story: two to five plain-English sentences: who is involved and what this is about.
 - whos_who: one item per party, name plus who they are in a short phrase. Empty list if unknown.
 - where_it_stands: one to three sentences on the current procedural state.
@@ -607,6 +607,37 @@ export function extractJSON(text: string): string {
   return start >= 0 && end > start ? candidate.slice(start, end + 1) : candidate;
 }
 
+function unescapeJSONString(raw: string): string {
+  try {
+    return JSON.parse(`"${raw.replace(/"/g, '\\"').replace(/\n/g, '\\n')}"`) as string;
+  } catch {
+    return raw.replace(/\\n/g, ' ').replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+  }
+}
+
+export function salvageAbout(raw: string): CaseAbout {
+  const field = (name: string): string => {
+    const match = raw.match(new RegExp(`"${name}"\\s*:\\s*"((?:\\\\.|[^"\\\\])*)"`));
+    return match ? unescapeJSONString(match[1]).slice(0, 2500) : '';
+  };
+  const objects = (name: string, first: string, second: string) => {
+    const block = raw.match(new RegExp(`"${name}"\\s*:\\s*\\[([\\s\\S]*?)\\]`))?.[1] ?? '';
+    const items: Record<string, string>[] = [];
+    const pattern = new RegExp(`"${first}"\\s*:\\s*"((?:\\\\.|[^"\\\\])*)"\\s*,\\s*"${second}"\\s*:\\s*"((?:\\\\.|[^"\\\\])*)"`, 'g');
+    for (const match of block.matchAll(pattern)) {
+      items.push({ [first]: unescapeJSONString(match[1]), [second]: unescapeJSONString(match[2]) });
+    }
+    return items;
+  };
+  return {
+    story: field('story'),
+    whos_who: objects('whos_who', 'name', 'role') as CaseAbout['whos_who'],
+    where_it_stands: field('where_it_stands'),
+    timeline: objects('timeline', 'date', 'event') as CaseAbout['timeline'],
+    in_the_news: objects('in_the_news', 'outlet', 'summary') as CaseAbout['in_the_news'],
+  };
+}
+
 export function shapeResearch(output: unknown): CaseAbout {
   if (!output || typeof output !== 'object') throw new CaseIntelligenceError(502, 'ai_invalid_output');
   let input = output as Record<string, unknown>;
@@ -617,6 +648,8 @@ export function shapeResearch(output: unknown): CaseAbout {
       if (typeof inner.story !== 'string' || !inner.story.trim()) break;
       input = { ...input, ...inner };
     } catch {
+      const salvaged = salvageAbout(input.story as string);
+      if (salvaged.story) input = { ...salvaged, ...input, story: salvaged.story };
       break;
     }
   }
