@@ -607,6 +607,37 @@ export function extractJSON(text: string): string {
   return start >= 0 && end > start ? candidate.slice(start, end + 1) : candidate;
 }
 
+function unescapeJSONString(raw: string): string {
+  try {
+    return JSON.parse(`"${raw.replace(/"/g, '\\"').replace(/\n/g, '\\n')}"`) as string;
+  } catch {
+    return raw.replace(/\\n/g, ' ').replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+  }
+}
+
+export function salvageAbout(raw: string): CaseAbout {
+  const field = (name: string): string => {
+    const match = raw.match(new RegExp(`"${name}"\\s*:\\s*"((?:\\\\.|[^"\\\\])*)"`));
+    return match ? unescapeJSONString(match[1]).slice(0, 2500) : '';
+  };
+  const objects = (name: string, first: string, second: string) => {
+    const block = raw.match(new RegExp(`"${name}"\\s*:\\s*\\[([\\s\\S]*?)\\]`))?.[1] ?? '';
+    const items: Record<string, string>[] = [];
+    const pattern = new RegExp(`"${first}"\\s*:\\s*"((?:\\\\.|[^"\\\\])*)"\\s*,\\s*"${second}"\\s*:\\s*"((?:\\\\.|[^"\\\\])*)"`, 'g');
+    for (const match of block.matchAll(pattern)) {
+      items.push({ [first]: unescapeJSONString(match[1]), [second]: unescapeJSONString(match[2]) });
+    }
+    return items;
+  };
+  return {
+    story: field('story'),
+    whos_who: objects('whos_who', 'name', 'role') as CaseAbout['whos_who'],
+    where_it_stands: field('where_it_stands'),
+    timeline: objects('timeline', 'date', 'event') as CaseAbout['timeline'],
+    in_the_news: objects('in_the_news', 'outlet', 'summary') as CaseAbout['in_the_news'],
+  };
+}
+
 export function shapeResearch(output: unknown): CaseAbout {
   if (!output || typeof output !== 'object') throw new CaseIntelligenceError(502, 'ai_invalid_output');
   let input = output as Record<string, unknown>;
@@ -617,6 +648,8 @@ export function shapeResearch(output: unknown): CaseAbout {
       if (typeof inner.story !== 'string' || !inner.story.trim()) break;
       input = { ...input, ...inner };
     } catch {
+      const salvaged = salvageAbout(input.story as string);
+      if (salvaged.story) input = { ...salvaged, ...input, story: salvaged.story };
       break;
     }
   }
