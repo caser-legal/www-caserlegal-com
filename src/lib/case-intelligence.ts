@@ -592,7 +592,7 @@ export function parseModelJSON(text: string): unknown {
     try {
       current = JSON.parse(current.trim());
     } catch {
-      current = JSON.parse(extractJSON(current));
+      current = JSON.parse(extractJSON(current as string));
     }
   }
   return current;
