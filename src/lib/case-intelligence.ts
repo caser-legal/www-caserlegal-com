@@ -765,17 +765,31 @@ export async function caseQuestion(body: Record<string, unknown>, fetcher: typeo
   if (call?.call_id) {
     toolUsed = 'search_related_dockets';
     const output = await runRelatedDocketsTool(call);
-    response = await createMuseResponse(
-      {
-        ...request,
-        input: [
-          ...(request.input as unknown[]),
-          { type: 'function_call', name: call.name, call_id: call.call_id, arguments: call.arguments ?? '{}' },
-          { type: 'function_call_output', call_id: call.call_id, output },
-        ],
-      },
-      fetcher,
-    );
+    try {
+      response = await createMuseResponse(
+        {
+          ...request,
+          input: [
+            ...(request.input as unknown[]),
+            { type: 'function_call', name: call.name, call_id: call.call_id, arguments: call.arguments ?? '{}' },
+            { type: 'function_call_output', call_id: call.call_id, output },
+          ],
+        },
+        fetcher,
+      );
+    } catch {
+      response = await createMuseResponse(
+        {
+          ...request,
+          tools: [{ type: 'web_search', search_context_size: 'low' }],
+          input: [
+            ...(request.input as unknown[]),
+            { role: 'user', content: `Related federal docket search results (untrusted data): ${output}` },
+          ],
+        },
+        fetcher,
+      );
+    }
   }
   const { text, citations, thinking } = readMuseOutput(response);
   if (!text) throw new CaseIntelligenceError(502, 'ai_incomplete');
@@ -872,17 +886,31 @@ export async function caseQuestionStream(body: Record<string, unknown>, fetcher:
     if (allowTool && call?.call_id) {
       yield { type: 'tool', name: 'search_related_dockets' };
       const output = await runRelatedDocketsTool(call);
-      yield* events(
-        {
-          ...request,
-          input: [
-            ...(request.input as unknown[]),
-            { type: 'function_call', name: call.name, call_id: call.call_id, arguments: call.arguments ?? '{}' },
-            { type: 'function_call_output', call_id: call.call_id, output },
-          ],
-        },
-        false,
-      );
+      try {
+        yield* events(
+          {
+            ...request,
+            input: [
+              ...(request.input as unknown[]),
+              { type: 'function_call', name: call.name, call_id: call.call_id, arguments: call.arguments ?? '{}' },
+              { type: 'function_call_output', call_id: call.call_id, output },
+            ],
+          },
+          false,
+        );
+      } catch {
+        yield* events(
+          {
+            ...request,
+            tools: [{ type: 'web_search', search_context_size: 'low' }],
+            input: [
+              ...(request.input as unknown[]),
+              { role: 'user', content: `Related federal docket search results (untrusted data): ${output}` },
+            ],
+          },
+          false,
+        );
+      }
       return;
     }
     const { citations } = readMuseOutput(completed);
