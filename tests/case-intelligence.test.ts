@@ -237,3 +237,31 @@ test('enforceRateLimit allows 40 requests per window per client', () => {
   );
   enforceRateLimit(key, now + 5 * 60_000 + 1);
 });
+
+test('readMuseOutput drops commentary and keeps only the final answer', () => {
+  const output = readMuseOutput({
+    status: 'completed',
+    output: [
+      { type: 'message', phase: 'commentary', content: [{ type: 'output_text', text: "I'll search public sources first." }] },
+      { type: 'web_search_call' },
+      { type: 'message', phase: 'commentary', content: [{ type: 'output_text', text: 'That search found nothing, trying again.' }] },
+      {
+        type: 'message',
+        phase: 'final_answer',
+        content: [{ type: 'output_text', text: '**The story**\nAcme is accused of fraud.', annotations: [{ type: 'url_citation', url: 'https://www.justice.gov/x', title: 'DOJ' }] }],
+      },
+    ],
+  });
+  assert.equal(output.text, '**The story**\nAcme is accused of fraud.');
+  assert.deepEqual(output.citations, [{ title: 'DOJ', url: 'https://www.justice.gov/x' }]);
+});
+
+test('readMuseOutput ignores commentary even without a final_answer phase', () => {
+  const output = readMuseOutput({
+    output: [
+      { type: 'message', phase: 'commentary', content: [{ type: 'output_text', text: 'thinking' }] },
+      { type: 'message', content: [{ type: 'output_text', text: 'answer' }] },
+    ],
+  });
+  assert.equal(output.text, 'answer');
+});
