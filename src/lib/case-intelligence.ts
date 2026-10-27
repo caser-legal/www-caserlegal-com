@@ -759,30 +759,27 @@ async function runRelatedDocketsTool(call: MuseOutputItem): Promise<string> {
 
 export async function caseQuestion(body: Record<string, unknown>, fetcher: typeof fetch = fetch) {
   const { request } = questionBody(body);
-  const model = museModel();
   let response = await createMuseResponse(request, fetcher);
   let toolUsed = '';
   const call = (response.output ?? []).find((item) => item?.type === 'function_call' && item?.name === 'search_related_dockets');
-  if (call?.call_id && response.id) {
+  if (call?.call_id) {
     toolUsed = 'search_related_dockets';
     const output = await runRelatedDocketsTool(call);
     response = await createMuseResponse(
       {
-        model,
-        previous_response_id: response.id,
-        input: [{ type: 'function_call_output', call_id: call.call_id, output }],
-        tools: [{ type: 'web_search', search_context_size: 'low' }, RELATED_DOCKETS_TOOL],
-        include: ['web_search_call.results'],
-        reasoning: { effort: 'low', summary: 'auto' },
-        max_output_tokens: 1800,
-        store: false,
+        ...request,
+        input: [
+          ...(request.input as unknown[]),
+          { type: 'function_call', name: call.name, call_id: call.call_id, arguments: call.arguments ?? '{}' },
+          { type: 'function_call_output', call_id: call.call_id, output },
+        ],
       },
       fetcher,
     );
   }
   const { text, citations, thinking } = readMuseOutput(response);
   if (!text) throw new CaseIntelligenceError(502, 'ai_incomplete');
-  return { answer: { text: text.slice(0, 4000), citations, thinking, tool_used: toolUsed }, model };
+  return { answer: { text: text.slice(0, 4000), citations, thinking, tool_used: toolUsed }, model: museModel() };
 }
 
 export async function caseArtwork(body: Record<string, unknown>, fetcher: typeof fetch = fetch) {
@@ -872,19 +869,17 @@ export async function caseQuestionStream(body: Record<string, unknown>, fetcher:
     const call = (completed.output ?? []).find(
       (item) => item?.type === 'function_call' && item?.name === 'search_related_dockets',
     );
-    if (allowTool && call?.call_id && completed.id) {
+    if (allowTool && call?.call_id) {
       yield { type: 'tool', name: 'search_related_dockets' };
       const output = await runRelatedDocketsTool(call);
       yield* events(
         {
-          model: museModel(),
-          previous_response_id: completed.id,
-          input: [{ type: 'function_call_output', call_id: call.call_id, output }],
-          tools: request.tools,
-          include: ['web_search_call.results'],
-          reasoning: { effort: 'low', summary: 'auto' },
-          max_output_tokens: 1800,
-          store: false,
+          ...request,
+          input: [
+            ...(request.input as unknown[]),
+            { type: 'function_call', name: call.name, call_id: call.call_id, arguments: call.arguments ?? '{}' },
+            { type: 'function_call_output', call_id: call.call_id, output },
+          ],
         },
         false,
       );
