@@ -352,3 +352,9 @@ test('extractJSON unwraps fenced and padded model JSON', () => {
   assert.equal(extractJSON('```json\n{"story":"x"}\n```'), '{"story":"x"}');
   assert.equal(extractJSON('Here is the result: {"story":"x"} done'), '{"story":"x"}');
 });
+
+test('shapeResearch unwraps a double-encoded story', () => {
+  const inner = { story: 'Real story.', whos_who: [], where_it_stands: '', timeline: [], in_the_news: [] };
+  const about = shapeResearch({ ...inner, story: JSON.stringify(inner) });
+  assert.equal(about.story, 'Real story.');
+});
