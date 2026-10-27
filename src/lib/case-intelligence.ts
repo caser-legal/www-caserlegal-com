@@ -597,7 +597,15 @@ export function extractJSON(text: string): string {
 
 export function shapeResearch(output: unknown): CaseAbout {
   if (!output || typeof output !== 'object') throw new CaseIntelligenceError(502, 'ai_invalid_output');
-  const input = output as Record<string, unknown>;
+  let input = output as Record<string, unknown>;
+  if (typeof input.story === 'string' && input.story.trim().startsWith('{')) {
+    try {
+      const inner = JSON.parse(extractJSON(input.story)) as Record<string, unknown>;
+      if (typeof inner.story === 'string' && inner.story.trim()) input = { ...input, ...inner };
+    } catch {
+      // Keep the outer fields; the app also guards against raw JSON stories.
+    }
+  }
   const story = boundedText(input.story, 2500);
   if (!story) throw new CaseIntelligenceError(502, 'ai_invalid_output');
   return {
