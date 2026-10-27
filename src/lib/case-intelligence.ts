@@ -586,6 +586,18 @@ function pairList(value: unknown, first: string, second: string, maxItems: numbe
     .slice(0, maxItems);
 }
 
+export function parseModelJSON(text: string): unknown {
+  let current: unknown = text;
+  for (let depth = 0; depth < 3 && typeof current === 'string'; depth += 1) {
+    try {
+      current = JSON.parse(current.trim());
+    } catch {
+      current = JSON.parse(extractJSON(current));
+    }
+  }
+  return current;
+}
+
 export function extractJSON(text: string): string {
   const trimmed = text.trim();
   const fenced = trimmed.match(/```(?:json)?\s*([\s\S]*?)```/i);
@@ -709,7 +721,7 @@ export async function caseResearch(body: Record<string, unknown>, fetcher: typeo
   if (!text) throw new CaseIntelligenceError(502, 'ai_incomplete');
   let about: CaseAbout;
   try {
-    about = shapeResearch(JSON.parse(extractJSON(text)));
+    about = shapeResearch(parseModelJSON(text));
   } catch {
     about = parseLegacyBrief(text);
   }
