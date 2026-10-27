@@ -4,6 +4,7 @@ import {
   CaseIntelligenceError,
   caseInsights,
   caseArtwork,
+  extractJSON,
   caseQuestion,
   caseQuestionStream,
   caseResearch,
@@ -345,4 +346,9 @@ test('caseResearch asks Muse for web search results', async () => {
   const calls: RequestInit[] = [];
   await caseResearch({ entry }, fakeFetch([Response.json(messageResponse('**The story**\nx'))], calls));
   assert.deepEqual(JSON.parse(String(calls[0].body)).include, ['web_search_call.results']);
+});
+
+test('extractJSON unwraps fenced and padded model JSON', () => {
+  assert.equal(extractJSON('```json\n{"story":"x"}\n```'), '{"story":"x"}');
+  assert.equal(extractJSON('Here is the result: {"story":"x"} done'), '{"story":"x"}');
 });
