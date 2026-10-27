@@ -28,6 +28,29 @@ npm run build  # Vercel server build. /v1/docket-search runs only after this pro
 - `src/components/PricingTiers.tsx` — three-column pricing
 - `src/components/SiteFooter.tsx` — shared footer
 
+## Meta Muse case intelligence (Meta Global AI Developer Hackathon)
+
+This repository is the backend for [CASER 2.0](https://github.com/caser-legal/CASER-2.0), the hackathon entry (Startups track). The site itself predates the event. **Every commit from `c32fa20` (Oct 27, 2026) onward is hackathon work**; the commit before it, `e018b59`, is dated Oct 24. See it with `git log c32fa20~1..main`.
+
+Built during the hackathon, all in `src/lib/case-intelligence.ts` and `src/lib/feed-archive.ts`:
+
+| Endpoint | What it does with the Meta Model API |
+|---|---|
+| `POST /v1/case-insights` | Explains one docket entry. `muse-spark-1.3`, structured output (`text.format` JSON schema, strict) |
+| `POST /v1/case-research` | The About This Case artifact: story, who's who, where it stands, timeline, news. Structured output plus `web_search` grounding; `url_citation` offsets are mapped onto the story so the app can show a source number after each cited claim. Incomplete or malformed answers are rejected |
+| `POST /v1/case-question` | Ask Atticus about a case, with web search and the `search_related_dockets` function tool |
+| `POST /v1/case-question-stream` | The same answer streamed as server-sent events: text deltas, reasoning summaries, tool status, sources |
+| `GET /v1/docket-archive` | Searches the 30-day archive of court feed filings (no model call) |
+| `GET /api/cron/feed-archive` | Ingests every court feed into private Vercel Blob storage and prunes anything older than 30 days (Bearer `CRON_SECRET`) |
+
+Docket text is fenced as untrusted data, inputs are validated and size-capped, and every endpoint is rate limited per client. The Meta API key stays on the server.
+
+Environment variables: `MODEL_API_KEY` (Meta Model API key, required), `MUSE_MODEL` (optional, defaults to `muse-spark-1.3`), `CRON_SECRET`, and the Vercel Blob token for the archive.
+
+Tests: `npm test` runs 48 tests, including prompt-injection defenses, structured-output shaping, rejection of incomplete answers, citation offset mapping, streaming and archive pruning.
+
+The browser Atticus at `/search` (Firebase AI Logic and Gemini, described below) predates the hackathon and is not part of the entry.
+
 ## Muse connector
 
 CASER's Muse connector is a server route in this site and deploys with it, so every push to `main` redeploys the connector. While Muse is reviewing it, avoid pushing changes that affect the route.

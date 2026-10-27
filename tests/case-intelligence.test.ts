@@ -3,7 +3,6 @@ import test from 'node:test';
 import {
   CaseIntelligenceError,
   caseInsights,
-  caseArtwork,
   caseQuestion,
   caseQuestionStream,
   caseResearch,
@@ -173,15 +172,6 @@ test('caseResearch uses web search with structured output and returns an About a
 test('shapeResearch rejects output without a story or with JSON as the story', () => {
   assert.throws(() => shapeResearch({ story: '' }), /ai_invalid_output/);
   assert.throws(() => shapeResearch({ story: '{"in_the_news": [], "story": "cut off' }), /ai_invalid_output/);
-});
-
-test('caseArtwork asks Muse Image and returns base64 art', async () => {
-  const calls: RequestInit[] = [];
-  const payload = { status: 'completed', output: [{ type: 'image_generation_call', result: 'aGVsbG8=' }] };
-  const result = await caseArtwork({ entry, story: 'A contract dispute.' }, fakeFetch([Response.json(payload)], calls));
-  assert.equal(result.artwork.image_b64, 'aGVsbG8=');
-  const sent = JSON.parse(String(calls[0].body));
-  assert.equal(sent.model, 'muse-image-1.0');
 });
 
 test('caseQuestionStream forwards text deltas and final sources', async () => {
