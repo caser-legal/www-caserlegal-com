@@ -293,7 +293,7 @@ Task: brief the reader on the full story behind this filing, fast. Search the we
 - Cite every factual claim in the text with [1], [2] markers matching your sources. Only report what your sources support.
 - If the search finds nothing reliable beyond the docket, say so in one sentence in story and still fill where_it_stands and timeline from the docket entry.
 
-Reply with JSON matching the provided schema:
+Reply with JSON matching the provided schema. Every field value is plain prose text — never put JSON, code fences or escaped objects inside a field:
 - story: two to five plain-English sentences: who is involved and what this is about.
 - whos_who: one item per party, name plus who they are in a short phrase. Empty list if unknown.
 - where_it_stands: one to three sentences on the current procedural state.
