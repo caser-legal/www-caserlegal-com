@@ -12,7 +12,7 @@ export default function PrivacyPage() {
       <section className="route-hero relative py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
           <h1 className="text-4xl font-bold tracking-tight mb-2">Privacy Policy</h1>
-          <p className="text-muted-foreground mb-8">Last Updated: October 27, 2026</p>
+          <p className="text-muted-foreground mb-8">Last Updated: October 28, 2026</p>
 
           <div className="space-y-8">
             <LegalSection title="1. Information We Collect">
@@ -23,8 +23,21 @@ export default function PrivacyPage() {
                 to Atticus is processed remotely as described below.
               </LegalParagraph>
               <LegalParagraph>
-                Apple processes App Store purchases; CASER keeps subscription and credit accounting
-                on your device. Google receives Atticus requests and associated app, network, model-use,
+                In CASER version 8.0 and later, Atticus requests go through CASER&apos;s server. To confirm
+                that requests come from the genuine CASER app, the app uses Apple App Attest: the server
+                receives a key identifier created for this installation of the app, with Apple&apos;s
+                attestation of it, and turns it into an anonymous install ID. It contains no name, email
+                address, Apple ID or other personal information. The server keeps usage counters (how many
+                Atticus case briefings and questions were used each month) under that anonymous install ID
+                or, for CASER Pro subscribers, under the Apple subscription&apos;s transaction ID so the
+                allowance follows the subscription across devices. Purchased Atticus credits are kept on the
+                server under a random account identifier created by the app.
+              </LegalParagraph>
+              <LegalParagraph>
+                Apple processes App Store purchases. CASER never receives your payment details or Apple ID.
+                To check a subscription or add purchased credits, the app sends CASER&apos;s server only
+                Apple-signed transaction records (such as the product, transaction ID, and purchase and
+                expiry dates). Google receives Atticus requests and associated app, network, model-use,
                 and integrity information to operate and protect its services. CASER does not include
                 advertising, Firebase Analytics, or Crashlytics in the current iPhone app.
               </LegalParagraph>
@@ -51,7 +64,11 @@ export default function PrivacyPage() {
             <LegalSection title="4. Third-Party Services">
               <LegalParagraph>
                 Atticus uses Google Gemini through Firebase AI Logic, including app integrity verification
-                and Google Search grounding. Apple processes App Store subscriptions and purchases.
+                and Google Search grounding. In version 8.0 and later, Atticus uses Meta&apos;s Muse API
+                instead, Apple App Attest to verify genuine app requests, and, as a fallback, Apple
+                Intelligence on your device or Apple Private Cloud Compute. CASER&apos;s server and usage
+                counters are run on its hosting and database providers. Apple processes App Store
+                subscriptions and purchases.
                 Court RSS, PACER, and GovInfo provide source records. These providers apply their own
                 privacy policies to requests they receive.
               </LegalParagraph>
@@ -75,18 +92,26 @@ export default function PrivacyPage() {
                 messaging. Using Atticus is optional.
               </LegalParagraph>
               <LegalParagraph>
-                In CASER version 8.0 and later, Atticus uses Meta&apos;s Muse AI instead of Google. When you
+                In CASER version 8.0 and later, Atticus uses Meta&apos;s Muse API instead of Google. When you
                 open a case&apos;s Details, only the public court record for that filing is sent through
-                CASER&apos;s server to Meta, and Meta may search the web for public sources. Meta may use this
-                public court information to train its models. CASER saves the resulting case briefing on its
+                CASER&apos;s server to Meta to research the case and explain the filing, and Meta may search
+                the web for public sources. These requests use Meta&apos;s Contributor mode, in which Meta may
+                use this public court information to improve its models. CASER saves the resulting case briefing on its
                 server so anyone who opens the same filing sees it without a new AI request; these briefings
                 contain only public court information and nothing about you.
               </LegalParagraph>
               <LegalParagraph>
                 When you ask Atticus a follow-up question, your question, the case details and your earlier
-                questions about that case are sent through CASER&apos;s server to Meta. Meta does not use this
-                content to train its models. CASER&apos;s server does not store your questions or answers;
-                they are saved only on your device.
+                questions about that case are sent through CASER&apos;s server to Meta. These requests use
+                Meta&apos;s Standard mode, in which Meta does not use your questions to train its models.
+                CASER&apos;s server does not store your questions or answers; they are saved only on your
+                device.
+              </LegalParagraph>
+              <LegalParagraph>
+                If Muse is unavailable, the app may answer using Apple Intelligence on your device or Apple
+                Private Cloud Compute instead. On-device answers are generated on your iPhone. Private Cloud
+                Compute requests are processed by Apple under Apple&apos;s privacy terms, not sent to Meta or
+                to CASER&apos;s server.
               </LegalParagraph>
               <LegalParagraph>
                 Google retains prompts, context, and output used for Google Search grounding for 30 days,
@@ -136,6 +161,12 @@ export default function PrivacyPage() {
                 portable to a different device. Restore Purchases restores eligible subscriptions; it
                 does not restore spent consumables or provide cloud recovery of local history. Clearing
                 app content does not cancel an Apple subscription or erase its purchase records.
+              </LegalParagraph>
+              <LegalParagraph>
+                In version 8.0 and later, monthly Atticus usage counters on CASER&apos;s server expire about
+                40 days after the month they count, and short-term rate-limit counters expire within a day.
+                Purchased credit balances and records of redeemed purchases are kept so credits are not lost
+                or granted twice. Shared case briefings contain only public court information.
               </LegalParagraph>
             </LegalSection>
 
