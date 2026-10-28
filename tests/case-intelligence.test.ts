@@ -303,10 +303,10 @@ test('handlePost returns stable error codes', async () => {
   assert.deepEqual(await response.json(), { error: 'ai_failed' });
 });
 
-test('enforceRateLimit allows 40 requests per window per client', () => {
+test('enforceRateLimit allows 600 requests per window per client', () => {
   const key = 'rate-limit-test';
   const now = 1_000_000;
-  for (let index = 0; index < 40; index += 1) enforceRateLimit(key, now);
+  for (let index = 0; index < 600; index += 1) enforceRateLimit(key, now);
   assert.throws(
     () => enforceRateLimit(key, now),
     (error: unknown) => error instanceof CaseIntelligenceError && error.status === 429 && (error.retryAfterSeconds ?? 0) > 0,

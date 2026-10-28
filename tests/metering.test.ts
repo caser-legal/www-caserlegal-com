@@ -194,11 +194,11 @@ test('the judge build without an edition header uses the judge allowance until U
     assert.deepEqual(body.insights, INSIGHTS);
     assert.equal(body.cached, false);
     assert.equal(body.usage.edition, 'unmetered');
-    assert.deepEqual(body.usage.briefings, { used: n, limit: 50 });
+    assert.deepEqual(body.usage.briefings, { used: n, limit: 100 });
   }
   for (let n = 1; n <= 5; n += 1) assert.equal((await question()).status, 200);
   const usage = (await (await handleUsage(post('/v1/usage', {}))).json()).usage;
-  assert.deepEqual(usage.questions, { used: 5, limit: 50 });
+  assert.deepEqual(usage.questions, { used: 5, limit: 100 });
 });
 
 test('judge devices are capped per month like metered devices, counting each case once', async () => {
@@ -526,7 +526,7 @@ test('the monthly budget pauses Muse calls with atticus_paused but still serves 
   assert.deepEqual(usage.briefings, { used: 2, limit: 3 });
 });
 
-test('durable abuse limits cap every device at 40 Muse requests per 10 minutes and 300 per day', async (t) => {
+test('durable abuse limits cap every device at 120 Muse requests per 10 minutes and 1500 per day', async (t) => {
   const previous = process.env.PRO_QUESTIONS_PER_MONTH;
   process.env.PRO_QUESTIONS_PER_MONTH = '500';
   t.after(() => {
@@ -534,7 +534,7 @@ test('durable abuse limits cap every device at 40 Muse requests per 10 minutes a
     else process.env.PRO_QUESTIONS_PER_MONTH = previous;
   });
   const subscription = { ...APPSTORE, 'x-caser-subscription': fakeJws({ expiresDate: now + 86400_000 }) };
-  for (let n = 0; n < 40; n += 1) assert.equal((await question(subscription)).status, 200);
+  for (let n = 0; n < 120; n += 1) assert.equal((await question(subscription)).status, 200);
   const limited = await question(subscription);
   assert.equal(limited.status, 429);
   assert.deepEqual(await limited.json(), { error: 'rate_limited' });
@@ -543,7 +543,7 @@ test('durable abuse limits cap every device at 40 Muse requests per 10 minutes a
   assert.equal((await question({}, DEVICE_B)).status, 200);
   now += 600_000;
   assert.equal((await question(subscription)).status, 200);
-  await store.incr(`atticus:v1:abuse:${DEVICE_A}:d:2026-10-28`, 400, 86400);
+  await store.incr(`atticus:v1:abuse:${DEVICE_A}:d:2026-10-28`, 1500, 86400);
   const daily = await question(subscription);
   assert.equal(daily.status, 429);
   assert.ok(Number(daily.headers.get('retry-after')) > 600);
