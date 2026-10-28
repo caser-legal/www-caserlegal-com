@@ -76,10 +76,17 @@ export default function PrivacyPage() {
               </LegalParagraph>
               <LegalParagraph>
                 In CASER version 8.0 and later, Atticus uses Meta&apos;s Muse AI instead of Google. When you
-                open a case&apos;s Details or ask a follow-up question, the public case details you opened and
-                your question are sent through CASER&apos;s server to Meta for processing, and Meta may search
-                the web for public sources. CASER&apos;s server does not store this content, and Atticus results
-                are saved only on your device.
+                open a case&apos;s Details, only the public court record for that filing is sent through
+                CASER&apos;s server to Meta, and Meta may search the web for public sources. Meta may use this
+                public court information to train its models. CASER saves the resulting case briefing on its
+                server so anyone who opens the same filing sees it without a new AI request; these briefings
+                contain only public court information and nothing about you.
+              </LegalParagraph>
+              <LegalParagraph>
+                When you ask Atticus a follow-up question, your question, the case details and your earlier
+                questions about that case are sent through CASER&apos;s server to Meta. Meta does not use this
+                content to train its models. CASER&apos;s server does not store your questions or answers;
+                they are saved only on your device.
               </LegalParagraph>
               <LegalParagraph>
                 Google retains prompts, context, and output used for Google Search grounding for 30 days,
