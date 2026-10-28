@@ -1035,6 +1035,7 @@ export async function caseResearch(
       input: [{ role: 'user', content: `Today is ${new Date().toISOString().slice(0, 10)}.\n\n${docketBlock(entry)}` }],
       text: { format: { type: 'json_schema', name: 'case_research', strict: true, schema: RESEARCH_SCHEMA } },
       tools: [{ type: 'web_search', search_context_size: 'medium' }],
+      max_tool_calls: 4,
       include: ['web_search_call.results'],
       reasoning: { effort: 'medium', summary: 'auto' },
       max_output_tokens: 8000,
