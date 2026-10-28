@@ -12,11 +12,12 @@ const ABUSE_WINDOW_SECONDS = 600;
 const ABUSE_WINDOW_MAX = 40;
 const ABUSE_DAY_MAX = 300;
 const DEFAULT_UNMETERED_UNTIL = '2026-11-10T08:00:00Z';
-const DEFAULT_BUDGET_USD = 15;
+const DEFAULT_BUDGET_USD = 10;
+const DEFAULT_HARD_CAP_USD = 50;
 const DEFAULT_PACKS: Record<string, number> = {
-  'com.alertsfor.caser.credits.10000': 25,
-  'com.alertsfor.caser.credits.50000': 100,
-  'com.alertsfor.caser.credits.100000': 500,
+  'com.alertsfor.caser.credits.10000': 50,
+  'com.alertsfor.caser.credits.50000': 200,
+  'com.alertsfor.caser.credits.100000': 750,
 };
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const PRODUCT_PATTERN = /^[A-Za-z0-9._-]{1,100}$/;
@@ -39,6 +40,7 @@ export class MeterError extends Error {
 
 export type MeterConfig = {
   budgetUsd: number;
+  hardCapUsd: number;
   unmeteredUntil: number;
   free: { briefings: number; questions: number };
   pro: { briefings: number; questions: number };
@@ -68,16 +70,18 @@ export function parsePacks(value: string | undefined): Record<string, number> {
 
 export function meterConfig(env: Record<string, string | undefined> = process.env): MeterConfig {
   const until = Date.parse(env.UNMETERED_UNTIL?.trim() ?? '');
+  const budgetUsd = amount(env.MUSE_MONTHLY_BUDGET_USD, DEFAULT_BUDGET_USD);
   return {
-    budgetUsd: amount(env.MUSE_MONTHLY_BUDGET_USD, DEFAULT_BUDGET_USD),
+    budgetUsd,
+    hardCapUsd: Math.max(budgetUsd, amount(env.MUSE_MONTHLY_HARD_CAP_USD, DEFAULT_HARD_CAP_USD)),
     unmeteredUntil: Number.isFinite(until) ? until : Date.parse(DEFAULT_UNMETERED_UNTIL),
     free: {
       briefings: whole(env.FREE_BRIEFINGS_PER_MONTH, 3),
       questions: whole(env.FREE_QUESTIONS_PER_MONTH, 3),
     },
     pro: {
-      briefings: whole(env.PRO_BRIEFINGS_PER_MONTH, 30),
-      questions: whole(env.PRO_QUESTIONS_PER_MONTH, 30),
+      briefings: whole(env.PRO_BRIEFINGS_PER_MONTH, 100),
+      questions: whole(env.PRO_QUESTIONS_PER_MONTH, 100),
     },
     packs: parsePacks(env.CREDIT_PACKS),
   };
@@ -137,6 +141,7 @@ const keys = {
   credits: (account: string) => `${KEY_PREFIX}:credits:${account}`,
   redeemed: (transactionId: string) => `${KEY_PREFIX}:redeemed:${transactionId}`,
   spend: (period: string) => `${KEY_PREFIX}:spend:${period}`,
+  freeSpend: (period: string) => `${KEY_PREFIX}:spend-free:${period}`,
   ledger: (period: string, name: string, field: string) => `${KEY_PREFIX}:ledger:${period}:${name}:${field}`,
   abuseWindow: (deviceId: string, bucket: number) => `${KEY_PREFIX}:abuse:${deviceId}:w:${bucket}`,
   abuseDay: (deviceId: string, day: string) => `${KEY_PREFIX}:abuse:${deviceId}:d:${day}`,
@@ -158,6 +163,7 @@ export type MeterIdentity = {
   config: MeterConfig;
   store: MeterStore;
   degraded: boolean;
+  paid: boolean;
 };
 
 export type Usage = {
@@ -199,6 +205,7 @@ export async function meterIdentity(request: Request, deviceId: string): Promise
     config,
     store: store ?? fallback,
     degraded: !store,
+    paid: Boolean(pro),
   };
 }
 
@@ -219,8 +226,12 @@ function asNumber(value: string | null | undefined): number {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
-function pausedFor(id: MeterIdentity, spend: number): boolean {
-  return spend >= id.config.budgetUsd || (id.degraded && id.edition === 'appstore');
+type Spend = { total: number; free: number };
+
+function pausedFor(id: MeterIdentity, spend: Spend): boolean {
+  if (id.degraded && id.edition === 'appstore') return true;
+  if (spend.total >= id.config.hardCapUsd) return true;
+  return !id.paid && spend.free >= id.config.budgetUsd;
 }
 
 async function readState(id: MeterIdentity, briefDigest?: string) {
@@ -230,6 +241,7 @@ async function readState(id: MeterIdentity, briefDigest?: string) {
     keys.spend(id.period),
     id.account ? keys.credits(id.account) : '',
     briefDigest ? keys.brief(id.period, id.subject, briefDigest) : '',
+    keys.freeSpend(id.period),
   ];
   const wanted = list.filter(Boolean);
   const values = await withStore(id, (store) => store.getMany(wanted));
@@ -237,13 +249,13 @@ async function readState(id: MeterIdentity, briefDigest?: string) {
   return {
     briefings: asNumber(read(list[0])),
     questions: asNumber(read(list[1])),
-    spend: asNumber(read(list[2])),
+    spend: { total: asNumber(read(list[2])), free: asNumber(read(list[5])) },
     credits: Math.max(0, asNumber(read(list[3]))),
     briefSeen: read(list[4]) !== null,
   };
 }
 
-function usageFrom(id: MeterIdentity, state: { briefings: number; questions: number; spend: number; credits: number }): Usage {
+function usageFrom(id: MeterIdentity, state: { briefings: number; questions: number; spend: Spend; credits: number }): Usage {
   const metered = id.edition === 'appstore';
   return {
     plan: id.plan,
@@ -316,6 +328,7 @@ export async function openMeterSession(
     if (!free && used >= limit && state.credits < 1) {
       throw new MeterError(402, 'quota_exceeded', undefined, { kind: spec.kind, usage: usageFrom(id, state) });
     }
+    if (!free && used >= limit) id.paid = true;
   }
 
   const costs: number[] = [];
@@ -351,6 +364,7 @@ export async function openMeterSession(
       writes.push(id.store.incr(ledger('muse_calls'), costs.length, LEDGER_TTL_SECONDS));
       writes.push(id.store.incrByFloat(ledger('cost_usd'), cost, LEDGER_TTL_SECONDS));
       writes.push(id.store.incrByFloat(keys.spend(id.period), cost, LEDGER_TTL_SECONDS));
+      if (!id.paid) writes.push(id.store.incrByFloat(keys.freeSpend(id.period), cost, LEDGER_TTL_SECONDS));
     }
     await Promise.all(writes);
   }
@@ -358,8 +372,8 @@ export async function openMeterSession(
   const session: MeterSession = {
     identity: id,
     async beforeMuse() {
-      const spend = asNumber(await withStore(id, (store) => store.get(keys.spend(id.period))));
-      if (pausedFor(id, spend)) throw new MeterError(503, 'atticus_paused');
+      const [total, free] = await withStore(id, (store) => store.getMany([keys.spend(id.period), keys.freeSpend(id.period)]));
+      if (pausedFor(id, { total: asNumber(total), free: asNumber(free) })) throw new MeterError(503, 'atticus_paused');
     },
     recordMuse(costUsd) {
       if (Number.isFinite(costUsd) && costUsd >= 0) costs.push(costUsd);

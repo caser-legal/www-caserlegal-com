@@ -25,6 +25,7 @@ const OCT = Date.parse('2026-10-28T12:00:00Z');
 const NOV = Date.parse('2026-11-15T12:00:00Z');
 const METER_ENV = [
   'MUSE_MONTHLY_BUDGET_USD',
+  'MUSE_MONTHLY_HARD_CAP_USD',
   'UNMETERED_UNTIL',
   'FREE_BRIEFINGS_PER_MONTH',
   'FREE_QUESTIONS_PER_MONTH',
@@ -301,17 +302,17 @@ test('Pro subscribers get the Pro allowance keyed by the subscription, shared ac
   const subscription = { 'x-caser-subscription': fakeJws({ expiresDate: now + 86400_000, originalTransactionId: 'o-77' }) };
   const first = await (await briefing('insights', 1, { ...APPSTORE, ...subscription }, DEVICE_A)).json();
   assert.equal(first.usage.plan, 'pro');
-  assert.deepEqual(first.usage.briefings, { used: 1, limit: 30 });
+  assert.deepEqual(first.usage.briefings, { used: 1, limit: 100 });
   const other = await (await briefing('insights', 2, { ...APPSTORE, ...subscription }, DEVICE_B)).json();
-  assert.deepEqual(other.usage.briefings, { used: 2, limit: 30 });
-  for (let n = 1; n <= 30; n += 1) {
+  assert.deepEqual(other.usage.briefings, { used: 2, limit: 100 });
+  for (let n = 1; n <= 100; n += 1) {
     now += 60_000;
     await briefing('research', n, { ...APPSTORE, ...subscription }, n % 2 ? DEVICE_A : DEVICE_B);
   }
   now += 600_000;
-  const blocked = await briefing('insights', 31, { ...APPSTORE, ...subscription }, DEVICE_A);
+  const blocked = await briefing('insights', 101, { ...APPSTORE, ...subscription }, DEVICE_A);
   assert.equal(blocked.status, 402);
-  assert.deepEqual((await blocked.json()).usage.briefings, { used: 30, limit: 30 });
+  assert.deepEqual((await blocked.json()).usage.briefings, { used: 100, limit: 100 });
 });
 
 test('a bad, expired or foreign subscription header falls back to free without failing the request', async () => {
@@ -334,20 +335,20 @@ test('credit packs are redeemed once per transaction and spent after the monthly
   const redeemed = await handleRedeem(post('/v1/credits/redeem', { transaction: pack }, { ...APPSTORE, ...account }));
   assert.equal(redeemed.status, 200);
   const body = await redeemed.json();
-  assert.equal(body.granted, 25);
-  assert.equal(body.usage.credits, 25);
+  assert.equal(body.granted, 50);
+  assert.equal(body.usage.credits, 50);
   const again = await (await handleRedeem(post('/v1/credits/redeem', { transaction: pack }, { ...APPSTORE, ...account }))).json();
   assert.equal(again.granted, 0);
   assert.equal(again.duplicate, true);
-  assert.equal(again.usage.credits, 25);
+  assert.equal(again.usage.credits, 50);
 
   for (let n = 1; n <= 3; n += 1) await briefing('insights', n, { ...APPSTORE, ...account });
   const extra = await (await briefing('insights', 4, { ...APPSTORE, ...account })).json();
   assert.deepEqual(extra.usage.briefings, { used: 3, limit: 3 });
-  assert.equal(extra.usage.credits, 24);
+  assert.equal(extra.usage.credits, 49);
   for (let n = 1; n <= 4; n += 1) await question({ ...APPSTORE, ...account });
   const usage = (await (await handleUsage(post('/v1/usage', {}, { ...APPSTORE, ...account }))).json()).usage;
-  assert.equal(usage.credits, 23);
+  assert.equal(usage.credits, 48);
   assert.deepEqual(usage.questions, { used: 3, limit: 3 });
   const withoutAccount = await briefing('insights', 5, APPSTORE);
   assert.equal(withoutAccount.status, 402);
@@ -375,7 +376,7 @@ test('redeem rejects bad accounts, foreign accounts, unknown products and revoke
   );
   assert.equal(missingDevice.status, 401);
   const good = await (await redeem(pack({}))).json();
-  assert.equal(good.granted, 100);
+  assert.equal(good.granted, 200);
 });
 
 test('redeem verifies a real Apple-format signed consumable', async () => {
@@ -393,7 +394,7 @@ test('redeem verifies a real Apple-format signed consumable', async () => {
   );
   const response = await handleRedeem(post('/v1/credits/redeem', { transaction: jws }, { 'x-caser-account': ACCOUNT }));
   assert.equal(response.status, 200);
-  assert.equal((await response.json()).granted, 500);
+  assert.equal((await response.json()).granted, 750);
 });
 
 test('the monthly budget pauses Muse calls with atticus_paused but still serves cached briefings', async () => {
@@ -499,11 +500,11 @@ test('/v1/usage reports plan, edition, limits for both tiers, credits and packs'
       questions: { used: 0, limit: 3 },
       credits: 0,
       packs: {
-        'com.alertsfor.caser.credits.10000': 25,
-        'com.alertsfor.caser.credits.50000': 100,
-        'com.alertsfor.caser.credits.100000': 500,
+        'com.alertsfor.caser.credits.10000': 50,
+        'com.alertsfor.caser.credits.50000': 200,
+        'com.alertsfor.caser.credits.100000': 750,
       },
-      plans: { free: { briefings: 3, questions: 3 }, pro: { briefings: 30, questions: 30 } },
+      plans: { free: { briefings: 3, questions: 3 }, pro: { briefings: 100, questions: 100 } },
       paused: false,
     },
   });
@@ -512,12 +513,27 @@ test('/v1/usage reports plan, edition, limits for both tiers, credits and packs'
   process.env.CREDIT_PACKS = 'com.alertsfor.caser.credits.10000=30';
   const changed = (await (await handleUsage(post('/v1/usage', {}, APPSTORE))).json()).usage;
   assert.deepEqual(changed.briefings, { used: 0, limit: 5 });
-  assert.deepEqual(changed.plans.pro, { briefings: 30, questions: 50 });
+  assert.deepEqual(changed.plans.pro, { briefings: 100, questions: 50 });
   assert.deepEqual(changed.packs, { 'com.alertsfor.caser.credits.10000': 30 });
   const unverified = await handleUsage(
     new Request('https://www.caserlegal.com/v1/usage', { method: 'POST', headers: { 'x-caser-device': '' } }),
   );
   assert.equal(unverified.status, 401);
+});
+
+test('free usage spending its budget does not pause Pro subscribers until the hard cap', async () => {
+  process.env.MUSE_MONTHLY_BUDGET_USD = '0.005';
+  process.env.MUSE_MONTHLY_HARD_CAP_USD = '1';
+  const cache = caseCache();
+  assert.equal((await briefing('research', 1, APPSTORE, DEVICE_A, { cache })).status, 200);
+  assert.equal((await briefing('research', 2, APPSTORE, DEVICE_A, { cache })).status, 200);
+  assert.equal((await briefing('research', 3, APPSTORE, DEVICE_B, { cache })).status, 503);
+  const subscription = { 'x-caser-subscription': fakeJws({ expiresDate: now + 86400_000, originalTransactionId: 'o-cap' }) };
+  const pro = await briefing('research', 4, { ...APPSTORE, ...subscription }, DEVICE_B, { cache });
+  assert.equal(pro.status, 200);
+  assert.equal((await pro.json()).usage.paused, false);
+  process.env.MUSE_MONTHLY_HARD_CAP_USD = '0.005';
+  assert.equal((await briefing('research', 5, { ...APPSTORE, ...subscription }, DEVICE_B, { cache })).status, 503);
 });
 
 test('meterConfig ignores invalid numbers and pack definitions', () => {
@@ -527,7 +543,8 @@ test('meterConfig ignores invalid numbers and pack definitions', () => {
     PRO_BRIEFINGS_PER_MONTH: '45',
     UNMETERED_UNTIL: 'soon',
   });
-  assert.equal(config.budgetUsd, 15);
+  assert.equal(config.budgetUsd, 10);
+  assert.equal(config.hardCapUsd, 50);
   assert.equal(config.free.questions, 3);
   assert.equal(config.pro.briefings, 45);
   assert.equal(config.unmeteredUntil, Date.parse('2026-11-10T08:00:00Z'));
