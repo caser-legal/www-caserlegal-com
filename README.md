@@ -1,6 +1,6 @@
 # CASER Legal Website
 
-Marketing site for **CASER** — **Case Alerts & Search of Electronic Records** (aka **Case Search & Alerts by CASER**) — federal court alerts and search for iOS.
+Website and backend for **CASER** — **Case Alerts & Search of Electronic Records** (aka **Case Search & Alerts by CASER**) — federal court alerts and search for iOS. It serves the marketing site and the API behind Atticus, CASER's case explainer powered by Meta Muse.
 
 - **Production**: [https://www.caserlegal.com](https://www.caserlegal.com) (Vercel)
 - **App Store**: [https://apps.apple.com/app/id6752289799](https://apps.apple.com/app/id6752289799)
@@ -42,12 +42,22 @@ Built during the hackathon, all in `src/lib/case-intelligence.ts` and `src/lib/f
 | `POST /v1/case-question-stream` | The same answer streamed as server-sent events: text deltas, reasoning summaries, tool status, sources |
 | `GET /v1/docket-archive` | Searches the 30-day archive of court feed filings (no model call) |
 | `GET /api/cron/feed-archive` | Ingests every court feed into private Vercel Blob storage and prunes anything older than 30 days (Bearer `CRON_SECRET`) |
+| `GET /v1/attest/challenge`, `POST /v1/attest` | Apple App Attest: verifies the genuine app once and issues a device token ([App Attest](#app-attest)) |
+| `POST /v1/usage`, `POST /v1/credits/redeem` | Monthly Atticus allowance and purchased uses for the App Store edition ([metering](#atticus-metering-and-app-store-paywall)) |
+| `POST /v1/appstore/notifications` | App Store Server Notifications V2: refunds, revocations and expirations |
 
-Docket text is fenced as untrusted data, inputs are validated and size-capped, and every endpoint is rate limited per client. The Meta API key stays on the server.
+How Muse is used beyond a single call:
+
+- **Contributor mode for public records.** Case research and filing explanations use only public court data, so they run on `muse-spark-1.3-contributor`; questions people type stay on Standard `muse-spark-1.3` and are not used for training.
+- **Shared results.** Research and insights are cached per case in Blob storage, so a case is researched once and every later open is instant and free.
+- **Bounded research.** `max_tool_calls: 4` caps built-in web search per briefing; calls get up to four minutes inside a five-minute function.
+- **Measured cost.** Each response's token and search usage is priced and written to the Redis ledger; `npm run cost-report` prints cost per briefing, per question and the cache-hit rate. Measured on Oct 28, 2026: about $0.015 per new briefing and $0.009 per question.
+
+Docket text is fenced as untrusted data, inputs are validated and size-capped, every request from the app is signed with an App Attest assertion, and limits are sized to stop abuse without touching normal use. The Meta API key stays on the server.
 
 Environment variables: `MODEL_API_KEY` (Meta Model API key, required), `MUSE_MODEL` (optional, defaults to `muse-spark-1.3`), `CRON_SECRET`, and the Vercel Blob token for the archive.
 
-Tests: `npm test` runs 125 tests, including prompt-injection defenses, structured-output shaping, rejection of incomplete answers, citation offset mapping, streaming, archive pruning, App Attest attestation and assertions, StoreKit verification, App Store Server Notifications, connector access and Atticus metering.
+Tests: `npm test` runs 129 tests, including prompt-injection defenses, structured-output shaping, rejection of incomplete answers, citation offset mapping, streaming, archive pruning, App Attest attestation and assertions, StoreKit verification, App Store Server Notifications, connector access and Atticus metering.
 
 The browser Atticus at `/search` (Firebase AI Logic and Gemini, described below) predates the hackathon and is not part of the entry.
 
@@ -55,7 +65,7 @@ The browser Atticus at `/search` (Firebase AI Logic and Gemini, described below)
 
 Every Muse call's measured cost (`museUsage`) is recorded in a durable store, and App Store requests are metered against monthly allowances (`src/lib/metering.ts`, `src/lib/meter-store.ts`, `src/lib/storekit.ts`).
 
-- **Editions:** requests with `X-CASER-Edition: appstore` are metered. Requests without it (the hackathon judge TestFlight build) get the judge allowance per device (`JUDGE_BRIEFINGS_PER_MONTH`, `JUDGE_QUESTIONS_PER_MONTH`, 50 each) until `UNMETERED_UNTIL`, then are metered as free tier. Judge allowances are counted and charged exactly like metered ones, and judge spend comes out of the free-usage pool. The budget cap and abuse limits apply to every edition.
+- **Editions:** requests with `X-CASER-Edition: appstore` are metered. Requests without it (the hackathon judge TestFlight build) get the judge allowance per device (`JUDGE_BRIEFINGS_PER_MONTH`, `JUDGE_QUESTIONS_PER_MONTH`, 100 each) until `UNMETERED_UNTIL`, then are metered as free tier. Judge allowances are counted and charged exactly like metered ones, and judge spend comes out of the free-usage pool. The budget cap and abuse limits apply to every edition.
 - **Period:** the calendar month in UTC. Counters reset at 00:00 UTC on the 1st.
 - **Briefing:** opening one case. `/v1/case-insights` and `/v1/case-research` for the same docket entry count once per month, even when served from the shared case cache; reopening it that month is free.
 - **Question:** one `/v1/case-question` or `/v1/case-question-stream` call.
@@ -187,7 +197,7 @@ The header's Login button opens Privy sign-in; signed-in users land on `/search`
 - **Sign-in:** Privy (`src/components/PrivyProviders.tsx`). The API routes verify the Privy access token against the app's JWKS (`src/lib/privy-server.ts`); the Privy app secret is not used.
 - **Search:** `POST /api/caser/search`, signed-in only, same search logic as the Muse connector.
 - **Alerts:** custom check intervals (5 minutes to 7 days). Alerts, matches, saved cases and chats are stored in the browser per account, and checks run while a CASER tab is open.
-- **Atticus:** same as iOS: Firebase AI Logic (Gemini Developer API) on the `caser-legal1` project and iOS app config, with Google Search grounding (`src/components/caser-app/firebase-atticus.ts`). Gemini 2.5 Flash with a Flash-Lite retry on rate limits, the iOS system prompt and prompt guard (`src/lib/atticus.ts`), sources, exact passages and Google Search suggestions.
+- **Atticus:** the pre-8.0 iOS setup: Firebase AI Logic (Gemini Developer API) on the `caser-legal1` project and iOS app config, with Google Search grounding (`src/components/caser-app/firebase-atticus.ts`). Gemini 2.5 Flash with a Flash-Lite retry on rate limits, the iOS system prompt and prompt guard (`src/lib/atticus.ts`), sources, exact passages and Google Search suggestions.
 
 Environment variables (set in `.env.local` and in Vercel):
 
