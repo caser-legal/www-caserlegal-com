@@ -61,7 +61,7 @@ function IndividualPricing() {
           </div>
           <CardHeader className="pb-4">
             <CardTitle className="text-xl">CASER Pro</CardTitle>
-            <CardDescription className="min-h-[2.5rem]">Up to 100 alerts with an annual Atticus credit allowance</CardDescription>
+            <CardDescription className="min-h-[2.5rem]">Up to 100 alerts with 100 Atticus case briefings and 100 questions/mo</CardDescription>
             <div className="pt-4">
               <div className="flex items-baseline gap-1">
                 <span className="text-4xl font-bold tracking-tight text-primary">$14.99</span>
