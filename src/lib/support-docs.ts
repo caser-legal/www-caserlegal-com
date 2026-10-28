@@ -603,6 +603,7 @@ export const dataPrivacy: SupportDoc = {
       paragraphs: [
         'No account is required. Search queries, keyword monitors, saved cases, search history, and Atticus conversation history are stored locally on your device.',
         'Use Settings to erase app content. Some Keychain records, including purchase-credit accounting, may remain after uninstalling; clearing local content does not delete Google-retained AI requests or cancel an Apple subscription.',
+        'In version 8.0 and later, CASER’s server keeps monthly Atticus usage counters under an anonymous install ID (or, for CASER Pro, the Apple subscription’s transaction ID) and keeps purchased Atticus credits under a random account identifier created by the app. It does not store your Atticus questions or answers.',
       ],
     },
     {
@@ -618,6 +619,10 @@ export const dataPrivacy: SupportDoc = {
       heading: 'Third-party services',
       bullets: [
         'Google Gemini through Firebase AI Logic processes Atticus questions and relevant context. Google Search grounding retains prompts, context, and output for 30 days (see Privacy Policy).',
+        'In version 8.0 and later, Meta’s Muse API powers Atticus. Public court records for case research and filing explanations are sent in Meta’s Contributor mode, where Meta may use that public data to improve its models. Questions you type are sent in Standard mode and are not used for training.',
+        'Apple App Attest verifies that requests come from the genuine CASER app, using a per-install key identifier that contains no personal data.',
+        'Apple processes purchases. CASER’s server receives only Apple-signed transaction records to check a subscription or add credits.',
+        'If Muse is unavailable, the app may answer using Apple Intelligence on your device or Apple Private Cloud Compute.',
         'iOS presents local notifications after CASER finds a match during a scan, when permission is enabled.',
       ],
     },
