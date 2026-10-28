@@ -1,18 +1,30 @@
 import { createHash } from 'node:crypto';
 import {
+  ASSERTION_HEADER,
+  ASSERTION_MAX_SKEW_MS,
+  ASSERTION_TIME_HEADER,
   AttestError,
   DEVICE_HEADER,
+  assertionClientData,
   attestSecret,
+  consumeChallenge,
   issueChallenge,
   issueDeviceToken,
+  readAttestedKey,
+  saveAttestedKey,
+  claimAssertionCounter,
+  verifyAssertion,
   verifyAttestation,
   verifyChallenge,
   verifyDeviceToken,
 } from './device-attest';
 import { blobArchiveStore } from './feed-archive';
+import { MeterStoreError, type MeterStore } from './meter-store';
 import {
   MeterError,
+  enforceDurableLimit,
   meterIdentity,
+  meterStores,
   meterScope,
   openMeterSession,
   readUsage,
@@ -37,6 +49,8 @@ const MAX_BODY_BYTES = 32 * 1024;
 const RATE_WINDOW_MS = 5 * 60_000;
 const RATE_MAX_REQUESTS = 40;
 const RATE_MAX_CLIENTS = 5000;
+const ATTEST_DAILY_MAX = 20;
+const CHALLENGE_HOURLY_MAX = 60;
 
 const INVISIBLE_RANGES: ReadonlyArray<readonly [number, number]> = [
   [0x00, 0x08],
@@ -155,23 +169,31 @@ export function enforceRateLimit(key: string, now = Date.now()): void {
   }
 }
 
-export async function readJsonBody(request: Request): Promise<unknown> {
+export async function readBody(
+  request: Request,
+  options: { json?: boolean; maxBytes?: number } = {},
+): Promise<Uint8Array> {
+  const json = options.json ?? true;
+  const maxBytes = options.maxBytes ?? MAX_BODY_BYTES;
   const contentType = request.headers.get('content-type') ?? '';
-  if (!contentType.toLowerCase().startsWith('application/json')) {
+  if (json && !contentType.toLowerCase().startsWith('application/json')) {
     throw new CaseIntelligenceError(415, 'unsupported_media_type');
   }
-  if (Number(request.headers.get('content-length') ?? '0') > MAX_BODY_BYTES) {
+  if (Number(request.headers.get('content-length') ?? '0') > maxBytes) {
     throw new CaseIntelligenceError(413, 'payload_too_large');
   }
   const reader = request.body?.getReader();
-  if (!reader) throw new CaseIntelligenceError(400, 'invalid_json');
+  if (!reader) {
+    if (json) throw new CaseIntelligenceError(400, 'invalid_json');
+    return new Uint8Array(0);
+  }
   const chunks: Uint8Array[] = [];
   let received = 0;
   for (;;) {
     const { done, value } = await reader.read();
     if (done) break;
     received += value.byteLength;
-    if (received > MAX_BODY_BYTES) {
+    if (received > maxBytes) {
       await reader.cancel();
       throw new CaseIntelligenceError(413, 'payload_too_large');
     }
@@ -183,11 +205,27 @@ export async function readJsonBody(request: Request): Promise<unknown> {
     bytes.set(chunk, offset);
     offset += chunk.byteLength;
   }
+  return bytes;
+}
+
+export function parseJsonBody(bytes: Uint8Array): unknown {
   try {
     return JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes));
   } catch {
     throw new CaseIntelligenceError(400, 'invalid_json');
   }
+}
+
+function parseJsonObject(bytes: Uint8Array): Record<string, unknown> {
+  const body = parseJsonBody(bytes);
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
+    throw new CaseIntelligenceError(400, 'invalid_json');
+  }
+  return body as Record<string, unknown>;
+}
+
+export async function readJsonBody(request: Request, maxBytes = MAX_BODY_BYTES): Promise<unknown> {
+  return parseJsonBody(await readBody(request, { maxBytes }));
 }
 
 export function errorResponse(error: unknown): Response {
@@ -212,11 +250,16 @@ export function okResponse(body: unknown): Response {
 }
 
 function attestFailure(error: unknown): CaseIntelligenceError {
+  if (error instanceof CaseIntelligenceError) return error;
+  if (error instanceof MeterStoreError) return new CaseIntelligenceError(503, 'attest_unavailable');
   if (error instanceof AttestError && error.message === 'attest_not_configured') {
     return new CaseIntelligenceError(503, 'attest_not_configured');
   }
   if (error instanceof AttestError && error.message === 'device_unverified') {
     return new CaseIntelligenceError(401, 'device_unverified');
+  }
+  if (error instanceof AttestError && error.message === 'challenge_reused') {
+    return new CaseIntelligenceError(401, 'invalid_challenge');
   }
   if (error instanceof AttestError) return new CaseIntelligenceError(400, error.message);
   return new CaseIntelligenceError(400, 'invalid_attestation');
@@ -230,16 +273,24 @@ export function requireDevice(request: Request): string {
   }
 }
 
-export function attestChallenge(request: Request): Response {
+function attestStore(): MeterStore {
+  const { store } = meterStores();
+  if (!store) throw new CaseIntelligenceError(503, 'attest_unavailable');
+  return store;
+}
+
+export async function attestChallenge(request: Request): Promise<Response> {
   try {
-    enforceRateLimit(clientKey(request));
+    const client = clientKey(request);
+    enforceRateLimit(client);
+    await enforceDurableLimit('attest-challenge', client, [{ max: CHALLENGE_HOURLY_MAX, seconds: 3600 }]);
     return okResponse({ challenge: issueChallenge(attestSecret()) });
   } catch (error) {
-    return errorResponse(error instanceof CaseIntelligenceError ? error : attestFailure(error));
+    return errorResponse(error instanceof MeterError ? error : attestFailure(error));
   }
 }
 
-export function attestDevice(body: Record<string, unknown>) {
+export async function attestDevice(body: Record<string, unknown>, store: MeterStore) {
   const keyId = typeof body.key_id === 'string' ? body.key_id.slice(0, 100) : '';
   const attestation = typeof body.attestation === 'string' ? body.attestation : '';
   const challenge = typeof body.challenge === 'string' ? body.challenge.slice(0, 200) : '';
@@ -247,14 +298,17 @@ export function attestDevice(body: Record<string, unknown>) {
   try {
     const secret = attestSecret();
     verifyChallenge(challenge, secret);
-    const { deviceId } = verifyAttestation(
+    await consumeChallenge(store, challenge);
+    const { deviceId, publicKey } = verifyAttestation(
       { keyId, attestation, challenge },
       {
         appId: process.env.APP_ATTEST_APP_ID?.trim() || undefined,
         allowDevelopment: process.env.APP_ATTEST_ALLOW_DEVELOPMENT === '1',
       },
     );
-    const { token, expiresAt } = issueDeviceToken(deviceId, secret);
+    const now = Date.now();
+    await saveAttestedKey(store, deviceId, publicKey, now);
+    const { token, expiresAt } = issueDeviceToken(deviceId, secret, now);
     return { token, expires_at: new Date(expiresAt).toISOString() };
   } catch (error) {
     throw attestFailure(error);
@@ -263,18 +317,88 @@ export function attestDevice(body: Record<string, unknown>) {
 
 export async function handleAttestPost(
   request: Request,
-  handle: (body: Record<string, unknown>) => unknown,
+  handle: (body: Record<string, unknown>, store: MeterStore) => unknown,
 ): Promise<Response> {
   try {
-    enforceRateLimit(clientKey(request));
-    const body = await readJsonBody(request);
-    if (!body || typeof body !== 'object' || Array.isArray(body)) {
-      throw new CaseIntelligenceError(400, 'invalid_json');
+    const client = clientKey(request);
+    enforceRateLimit(client);
+    const store = attestStore();
+    try {
+      await enforceDurableLimit('attest', client, [{ max: ATTEST_DAILY_MAX, seconds: 86400 }], { store });
+    } catch (error) {
+      throw error instanceof MeterError ? error : attestFailure(error);
     }
-    return okResponse(await handle(body as Record<string, unknown>));
+    const body = parseJsonObject(await readBody(request));
+    return okResponse(await handle(body, store));
   } catch (error) {
     return errorResponse(error);
   }
+}
+
+export type AssertionMode = 'off' | 'optional' | 'required';
+
+export function assertionMode(env: Record<string, string | undefined> = process.env): AssertionMode {
+  const value = env.APP_ATTEST_ASSERTIONS?.trim().toLowerCase();
+  return value === 'off' || value === 'required' ? value : 'optional';
+}
+
+export async function verifyRequestAssertion(request: Request, deviceId: string, body: Uint8Array): Promise<void> {
+  const mode = assertionMode();
+  if (mode === 'off') return;
+  const required = mode === 'required';
+  const assertion = request.headers.get(ASSERTION_HEADER)?.trim() ?? '';
+  const time = request.headers.get(ASSERTION_TIME_HEADER)?.trim() ?? '';
+  if (!assertion && !time) {
+    if (required) throw new CaseIntelligenceError(401, 'assertion_required');
+    return;
+  }
+  const { store, now } = meterStores();
+  if (!assertion || assertion.length > 4096 || !/^\d{1,15}$/.test(time) || Math.abs(now - Number(time)) > ASSERTION_MAX_SKEW_MS) {
+    throw new CaseIntelligenceError(401, 'assertion_invalid');
+  }
+  const unavailable = () => {
+    if (required) throw new CaseIntelligenceError(503, 'attest_unavailable');
+    console.error('assertion_unchecked');
+  };
+  if (!store) return unavailable();
+  let record;
+  try {
+    record = await readAttestedKey(store, deviceId);
+  } catch (error) {
+    if (error instanceof MeterStoreError) return unavailable();
+    throw error;
+  }
+  if (!record) {
+    if (required) throw new CaseIntelligenceError(401, 'assertion_required');
+    return;
+  }
+  let counter: number;
+  try {
+    counter = verifyAssertion(
+      {
+        assertion,
+        clientData: assertionClientData(request.method, new URL(request.url).pathname, body, time),
+        publicKey: record.publicKey,
+      },
+      { appId: process.env.APP_ATTEST_APP_ID?.trim() || undefined },
+    );
+  } catch {
+    throw new CaseIntelligenceError(401, 'assertion_invalid');
+  }
+  let accepted: boolean;
+  try {
+    accepted = await claimAssertionCounter(store, deviceId, counter);
+  } catch (error) {
+    if (error instanceof MeterStoreError) return unavailable();
+    throw error;
+  }
+  if (!accepted) throw new CaseIntelligenceError(401, 'assertion_invalid');
+}
+
+async function verifiedBody(request: Request, deviceId: string): Promise<Record<string, unknown>> {
+  const bytes = await readBody(request);
+  await verifyRequestAssertion(request, deviceId, bytes);
+  return parseJsonObject(bytes);
 }
 
 async function meteredSession(
@@ -299,11 +423,7 @@ export async function handlePost(
   try {
     const deviceId = requireDevice(request);
     enforceRateLimit(clientKey(request));
-    const body = await readJsonBody(request);
-    if (!body || typeof body !== 'object' || Array.isArray(body)) {
-      throw new CaseIntelligenceError(400, 'invalid_json');
-    }
-    const input = body as Record<string, unknown>;
+    const input = await verifiedBody(request, deviceId);
     if (!spec) return okResponse(await handle(input));
     const active = await meteredSession(request, deviceId, input, spec);
     session = active;
@@ -1291,11 +1411,7 @@ export async function handleStream(
   try {
     const deviceId = requireDevice(request);
     enforceRateLimit(clientKey(request));
-    const body = await readJsonBody(request);
-    if (!body || typeof body !== 'object' || Array.isArray(body)) {
-      throw new CaseIntelligenceError(400, 'invalid_json');
-    }
-    const input = body as Record<string, unknown>;
+    const input = await verifiedBody(request, deviceId);
     if (!spec) return await handle(input);
     const active = await meteredSession(request, deviceId, input, spec);
     session = active;
@@ -1310,6 +1426,7 @@ export async function handleUsage(request: Request): Promise<Response> {
   try {
     const deviceId = requireDevice(request);
     enforceRateLimit(clientKey(request));
+    await verifyRequestAssertion(request, deviceId, await readBody(request, { json: false }));
     return okResponse({ usage: await readUsage(await meterIdentity(request, deviceId)) });
   } catch (error) {
     return errorResponse(error);
@@ -1320,11 +1437,7 @@ export async function handleRedeem(request: Request): Promise<Response> {
   try {
     const deviceId = requireDevice(request);
     enforceRateLimit(clientKey(request));
-    const body = await readJsonBody(request);
-    if (!body || typeof body !== 'object' || Array.isArray(body)) {
-      throw new CaseIntelligenceError(400, 'invalid_json');
-    }
-    return okResponse(await redeemCredits(request, deviceId, body as Record<string, unknown>));
+    return okResponse(await redeemCredits(request, deviceId, await verifiedBody(request, deviceId)));
   } catch (error) {
     return errorResponse(error);
   }

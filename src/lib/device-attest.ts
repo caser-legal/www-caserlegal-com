@@ -1,4 +1,5 @@
-import { X509Certificate, createHash, createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
+import { X509Certificate, createHash, createHmac, createPublicKey, randomBytes, timingSafeEqual, verify } from 'node:crypto';
+import type { MeterStore } from './meter-store';
 
 export const APPLE_APP_ATTEST_ROOT_PEM = `-----BEGIN CERTIFICATE-----
 MIICITCCAaegAwIBAgIQC/O+DvHN0uD7jG5yH2IXmDAKBggqhkjOPQQDAzBSMSYw
@@ -17,8 +18,14 @@ oyFraWVIyd/dganmrduC1bmTBGwD
 
 export const DEFAULT_APP_ID = '672RKF28YZ.com.alertsfor.caser';
 export const DEVICE_HEADER = 'x-caser-device';
+export const ASSERTION_HEADER = 'x-caser-assertion';
+export const ASSERTION_TIME_HEADER = 'x-caser-assertion-time';
+export const ASSERTION_MAX_SKEW_MS = 5 * 60_000;
 const CHALLENGE_MAX_AGE_MS = 5 * 60_000;
 const CHALLENGE_MAX_SKEW_MS = 60_000;
+const CHALLENGE_REPLAY_TTL_SECONDS = (CHALLENGE_MAX_AGE_MS + CHALLENGE_MAX_SKEW_MS) / 1000 + 60;
+const ATTESTED_KEY_TTL_SECONDS = 400 * 86400;
+export const ASSERTION_COUNTER_WINDOW = 32;
 const DEVICE_TOKEN_TTL_MS = 30 * 24 * 60 * 60_000;
 const NONCE_EXTENSION_OID = Buffer.from([0x2a, 0x86, 0x48, 0x86, 0xf7, 0x63, 0x64, 0x08, 0x02]);
 const PRODUCTION_AAGUID = Buffer.concat([Buffer.from('appattest'), Buffer.alloc(7)]);
@@ -64,6 +71,87 @@ export function verifyChallenge(challenge: string, secret: string, now = Date.no
   if (now - issued > CHALLENGE_MAX_AGE_MS || issued - now > CHALLENGE_MAX_SKEW_MS) {
     throw new AttestError('expired_challenge');
   }
+}
+
+const attestKeys = {
+  challenge: (challenge: string) => `attest:v1:challenge:${sha256(Buffer.from(challenge, 'utf8')).toString('hex')}`,
+  device: (deviceId: string) => `attest:v1:key:${deviceId}`,
+  counter: (deviceId: string) => `attest:v1:counter:${deviceId}`,
+};
+
+export async function consumeChallenge(store: MeterStore, challenge: string): Promise<void> {
+  if (!(await store.setIfAbsent(attestKeys.challenge(challenge), '1', CHALLENGE_REPLAY_TTL_SECONDS))) {
+    throw new AttestError('challenge_reused');
+  }
+}
+
+export type AttestedKey = { publicKey: string; counter: number; attestedAt: number };
+
+export function publicKeySpki(point: Buffer): string {
+  if (point.length !== 65 || point[0] !== 0x04) throw new AttestError('invalid_certificate');
+  const key = createPublicKey({
+    key: { kty: 'EC', crv: 'P-256', x: point.subarray(1, 33).toString('base64url'), y: point.subarray(33).toString('base64url') },
+    format: 'jwk',
+  });
+  return key.export({ type: 'spki', format: 'der' }).toString('base64');
+}
+
+export async function saveAttestedKey(store: MeterStore, deviceId: string, point: Buffer, now = Date.now()): Promise<void> {
+  const record: AttestedKey = { publicKey: publicKeySpki(point), counter: 0, attestedAt: now };
+  await store.setIfAbsent(attestKeys.device(deviceId), JSON.stringify(record), ATTESTED_KEY_TTL_SECONDS);
+}
+
+export async function readAttestedKey(store: MeterStore, deviceId: string): Promise<AttestedKey | null> {
+  const [raw, counter] = await store.getMany([attestKeys.device(deviceId), attestKeys.counter(deviceId)]);
+  if (raw === null) return null;
+  let record: Partial<AttestedKey>;
+  try {
+    record = JSON.parse(raw) as Partial<AttestedKey>;
+  } catch {
+    return null;
+  }
+  if (typeof record.publicKey !== 'string' || !record.publicKey) return null;
+  const stored = Number(counter ?? record.counter ?? 0);
+  return {
+    publicKey: record.publicKey,
+    counter: Number.isFinite(stored) ? stored : 0,
+    attestedAt: Number(record.attestedAt ?? 0),
+  };
+}
+
+export async function claimAssertionCounter(store: MeterStore, deviceId: string, counter: number): Promise<boolean> {
+  if (!Number.isInteger(counter) || counter < 1) return false;
+  return store.useCounter(attestKeys.counter(deviceId), counter, ASSERTION_COUNTER_WINDOW, ATTESTED_KEY_TTL_SECONDS);
+}
+
+export function assertionClientData(method: string, path: string, body: Uint8Array, time: string): Buffer {
+  const bodyHash = createHash('sha256').update(body).digest('hex');
+  return Buffer.from(`${method.toUpperCase()}\n${path}\n${bodyHash}\n${time}`, 'utf8');
+}
+
+export function verifyAssertion(
+  input: { assertion: string; clientData: Buffer; publicKey: string },
+  options: { appId?: string } = {},
+): number {
+  const decoded = decodeCBOR(Buffer.from(input.assertion, 'base64'));
+  if (!(decoded instanceof Map)) throw new AttestError('assertion_invalid');
+  const signature = decoded.get('signature');
+  const authenticatorData = decoded.get('authenticatorData');
+  if (!Buffer.isBuffer(signature) || !Buffer.isBuffer(authenticatorData) || authenticatorData.length < 37) {
+    throw new AttestError('assertion_invalid');
+  }
+  const appId = Buffer.from(options.appId ?? DEFAULT_APP_ID, 'utf8');
+  if (!sameBytes(authenticatorData.subarray(0, 32), sha256(appId))) throw new AttestError('assertion_invalid');
+  const nonce = sha256(authenticatorData, sha256(input.clientData));
+  let valid: boolean;
+  try {
+    const key = createPublicKey({ key: Buffer.from(input.publicKey, 'base64'), format: 'der', type: 'spki' });
+    valid = verify('sha256', nonce, key, signature);
+  } catch {
+    valid = false;
+  }
+  if (!valid) throw new AttestError('assertion_invalid');
+  return authenticatorData.readUInt32BE(33);
 }
 
 export function decodeCBOR(bytes: Buffer): unknown {
