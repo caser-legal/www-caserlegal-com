@@ -421,9 +421,15 @@ test('the monthly budget pauses Muse calls with atticus_paused but still serves 
   assert.deepEqual(usage.briefings, { used: 2, limit: 3 });
 });
 
-test('durable abuse limits cap every device at 20 Muse requests per 10 minutes and 150 per day', async () => {
+test('durable abuse limits cap every device at 40 Muse requests per 10 minutes and 300 per day', async (t) => {
+  const previous = process.env.PRO_QUESTIONS_PER_MONTH;
+  process.env.PRO_QUESTIONS_PER_MONTH = '500';
+  t.after(() => {
+    if (previous === undefined) delete process.env.PRO_QUESTIONS_PER_MONTH;
+    else process.env.PRO_QUESTIONS_PER_MONTH = previous;
+  });
   const subscription = { 'x-caser-subscription': fakeJws({ expiresDate: now + 86400_000 }) };
-  for (let n = 0; n < 20; n += 1) assert.equal((await question(subscription)).status, 200);
+  for (let n = 0; n < 40; n += 1) assert.equal((await question(subscription)).status, 200);
   const limited = await question(subscription);
   assert.equal(limited.status, 429);
   assert.deepEqual(await limited.json(), { error: 'rate_limited' });
@@ -432,7 +438,7 @@ test('durable abuse limits cap every device at 20 Muse requests per 10 minutes a
   assert.equal((await question({}, DEVICE_B)).status, 200);
   now += 600_000;
   assert.equal((await question(subscription)).status, 200);
-  await store.incr(`atticus:v1:abuse:${DEVICE_A}:d:2026-10-28`, 200, 86400);
+  await store.incr(`atticus:v1:abuse:${DEVICE_A}:d:2026-10-28`, 400, 86400);
   const daily = await question(subscription);
   assert.equal(daily.status, 429);
   assert.ok(Number(daily.headers.get('retry-after')) > 600);

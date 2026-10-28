@@ -63,7 +63,7 @@ Every Muse call's measured cost (`museUsage`) is recorded in a durable store, an
 - **Credits:** `X-CASER-Account` is the app's `appAccountToken` (UUID). `POST /v1/credits/redeem` with `{ "transaction": "<JWS>" }` verifies a consumable, checks its `appAccountToken` against the header and grants its uses once per `transactionId`. Credits are spent only after the monthly allowance (1 credit = 1 briefing or 1 question).
 - **Charging:** allowance is checked before Muse is called and charged only after a successful response.
 - **Budget:** when this month's measured spend reaches `MUSE_MONTHLY_BUDGET_USD`, calls that would reach Muse return `503 {"error":"atticus_paused"}`; cached case results are still served. The app then answers with Apple's on-device or Private Cloud Compute model.
-- **Abuse limits:** at most 20 Muse-bound requests per device per 10 minutes and 150 per UTC day (`429 {"error":"rate_limited"}` with `Retry-After`), on top of the per-IP limit.
+- **Abuse limits:** at most 40 Muse-bound requests per device per 10 minutes and 300 per UTC day (`429 {"error":"rate_limited"}` with `Retry-After`), on top of the per-IP limit.
 - **No store:** if the store is not configured in production, metered requests return `atticus_paused`, redeem returns `503 {"error":"credits_unavailable"}`, unmetered requests run on per-instance in-memory budget and abuse limits, and `meter_store_missing` is logged once.
 
 | Endpoint | Returns |
