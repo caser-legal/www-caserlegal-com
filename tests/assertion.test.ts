@@ -74,7 +74,7 @@ function assertion(options: AssertionOptions): { assertion: string; time: string
 function request(
   body: string,
   signed: { assertion: string; time: string } | null,
-  options: { path?: string; device?: string } = {},
+  options: { path?: string; device?: string; edition?: boolean } = {},
 ): Request {
   ip += 1;
   const headers: Record<string, string> = {
@@ -82,6 +82,7 @@ function request(
     'x-real-ip': `192.0.2.${ip % 250}`,
     'x-caser-device': issueDeviceToken(options.device ?? DEVICE, ATTEST_SECRET).token,
   };
+  if (options.edition) headers['x-caser-edition'] = 'appstore';
   if (signed) {
     headers['x-caser-assertion'] = signed.assertion;
     headers['x-caser-assertion-time'] = signed.time;
@@ -174,6 +175,16 @@ test('optional mode allows requests without an assertion or without a stored key
   process.env.APP_ATTEST_ASSERTIONS = 'nonsense';
   assert.equal((await send(request(BODY, null))).status, 200);
   await rejected(request(BODY, assertion({ counter: 1, body: BODY, key: stranger.privateKey })), 'assertion_invalid');
+});
+
+test('by default App Store requests must be signed, judge-build requests only until UNMETERED_UNTIL', async () => {
+  await rejected(request(BODY, null, { edition: true }), 'assertion_required');
+  await rejected(request(BODY, assertion({ counter: 1, body: BODY }), { edition: true, device: OTHER_DEVICE }), 'assertion_required');
+  assert.equal((await send(request(BODY, assertion({ counter: 1, body: BODY }), { edition: true }))).status, 200);
+  assert.equal((await send(request(BODY, null))).status, 200);
+  now = Date.parse('2026-11-10T08:00:00Z');
+  await rejected(request(BODY, null), 'assertion_required');
+  assert.equal((await send(request(BODY, assertion({ counter: 2, body: BODY })))).status, 200);
 });
 
 test('required mode refuses requests without an assertion or without a stored key', async () => {

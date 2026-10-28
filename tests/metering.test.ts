@@ -144,6 +144,7 @@ function setup(overrides: Record<string, unknown> = {}) {
 }
 
 test.beforeEach(() => {
+  process.env.APP_ATTEST_ASSERTIONS = 'off';
   process.env.MODEL_API_KEY = 'LLM_test_key';
   process.env.ATTEST_SECRET = ATTEST_SECRET;
   delete process.env.MUSE_MODEL;

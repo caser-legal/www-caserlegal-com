@@ -21,8 +21,10 @@ import {
 import { blobArchiveStore } from './feed-archive';
 import { MeterStoreError, type MeterStore } from './meter-store';
 import {
+  EDITION_HEADER,
   MeterError,
   enforceDurableLimit,
+  meterConfig,
   meterIdentity,
   meterStores,
   meterScope,
@@ -335,17 +337,23 @@ export async function handleAttestPost(
   }
 }
 
-export type AssertionMode = 'off' | 'optional' | 'required';
+export type AssertionMode = 'off' | 'optional' | 'required' | 'auto';
 
 export function assertionMode(env: Record<string, string | undefined> = process.env): AssertionMode {
   const value = env.APP_ATTEST_ASSERTIONS?.trim().toLowerCase();
-  return value === 'off' || value === 'required' ? value : 'optional';
+  return value === 'off' || value === 'required' || value === 'optional' ? value : 'auto';
+}
+
+export function assertionRequired(request: Request, mode: AssertionMode, now: number): boolean {
+  if (mode === 'required') return true;
+  if (mode !== 'auto') return false;
+  return request.headers.has(EDITION_HEADER) || now >= meterConfig().unmeteredUntil;
 }
 
 export async function verifyRequestAssertion(request: Request, deviceId: string, body: Uint8Array): Promise<void> {
   const mode = assertionMode();
   if (mode === 'off') return;
-  const required = mode === 'required';
+  const required = assertionRequired(request, mode, meterStores().now);
   const assertion = request.headers.get(ASSERTION_HEADER)?.trim() ?? '';
   const time = request.headers.get(ASSERTION_TIME_HEADER)?.trim() ?? '';
   if (!assertion && !time) {
