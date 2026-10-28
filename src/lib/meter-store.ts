@@ -3,7 +3,9 @@ export interface MeterStore {
   incrByFloat(key: string, by: number, ttlSeconds?: number): Promise<number>;
   get(key: string): Promise<string | null>;
   getMany(keys: string[]): Promise<(string | null)[]>;
+  set(key: string, value: string, ttlSeconds?: number): Promise<void>;
   setIfAbsent(key: string, value: string, ttlSeconds?: number): Promise<boolean>;
+  setIfGreater(key: string, value: number, ttlSeconds?: number): Promise<boolean>;
   del(key: string): Promise<void>;
 }
 
@@ -41,9 +43,18 @@ export function memoryMeterStore(clock: () => number = Date.now): MeterStore & {
     async getMany(keys) {
       return keys.map((key) => live(key)?.value ?? null);
     },
+    async set(key, value, ttlSeconds) {
+      items.set(key, { value, expiresAt: expiry(ttlSeconds) });
+    },
     async setIfAbsent(key, value, ttlSeconds) {
       if (live(key)) return false;
       items.set(key, { value, expiresAt: expiry(ttlSeconds) });
+      return true;
+    },
+    async setIfGreater(key, value, ttlSeconds) {
+      const entry = live(key);
+      if (entry && !(value > Number(entry.value))) return false;
+      items.set(key, { value: String(value), expiresAt: expiry(ttlSeconds) });
       return true;
     },
     async del(key) {
@@ -62,6 +73,11 @@ return v`;
 const INCRBYFLOAT_WITH_EXPIRY = `local v = redis.call('INCRBYFLOAT', KEYS[1], ARGV[1])
 if tonumber(ARGV[2]) > 0 and redis.call('TTL', KEYS[1]) < 0 then redis.call('EXPIRE', KEYS[1], ARGV[2]) end
 return v`;
+
+const SET_IF_GREATER = `local current = redis.call('GET', KEYS[1])
+if current and tonumber(ARGV[1]) <= tonumber(current) then return 0 end
+if tonumber(ARGV[2]) > 0 then redis.call('SET', KEYS[1], ARGV[1], 'EX', ARGV[2]) else redis.call('SET', KEYS[1], ARGV[1]) end
+return 1`;
 
 const REDIS_TIMEOUT_MS = 4000;
 
@@ -105,10 +121,18 @@ export function upstashMeterStore(url: string, token: string, fetcher: typeof fe
       const result = await command(['MGET', ...keys]);
       return Array.isArray(result) ? result.map((value) => (value === null ? null : String(value))) : keys.map(() => null);
     },
+    async set(key, value, ttlSeconds) {
+      const args: (string | number)[] = ['SET', key, value];
+      if (ttl(ttlSeconds)) args.push('EX', ttl(ttlSeconds));
+      await command(args);
+    },
     async setIfAbsent(key, value, ttlSeconds) {
       const args: (string | number)[] = ['SET', key, value, 'NX'];
       if (ttl(ttlSeconds)) args.push('EX', ttl(ttlSeconds));
       return (await command(args)) === 'OK';
+    },
+    async setIfGreater(key, value, ttlSeconds) {
+      return Number(await command(['EVAL', SET_IF_GREATER, 1, key, value, ttl(ttlSeconds)])) === 1;
     },
     async del(key) {
       await command(['DEL', key]);
@@ -122,4 +146,10 @@ export function meterStoreFromEnv(env: Record<string, string | undefined> = proc
   if (url.startsWith('https://') && token) return upstashMeterStore(url, token, fetcher);
   if (env.VERCEL || env.NODE_ENV === 'production') return null;
   return memoryMeterStore();
+}
+
+export function readOnlyMeterStoreFromEnv(env: Record<string, string | undefined> = process.env, fetcher: typeof fetch = fetch): MeterStore | null {
+  const url = (env.UPSTASH_REDIS_REST_URL || env.KV_REST_API_URL || '').trim();
+  const token = (env.UPSTASH_REDIS_REST_TOKEN || env.KV_REST_API_TOKEN || env.KV_REST_API_READ_ONLY_TOKEN || '').trim();
+  return url.startsWith('https://') && token ? upstashMeterStore(url, token, fetcher) : null;
 }

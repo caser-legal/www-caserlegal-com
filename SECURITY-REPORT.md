@@ -1,4 +1,37 @@
-# Dependency and build verification — September 4, 2026
+# Pre-launch security fixes and dependency status — October 28, 2026
+
+## Server fixes
+
+- Requests without an edition header (the judge build) now have a per-device monthly allowance instead of unlimited use.
+- App Attest challenges are single-use, attestation is limited per IP in the durable store, and attestation fails closed when the store is unavailable.
+- Attested public keys are stored, and requests carry per-request App Attest assertions (signature, app id, time and a strictly increasing counter). Rollout is controlled by `APP_ATTEST_ASSERTIONS`.
+- `/v1/docket-search` requires the connector key `DOCKET_SEARCH_KEY`, is limited per IP in the durable store and caches identical searches for 10 minutes.
+- App Store Server Notifications V2 (`/v1/appstore/notifications`) record refunds, revocations and expiries; Pro checks and credit redemption honor them, and refunded credit packs are taken back.
+- Sandbox purchases are kept apart from paid usage.
+- Tooling can read the store with the read-only token; the site never writes with it.
+
+`npm test` (125 tests), `npm run lint`, `npx tsc --noEmit -p .` and `npm run build` passed.
+
+## Dependency audit
+
+`npm audit --omit=dev` reports **38 advisories in production dependencies: 25 high, 13 moderate, 0 critical.** The September 4 statement of zero advisories below is no longer true.
+
+They come through four direct dependencies:
+
+| Direct dependency | Vulnerable packages underneath |
+|---|---|
+| `@privy-io/react-auth` (web sign-in on `/search`) | `ws`, `zod` (older nested copies), `uuid`, `decode-uri-component`, wallet libraries |
+| `firebase` (browser Atticus on `/search`) | `@grpc/grpc-js` |
+| `@vercel/blob` (feed archive) | `@vercel/oidc` → `@vercel/cli-config` → `zod` |
+| `zod` | flagged only because of the nested copies above; the top-level `zod` is 4.6.7, which is not affected |
+
+npm offers no compatible fix: its suggested fixes are semver-major downgrades (`firebase` 9.14.0, `@privy-io/react-auth` 3.6.1, `@vercel/blob` 2.4.0). They are not applied here. Dependabot (`.github/dependabot.yml`) now opens weekly npm and monthly GitHub Actions updates so fixed upstream releases are picked up. The `npm audit --omit=dev --audit-level=moderate` step in `.github/workflows/validate.yml` will fail until these advisories are resolved.
+
+This is a dependency snapshot, not an independent security certification.
+
+---
+
+# Dependency and build verification — September 4, 2026 (superseded)
 
 The marketing site is a static Next.js 16 export. After compatible dependency updates,
 `npm audit` reported zero known advisories. This is a dependency snapshot, not an

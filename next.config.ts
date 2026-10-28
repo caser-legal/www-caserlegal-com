@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
     '/v1/case-question-stream': ['./data/apple-roots/*'],
     '/v1/usage': ['./data/apple-roots/*'],
     '/v1/credits/redeem': ['./data/apple-roots/*'],
+    '/v1/appstore/notifications': ['./data/apple-roots/*'],
   },
   poweredByHeader: false,
   reactStrictMode: true,

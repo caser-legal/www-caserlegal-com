@@ -1,6 +1,7 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
+import { createHash } from 'node:crypto';
 import { MeterStoreError, memoryMeterStore, meterStoreFromEnv, type MeterStore } from './meter-store';
-import { StoreKitError, appleTransactionVerifier, proEntitlement, type TransactionVerifier } from './storekit';
+import { StoreKitError, appleTransactionVerifier, proEntitlement, revocationKeys, type TransactionVerifier } from './storekit';
 
 export const EDITION_HEADER = 'x-caser-edition';
 export const SUBSCRIPTION_HEADER = 'x-caser-subscription';
@@ -14,6 +15,7 @@ const ABUSE_DAY_MAX = 300;
 const DEFAULT_UNMETERED_UNTIL = '2026-11-10T08:00:00Z';
 const DEFAULT_BUDGET_USD = 10;
 const DEFAULT_HARD_CAP_USD = 50;
+const SANDBOX_MAX_USES = 10;
 const DEFAULT_PACKS: Record<string, number> = {
   'com.alertsfor.caser.credits.10000': 50,
   'com.alertsfor.caser.credits.50000': 200,
@@ -44,6 +46,7 @@ export type MeterConfig = {
   unmeteredUntil: number;
   free: { briefings: number; questions: number };
   pro: { briefings: number; questions: number };
+  judge: { briefings: number; questions: number };
   packs: Record<string, number>;
 };
 
@@ -83,6 +86,10 @@ export function meterConfig(env: Record<string, string | undefined> = process.en
       briefings: whole(env.PRO_BRIEFINGS_PER_MONTH, 100),
       questions: whole(env.PRO_QUESTIONS_PER_MONTH, 100),
     },
+    judge: {
+      briefings: whole(env.JUDGE_BRIEFINGS_PER_MONTH, 50),
+      questions: whole(env.JUDGE_QUESTIONS_PER_MONTH, 50),
+    },
     packs: parsePacks(env.CREDIT_PACKS),
   };
 }
@@ -121,6 +128,11 @@ function deps(): MeterDeps {
   };
 }
 
+export function meterStores(): { store: MeterStore | null; fallback: MeterStore; now: number } {
+  const { store, fallback, clock } = deps();
+  return { store, fallback, now: clock() };
+}
+
 export function periodKey(now: number): string {
   return new Date(now).toISOString().slice(0, 7);
 }
@@ -145,7 +157,46 @@ const keys = {
   ledger: (period: string, name: string, field: string) => `${KEY_PREFIX}:ledger:${period}:${name}:${field}`,
   abuseWindow: (deviceId: string, bucket: number) => `${KEY_PREFIX}:abuse:${deviceId}:w:${bucket}`,
   abuseDay: (deviceId: string, day: string) => `${KEY_PREFIX}:abuse:${deviceId}:d:${day}`,
+  limit: (name: string, subject: string, seconds: number, bucket: number) => `${KEY_PREFIX}:limit:${name}:${subject}:${seconds}:${bucket}`,
+  refundDebit: (transactionId: string) => `${KEY_PREFIX}:refund-debit:${transactionId}`,
+  notification: (uuid: string) => `${KEY_PREFIX}:asn:${uuid}`,
 };
+
+export { keys as meterKeys };
+
+export type LimitWindow = { max: number; seconds: number };
+
+async function countWindows(store: MeterStore, name: string, subject: string, windows: LimitWindow[], now: number): Promise<void> {
+  const hashed = createHash('sha256').update(subject).digest('hex').slice(0, 32);
+  const buckets = windows.map((window) => Math.floor(now / (window.seconds * 1000)));
+  const counts = await Promise.all(
+    windows.map((window, index) => store.incr(keys.limit(name, hashed, window.seconds, buckets[index]), 1, window.seconds)),
+  );
+  let retryAfter = 0;
+  windows.forEach((window, index) => {
+    if (counts[index] <= window.max) return;
+    const end = (buckets[index] + 1) * window.seconds * 1000;
+    retryAfter = Math.max(retryAfter, Math.ceil((end - now) / 1000));
+  });
+  if (retryAfter) throw new MeterError(429, 'rate_limited', Math.max(1, retryAfter));
+}
+
+export async function enforceDurableLimit(
+  name: string,
+  subject: string,
+  windows: LimitWindow[],
+  options: { store?: MeterStore } = {},
+): Promise<void> {
+  const { store, fallback, now } = meterStores();
+  if (options.store) return countWindows(options.store, name, subject, windows, now);
+  try {
+    return await countWindows(store ?? fallback, name, subject, windows, now);
+  } catch (error) {
+    if (!(error instanceof MeterStoreError)) throw error;
+    console.error('meter_store_error', error.message);
+    return countWindows(fallback, name, subject, windows, now);
+  }
+}
 
 export type Edition = 'appstore' | 'unmetered';
 export type Plan = 'free' | 'pro';
@@ -170,8 +221,8 @@ export type Usage = {
   plan: Plan;
   edition: Edition;
   period_end: string;
-  briefings: { used: number; limit: number | null };
-  questions: { used: number; limit: number | null };
+  briefings: { used: number; limit: number };
+  questions: { used: number; limit: number };
   credits: number;
   packs: Record<string, number>;
   plans: { free: { briefings: number; questions: number }; pro: { briefings: number; questions: number } };
@@ -188,10 +239,15 @@ export async function meterIdentity(request: Request, deviceId: string): Promise
   const now = clock();
   const config = meterConfig();
   const edition: Edition = request.headers.has(EDITION_HEADER) || now >= config.unmeteredUntil ? 'appstore' : 'unmetered';
-  const pro = await proEntitlement(request.headers.get(SUBSCRIPTION_HEADER), verifyTransaction, now);
+  const pro = await proEntitlement(request.headers.get(SUBSCRIPTION_HEADER), verifyTransaction, now, store);
   const plan: Plan = pro ? 'pro' : 'free';
+  const sandbox = pro?.environment === 'Sandbox';
   const subject =
-    edition === 'unmetered' ? `judge:${deviceId}` : pro ? `pro:${pro.originalTransactionId}` : `device:${deviceId}`;
+    edition === 'unmetered'
+      ? `judge:${deviceId}`
+      : pro
+        ? `${sandbox ? 'pro-sandbox' : 'pro'}:${pro.originalTransactionId}`
+        : `device:${deviceId}`;
   return {
     deviceId,
     edition,
@@ -201,11 +257,11 @@ export async function meterIdentity(request: Request, deviceId: string): Promise
     now,
     period: periodKey(now),
     periodEnd: periodEnd(now),
-    limits: pro ? config.pro : config.free,
+    limits: edition === 'unmetered' ? config.judge : pro ? config.pro : config.free,
     config,
     store: store ?? fallback,
     degraded: !store,
-    paid: Boolean(pro),
+    paid: edition === 'appstore' && Boolean(pro) && !sandbox,
   };
 }
 
@@ -256,19 +312,12 @@ async function readState(id: MeterIdentity, briefDigest?: string) {
 }
 
 function usageFrom(id: MeterIdentity, state: { briefings: number; questions: number; spend: Spend; credits: number }): Usage {
-  const metered = id.edition === 'appstore';
   return {
     plan: id.plan,
     edition: id.edition,
     period_end: id.periodEnd,
-    briefings: {
-      used: metered ? Math.min(state.briefings, id.limits.briefings) : state.briefings,
-      limit: metered ? id.limits.briefings : null,
-    },
-    questions: {
-      used: metered ? Math.min(state.questions, id.limits.questions) : state.questions,
-      limit: metered ? id.limits.questions : null,
-    },
+    briefings: { used: Math.min(state.briefings, id.limits.briefings), limit: id.limits.briefings },
+    questions: { used: Math.min(state.questions, id.limits.questions), limit: id.limits.questions },
     credits: state.credits,
     packs: { ...id.config.packs },
     plans: { free: { ...id.config.free }, pro: { ...id.config.pro } },
@@ -319,17 +368,15 @@ export async function openMeterSession(
   const metered = id.edition === 'appstore';
   if (metered && id.degraded) throw new MeterError(503, 'atticus_paused');
   const digest = spec.kind === 'briefing' ? caseDigest : undefined;
-  if (metered) {
-    const state = await readState(id, digest);
-    if (id.degraded) throw new MeterError(503, 'atticus_paused');
-    const used = spec.kind === 'briefing' ? state.briefings : state.questions;
-    const limit = spec.kind === 'briefing' ? id.limits.briefings : id.limits.questions;
-    const free = spec.kind === 'briefing' && state.briefSeen;
-    if (!free && used >= limit && state.credits < 1) {
-      throw new MeterError(402, 'quota_exceeded', undefined, { kind: spec.kind, usage: usageFrom(id, state) });
-    }
-    if (!free && used >= limit) id.paid = true;
+  const state = await readState(id, digest);
+  if (metered && id.degraded) throw new MeterError(503, 'atticus_paused');
+  const used = spec.kind === 'briefing' ? state.briefings : state.questions;
+  const limit = spec.kind === 'briefing' ? id.limits.briefings : id.limits.questions;
+  const free = spec.kind === 'briefing' && state.briefSeen;
+  if (!free && used >= limit && state.credits < 1) {
+    throw new MeterError(402, 'quota_exceeded', undefined, { kind: spec.kind, usage: usageFrom(id, state) });
   }
+  if (!free && used >= limit) id.paid = true;
 
   const costs: number[] = [];
   let settled = false;
@@ -337,7 +384,6 @@ export async function openMeterSession(
   async function charge(kind: MeteredKind): Promise<void> {
     const useKey = keys.use(id.period, id.subject, kind);
     const used = await id.store.incr(useKey, 1, PERIOD_TTL_SECONDS);
-    if (!metered) return;
     const limit = kind === 'briefing' ? id.limits.briefings : id.limits.questions;
     if (used <= limit) return;
     await id.store.incr(useKey, -1, PERIOD_TTL_SECONDS);
@@ -423,17 +469,21 @@ export async function redeemCredits(
   } catch (error) {
     throw new MeterError(400, error instanceof StoreKitError ? error.message : 'invalid_transaction');
   }
-  const uses = id.config.packs[transaction.productId];
-  if (!uses) throw new MeterError(400, 'unknown_product');
+  const packUses = id.config.packs[transaction.productId];
+  if (!packUses) throw new MeterError(400, 'unknown_product');
   if (transaction.revocationDate !== null) throw new MeterError(400, 'transaction_revoked');
   if (transaction.appAccountToken !== account) throw new MeterError(403, 'account_mismatch');
+  const uses = transaction.environment === 'Sandbox' ? Math.min(packUses, SANDBOX_MAX_USES) : packUses;
   const marker = keys.redeemed(transaction.transactionId);
-  let fresh: boolean;
+  let revoked: boolean;
+  let fresh = false;
   try {
-    fresh = await id.store.setIfAbsent(marker, `${account}:${transaction.productId}:${uses}`);
+    revoked = (await id.store.get(revocationKeys.transaction(transaction.transactionId))) !== null;
+    if (!revoked) fresh = await id.store.setIfAbsent(marker, `${account}:${transaction.productId}:${uses}`);
   } catch {
     throw new MeterError(503, 'credits_unavailable');
   }
+  if (revoked) throw new MeterError(400, 'transaction_revoked');
   if (fresh) {
     try {
       await id.store.incr(keys.credits(account), uses);

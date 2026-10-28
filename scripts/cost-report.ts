@@ -1,13 +1,13 @@
-import { meterStoreFromEnv } from '../src/lib/meter-store';
+import { readOnlyMeterStoreFromEnv } from '../src/lib/meter-store';
 import { costReport, formatCostReport, meterConfig, periodKey, previousPeriodKey } from '../src/lib/metering';
 
 async function main() {
   try {
     process.loadEnvFile('.env.local');
   } catch {}
-  const store = meterStoreFromEnv({ ...process.env, NODE_ENV: 'production' });
+  const store = readOnlyMeterStoreFromEnv();
   if (!store) {
-    console.error('Set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN (or KV_REST_API_URL and KV_REST_API_TOKEN) to read the usage ledger.');
+    console.error('Set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN (or KV_REST_API_URL and KV_REST_API_TOKEN or KV_REST_API_READ_ONLY_TOKEN) to read the usage ledger.');
     process.exit(1);
   }
   const now = Date.now();

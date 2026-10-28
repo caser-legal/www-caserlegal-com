@@ -31,6 +31,8 @@ const METER_ENV = [
   'FREE_QUESTIONS_PER_MONTH',
   'PRO_BRIEFINGS_PER_MONTH',
   'PRO_QUESTIONS_PER_MONTH',
+  'JUDGE_BRIEFINGS_PER_MONTH',
+  'JUDGE_QUESTIONS_PER_MONTH',
   'CREDIT_PACKS',
 ];
 
@@ -125,7 +127,7 @@ async function fakeVerify(jws: string): Promise<SignedTransaction> {
     transactionId: 't-1',
     originalTransactionId: 'o-1',
     productId: 'com.alertsfor.caser.yearly',
-    environment: 'Sandbox',
+    environment: 'Production',
     expiresDate: null,
     revocationDate: null,
     appAccountToken: null,
@@ -184,7 +186,7 @@ function streamQuestion(headers: Record<string, string> = {}, device = DEVICE_A,
   );
 }
 
-test('the judge build without an edition header stays unmetered until UNMETERED_UNTIL', async () => {
+test('the judge build without an edition header uses the judge allowance until UNMETERED_UNTIL', async () => {
   for (let n = 1; n <= 5; n += 1) {
     const response = await briefing('insights', n);
     assert.equal(response.status, 200);
@@ -192,10 +194,47 @@ test('the judge build without an edition header stays unmetered until UNMETERED_
     assert.deepEqual(body.insights, INSIGHTS);
     assert.equal(body.cached, false);
     assert.equal(body.usage.edition, 'unmetered');
-    assert.equal(body.usage.briefings.limit, null);
-    assert.equal(body.usage.briefings.used, n);
+    assert.deepEqual(body.usage.briefings, { used: n, limit: 50 });
   }
   for (let n = 1; n <= 5; n += 1) assert.equal((await question()).status, 200);
+  const usage = (await (await handleUsage(post('/v1/usage', {}))).json()).usage;
+  assert.deepEqual(usage.questions, { used: 5, limit: 50 });
+});
+
+test('judge devices are capped per month like metered devices, counting each case once', async () => {
+  process.env.JUDGE_BRIEFINGS_PER_MONTH = '2';
+  process.env.JUDGE_QUESTIONS_PER_MONTH = '1';
+  const calls = { count: 0 };
+  assert.equal((await briefing('insights', 1, {}, DEVICE_A, { calls })).status, 200);
+  assert.equal((await briefing('research', 1, {}, DEVICE_A, { calls })).status, 200);
+  assert.equal((await briefing('insights', 2, {}, DEVICE_A, { calls })).status, 200);
+  const before = calls.count;
+  const blocked = await briefing('insights', 3, {}, DEVICE_A, { calls });
+  assert.equal(blocked.status, 402);
+  const body = await blocked.json();
+  assert.equal(body.error, 'quota_exceeded');
+  assert.equal(body.kind, 'briefing');
+  assert.deepEqual(body.usage.briefings, { used: 2, limit: 2 });
+  assert.equal(calls.count, before);
+  assert.equal((await briefing('research', 2, {}, DEVICE_A, { calls })).status, 200);
+  assert.equal((await briefing('insights', 3, {}, DEVICE_B, { calls })).status, 200);
+  assert.equal((await question()).status, 200);
+  const question402 = await question();
+  assert.equal(question402.status, 402);
+  assert.equal((await question402.json()).kind, 'question');
+  assert.equal((await streamQuestion()).status, 402);
+  now = Date.parse('2026-11-01T00:00:01Z');
+  assert.equal((await question()).status, 200);
+});
+
+test('judge usage stays in the free spend pool even with a subscription header', async () => {
+  process.env.MUSE_MONTHLY_BUDGET_USD = '0.005';
+  const subscription = { 'x-caser-subscription': fakeJws({ expiresDate: now + 86400_000, originalTransactionId: 'o-judge' }) };
+  const cache = caseCache();
+  assert.equal((await briefing('research', 1, subscription, DEVICE_A, { cache })).status, 200);
+  assert.equal((await briefing('research', 2, subscription, DEVICE_A, { cache })).status, 200);
+  assert.ok(Number(await store.get('atticus:v1:spend-free:2026-10')) > 0.005);
+  assert.equal((await briefing('research', 3, subscription, DEVICE_A, { cache })).status, 503);
 });
 
 test('no-edition requests are metered as free after UNMETERED_UNTIL', async () => {
@@ -390,11 +429,76 @@ test('redeem verifies a real Apple-format signed consumable', async () => {
       type: 'Consumable',
       expiresDate: undefined,
       appAccountToken: ACCOUNT,
+      environment: 'Production',
     }),
   );
   const response = await handleRedeem(post('/v1/credits/redeem', { transaction: jws }, { 'x-caser-account': ACCOUNT }));
   assert.equal(response.status, 200);
   assert.equal((await response.json()).granted, 750);
+});
+
+test('Sandbox consumables grant at most 10 uses each', async () => {
+  const redeem = (transactionId: string, environment: string) =>
+    handleRedeem(
+      post(
+        '/v1/credits/redeem',
+        { transaction: fakeJws({ transactionId, environment, productId: 'com.alertsfor.caser.credits.100000', appAccountToken: ACCOUNT }) },
+        { 'x-caser-account': ACCOUNT },
+      ),
+    );
+  const sandbox = await (await redeem('s-1', 'Sandbox')).json();
+  assert.equal(sandbox.granted, 10);
+  assert.equal(sandbox.usage.credits, 10);
+  const production = await (await redeem('p-1', 'Production')).json();
+  assert.equal(production.granted, 750);
+  assert.equal(production.usage.credits, 760);
+});
+
+test('Sandbox subscriptions get Pro limits in a separate bucket, and their spend stays in the free pool', async () => {
+  process.env.MUSE_MONTHLY_BUDGET_USD = '0.005';
+  const sandbox = { ...APPSTORE, 'x-caser-subscription': fakeJws({ expiresDate: now + 86400_000, originalTransactionId: 'o-sb', environment: 'Sandbox' }) };
+  const production = { ...APPSTORE, 'x-caser-subscription': fakeJws({ expiresDate: now + 86400_000, originalTransactionId: 'o-sb' }) };
+  const cache = caseCache();
+  const first = await (await briefing('research', 1, sandbox, DEVICE_A, { cache })).json();
+  assert.equal(first.usage.plan, 'pro');
+  assert.deepEqual(first.usage.briefings, { used: 1, limit: 100 });
+  assert.equal(await store.get('atticus:v1:use:2026-10:pro-sandbox:o-sb:briefing'), '1');
+  assert.equal(await store.get('atticus:v1:use:2026-10:pro:o-sb:briefing'), null);
+  assert.equal((await briefing('research', 2, sandbox, DEVICE_A, { cache })).status, 200);
+  assert.equal((await briefing('research', 3, sandbox, DEVICE_A, { cache })).status, 503);
+  const paid = await (await briefing('research', 4, production, DEVICE_A, { cache })).json();
+  assert.deepEqual(paid.usage.briefings, { used: 1, limit: 100 });
+});
+
+test('redeem refuses a transaction that an App Store notification revoked', async () => {
+  await store.set('atticus:v1:revoked-tx:c-refunded', String(now));
+  const response = await handleRedeem(
+    post(
+      '/v1/credits/redeem',
+      { transaction: fakeJws({ transactionId: 'c-refunded', productId: 'com.alertsfor.caser.credits.10000', appAccountToken: ACCOUNT }) },
+      { 'x-caser-account': ACCOUNT },
+    ),
+  );
+  assert.equal(response.status, 400);
+  assert.deepEqual(await response.json(), { error: 'transaction_revoked' });
+  assert.equal(await store.get(`atticus:v1:credits:${ACCOUNT}`), null);
+});
+
+test('a subscription revoked or expired by an App Store notification falls back to free', async () => {
+  const expiresDate = now + 86400_000;
+  const subscription = { ...APPSTORE, 'x-caser-subscription': fakeJws({ expiresDate, transactionId: 't-9', originalTransactionId: 'o-9' }) };
+  assert.equal((await (await briefing('insights', 1, subscription)).json()).usage.plan, 'pro');
+  await store.set('atticus:v1:revoked-otid:o-9', String(expiresDate));
+  clearEntitlementCache();
+  assert.equal((await (await briefing('insights', 2, subscription)).json()).usage.plan, 'free');
+  await store.del('atticus:v1:revoked-otid:o-9');
+  clearEntitlementCache();
+  assert.equal((await (await briefing('insights', 3, subscription)).json()).usage.plan, 'pro');
+  await store.set('atticus:v1:expired-otid:o-9', String(expiresDate));
+  clearEntitlementCache();
+  assert.equal((await (await briefing('insights', 4, subscription)).json()).usage.plan, 'free');
+  const renewed = { ...APPSTORE, 'x-caser-subscription': fakeJws({ expiresDate: expiresDate + 86400_000 * 365, transactionId: 't-10', originalTransactionId: 'o-9' }) };
+  assert.equal((await (await briefing('insights', 5, renewed)).json()).usage.plan, 'pro');
 });
 
 test('the monthly budget pauses Muse calls with atticus_paused but still serves cached briefings', async () => {
@@ -429,7 +533,7 @@ test('durable abuse limits cap every device at 40 Muse requests per 10 minutes a
     if (previous === undefined) delete process.env.PRO_QUESTIONS_PER_MONTH;
     else process.env.PRO_QUESTIONS_PER_MONTH = previous;
   });
-  const subscription = { 'x-caser-subscription': fakeJws({ expiresDate: now + 86400_000 }) };
+  const subscription = { ...APPSTORE, 'x-caser-subscription': fakeJws({ expiresDate: now + 86400_000 }) };
   for (let n = 0; n < 40; n += 1) assert.equal((await question(subscription)).status, 200);
   const limited = await question(subscription);
   assert.equal(limited.status, 429);

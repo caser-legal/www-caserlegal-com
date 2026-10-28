@@ -8,6 +8,7 @@ import {
   clearEntitlementCache,
   proEntitlement,
 } from '../src/lib/storekit';
+import { memoryMeterStore } from '../src/lib/meter-store';
 import { signTransaction, testRoot, transactionPayload } from './fixtures/storekit';
 
 const verify = appleTransactionVerifier({ roots: [testRoot], onlineChecks: false });
@@ -78,4 +79,27 @@ test('proEntitlement caches verification briefly and never past expiry', async (
   assert.equal(calls, 1);
   assert.equal(await proEntitlement(jws, counting, now + 6 * 60_000), null);
   assert.equal(calls, 2);
+});
+
+test('proEntitlement checks App Store revocations with one cached store read', async () => {
+  const store = memoryMeterStore();
+  let reads = 0;
+  const counted = { ...store, getMany: async (keys: string[]) => ((reads += 1), store.getMany(keys)) };
+  const now = Date.now();
+  const jws = signTransaction(transactionPayload({ expiresDate: now + 86400_000 }));
+  assert.ok(await proEntitlement(jws, verify, now, counted));
+  await store.set('atticus:v1:revoked-tx:2000000123456789', '1');
+  assert.ok(await proEntitlement(jws, verify, now + 10_000, counted));
+  assert.equal(reads, 1);
+  assert.equal(await proEntitlement(jws, verify, now + 31_000, counted), null);
+  assert.equal(reads, 2);
+  const failing = { ...store, getMany: async () => Promise.reject(new Error('down')) };
+  const original = console.error;
+  console.error = () => undefined;
+  try {
+    clearEntitlementCache();
+    assert.ok(await proEntitlement(signTransaction(transactionPayload({ transactionId: '1', expiresDate: now + 86400_000 })), verify, now, failing));
+  } finally {
+    console.error = original;
+  }
 });
