@@ -1,16 +1,18 @@
 export const FREE_FEATURES = [
-  '1 lifetime case search',
-  '5 saved cases',
+  '3 case searches a month',
+  '10 saved cases',
+  '3 Atticus case briefings and 3 questions a month',
   'Federal court RSS search',
   'Direct PACER document links',
   'PACER savings tracker',
+  'Search history',
 ] as const;
 
 export const PRO_FEATURES = [
   'Unlimited searches',
   'Up to 100 keyword alerts',
   'Unlimited saved cases',
-  'Atticus AI with 100,000 credits a year; top-ups available',
+  '30 Atticus case briefings and 30 questions a month; extra Atticus uses available',
   'On-device alerts after scans',
   'PDF export (legal brief layout)',
 ] as const;
