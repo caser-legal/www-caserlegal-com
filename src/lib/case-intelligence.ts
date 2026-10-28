@@ -1,5 +1,17 @@
+import { createHash } from 'node:crypto';
+import { blobArchiveStore } from './feed-archive';
+
 const MUSE_ENDPOINT = 'https://api.meta.ai/v1/responses';
 const DEFAULT_MODEL = 'muse-spark-1.3';
+const DEFAULT_PUBLIC_MODEL = 'muse-spark-1.3-contributor';
+const PRICES_PER_MILLION = {
+  standard: { input: 1.25, cached: 0.15, output: 4.25 },
+  contributor: { input: 0.1, cached: 0.002, output: 0.2 },
+} as const;
+const WEB_SEARCH_PRICE = 2.5 / 1000;
+const CASE_CACHE_VERSION = 1;
+const INSIGHTS_CACHE_MS = 30 * 24 * 60 * 60 * 1000;
+const RESEARCH_CACHE_MS = 7 * 24 * 60 * 60 * 1000;
 const MUSE_TIMEOUT_MS = 45_000;
 const MAX_BODY_BYTES = 32 * 1024;
 const RATE_WINDOW_MS = 5 * 60_000;
@@ -88,7 +100,12 @@ export type MuseResponse = {
   id?: string;
   status?: string;
   incomplete_details?: { reason?: string } | null;
-  usage?: { output_tokens?: number; output_tokens_details?: { reasoning_tokens?: number } };
+  usage?: {
+    input_tokens?: number;
+    output_tokens?: number;
+    input_tokens_details?: { cached_tokens?: number };
+    output_tokens_details?: { reasoning_tokens?: number };
+  };
   output?: MuseOutputItem[];
 };
 type MuseTextPart = { text: string; annotations: MuseAnnotation[] };
@@ -423,6 +440,88 @@ export function historyBlock(history: FollowUpTurn[]): string {
   if (!history.length) return '';
   const turns = history.map((turn) => `Q: ${tagSafe(turn.question)}\nA: ${tagSafe(turn.answer)}`);
   return `<previous_questions>\n${turns.join('\n\n')}\n</previous_questions>`;
+}
+
+export type CaseCache = {
+  getJSON<T>(pathname: string): Promise<T | null>;
+  putJSON(pathname: string, value: unknown): Promise<void>;
+};
+
+export type MuseUsage = {
+  model: string;
+  input_tokens: number;
+  cached_tokens: number;
+  output_tokens: number;
+  reasoning_tokens: number;
+  web_searches: number;
+  cost_usd: number;
+};
+
+export function museUsage(response: MuseResponse, model: string): MuseUsage {
+  const usage = response?.usage ?? {};
+  const input = usage.input_tokens ?? 0;
+  const cached = Math.min(usage.input_tokens_details?.cached_tokens ?? 0, input);
+  const output = usage.output_tokens ?? 0;
+  const searches = (response?.output ?? []).filter((item) => item?.type === 'web_search_call').length;
+  const price = model.endsWith('-contributor') ? PRICES_PER_MILLION.contributor : PRICES_PER_MILLION.standard;
+  const cost = ((input - cached) * price.input + cached * price.cached + output * price.output) / 1_000_000 + searches * WEB_SEARCH_PRICE;
+  return {
+    model,
+    input_tokens: input,
+    cached_tokens: cached,
+    output_tokens: output,
+    reasoning_tokens: usage.output_tokens_details?.reasoning_tokens ?? 0,
+    web_searches: searches,
+    cost_usd: Number(cost.toFixed(6)),
+  };
+}
+
+export function logMuseUsage(endpoint: string, response: MuseResponse, model: string): MuseUsage {
+  const usage = museUsage(response, model);
+  console.info('muse_usage', JSON.stringify({ endpoint, status: response?.status ?? '-', ...usage }));
+  return usage;
+}
+
+export function caseCacheKey(kind: 'insights' | 'research', entry: CaseEntry): string {
+  const digest = createHash('sha256').update(JSON.stringify([CASE_CACHE_VERSION, kind, entry])).digest('hex');
+  return `case-cache/${kind}/${digest}.json`;
+}
+
+async function readCaseCache<T>(cache: CaseCache, pathname: string, maxAgeMs: number): Promise<T | null> {
+  try {
+    const saved = await cache.getJSON<{ saved_at: number; value: T }>(pathname);
+    if (!saved || typeof saved.saved_at !== 'number' || Date.now() - saved.saved_at > maxAgeMs) return null;
+    return saved.value;
+  } catch {
+    return null;
+  }
+}
+
+async function writeCaseCache(cache: CaseCache, pathname: string, value: unknown): Promise<void> {
+  try {
+    await cache.putJSON(pathname, { saved_at: Date.now(), value });
+  } catch {
+    console.error('case_cache_write_failed');
+  }
+}
+
+export function publicMuseModel(): string {
+  const configured = process.env.MUSE_PUBLIC_MODEL?.trim();
+  return configured && /^[a-z0-9.-]{3,64}$/.test(configured) ? configured : DEFAULT_PUBLIC_MODEL;
+}
+
+async function createPublicMuseResponse(
+  body: Record<string, unknown>,
+  fetcher: typeof fetch,
+): Promise<{ response: MuseResponse; model: string }> {
+  const contributor = publicMuseModel();
+  try {
+    return { response: await createMuseResponse({ ...body, model: contributor }, fetcher), model: contributor };
+  } catch (error) {
+    if (!(error instanceof CaseIntelligenceError) || !['ai_busy', 'ai_failed'].includes(error.code)) throw error;
+    const standard = museModel();
+    return { response: await createMuseResponse({ ...body, model: standard }, fetcher), model: standard };
+  }
 }
 
 export function museModel(): string {
@@ -770,12 +869,17 @@ export function shapeResearch(output: unknown, cited: Partial<Record<CitedField,
   };
 }
 
-export async function caseInsights(body: Record<string, unknown>, fetcher: typeof fetch = fetch) {
+export async function caseInsights(
+  body: Record<string, unknown>,
+  fetcher: typeof fetch = fetch,
+  cache: CaseCache = blobArchiveStore(),
+) {
   const entry = parseEntry(body.entry);
-  const model = museModel();
-  const response = await createMuseResponse(
+  const cacheKey = caseCacheKey('insights', entry);
+  const cached = await readCaseCache<{ insights: CaseInsights; model: string }>(cache, cacheKey, INSIGHTS_CACHE_MS);
+  if (cached) return { ...cached, cached: true };
+  const { response, model } = await createPublicMuseResponse(
     {
-      model,
       instructions: INSIGHTS_INSTRUCTIONS,
       prompt_cache_key: 'caser-case-insights',
       input: [{ role: 'user', content: docketBlock(entry) }],
@@ -786,23 +890,31 @@ export async function caseInsights(body: Record<string, unknown>, fetcher: typeo
     },
     fetcher,
   );
+  logMuseUsage('case-insights', response, model);
   const { text } = readMuseOutput(response);
-  if (response.status === 'incomplete' || !text) throw new CaseIntelligenceError(502, 'ai_incomplete');
+  if (response.status !== 'completed' || !text) throw new CaseIntelligenceError(502, 'ai_incomplete');
   let parsed: unknown;
   try {
     parsed = JSON.parse(text);
   } catch {
     throw new CaseIntelligenceError(502, 'ai_invalid_output');
   }
-  return { insights: shapeInsights(parsed), model };
+  const result = { insights: shapeInsights(parsed), model };
+  await writeCaseCache(cache, cacheKey, result);
+  return { ...result, cached: false };
 }
 
-export async function caseResearch(body: Record<string, unknown>, fetcher: typeof fetch = fetch) {
+export async function caseResearch(
+  body: Record<string, unknown>,
+  fetcher: typeof fetch = fetch,
+  cache: CaseCache = blobArchiveStore(),
+) {
   const entry = parseEntry(body.entry);
-  const model = museModel();
-  const response = await createMuseResponse(
+  const cacheKey = caseCacheKey('research', entry);
+  const cached = await readCaseCache<{ research: CaseResearchData; model: string }>(cache, cacheKey, RESEARCH_CACHE_MS);
+  if (cached) return { ...cached, cached: true };
+  const { response, model } = await createPublicMuseResponse(
     {
-      model,
       instructions: RESEARCH_INSTRUCTIONS,
       prompt_cache_key: 'caser-case-research-v2',
       input: [{ role: 'user', content: `Today is ${new Date().toISOString().slice(0, 10)}.\n\n${docketBlock(entry)}` }],
@@ -815,6 +927,7 @@ export async function caseResearch(body: Record<string, unknown>, fetcher: typeo
     },
     fetcher,
   );
+  const usage = logMuseUsage('case-research', response, model);
   const { parts, citations, thinking } = readMuseOutput(response);
   const answer = parts.at(-1);
   let parsed: unknown;
@@ -825,19 +938,21 @@ export async function caseResearch(body: Record<string, unknown>, fetcher: typeo
   }
   console.info(
     'muse_research',
-    response.status,
-    response.incomplete_details?.reason ?? '-',
-    response.usage?.output_tokens ?? '-',
-    response.usage?.output_tokens_details?.reasoning_tokens ?? '-',
-    answer?.annotations.length ?? 0,
-    parsed === undefined ? 'unparsed' : 'parsed',
+    JSON.stringify({
+      status: response.status ?? '-',
+      incomplete_reason: response.incomplete_details?.reason ?? null,
+      annotations: answer?.annotations.length ?? 0,
+      parsed: parsed !== undefined,
+      cost_usd: usage.cost_usd,
+    }),
   );
   if (response.status !== 'completed' || !answer?.text.trim()) throw new CaseIntelligenceError(502, 'ai_incomplete');
   if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) throw new CaseIntelligenceError(502, 'ai_invalid_output');
   const fields = parsed as Record<string, unknown>;
   const about = shapeResearch(fields, citeFields(answer.text, fields, answer.annotations, citations));
   const research: CaseResearchData = { about, brief: briefFromAbout(about), citations, thinking };
-  return { research, model };
+  await writeCaseCache(cache, cacheKey, { research, model });
+  return { research, model, cached: false };
 }
 
 function questionBody(body: Record<string, unknown>, overrides: Record<string, unknown> = {}) {
@@ -896,6 +1011,7 @@ async function runRelatedDocketsTool(call: MuseOutputItem): Promise<string> {
 export async function caseQuestion(body: Record<string, unknown>, fetcher: typeof fetch = fetch) {
   const { request } = questionBody(body);
   let response = await createMuseResponse(request, fetcher);
+  logMuseUsage('case-question', response, museModel());
   let toolUsed = '';
   const call = (response.output ?? []).find((item) => item?.type === 'function_call' && item?.name === 'search_related_dockets');
   if (call?.call_id) {
@@ -927,6 +1043,7 @@ export async function caseQuestion(body: Record<string, unknown>, fetcher: typeo
       );
     }
   }
+  if (toolUsed) logMuseUsage('case-question', response, museModel());
   const { text, citations, thinking } = readMuseOutput(response);
   if (response.status !== 'completed' || !text) throw new CaseIntelligenceError(502, 'ai_incomplete');
   return { answer: { text: text.slice(0, 4000), citations, thinking, tool_used: toolUsed }, model: museModel() };
@@ -986,6 +1103,7 @@ export async function caseQuestionStream(body: Record<string, unknown>, fetcher:
       }
     }
     if (!completed) throw new CaseIntelligenceError(502, 'ai_incomplete');
+    logMuseUsage('case-question-stream', completed, museModel());
     const call = (completed.output ?? []).find(
       (item) => item?.type === 'function_call' && item?.name === 'search_related_dockets',
     );

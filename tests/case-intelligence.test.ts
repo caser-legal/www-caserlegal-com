@@ -7,6 +7,7 @@ import {
   caseQuestionStream,
   caseResearch,
   citeFields,
+  museUsage,
   stripCitationMarkers,
   shapeResearch,
   createMuseResponse,
@@ -36,6 +37,19 @@ function messageResponse(text: string, annotations: unknown[] = []): MuseRespons
       { type: 'web_search_call' },
       { type: 'message', content: [{ type: 'output_text', text, annotations: annotations as never }] },
     ],
+  };
+}
+
+function memoryCache() {
+  const items = new Map<string, unknown>();
+  return {
+    items,
+    async getJSON<T>(pathname: string) {
+      return (items.get(pathname) as T | undefined) ?? null;
+    },
+    async putJSON(pathname: string, value: unknown) {
+      items.set(pathname, JSON.parse(JSON.stringify(value)));
+    },
   };
 }
 
@@ -120,10 +134,11 @@ test('caseInsights sends a structured, unstored Spark request and shapes the res
   const result = await caseInsights(
     { entry },
     fakeFetch([Response.json(messageResponse(JSON.stringify(insights)))], calls),
+    memoryCache(),
   );
   assert.deepEqual(result.insights, insights);
   const sent = JSON.parse(String(calls[0].body));
-  assert.equal(sent.model, 'muse-spark-1.3');
+  assert.equal(sent.model, 'muse-spark-1.3-contributor');
   assert.equal(sent.store, false);
   assert.equal(sent.text.format.type, 'json_schema');
   assert.equal(sent.text.format.strict, true);
@@ -134,7 +149,7 @@ test('caseInsights sends a structured, unstored Spark request and shapes the res
 
 test('caseInsights rejects malformed model output', async () => {
   await assert.rejects(
-    caseInsights({ entry }, fakeFetch([Response.json(messageResponse('not json'))])),
+    caseInsights({ entry }, fakeFetch([Response.json(messageResponse('not json'))]), memoryCache()),
     (error: unknown) => error instanceof CaseIntelligenceError && error.code === 'ai_invalid_output',
   );
 });
@@ -157,6 +172,7 @@ test('caseResearch uses web search with structured output and returns an About a
       [Response.json(messageResponse(JSON.stringify(about), [{ type: 'url_citation', url: 'https://www.courtlistener.com/x', title: 'Docket' }]))],
       calls,
     ),
+    memoryCache(),
   );
   assert.equal(result.research.citations.length, 1);
   assert.equal(result.research.about.story, about.story);
@@ -332,7 +348,7 @@ test('readMuseOutput falls back to web search results when there are no inline c
 
 test('caseResearch asks Muse for web search results', async () => {
   const calls: RequestInit[] = [];
-  await caseResearch({ entry }, fakeFetch([Response.json(messageResponse(JSON.stringify({ story: 'x' })))], calls));
+  await caseResearch({ entry }, fakeFetch([Response.json(messageResponse(JSON.stringify({ story: 'x' })))], calls), memoryCache());
   assert.deepEqual(JSON.parse(String(calls[0].body)).include, ['web_search_call.results']);
 });
 
@@ -357,21 +373,21 @@ const truncatedResearch =
 test('caseResearch rejects an incomplete response instead of showing raw JSON', async () => {
   const response = { ...messageResponse(truncatedResearch), status: 'incomplete', incomplete_details: { reason: 'max_output_tokens' } };
   await assert.rejects(
-    caseResearch({ entry }, fakeFetch([Response.json(response)])),
+    caseResearch({ entry }, fakeFetch([Response.json(response)]), memoryCache()),
     (error: unknown) => error instanceof CaseIntelligenceError && error.code === 'ai_incomplete',
   );
 });
 
 test('caseResearch rejects unparseable text even when marked completed', async () => {
   await assert.rejects(
-    caseResearch({ entry }, fakeFetch([Response.json(messageResponse(truncatedResearch))])),
+    caseResearch({ entry }, fakeFetch([Response.json(messageResponse(truncatedResearch))]), memoryCache()),
     (error: unknown) => error instanceof CaseIntelligenceError && error.code === 'ai_invalid_output',
   );
 });
 
 test('caseResearch asks for enough output tokens to cover reasoning and the answer', async () => {
   const calls: RequestInit[] = [];
-  await caseResearch({ entry }, fakeFetch([Response.json(messageResponse(JSON.stringify({ story: 'x' })))], calls));
+  await caseResearch({ entry }, fakeFetch([Response.json(messageResponse(JSON.stringify({ story: 'x' })))], calls), memoryCache());
   assert.equal(JSON.parse(String(calls[0].body)).max_output_tokens, 8000);
 });
 
@@ -412,4 +428,56 @@ test('citeFields maps url_citation offsets in the raw JSON onto story segments',
 
 test('docketBlock labels the feed date as the docket entry date, not the case filing date', () => {
   assert.ok(docketBlock(parseEntry(entry)).includes('Docket entry date: 2026-10-24'));
+});
+
+test('caseResearch serves a shared cached result without calling Muse again', async () => {
+  const cache = memoryCache();
+  const calls: RequestInit[] = [];
+  const about = { story: 'Doe sued Acme.', whos_who: [], where_it_stands: 'Pending.', timeline: [], in_the_news: [] };
+  const first = await caseResearch({ entry }, fakeFetch([Response.json(messageResponse(JSON.stringify(about)))], calls), cache);
+  const second = await caseResearch({ entry }, fakeFetch([], calls), cache);
+  assert.equal(calls.length, 1);
+  assert.equal(first.cached, false);
+  assert.equal(second.cached, true);
+  assert.equal(second.research.about.story, 'Doe sued Acme.');
+  const other = await caseResearch(
+    { entry: { ...entry, docketText: 'A different entry.' } },
+    fakeFetch([Response.json(messageResponse(JSON.stringify(about)))], calls),
+    cache,
+  );
+  assert.equal(other.cached, false);
+  assert.equal(calls.length, 2);
+});
+
+test('public case work uses Contributor mode and falls back to Standard when it is busy', async () => {
+  const calls: RequestInit[] = [];
+  const insights = { summary: 'An order.', filing_explained: 'Orders decide things.', key_terms: [], what_to_watch: [] };
+  const result = await caseInsights(
+    { entry },
+    fakeFetch(
+      [
+        Response.json({ error: { type: 'rate_limit' } }, { status: 429 }),
+        Response.json(messageResponse(JSON.stringify(insights))),
+      ],
+      calls,
+    ),
+    memoryCache(),
+  );
+  assert.equal(JSON.parse(String(calls[0].body)).model, 'muse-spark-1.3-contributor');
+  assert.equal(JSON.parse(String(calls[1].body)).model, 'muse-spark-1.3');
+  assert.equal(result.model, 'muse-spark-1.3');
+});
+
+test('museUsage prices measured tokens and searches for each mode', () => {
+  const response: MuseResponse = {
+    status: 'completed',
+    usage: { input_tokens: 10_000, input_tokens_details: { cached_tokens: 2_000 }, output_tokens: 3_000, output_tokens_details: { reasoning_tokens: 2_500 } },
+    output: [{ type: 'web_search_call' }, { type: 'web_search_call' }, { type: 'message' }],
+  };
+  const standard = museUsage(response, 'muse-spark-1.3');
+  assert.equal(standard.web_searches, 2);
+  assert.equal(standard.reasoning_tokens, 2_500);
+  assert.equal(standard.cost_usd, Number((8_000 * 1.25e-6 + 2_000 * 0.15e-6 + 3_000 * 4.25e-6 + 2 * 0.0025).toFixed(6)));
+  const contributor = museUsage(response, 'muse-spark-1.3-contributor');
+  assert.equal(contributor.cost_usd, Number((8_000 * 0.1e-6 + 2_000 * 0.002e-6 + 3_000 * 0.2e-6 + 2 * 0.0025).toFixed(6)));
 });
