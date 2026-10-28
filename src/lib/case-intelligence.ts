@@ -32,7 +32,7 @@ const WEB_SEARCH_PRICE = 2.5 / 1000;
 const CASE_CACHE_VERSION = 1;
 const INSIGHTS_CACHE_MS = 30 * 24 * 60 * 60 * 1000;
 const RESEARCH_CACHE_MS = 7 * 24 * 60 * 60 * 1000;
-const MUSE_TIMEOUT_MS = 45_000;
+const MUSE_TIMEOUT_MS = 240_000;
 const MAX_BODY_BYTES = 32 * 1024;
 const RATE_WINDOW_MS = 5 * 60_000;
 const RATE_MAX_REQUESTS = 40;
@@ -1185,7 +1185,7 @@ export async function caseQuestionStream(body: Record<string, unknown>, fetcher:
       method: 'POST',
       headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...round, stream: true }),
-      signal: AbortSignal.timeout(90_000),
+      signal: AbortSignal.timeout(120_000),
     });
     if (!response.ok || !response.body) {
       throw new CaseIntelligenceError(response.status === 429 ? 429 : 502, response.status === 429 ? 'ai_busy' : 'ai_failed');
