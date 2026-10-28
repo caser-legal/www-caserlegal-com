@@ -351,7 +351,6 @@ test('shapeResearch unwraps payloads nested several layers deep', () => {
   assert.equal(about.where_it_stands, 'Pending.');
 });
 
-// The text from the broken About card: Muse stopped partway through the object.
 const truncatedResearch =
   '{"in_the_news": [], "story": "The filing is listed as Doherty v. Navy Federal Credit Union [1].", "timeline": [{"date": "2026-10-23", "event": "The court dismissed the complaint [1]."}], "where_it_stands": "The plaintiff may amend [1].",';
 

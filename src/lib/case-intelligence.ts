@@ -50,7 +50,6 @@ export type CaseInsights = {
   what_to_watch: string[];
 };
 
-// A run of prose followed by the sources (indexes into citations) that back it.
 export type CitedText = { text: string; sources: number[] };
 
 export type CaseAbout = {
@@ -558,8 +557,6 @@ function boundedText(value: unknown, maxLength: number): string {
 
 const CITATION_MARKER = /\s*\[\d{1,2}(?:\s*[,–-]\s*\d{1,2})*\]/g;
 
-// Sources are attached from Meta's url_citation annotations, so any [1]-style
-// markers the model types itself are dropped rather than shown.
 export function stripCitationMarkers(value: string): string {
   return value.replace(CITATION_MARKER, '');
 }
@@ -572,8 +569,6 @@ type DecodedString = { text: string; points: string[]; start: number; end: numbe
 
 const JSON_ESCAPES: Record<string, string> = { '"': '"', '\\': '\\', '/': '/', b: '\b', f: '\f', n: '\n', r: '\r', t: '\t' };
 
-// Decodes the JSON string opening at chars[open], recording for every raw code point
-// offset inside it the matching code point offset in the decoded value.
 function readJSONString(chars: string[], open: number): DecodedString {
   const points: string[] = [];
   const offsets: number[] = [];
@@ -604,7 +599,6 @@ function readJSONString(chars: string[], open: number): DecodedString {
   return { text: points.join(''), points, start: open + 1, end: index, offsets };
 }
 
-// Locates each top-level string field in the raw text of a JSON object.
 function topLevelStrings(chars: string[]): Map<string, DecodedString> {
   const fields = new Map<string, DecodedString>();
   let depth = 0;
@@ -661,8 +655,6 @@ function citedSegments(points: string[], cites: { end: number; source: number }[
 const CITED_FIELDS = { story: 2500, where_it_stands: 1500 } as const;
 type CitedField = keyof typeof CITED_FIELDS;
 
-// Meta's url_citation offsets point into the raw output text, which for structured
-// output is the JSON itself. This maps them onto the decoded story and where_it_stands.
 export function citeFields(
   raw: string,
   parsed: Record<string, unknown>,
@@ -748,7 +740,6 @@ function pairList(value: unknown, first: string, second: string, maxItems: numbe
 export function shapeResearch(output: unknown, cited: Partial<Record<CitedField, CitedText[]>> = {}): CaseAbout {
   if (!output || typeof output !== 'object' || Array.isArray(output)) throw new CaseIntelligenceError(502, 'ai_invalid_output');
   let input = output as Record<string, unknown>;
-  // Some answers arrive with the whole payload double-encoded as a JSON string in story.
   for (let depth = 0; depth < 6 && typeof input.story === 'string' && input.story.trim().startsWith('{'); depth += 1) {
     let inner: unknown;
     try {
