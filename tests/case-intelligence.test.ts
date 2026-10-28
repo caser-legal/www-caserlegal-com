@@ -19,6 +19,7 @@ import {
   readMuseOutput,
   type MuseResponse,
 } from '../src/lib/case-intelligence';
+import { issueDeviceToken } from '../src/lib/device-attest';
 
 const entry = {
   title: 'Doe v. Acme Corp',
@@ -62,16 +63,28 @@ function fakeFetch(responses: Response[], calls: RequestInit[] = []): typeof fet
   }) as typeof fetch;
 }
 
+const ATTEST_SECRET = 'test-attest-secret-with-at-least-32-chars';
+
+function deviceToken(): string {
+  return issueDeviceToken('ab'.repeat(16), ATTEST_SECRET).token;
+}
+
 function jsonRequest(body: unknown, headers: Record<string, string> = {}): Request {
   return new Request('https://www.caserlegal.com/v1/case-insights', {
     method: 'POST',
-    headers: { 'content-type': 'application/json', 'x-real-ip': `203.0.113.${Math.floor(Math.random() * 200)}`, ...headers },
+    headers: {
+      'content-type': 'application/json',
+      'x-real-ip': `203.0.113.${Math.floor(Math.random() * 200)}`,
+      'x-caser-device': deviceToken(),
+      ...headers,
+    },
     body: typeof body === 'string' ? body : JSON.stringify(body),
   });
 }
 
 test.beforeEach(() => {
   process.env.MODEL_API_KEY = 'LLM_test_key';
+  process.env.ATTEST_SECRET = ATTEST_SECRET;
   delete process.env.MUSE_MODEL;
 });
 
@@ -480,4 +493,18 @@ test('museUsage prices measured tokens and searches for each mode', () => {
   assert.equal(standard.cost_usd, Number((8_000 * 1.25e-6 + 2_000 * 0.15e-6 + 3_000 * 4.25e-6 + 2 * 0.0025).toFixed(6)));
   const contributor = museUsage(response, 'muse-spark-1.3-contributor');
   assert.equal(contributor.cost_usd, Number((8_000 * 0.1e-6 + 2_000 * 0.002e-6 + 3_000 * 0.2e-6 + 2 * 0.0025).toFixed(6)));
+});
+
+test('Muse endpoints refuse requests without a valid device pass', async () => {
+  const handled: unknown[] = [];
+  const handle = async (body: Record<string, unknown>) => handled.push(body);
+  const missing = await handlePost(jsonRequest({ entry }, { 'x-caser-device': '' }), handle);
+  assert.equal(missing.status, 401);
+  assert.deepEqual(await missing.json(), { error: 'device_unverified' });
+  const forged = await handlePost(jsonRequest({ entry }, { 'x-caser-device': `${'ab'.repeat(16)}.9999999999999.forged` }), handle);
+  assert.equal(forged.status, 401);
+  delete process.env.ATTEST_SECRET;
+  const unconfigured = await handlePost(jsonRequest({ entry }), handle);
+  assert.equal(unconfigured.status, 503);
+  assert.equal(handled.length, 0);
 });
