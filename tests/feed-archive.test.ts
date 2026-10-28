@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { ingestArchive, searchArchive, type ArchiveStore } from '../src/lib/feed-archive';
+import { cronAuthorized, ingestArchive, searchArchive, type ArchiveStore } from '../src/lib/feed-archive';
 import type { CourtFeed } from '../src/lib/docket-search';
 
 const NOW = new Date('2026-10-27T12:00:00Z');
@@ -80,4 +80,12 @@ test('ingest prunes shards older than 30 days', async () => {
   assert.equal(store.files.has('feed-archive/entries-2026-08-01.json'), false);
   const found = await searchArchive('Old Case', { now: NOW, store });
   assert.equal(found.matches.length, 0);
+});
+
+test('cron ingest requires the secret and fails closed when none is configured', () => {
+  assert.equal(cronAuthorized('Bearer s3cret', 's3cret'), true);
+  assert.equal(cronAuthorized('Bearer wrong!', 's3cret'), false);
+  assert.equal(cronAuthorized(null, 's3cret'), false);
+  assert.equal(cronAuthorized('Bearer ', ''), false);
+  assert.equal(cronAuthorized('Bearer anything', undefined), false);
 });

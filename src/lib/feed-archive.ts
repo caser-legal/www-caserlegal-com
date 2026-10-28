@@ -1,3 +1,4 @@
+import { timingSafeEqual } from 'node:crypto';
 import { compactSearchKey, courts, localSearchTerms, parseFeedItems, trustedFeedHost, type CourtFeed, type DocketMatch } from './docket-search';
 
 export const ARCHIVE_DAYS = 30;
@@ -44,6 +45,13 @@ export function blobArchiveStore(): ArchiveStore {
       await del(pathname);
     },
   };
+}
+
+export function cronAuthorized(authorization: string | null, secret = process.env.CRON_SECRET?.trim()): boolean {
+  if (!secret || !authorization) return false;
+  const expected = Buffer.from(`Bearer ${secret}`);
+  const given = Buffer.from(authorization);
+  return given.length === expected.length && timingSafeEqual(given, expected);
 }
 
 export function dayOf(date: Date): string {
