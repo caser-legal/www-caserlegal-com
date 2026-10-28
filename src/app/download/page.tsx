@@ -60,7 +60,7 @@ export default function DownloadPage() {
             <div className="phone-stage relative flex min-h-[460px] items-end justify-center">
               <div className="phone-glow" aria-hidden="true" />
               <Image
-                src="/screenshot-3.png?v=3"
+                src="/screenshot-3.png?v=4"
                 alt="CASER dashboard on iPhone"
                 width={1070}
                 height={2149}
