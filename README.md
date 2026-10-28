@@ -47,9 +47,59 @@ Docket text is fenced as untrusted data, inputs are validated and size-capped, a
 
 Environment variables: `MODEL_API_KEY` (Meta Model API key, required), `MUSE_MODEL` (optional, defaults to `muse-spark-1.3`), `CRON_SECRET`, and the Vercel Blob token for the archive.
 
-Tests: `npm test` runs 48 tests, including prompt-injection defenses, structured-output shaping, rejection of incomplete answers, citation offset mapping, streaming and archive pruning.
+Tests: `npm test` runs 87 tests, including prompt-injection defenses, structured-output shaping, rejection of incomplete answers, citation offset mapping, streaming, archive pruning, App Attest, StoreKit verification and Atticus metering.
 
 The browser Atticus at `/search` (Firebase AI Logic and Gemini, described below) predates the hackathon and is not part of the entry.
+
+## Atticus metering and App Store paywall
+
+Every Muse call's measured cost (`museUsage`) is recorded in a durable store, and App Store requests are metered against monthly allowances (`src/lib/metering.ts`, `src/lib/meter-store.ts`, `src/lib/storekit.ts`).
+
+- **Editions:** requests with `X-CASER-Edition: appstore` are metered. Requests without it (the hackathon judge TestFlight build) are unmetered until `UNMETERED_UNTIL`, then metered as free tier. The budget cap and abuse limits apply to every edition.
+- **Period:** the calendar month in UTC. Counters reset at 00:00 UTC on the 1st.
+- **Briefing:** opening one case. `/v1/case-insights` and `/v1/case-research` for the same docket entry count once per month, even when served from the shared case cache; reopening it that month is free.
+- **Question:** one `/v1/case-question` or `/v1/case-question-stream` call.
+- **Plans:** free is keyed by the App Attest device id. Pro is keyed by the `com.alertsfor.caser.yearly` subscription's `originalTransactionId`, sent as `X-CASER-Subscription` (StoreKit 2 `signedTransactionInfo`) and verified with Apple's `@apple/app-store-server-library` against the Apple root certificates in `data/apple-roots/` (SHA-256 checked against the macOS system trust store). Production and Sandbox transactions are accepted. An invalid or expired header is treated as free.
+- **Credits:** `X-CASER-Account` is the app's `appAccountToken` (UUID). `POST /v1/credits/redeem` with `{ "transaction": "<JWS>" }` verifies a consumable, checks its `appAccountToken` against the header and grants its uses once per `transactionId`. Credits are spent only after the monthly allowance (1 credit = 1 briefing or 1 question).
+- **Charging:** allowance is checked before Muse is called and charged only after a successful response.
+- **Budget:** when this month's measured spend reaches `MUSE_MONTHLY_BUDGET_USD`, calls that would reach Muse return `503 {"error":"atticus_paused"}`; cached case results are still served. The app then answers with Apple's on-device or Private Cloud Compute model.
+- **Abuse limits:** at most 40 Muse-bound requests per device per 10 minutes and 300 per UTC day (`429 {"error":"rate_limited"}` with `Retry-After`), on top of the per-IP limit.
+- **No store:** if the store is not configured in production, metered requests return `atticus_paused`, redeem returns `503 {"error":"credits_unavailable"}`, unmetered requests run on per-instance in-memory budget and abuse limits, and `meter_store_missing` is logged once.
+
+| Endpoint | Returns |
+|---|---|
+| `POST /v1/usage` | `{ "usage": … }` |
+| `POST /v1/credits/redeem` | `{ "granted", "duplicate", "usage" }` |
+
+`usage` is also added to successful `/v1/case-insights`, `/v1/case-research` and `/v1/case-question` responses and to the stream's `done` event:
+
+```json
+{
+  "plan": "free",
+  "edition": "appstore",
+  "period_end": "2026-11-01T00:00:00.000Z",
+  "briefings": { "used": 1, "limit": 3 },
+  "questions": { "used": 0, "limit": 3 },
+  "credits": 0,
+  "packs": { "com.alertsfor.caser.credits.10000": 25 },
+  "plans": { "free": { "briefings": 3, "questions": 3 }, "pro": { "briefings": 30, "questions": 30 } },
+  "paused": false
+}
+```
+
+`limit` is `null` for unmetered requests. When the allowance and credits are used up the endpoint returns `402 { "error": "quota_exceeded", "kind": "briefing" | "question", "usage": … }`.
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | none | Upstash Redis REST store for usage, credits and the cost ledger |
+| `KV_REST_API_URL`, `KV_REST_API_TOKEN` | none | Same, under the names the Vercel Marketplace Upstash integration sets |
+| `MUSE_MONTHLY_BUDGET_USD` | `15` | Hard monthly cap on measured Muse spend |
+| `UNMETERED_UNTIL` | `2026-11-10T08:00:00Z` | Requests without an edition header are unmetered until this time |
+| `FREE_BRIEFINGS_PER_MONTH`, `FREE_QUESTIONS_PER_MONTH` | `3`, `3` | Free allowance per device |
+| `PRO_BRIEFINGS_PER_MONTH`, `PRO_QUESTIONS_PER_MONTH` | `30`, `30` | Pro allowance per subscription |
+| `CREDIT_PACKS` | `com.alertsfor.caser.credits.10000=25,com.alertsfor.caser.credits.50000=100,com.alertsfor.caser.credits.100000=500` | Consumable product id = uses |
+
+`npm run cost-report` reads the store (from the environment or `.env.local`) and prints measured spend, Muse calls, cost per uncached briefing, cost per question and cache-hit rate per endpoint for the current and previous month. Set prices and allowances from these numbers.
 
 ## Muse connector
 

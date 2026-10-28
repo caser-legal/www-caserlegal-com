@@ -10,6 +10,16 @@ import {
   verifyDeviceToken,
 } from './device-attest';
 import { blobArchiveStore } from './feed-archive';
+import {
+  MeterError,
+  meterIdentity,
+  meterScope,
+  openMeterSession,
+  readUsage,
+  redeemCredits,
+  type MeterSession,
+  type MeterSpec,
+} from './metering';
 
 const MUSE_ENDPOINT = 'https://api.meta.ai/v1/responses';
 const DEFAULT_MODEL = 'muse-spark-1.3';
@@ -182,9 +192,9 @@ export async function readJsonBody(request: Request): Promise<unknown> {
 
 export function errorResponse(error: unknown): Response {
   const headers = { 'Cache-Control': 'no-store' };
-  if (error instanceof CaseIntelligenceError) {
+  if (error instanceof CaseIntelligenceError || error instanceof MeterError) {
     return Response.json(
-      { error: error.code },
+      { error: error.code, ...(error instanceof MeterError ? error.extra : undefined) },
       {
         status: error.status,
         headers: error.retryAfterSeconds
@@ -267,19 +277,41 @@ export async function handleAttestPost(
   }
 }
 
+async function meteredSession(
+  request: Request,
+  deviceId: string,
+  body: Record<string, unknown>,
+  spec: MeterSpec,
+): Promise<MeterSession> {
+  return openMeterSession(request, deviceId, spec, spec.kind === 'briefing' ? caseDigest(parseEntry(body.entry)) : undefined);
+}
+
+function isCached(result: unknown): boolean {
+  return Boolean(result && typeof result === 'object' && (result as { cached?: unknown }).cached === true);
+}
+
 export async function handlePost(
   request: Request,
   handle: (body: Record<string, unknown>) => Promise<unknown>,
+  spec?: MeterSpec,
 ): Promise<Response> {
+  let session: MeterSession | undefined;
   try {
-    requireDevice(request);
+    const deviceId = requireDevice(request);
     enforceRateLimit(clientKey(request));
     const body = await readJsonBody(request);
     if (!body || typeof body !== 'object' || Array.isArray(body)) {
       throw new CaseIntelligenceError(400, 'invalid_json');
     }
-    return okResponse(await handle(body as Record<string, unknown>));
+    const input = body as Record<string, unknown>;
+    if (!spec) return okResponse(await handle(input));
+    const active = await meteredSession(request, deviceId, input, spec);
+    session = active;
+    const result = await meterScope.run(active, () => handle(input));
+    const usage = await active.settle({ ok: true, cached: isCached(result) });
+    return okResponse(usage && result && typeof result === 'object' ? { ...result, usage } : result);
   } catch (error) {
+    await session?.settle({ ok: false });
     return errorResponse(error);
   }
 }
@@ -555,8 +587,13 @@ export function museUsage(response: MuseResponse, model: string): MuseUsage {
 
 export function logMuseUsage(endpoint: string, response: MuseResponse, model: string): MuseUsage {
   const usage = museUsage(response, model);
+  meterScope.getStore()?.recordMuse(usage.cost_usd);
   console.info('muse_usage', JSON.stringify({ endpoint, status: response?.status ?? '-', ...usage }));
   return usage;
+}
+
+export function caseDigest(entry: CaseEntry): string {
+  return createHash('sha256').update(JSON.stringify([CASE_CACHE_VERSION, entry])).digest('hex');
 }
 
 export function caseCacheKey(kind: 'insights' | 'research', entry: CaseEntry): string {
@@ -625,6 +662,7 @@ export async function createMuseResponse(
 ): Promise<MuseResponse> {
   const apiKey = process.env.MODEL_API_KEY?.trim();
   if (!apiKey) throw new CaseIntelligenceError(503, 'ai_not_configured');
+  await meterScope.getStore()?.beforeMuse();
 
   for (let attempt = 0; attempt < 2; attempt += 1) {
     let response: Response;
@@ -1131,15 +1169,17 @@ type StreamEvent =
   | { type: 'thinking'; delta: string }
   | { type: 'tool'; name: string }
   | { type: 'sources'; citations: Citation[] }
-  | { type: 'done' };
+  | { type: 'done'; usage?: unknown };
 
 export async function caseQuestionStream(body: Record<string, unknown>, fetcher: typeof fetch = fetch): Promise<Response> {
   const { request } = questionBody(body);
   const apiKey = process.env.MODEL_API_KEY?.trim();
   if (!apiKey) throw new CaseIntelligenceError(503, 'ai_not_configured');
   const encoder = new TextEncoder();
+  const session = meterScope.getStore();
 
   async function* events(round: Record<string, unknown>, allowTool: boolean): AsyncGenerator<StreamEvent> {
+    await session?.beforeMuse();
     const response = await fetcher(MUSE_ENDPOINT, {
       method: 'POST',
       headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
@@ -1224,9 +1264,12 @@ export async function caseQuestionStream(body: Record<string, unknown>, fetcher:
         for await (const event of events(request, true)) {
           controller.enqueue(encoder.encode(`data: ${JSON.stringify(event)}\n\n`));
         }
-        controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'done' })}\n\n`));
+        const usage = await session?.settle({ ok: true });
+        const done: StreamEvent = usage ? { type: 'done', usage } : { type: 'done' };
+        controller.enqueue(encoder.encode(`data: ${JSON.stringify(done)}\n\n`));
       } catch (error) {
-        const code = error instanceof CaseIntelligenceError ? error.code : 'ai_unavailable';
+        await session?.settle({ ok: false });
+        const code = error instanceof CaseIntelligenceError || error instanceof MeterError ? error.code : 'ai_unavailable';
         controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'error', code })}\n\n`));
       } finally {
         controller.close();
@@ -1241,15 +1284,46 @@ export async function caseQuestionStream(body: Record<string, unknown>, fetcher:
 export async function handleStream(
   request: Request,
   handle: (body: Record<string, unknown>) => Promise<Response>,
+  spec?: MeterSpec,
 ): Promise<Response> {
+  let session: MeterSession | undefined;
   try {
-    requireDevice(request);
+    const deviceId = requireDevice(request);
     enforceRateLimit(clientKey(request));
     const body = await readJsonBody(request);
     if (!body || typeof body !== 'object' || Array.isArray(body)) {
       throw new CaseIntelligenceError(400, 'invalid_json');
     }
-    return await handle(body as Record<string, unknown>);
+    const input = body as Record<string, unknown>;
+    if (!spec) return await handle(input);
+    const active = await meteredSession(request, deviceId, input, spec);
+    session = active;
+    return await meterScope.run(active, () => handle(input));
+  } catch (error) {
+    await session?.settle({ ok: false });
+    return errorResponse(error);
+  }
+}
+
+export async function handleUsage(request: Request): Promise<Response> {
+  try {
+    const deviceId = requireDevice(request);
+    enforceRateLimit(clientKey(request));
+    return okResponse({ usage: await readUsage(await meterIdentity(request, deviceId)) });
+  } catch (error) {
+    return errorResponse(error);
+  }
+}
+
+export async function handleRedeem(request: Request): Promise<Response> {
+  try {
+    const deviceId = requireDevice(request);
+    enforceRateLimit(clientKey(request));
+    const body = await readJsonBody(request);
+    if (!body || typeof body !== 'object' || Array.isArray(body)) {
+      throw new CaseIntelligenceError(400, 'invalid_json');
+    }
+    return okResponse(await redeemCredits(request, deviceId, body as Record<string, unknown>));
   } catch (error) {
     return errorResponse(error);
   }
