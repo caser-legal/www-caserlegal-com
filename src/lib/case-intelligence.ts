@@ -1,4 +1,14 @@
 import { createHash } from 'node:crypto';
+import {
+  AttestError,
+  DEVICE_HEADER,
+  attestSecret,
+  issueChallenge,
+  issueDeviceToken,
+  verifyAttestation,
+  verifyChallenge,
+  verifyDeviceToken,
+} from './device-attest';
 import { blobArchiveStore } from './feed-archive';
 
 const MUSE_ENDPOINT = 'https://api.meta.ai/v1/responses';
@@ -191,11 +201,78 @@ export function okResponse(body: unknown): Response {
   return Response.json(body, { headers: { 'Cache-Control': 'no-store' } });
 }
 
+function attestFailure(error: unknown): CaseIntelligenceError {
+  if (error instanceof AttestError && error.message === 'attest_not_configured') {
+    return new CaseIntelligenceError(503, 'attest_not_configured');
+  }
+  if (error instanceof AttestError && error.message === 'device_unverified') {
+    return new CaseIntelligenceError(401, 'device_unverified');
+  }
+  if (error instanceof AttestError) return new CaseIntelligenceError(400, error.message);
+  return new CaseIntelligenceError(400, 'invalid_attestation');
+}
+
+export function requireDevice(request: Request): string {
+  try {
+    return verifyDeviceToken(request.headers.get(DEVICE_HEADER), attestSecret());
+  } catch (error) {
+    throw attestFailure(error);
+  }
+}
+
+export function attestChallenge(request: Request): Response {
+  try {
+    enforceRateLimit(clientKey(request));
+    return okResponse({ challenge: issueChallenge(attestSecret()) });
+  } catch (error) {
+    return errorResponse(error instanceof CaseIntelligenceError ? error : attestFailure(error));
+  }
+}
+
+export function attestDevice(body: Record<string, unknown>) {
+  const keyId = typeof body.key_id === 'string' ? body.key_id.slice(0, 100) : '';
+  const attestation = typeof body.attestation === 'string' ? body.attestation : '';
+  const challenge = typeof body.challenge === 'string' ? body.challenge.slice(0, 200) : '';
+  if (!keyId || !attestation || !challenge) throw new CaseIntelligenceError(400, 'invalid_attestation');
+  try {
+    const secret = attestSecret();
+    verifyChallenge(challenge, secret);
+    const { deviceId } = verifyAttestation(
+      { keyId, attestation, challenge },
+      {
+        appId: process.env.APP_ATTEST_APP_ID?.trim() || undefined,
+        allowDevelopment: process.env.APP_ATTEST_ALLOW_DEVELOPMENT === '1',
+      },
+    );
+    const { token, expiresAt } = issueDeviceToken(deviceId, secret);
+    return { token, expires_at: new Date(expiresAt).toISOString() };
+  } catch (error) {
+    throw attestFailure(error);
+  }
+}
+
+export async function handleAttestPost(
+  request: Request,
+  handle: (body: Record<string, unknown>) => unknown,
+): Promise<Response> {
+  try {
+    enforceRateLimit(clientKey(request));
+    const body = await readJsonBody(request);
+    if (!body || typeof body !== 'object' || Array.isArray(body)) {
+      throw new CaseIntelligenceError(400, 'invalid_json');
+    }
+    return okResponse(await handle(body as Record<string, unknown>));
+  } catch (error) {
+    return errorResponse(error);
+  }
+}
+
 export async function handlePost(
   request: Request,
   handle: (body: Record<string, unknown>) => Promise<unknown>,
 ): Promise<Response> {
   try {
+    requireDevice(request);
     enforceRateLimit(clientKey(request));
     const body = await readJsonBody(request);
     if (!body || typeof body !== 'object' || Array.isArray(body)) {
@@ -1166,6 +1243,7 @@ export async function handleStream(
   handle: (body: Record<string, unknown>) => Promise<Response>,
 ): Promise<Response> {
   try {
+    requireDevice(request);
     enforceRateLimit(clientKey(request));
     const body = await readJsonBody(request);
     if (!body || typeof body !== 'object' || Array.isArray(body)) {

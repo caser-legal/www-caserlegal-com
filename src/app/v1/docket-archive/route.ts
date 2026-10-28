@@ -1,11 +1,12 @@
 import { searchArchive } from '@/lib/feed-archive';
-import { clientKey, enforceRateLimit, errorResponse, CaseIntelligenceError } from '@/lib/case-intelligence';
+import { clientKey, enforceRateLimit, errorResponse, requireDevice, CaseIntelligenceError } from '@/lib/case-intelligence';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
 
 export async function GET(request: Request) {
   try {
+    requireDevice(request);
     enforceRateLimit(clientKey(request));
     const url = new URL(request.url);
     const query = (url.searchParams.get('query') ?? '').slice(0, 200);
