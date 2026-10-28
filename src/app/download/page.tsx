@@ -41,7 +41,7 @@ export default function DownloadPage() {
 
       <section className="py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto grid max-w-5xl gap-10 rounded-3xl border bg-[#f5f0e4] p-6 sm:p-9 lg:grid-cols-[1.1fr_.9fr] lg:items-center">
+          <div className="mx-auto grid max-w-5xl gap-10 rounded-3xl border bg-[#f5f5f5] p-6 sm:p-9 lg:grid-cols-[1.1fr_.9fr] lg:items-center">
             <div className="grid gap-4 sm:grid-cols-2">
               {[
                 { icon: CourthouseClock, title: 'Court search & alerts' },

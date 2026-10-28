@@ -24,7 +24,7 @@ export default function FeaturePopoutTile({ n, title, body, img, alt, howTo }: F
         onClick={() => setOpen(true)}
         className="group feature-tile w-full overflow-hidden rounded-2xl border bg-card text-left transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
-        <div className="flex h-[300px] items-center justify-center overflow-hidden bg-[#f2eee7] px-4 py-5 sm:h-[340px]">
+        <div className="flex h-[300px] items-center justify-center overflow-hidden bg-[#f5f5f5] px-4 py-5 sm:h-[340px]">
           <Image
             src={img}
             alt={alt}
@@ -44,8 +44,8 @@ export default function FeaturePopoutTile({ n, title, body, img, alt, howTo }: F
       </button>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-h-[90vh] max-w-4xl sm:max-w-4xl overflow-y-auto rounded-3xl border-0 bg-[#f5f0e4] p-0 sm:grid-cols-2">
-          <div className="flex self-stretch items-center justify-center bg-[#f2eee7] px-6 py-5 sm:px-8 sm:py-6">
+        <DialogContent className="max-h-[90vh] max-w-4xl sm:max-w-4xl overflow-y-auto rounded-3xl border-0 bg-[#f5f5f5] p-0 sm:grid-cols-2">
+          <div className="flex self-stretch items-center justify-center bg-[#f5f5f5] px-6 py-5 sm:px-8 sm:py-6">
             <Image
               src={img}
               alt={alt}

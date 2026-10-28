@@ -50,7 +50,6 @@ export default function Home() {
           <div className="grid items-center gap-8 lg:grid-cols-[.88fr_1.12fr] lg:gap-10">
             <div className="relative z-20 space-y-7 lg:py-8">
               <div className="space-y-4">
-                <p className="hero-kicker text-xs font-semibold uppercase tracking-[.18em] text-muted-foreground"><span aria-hidden="true" />Case Automated Search of Electronic Records</p>
                 <h1 className="max-w-[14ch] text-5xl font-bold leading-[1.02] tracking-[-.06em] sm:text-6xl lg:text-[4.4rem]">
                   <span className="block">Know what moved</span>
                   <span key={headlineIndex} className="hero-rotating-line block text-primary">
@@ -92,7 +91,7 @@ export default function Home() {
 
       <section id="pacer-problem" className="py-12 lg:py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto flex max-w-5xl flex-col gap-8 rounded-3xl border bg-[#f5f0e4] p-6 sm:p-9 lg:flex-row lg:items-start">
+          <div className="mx-auto flex max-w-5xl flex-col gap-8 rounded-3xl border bg-[#f5f5f5] p-6 sm:p-9 lg:flex-row lg:items-start">
             <div className="max-w-sm lg:pt-1"><h2 className="mt-3 text-3xl font-bold sm:text-4xl">Keep up without random fees.</h2><Link href="/support/pacer-savings" className="mt-4 inline-flex items-center gap-2 border-b border-current pb-0.5 text-sm font-semibold">How fees work <span aria-hidden="true">→</span></Link></div>
             <div className="grid flex-1 grid-cols-3 gap-2 sm:gap-3">{[['$0.00','per search'],['$0','document cap'],['$1000+','in savings*']].map(([value,label])=><div key={label} className="min-w-0 rounded-2xl border border-black/5 bg-white/80 p-3 sm:p-5"><b className="block whitespace-nowrap text-lg font-bold sm:text-3xl">{value}</b><span className="mt-1 block text-xs leading-snug text-muted-foreground sm:text-sm">{label}</span></div>)}<p className="col-span-3 pt-2 text-xs leading-relaxed text-muted-foreground">* Search-result charges and eligible free copies affect totals. Actual fees depend on your use. CASER is not a complete historical docket archive; verify records with official sources. Savings will vary by individual and usage.</p></div>
           </div>
@@ -108,7 +107,7 @@ export default function Home() {
 
       <section id="download" className="py-14 lg:py-18 bg-muted/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl rounded-[2rem] bg-[#f5f0e4] px-6 py-10 text-center sm:px-12">
+          <div className="mx-auto max-w-4xl rounded-[2rem] bg-[#f5f5f5] px-6 py-10 text-center sm:px-12">
             <h2 className="mt-3 text-4xl font-bold sm:text-5xl">Follow the cases that matter.</h2>
             
             <div className="mt-7"><AppStoreCtaRow badgeSize="lg" className="justify-center" secondary={<MatchedOutlineButton href="/support" badgeSize="lg">Visit Support</MatchedOutlineButton>}/></div>
