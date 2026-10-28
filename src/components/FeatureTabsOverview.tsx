@@ -104,7 +104,7 @@ export default function FeatureTabsOverview() {
           </div>
 
           <div className="flex justify-center lg:justify-start">
-            <Image src="/search.png?v=3" alt="Search & Monitoring" width={1070} height={2149} className="max-w-sm w-full h-auto" />
+            <Image src="/search.png?v=4" alt="Search & Monitoring" width={1070} height={2149} className="max-w-sm w-full h-auto" />
           </div>
         </div>
       </TabsContent>
@@ -188,7 +188,7 @@ export default function FeatureTabsOverview() {
           </div>
 
           <div className="flex justify-center lg:justify-start">
-            <Image src="/dashboard.png?v=3" alt="Analytics Dashboard" width={1070} height={2149} className="max-w-sm w-full h-auto" />
+            <Image src="/dashboard.png?v=4" alt="Analytics Dashboard" width={1070} height={2149} className="max-w-sm w-full h-auto" />
           </div>
         </div>
       </TabsContent>
@@ -226,7 +226,7 @@ export default function FeatureTabsOverview() {
                     <Shield className="w-5 h-5 text-primary mt-0.5" />
                     <div>
                       <div className="font-medium">Privacy-First Design</div>
-                      <div className="text-sm text-muted-foreground">Local history; AI requests processed by Google</div>
+                      <div className="text-sm text-muted-foreground">Local history; Atticus runs on Meta Muse</div>
                     </div>
                   </div>
                 </div>
@@ -286,7 +286,7 @@ export default function FeatureTabsOverview() {
               </div>
               <CardTitle className="text-2xl">Atticus AI Assistant</CardTitle>
               <CardDescription className="text-lg">
-                Your intelligent legal research companion powered by advanced AI
+                Plain-English case briefings and answers, powered by Meta Muse
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -296,19 +296,19 @@ export default function FeatureTabsOverview() {
                   <ul className="space-y-1 text-sm">
                     <li className="flex items-center space-x-2">
                       <Star className="w-4 h-4 text-primary" />
-                      <span>Legal concept research and analysis</span>
+                      <span>The story of every case in plain English</span>
                     </li>
                     <li className="flex items-center space-x-2">
                       <Star className="w-4 h-4 text-primary" />
-                      <span>Case law precedent identification</span>
+                      <span>Who&apos;s who and where the case stands</span>
                     </li>
                     <li className="flex items-center space-x-2">
                       <Star className="w-4 h-4 text-primary" />
-                      <span>Statutory interpretation assistance</span>
+                      <span>Timeline and recent news coverage</span>
                     </li>
                     <li className="flex items-center space-x-2">
                       <Star className="w-4 h-4 text-primary" />
-                      <span>Regulatory compliance guidance</span>
+                      <span>Sources you can open and check</span>
                     </li>
                   </ul>
                 </div>
@@ -317,15 +317,15 @@ export default function FeatureTabsOverview() {
                   <ul className="space-y-1 text-sm">
                     <li className="flex items-center space-x-2">
                       <Zap className="w-4 h-4 text-primary" />
-                      <span>Legal terminology definitions</span>
+                      <span>Ask follow-up questions about the case</span>
                     </li>
                     <li className="flex items-center space-x-2">
                       <Zap className="w-4 h-4 text-primary" />
-                      <span>Case summary assistance</span>
+                      <span>Explains each filing and its key terms</span>
                     </li>
                     <li className="flex items-center space-x-2">
                       <Zap className="w-4 h-4 text-primary" />
-                      <span>Cross-reference analysis</span>
+                      <span>Apple Intelligence fallback if Muse is unavailable</span>
                     </li>
                     <li className="flex items-center space-x-2">
                       <Zap className="w-4 h-4 text-primary" />
@@ -344,7 +344,7 @@ export default function FeatureTabsOverview() {
           </Card>
 
           <div className="flex justify-center lg:justify-start">
-            <Image src="/ai.png?v=3" alt="Atticus AI Assistant" width={1070} height={2149} className="max-w-sm w-full h-auto" />
+            <Image src="/ai.png?v=4" alt="Atticus, powered by Meta Muse, explaining a federal case in CASER" width={1070} height={2149} className="max-w-sm w-full h-auto" />
           </div>
         </div>
       </TabsContent>
