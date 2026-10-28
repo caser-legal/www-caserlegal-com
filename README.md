@@ -133,8 +133,9 @@ Responses: `200 {"ok":true}` (plus `"duplicate":true` for a repeat), `400 {"erro
 | Mode | Headers missing | Headers present | No stored key |
 |---|---|---|---|
 | `off` | allowed | ignored | allowed |
-| `optional` (default) | allowed | must verify (`401 assertion_invalid`) | allowed |
+| `optional` | allowed | must verify (`401 assertion_invalid`) | allowed |
 | `required` | `401 assertion_required` | must verify (`401 assertion_invalid`) | `401 assertion_required` |
+| `auto` (default) | `required` for requests with `X-CASER-Edition` and for every request from `UNMETERED_UNTIL` on; `optional` for no-edition (judge build) requests before then | | |
 
 If the store is down, `optional` lets the request through and logs `assertion_unchecked`; `required` returns `503 attest_unavailable`.
 
@@ -143,7 +144,7 @@ If the store is down, `optional` lets the request through and logs `assertion_un
 | `ATTEST_SECRET` | none | HMAC key for challenges and device tokens, at least 32 characters |
 | `APP_ATTEST_APP_ID` | `672RKF28YZ.com.alertsfor.caser` | Team and bundle id checked in attestations and assertions |
 | `APP_ATTEST_ALLOW_DEVELOPMENT` | unset | `1` accepts development App Attest keys |
-| `APP_ATTEST_ASSERTIONS` | `optional` | `off`, `optional` or `required` |
+| `APP_ATTEST_ASSERTIONS` | `auto` | `off`, `optional`, `required` or `auto` |
 
 ## Muse connector
 
