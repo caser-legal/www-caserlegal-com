@@ -18,9 +18,6 @@
     "src/app/v1/docket-archive/route.ts": {
       "maxDuration": 60
     },
-    "src/app/v1/case-artwork/route.ts": {
-      "maxDuration": 60
-    },
     "src/app/v1/case-question-stream/route.ts": {
       "maxDuration": 60
     }

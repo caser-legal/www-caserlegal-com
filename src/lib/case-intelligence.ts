@@ -941,36 +941,6 @@ export async function caseQuestion(body: Record<string, unknown>, fetcher: typeo
   return { answer: { text: text.slice(0, 4000), citations, thinking, tool_used: toolUsed }, model: museModel() };
 }
 
-export async function caseArtwork(body: Record<string, unknown>, fetcher: typeof fetch = fetch) {
-  const entry = parseEntry(body.entry);
-  const story = cleanText((body as Record<string, unknown>).story, 'story', 2000);
-  const apiKey = process.env.MODEL_API_KEY?.trim();
-  if (!apiKey) throw new CaseIntelligenceError(503, 'ai_not_configured');
-  const subject = [entry.title, entry.court, entry.caseType, story].filter(Boolean).join('. ').slice(0, 1200);
-  const prompt = [
-    'Create a dark, cinematic editorial illustration for a U.S. federal court case briefing app. No text, no words, no letters anywhere in the image.',
-    'Moody courthouse columns, subtle gold accent light, deep charcoal background, premium magazine-cover style, dignified and serious.',
-    `Case subject: ${tagSafe(subject)}`,
-  ].join('\n');
-  let response: Response;
-  try {
-    response = await fetcher('https://api.meta.ai/v1/responses', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'muse-image-1.0', input: prompt, store: false }),
-      signal: AbortSignal.timeout(60_000),
-    });
-  } catch (error) {
-    if (error instanceof Error && error.name === 'TimeoutError') throw new CaseIntelligenceError(504, 'ai_timeout');
-    throw new CaseIntelligenceError(502, 'ai_unavailable');
-  }
-  if (!response.ok) throw new CaseIntelligenceError(response.status === 429 ? 429 : 502, response.status === 429 ? 'ai_busy' : 'ai_failed');
-  const payload = (await response.json()) as MuseResponse;
-  const image = (payload?.output ?? []).find((item) => item?.type === 'image_generation_call' && typeof item.result === 'string');
-  if (!image?.result || image.result.length > 8 * 1024 * 1024) throw new CaseIntelligenceError(502, 'ai_incomplete');
-  return { artwork: { image_b64: image.result, format: 'webp' }, model: 'muse-image-1.0' };
-}
-
 type StreamEvent =
   | { type: 'text'; delta: string }
   | { type: 'thinking'; delta: string }
