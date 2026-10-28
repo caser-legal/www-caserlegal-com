@@ -92,7 +92,7 @@ export default function DownloadPage() {
               <PlatformStatusBadge status="available" />
             </div>
             <p className="text-sm text-muted-foreground pt-4 border-t">
-              Free tier: 1 lifetime search and up to 5 saved cases. Keyword alerts need CASER Pro.
+              Free tier: 3 searches a month, up to 10 saved cases, and 3 Atticus case briefings a month. Keyword alerts need CASER Pro.
             </p>
             <div className="pt-4 border-t space-y-3">
               <p className="font-semibold text-sm">CASER Pro ($14.99/year)</p>
