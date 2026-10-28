@@ -123,7 +123,7 @@ Responses: `200 {"ok":true}` (plus `"duplicate":true` for a repeat), `400 {"erro
 `GET /v1/attest/challenge` issues an HMAC-signed challenge that is valid for five minutes. `POST /v1/attest` verifies the App Attest attestation and returns a 30-day device token for `X-CASER-Device`.
 
 - **Single-use challenges:** a challenge is consumed atomically in the store (`SET NX` on its SHA-256) before the attestation is checked. A reused challenge returns `401 {"error":"invalid_challenge"}`.
-- **Per-IP limits:** at most 60 challenges per IP per hour and 20 attestations per IP per UTC day, counted in the store (`429 {"error":"rate_limited"}` with `Retry-After`). IPs are stored as SHA-256 hashes.
+- **Per-IP limits:** at most 600 challenges per IP per hour and 200 attestations per IP per UTC day, counted in the store (`429 {"error":"rate_limited"}` with `Retry-After`). IPs are stored as SHA-256 hashes.
 - **Store required:** without a working store `POST /v1/attest` returns `503 {"error":"attest_unavailable"}` rather than accept replays. Challenges are still issued, limited per instance.
 - **Attested keys:** each attested public key (SPKI DER, base64) is stored for 400 days with its counter, under the device id. Existing device tokens keep working.
 
