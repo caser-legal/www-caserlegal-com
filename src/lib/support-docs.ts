@@ -159,7 +159,7 @@ export const gettingStarted: SupportDoc = {
       bullets: [
         'Open the Search tab and enter keywords, party names, or case identifiers.',
         'Search covers federal district and bankruptcy filings across U.S. jurisdictions.',
-        'The free tier includes 3 case searches a month, up to 10 saved cases, search history, and 3 Atticus case briefings and 3 questions a month. CASER Pro adds unlimited searches and saved cases, up to 100 keyword alerts, PDF export, and 30 Atticus case briefings and 30 questions a month. Extra Atticus uses can be bought on either plan.',
+        'The free tier includes 3 case searches a month, up to 10 saved cases, search history, and 3 Atticus case briefings and 3 questions a month. CASER Pro adds unlimited searches and saved cases, up to 100 keyword alerts, PDF export, and 100 Atticus case briefings and 100 questions a month. Extra Atticus uses can be bought on either plan.',
         'Tap a result for details and direct links to court documents where available.',
       ],
     },
