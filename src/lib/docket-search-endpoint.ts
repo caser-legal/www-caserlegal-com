@@ -16,12 +16,12 @@ function digest(value: string): Buffer {
   return createHash('sha256').update(value, 'utf8').digest();
 }
 
-export function connectorAccess(request: Request, env: Record<string, string | undefined> = process.env): 'ok' | 'unauthorized' | 'unconfigured' {
+export function connectorAuthorized(request: Request, env: Record<string, string | undefined> = process.env): boolean {
   const expected = env.DOCKET_SEARCH_KEY?.trim() ?? '';
-  if (!expected) return env.VERCEL || env.NODE_ENV === 'production' ? 'unconfigured' : 'ok';
+  if (!expected) return true;
   const bearer = request.headers.get('authorization')?.match(/^Bearer\s+(.+)$/i)?.[1]?.trim() ?? '';
   const presented = request.headers.get(CONNECTOR_KEY_HEADER)?.trim() || bearer;
-  return presented && timingSafeEqual(digest(presented), digest(expected)) ? 'ok' : 'unauthorized';
+  return Boolean(presented) && timingSafeEqual(digest(presented), digest(expected));
 }
 
 export function searchCacheKey(body: Record<string, unknown>): string {
@@ -50,11 +50,7 @@ async function remember(key: string, result: DocketSearchResult): Promise<void> 
 }
 
 export async function handleDocketSearch(request: Request, search: Search = (body) => searchDockets(body)): Promise<Response> {
-  const access = connectorAccess(request);
-  if (access === 'unconfigured') {
-    return Response.json({ error: 'CASER search is not configured.' }, { status: 503 });
-  }
-  if (access === 'unauthorized') {
+  if (!connectorAuthorized(request)) {
     return Response.json({ error: 'A valid connector key is required.' }, { status: 401 });
   }
 

@@ -120,3 +120,28 @@ test('the runtime store never uses the read-only token, but read-only tooling ma
   assert.equal((calls[1].init.headers as Record<string, string>).Authorization, 'Bearer rw');
   assert.equal(readOnlyMeterStoreFromEnv({ KV_REST_API_URL: 'https://a.upstash.io' }), null);
 });
+
+test('the memory store accepts out-of-order counters within the window exactly once', async () => {
+  const store = memoryMeterStore();
+  assert.equal(await store.useCounter('n', 5, 32), true);
+  assert.equal(await store.useCounter('n', 3, 32), true);
+  assert.equal(await store.useCounter('n', 3, 32), false);
+  assert.equal(await store.useCounter('n', 5, 32), false);
+  assert.equal(await store.useCounter('n', 40, 32), true);
+  assert.equal(await store.useCounter('n', 8, 32), false);
+  assert.equal(await store.useCounter('n', 9, 32), true);
+  assert.equal(await store.useCounter('n', 9, 32), false);
+  assert.equal(await store.get('n'), '40');
+});
+
+test('the Upstash store checks and records counters in one script over two keys', async () => {
+  const calls: { url: string; init: RequestInit }[] = [];
+  const store = upstashMeterStore('https://example.upstash.io', 't', upstashFetch([{ result: 1 }, { result: 0 }], calls));
+  assert.equal(await store.useCounter('c', 7, 32, 60), true);
+  assert.equal(await store.useCounter('c', 7, 32), false);
+  const bodies = calls.map((call) => JSON.parse(String(call.init.body)));
+  assert.equal(bodies[0][0], 'EVAL');
+  assert.match(bodies[0][1], /ZSCORE/);
+  assert.deepEqual(bodies[0].slice(2), ['2', 'c', 'c:used', '7', '32', '60']);
+  assert.deepEqual(bodies[1].slice(2), ['2', 'c', 'c:used', '7', '32', '0']);
+});

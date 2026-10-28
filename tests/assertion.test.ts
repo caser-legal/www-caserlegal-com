@@ -125,12 +125,26 @@ test('a valid assertion over method, path, body and time is accepted and advance
   assert.equal(await store.get(`attest:v1:counter:${DEVICE}`), '5');
 });
 
-test('replayed or lower counters are rejected', async () => {
-  const signed = assertion({ counter: 3, body: BODY });
-  assert.equal((await send(request(BODY, signed))).status, 200);
-  await rejected(request(BODY, signed), 'assertion_invalid');
-  await rejected(request(BODY, assertion({ counter: 2, body: BODY })), 'assertion_invalid');
-  assert.equal((await send(request(BODY, assertion({ counter: 4, body: BODY })))).status, 200);
+test('parallel assertions arriving out of order are each accepted once', async () => {
+  const research = assertion({ counter: 2, body: BODY });
+  const insights = assertion({ counter: 3, body: BODY });
+  assert.equal((await send(request(BODY, insights))).status, 200);
+  assert.equal((await send(request(BODY, research))).status, 200);
+  assert.equal(await store.get(`attest:v1:counter:${DEVICE}`), '3');
+  await rejected(request(BODY, research), 'assertion_invalid');
+  await rejected(request(BODY, insights), 'assertion_invalid');
+  assert.equal((await send(request(BODY, assertion({ counter: 1, body: BODY })))).status, 200);
+  await rejected(request(BODY, assertion({ counter: 1, body: BODY })), 'assertion_invalid');
+});
+
+test('a counter 32 or more below the highest seen is rejected even if unused', async () => {
+  assert.equal((await send(request(BODY, assertion({ counter: 40, body: BODY })))).status, 200);
+  await rejected(request(BODY, assertion({ counter: 8, body: BODY })), 'assertion_invalid');
+  assert.equal((await send(request(BODY, assertion({ counter: 9, body: BODY })))).status, 200);
+  await rejected(request(BODY, assertion({ counter: 9, body: BODY })), 'assertion_invalid');
+  assert.equal((await send(request(BODY, assertion({ counter: 41, body: BODY })))).status, 200);
+  await rejected(request(BODY, assertion({ counter: 9, body: BODY })), 'assertion_invalid');
+  await rejected(request(BODY, assertion({ counter: 0, body: BODY })), 'assertion_invalid');
 });
 
 test('a signature from another key, a wrong app id or a stale time is rejected', async () => {

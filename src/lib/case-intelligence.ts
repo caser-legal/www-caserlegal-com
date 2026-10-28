@@ -5,7 +5,6 @@ import {
   ASSERTION_TIME_HEADER,
   AttestError,
   DEVICE_HEADER,
-  advanceAssertionCounter,
   assertionClientData,
   attestSecret,
   consumeChallenge,
@@ -13,6 +12,7 @@ import {
   issueDeviceToken,
   readAttestedKey,
   saveAttestedKey,
+  claimAssertionCounter,
   verifyAssertion,
   verifyAttestation,
   verifyChallenge,
@@ -385,15 +385,14 @@ export async function verifyRequestAssertion(request: Request, deviceId: string,
   } catch {
     throw new CaseIntelligenceError(401, 'assertion_invalid');
   }
-  if (counter <= record.counter) throw new CaseIntelligenceError(401, 'assertion_invalid');
-  let advanced: boolean;
+  let accepted: boolean;
   try {
-    advanced = await advanceAssertionCounter(store, deviceId, counter);
+    accepted = await claimAssertionCounter(store, deviceId, counter);
   } catch (error) {
     if (error instanceof MeterStoreError) return unavailable();
     throw error;
   }
-  if (!advanced) throw new CaseIntelligenceError(401, 'assertion_invalid');
+  if (!accepted) throw new CaseIntelligenceError(401, 'assertion_invalid');
 }
 
 async function verifiedBody(request: Request, deviceId: string): Promise<Record<string, unknown>> {

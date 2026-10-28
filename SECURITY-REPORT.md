@@ -4,8 +4,8 @@
 
 - Requests without an edition header (the judge build) now have a per-device monthly allowance instead of unlimited use.
 - App Attest challenges are single-use, attestation is limited per IP in the durable store, and attestation fails closed when the store is unavailable.
-- Attested public keys are stored, and requests carry per-request App Attest assertions (signature, app id, time and a strictly increasing counter). Rollout is controlled by `APP_ATTEST_ASSERTIONS`.
-- `/v1/docket-search` requires the connector key `DOCKET_SEARCH_KEY`, is limited per IP in the durable store and caches identical searches for 10 minutes.
+- Attested public keys are stored, and requests carry per-request App Attest assertions (signature, app id, time and a counter that cannot be reused). Rollout is controlled by `APP_ATTEST_ASSERTIONS`.
+- `/v1/docket-search` requires the connector key when `DOCKET_SEARCH_KEY` is set (it stays public otherwise, for the Muse connector), is limited per IP in the durable store and caches identical searches for 10 minutes.
 - App Store Server Notifications V2 (`/v1/appstore/notifications`) record refunds, revocations and expiries; Pro checks and credit redemption honor them, and refunded credit packs are taken back.
 - Sandbox purchases are kept apart from paid usage.
 - Tooling can read the store with the read-only token; the site never writes with it.

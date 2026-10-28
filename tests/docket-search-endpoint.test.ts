@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import type { DocketSearchResult } from '../src/lib/docket-search';
-import { connectorAccess, handleDocketSearch, searchCacheKey } from '../src/lib/docket-search-endpoint';
+import { connectorAuthorized, handleDocketSearch, searchCacheKey } from '../src/lib/docket-search-endpoint';
 import { memoryMeterStore, type MeterStore } from '../src/lib/meter-store';
 import { configureMetering } from '../src/lib/metering';
 
@@ -66,22 +66,22 @@ test('the connector key is required and compared exactly, by header or bearer to
   assert.equal(calls.length, 1);
 });
 
-test('without DOCKET_SEARCH_KEY the route fails closed in production and stays open locally', () => {
-  const plain = new Request('https://www.caserlegal.com/v1/docket-search', { method: 'POST' });
-  assert.equal(connectorAccess(plain, { VERCEL: '1' }), 'unconfigured');
-  assert.equal(connectorAccess(plain, { NODE_ENV: 'production' }), 'unconfigured');
-  assert.equal(connectorAccess(plain, { NODE_ENV: 'development' }), 'ok');
-  assert.equal(connectorAccess(plain, { DOCKET_SEARCH_KEY: KEY, VERCEL: '1' }), 'unauthorized');
-});
-
-test('an unconfigured production route returns 503 without searching', async () => {
+test('without DOCKET_SEARCH_KEY the route stays public, still limited and cached', async () => {
   delete process.env.DOCKET_SEARCH_KEY;
   process.env.VERCEL = '1';
   try {
+    const plain = new Request('https://www.caserlegal.com/v1/docket-search', { method: 'POST' });
+    assert.equal(connectorAuthorized(plain, { VERCEL: '1' }), true);
+    assert.equal(connectorAuthorized(plain, { DOCKET_SEARCH_KEY: KEY, VERCEL: '1' }), false);
     const { calls, search } = counting();
-    const response = await handleDocketSearch(request({ query: 'Acme' }), search);
-    assert.equal(response.status, 503);
-    assert.equal(calls.length, 0);
+    const address = '198.18.1.1';
+    const first = await handleDocketSearch(request({ query: 'Acme' }, { 'x-caser-connector-key': '' }, address), search);
+    assert.equal(first.status, 200);
+    assert.equal((await handleDocketSearch(request({ query: 'Acme' }, { 'x-caser-connector-key': 'anything' }, address), search)).status, 200);
+    assert.equal(calls.length, 1);
+    for (let n = 0; n < 8; n += 1) await handleDocketSearch(request({ query: `p${n}` }, {}, address), search);
+    const limited = await handleDocketSearch(request({ query: 'more' }, {}, address), search);
+    assert.equal(limited.status, 429);
   } finally {
     delete process.env.VERCEL;
   }

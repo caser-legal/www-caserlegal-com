@@ -127,7 +127,7 @@ Responses: `200 {"ok":true}` (plus `"duplicate":true` for a repeat), `400 {"erro
 - **Store required:** without a working store `POST /v1/attest` returns `503 {"error":"attest_unavailable"}` rather than accept replays. Challenges are still issued, limited per instance.
 - **Attested keys:** each attested public key (SPKI DER, base64) is stored for 400 days with its counter, under the device id. Existing device tokens keep working.
 
-**Per-request assertions.** On `/v1/case-insights`, `/v1/case-research`, `/v1/case-question`, `/v1/case-question-stream`, `/v1/usage` and `/v1/credits/redeem` the app sends `X-CASER-Assertion` (base64 App Attest assertion) and `X-CASER-Assertion-Time` (Unix milliseconds). The signed client data is `METHOD\nPATH\nSHA256_HEX(body)\nTIME`. The server checks the signature with the stored key, the app id hash, that the time is within five minutes, and that the counter is greater than the stored one (raised atomically in the store). `APP_ATTEST_ASSERTIONS` sets the rollout mode:
+**Per-request assertions.** On `/v1/case-insights`, `/v1/case-research`, `/v1/case-question`, `/v1/case-question-stream`, `/v1/usage` and `/v1/credits/redeem` the app sends `X-CASER-Assertion` (base64 App Attest assertion) and `X-CASER-Assertion-Time` (Unix milliseconds). The signed client data is `METHOD\nPATH\nSHA256_HEX(body)\nTIME`. The server checks the signature with the stored key, the app id hash, that the time is within five minutes, and the App Attest counter. A counter above the highest seen is accepted; so is a counter within 32 below it that has not been used yet, because parallel requests can arrive out of order. A counter already used, or 32 or more below the highest, is refused. The check and update are one atomic script in the store. `APP_ATTEST_ASSERTIONS` sets the rollout mode:
 
 | Mode | Headers missing | Headers present | No stored key |
 |---|---|---|---|
@@ -135,7 +135,7 @@ Responses: `200 {"ok":true}` (plus `"duplicate":true` for a repeat), `400 {"erro
 | `optional` (default) | allowed | must verify (`401 assertion_invalid`) | allowed |
 | `required` | `401 assertion_required` | must verify (`401 assertion_invalid`) | `401 assertion_required` |
 
-If the store is down, `optional` lets the request through and logs `assertion_unchecked`; `required` returns `503 attest_unavailable`. Because the counter must strictly increase, assertions generated concurrently can arrive out of order and the older one is refused; check for `assertion_invalid` in the logs before switching to `required`.
+If the store is down, `optional` lets the request through and logs `assertion_unchecked`; `required` returns `503 attest_unavailable`.
 
 | Variable | Default | Purpose |
 |---|---|---|
@@ -166,16 +166,15 @@ Request body (JSON):
 
 The response has `matches` (each with `id`, `title`, `description`, `court`, `state`, `court_type`, `published_at`, `parties`, `link`), plus `match_count`, `truncated`, `scanned_courts`, `failed_courts`, `total_courts`, `incomplete` and `disclaimer`.
 
-Access: the connector must send the shared secret `DOCKET_SEARCH_KEY`, either as `X-CASER-Connector-Key: <key>` or as `Authorization: Bearer <key>`; it is compared in constant time. If `DOCKET_SEARCH_KEY` is not set in production, the route returns `503` and searches nothing. Locally it is open when unset.
+Access: when `DOCKET_SEARCH_KEY` is set, the connector must send it, either as `X-CASER-Connector-Key: <key>` or as `Authorization: Bearer <key>`; it is compared in constant time. When it is not set, the route stays public so the Muse connector keeps working; the per-IP limits and the cache apply either way.
 
 Each search can fan out to every court feed, so identical searches (same normalized query, courts, date range and limit) are cached in the store for 10 minutes.
 
-Errors: `400` for bad input, `401` without the connector key, `429` after 10 searches in a minute or 200 in a UTC day from one IP (counted in the store, with `Retry-After`), `503` if the key is not configured, and `500` if search fails. A request can run for up to 60 seconds.
+Errors: `400` for bad input, `401` without the connector key when one is set, `429` after 10 searches in a minute or 200 in a UTC day from one IP (counted in the store, with `Retry-After`), and `500` if search fails. A request can run for up to 60 seconds.
 
 ```bash
 curl -X POST https://www.caserlegal.com/v1/docket-search \
   -H 'content-type: application/json' \
-  -H "X-CASER-Connector-Key: $DOCKET_SEARCH_KEY" \
   -d '{"query":"order","states":["IL"],"court_types":["district"],"date_range":"Last 7 days","limit":3}'
 ```
 

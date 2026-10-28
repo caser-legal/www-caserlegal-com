@@ -34,10 +34,19 @@ export default function PrivacyPage() {
                 server under a random account identifier created by the app.
               </LegalParagraph>
               <LegalParagraph>
+                To verify that each Atticus request comes from that installation, CASER&apos;s server stores
+                the App Attest public key created for the installation, together with a usage counter, under
+                the anonymous install ID. To limit abuse, the server keeps short-lived rate-limit counters
+                keyed by a one-way hash of your IP address, not the address itself; these counters expire
+                within a day.
+              </LegalParagraph>
+              <LegalParagraph>
                 Apple processes App Store purchases. CASER never receives your payment details or Apple ID.
                 To check a subscription or add purchased credits, the app sends CASER&apos;s server only
                 Apple-signed transaction records (such as the product, transaction ID, and purchase and
-                expiry dates). Google receives Atticus requests and associated app, network, model-use,
+                expiry dates). Apple also sends CASER&apos;s server App Store Server Notifications about
+                refunds, revocations, renewals and expirations, which CASER uses to keep subscriptions and
+                purchased uses accurate. Google receives Atticus requests and associated app, network, model-use,
                 and integrity information to operate and protect its services. CASER does not include
                 advertising, Firebase Analytics, or Crashlytics in the current iPhone app.
               </LegalParagraph>

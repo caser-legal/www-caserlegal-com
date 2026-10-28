@@ -620,8 +620,9 @@ export const dataPrivacy: SupportDoc = {
       bullets: [
         'Google Gemini through Firebase AI Logic processes Atticus questions and relevant context. Google Search grounding retains prompts, context, and output for 30 days (see Privacy Policy).',
         'In version 8.0 and later, Meta’s Muse API powers Atticus. Public court records for case research and filing explanations are sent in Meta’s Contributor mode, where Meta may use that public data to improve its models. Questions you type are sent in Standard mode and are not used for training.',
-        'Apple App Attest verifies that requests come from the genuine CASER app, using a per-install key identifier that contains no personal data.',
-        'Apple processes purchases. CASER’s server receives only Apple-signed transaction records to check a subscription or add credits.',
+        'Apple App Attest verifies that requests come from the genuine CASER app, using a per-install key identifier that contains no personal data. CASER’s server stores that installation’s App Attest public key and a usage counter to verify each request.',
+        'To limit abuse, CASER’s server keeps short-lived rate-limit counters keyed by a one-way hash of your IP address, not the address itself.',
+        'Apple processes purchases. CASER’s server receives only Apple-signed transaction records to check a subscription or add credits, and Apple’s App Store Server Notifications about refunds, revocations, renewals and expirations to keep subscriptions and purchased uses accurate.',
         'If Muse is unavailable, the app may answer using Apple Intelligence on your device or Apple Private Cloud Compute.',
         'iOS presents local notifications after CASER finds a match during a scan, when permission is enabled.',
       ],

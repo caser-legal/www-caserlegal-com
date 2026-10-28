@@ -25,6 +25,7 @@ const CHALLENGE_MAX_AGE_MS = 5 * 60_000;
 const CHALLENGE_MAX_SKEW_MS = 60_000;
 const CHALLENGE_REPLAY_TTL_SECONDS = (CHALLENGE_MAX_AGE_MS + CHALLENGE_MAX_SKEW_MS) / 1000 + 60;
 const ATTESTED_KEY_TTL_SECONDS = 400 * 86400;
+export const ASSERTION_COUNTER_WINDOW = 32;
 const DEVICE_TOKEN_TTL_MS = 30 * 24 * 60 * 60_000;
 const NONCE_EXTENSION_OID = Buffer.from([0x2a, 0x86, 0x48, 0x86, 0xf7, 0x63, 0x64, 0x08, 0x02]);
 const PRODUCTION_AAGUID = Buffer.concat([Buffer.from('appattest'), Buffer.alloc(7)]);
@@ -118,8 +119,9 @@ export async function readAttestedKey(store: MeterStore, deviceId: string): Prom
   };
 }
 
-export async function advanceAssertionCounter(store: MeterStore, deviceId: string, counter: number): Promise<boolean> {
-  return store.setIfGreater(attestKeys.counter(deviceId), counter, ATTESTED_KEY_TTL_SECONDS);
+export async function claimAssertionCounter(store: MeterStore, deviceId: string, counter: number): Promise<boolean> {
+  if (!Number.isInteger(counter) || counter < 1) return false;
+  return store.useCounter(attestKeys.counter(deviceId), counter, ASSERTION_COUNTER_WINDOW, ATTESTED_KEY_TTL_SECONDS);
 }
 
 export function assertionClientData(method: string, path: string, body: Uint8Array, time: string): Buffer {
