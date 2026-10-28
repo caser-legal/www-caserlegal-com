@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import type { DocketSearchResult } from '../src/lib/docket-search';
-import { connectorAuthorized, handleDocketSearch, searchCacheKey } from '../src/lib/docket-search-endpoint';
+import { connectorAuthorized, docketSearchLimits, handleDocketSearch, searchCacheKey } from '../src/lib/docket-search-endpoint';
 import { memoryMeterStore, type MeterStore } from '../src/lib/meter-store';
 import { configureMetering } from '../src/lib/metering';
 
@@ -66,8 +66,10 @@ test('the connector key is required and compared exactly, by header or bearer to
   assert.equal(calls.length, 1);
 });
 
-test('without DOCKET_SEARCH_KEY the route stays public, still limited and cached', async () => {
+test('without DOCKET_SEARCH_KEY the route stays public, still limited and cached', async (t) => {
   delete process.env.DOCKET_SEARCH_KEY;
+  process.env.DOCKET_SEARCH_PER_MINUTE = '10';
+  t.after(() => delete process.env.DOCKET_SEARCH_PER_MINUTE);
   process.env.VERCEL = '1';
   try {
     const plain = new Request('https://www.caserlegal.com/v1/docket-search', { method: 'POST' });
@@ -102,7 +104,13 @@ test('repeat searches within 10 minutes are served from the cache without fannin
   assert.equal(searchCacheKey({ query: 'Acme', limit: 3 }) === searchCacheKey({ query: 'Acme', limit: 4 }), false);
 });
 
-test('one IP gets 10 searches a minute and 200 a day', async () => {
+test('one IP gets DOCKET_SEARCH_PER_MINUTE searches a minute and DOCKET_SEARCH_PER_DAY a day', async (t) => {
+  process.env.DOCKET_SEARCH_PER_MINUTE = '10';
+  process.env.DOCKET_SEARCH_PER_DAY = '200';
+  t.after(() => {
+    delete process.env.DOCKET_SEARCH_PER_MINUTE;
+    delete process.env.DOCKET_SEARCH_PER_DAY;
+  });
   const { search } = counting();
   const address = '198.18.0.1';
   for (let n = 0; n < 10; n += 1) assert.equal((await handleDocketSearch(request({ query: `q${n}` }, {}, address), search)).status, 200);
@@ -134,4 +142,12 @@ test('bad input is still rejected with the existing messages', async () => {
   });
   assert.equal(failing.status, 500);
   assert.equal(calls.length, 0);
+});
+
+test('docket search defaults to 120 a minute and 20,000 a day per IP', () => {
+  assert.deepEqual(docketSearchLimits({}), [
+    { max: 120, seconds: 60 },
+    { max: 20000, seconds: 86400 },
+  ]);
+  assert.deepEqual(docketSearchLimits({ DOCKET_SEARCH_PER_MINUTE: '0', DOCKET_SEARCH_PER_DAY: 'x' }), docketSearchLimits({}));
 });

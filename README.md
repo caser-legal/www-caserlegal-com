@@ -63,7 +63,7 @@ Every Muse call's measured cost (`museUsage`) is recorded in a durable store, an
 - **Credits:** `X-CASER-Account` is the app's `appAccountToken` (UUID). `POST /v1/credits/redeem` with `{ "transaction": "<JWS>" }` verifies a consumable, checks its `appAccountToken` against the header and grants its uses once per `transactionId`. A transaction that App Store Server Notifications reported as refunded or revoked is refused. Sandbox consumables grant at most 10 uses each. Credits are spent only after the monthly allowance (1 credit = 1 briefing or 1 question).
 - **Charging:** allowance is checked before Muse is called and charged only after a successful response.
 - **Budget:** free-tier and judge usage share a monthly pool, `MUSE_MONTHLY_BUDGET_USD`; Pro subscribers and people spending purchased uses are not limited by it. All usage together stops at `MUSE_MONTHLY_HARD_CAP_USD`. When a limit is reached, calls that would reach Muse return `503 {"error":"atticus_paused"}`; cached case results are still served. The app then answers with Apple's on-device or Private Cloud Compute model.
-- **Abuse limits:** at most 40 Muse-bound requests per device per 10 minutes and 300 per UTC day (`429 {"error":"rate_limited"}` with `Retry-After`), on top of the per-IP limit.
+- **Abuse limits:** at most 120 Muse-bound requests per device per 10 minutes and 1,500 per UTC day (`429 {"error":"rate_limited"}` with `Retry-After`), on top of the per-IP limit.
 - **No store:** if the store is not configured in production, metered requests return `atticus_paused`, redeem returns `503 {"error":"credits_unavailable"}`, unmetered requests run on per-instance in-memory allowances, budget and abuse limits, and `meter_store_missing` is logged once.
 
 | Endpoint | Returns |
@@ -100,7 +100,8 @@ Requests without an edition header report the judge limits. When the allowance a
 | `UNMETERED_UNTIL` | `2026-11-10T08:00:00Z` | Requests without an edition header are unmetered until this time |
 | `FREE_BRIEFINGS_PER_MONTH`, `FREE_QUESTIONS_PER_MONTH` | `3`, `3` | Free allowance per device |
 | `PRO_BRIEFINGS_PER_MONTH`, `PRO_QUESTIONS_PER_MONTH` | `100`, `100` | Pro allowance per subscription |
-| `JUDGE_BRIEFINGS_PER_MONTH`, `JUDGE_QUESTIONS_PER_MONTH` | `50`, `50` | Allowance per device for requests without an edition header |
+| `JUDGE_BRIEFINGS_PER_MONTH`, `JUDGE_QUESTIONS_PER_MONTH` | `100`, `100` | Allowance per device for requests without an edition header |
+| `DOCKET_SEARCH_PER_MINUTE`, `DOCKET_SEARCH_PER_DAY` | `120`, `20000` | Per-IP limits on `/v1/docket-search` (the Muse connector calls from Meta's servers) |
 | `CREDIT_PACKS` | `com.alertsfor.caser.credits.10000=50,com.alertsfor.caser.credits.50000=200,com.alertsfor.caser.credits.100000=750` | Consumable product id = uses |
 
 `npm run cost-report` reads the store (from the environment or `.env.local`; `KV_REST_API_READ_ONLY_TOKEN` is enough) and prints measured spend, Muse calls, cost per uncached briefing, cost per question and cache-hit rate per endpoint for the current and previous month. Set prices and allowances from these numbers.
@@ -123,7 +124,7 @@ Responses: `200 {"ok":true}` (plus `"duplicate":true` for a repeat), `400 {"erro
 `GET /v1/attest/challenge` issues an HMAC-signed challenge that is valid for five minutes. `POST /v1/attest` verifies the App Attest attestation and returns a 30-day device token for `X-CASER-Device`.
 
 - **Single-use challenges:** a challenge is consumed atomically in the store (`SET NX` on its SHA-256) before the attestation is checked. A reused challenge returns `401 {"error":"invalid_challenge"}`.
-- **Per-IP limits:** at most 60 challenges per IP per hour and 20 attestations per IP per UTC day, counted in the store (`429 {"error":"rate_limited"}` with `Retry-After`). IPs are stored as SHA-256 hashes.
+- **Per-IP limits:** at most 600 challenges per IP per hour and 200 attestations per IP per UTC day, counted in the store (`429 {"error":"rate_limited"}` with `Retry-After`). IPs are stored as SHA-256 hashes.
 - **Store required:** without a working store `POST /v1/attest` returns `503 {"error":"attest_unavailable"}` rather than accept replays. Challenges are still issued, limited per instance.
 - **Attested keys:** each attested public key (SPKI DER, base64) is stored for 400 days with its counter, under the device id. Existing device tokens keep working.
 

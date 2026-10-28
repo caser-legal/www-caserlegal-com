@@ -5,10 +5,17 @@ import { MeterError, enforceDurableLimit, meterStores } from './metering';
 
 export const CONNECTOR_KEY_HEADER = 'x-caser-connector-key';
 const CACHE_TTL_SECONDS = 600;
-const LIMITS = [
-  { max: 10, seconds: 60 },
-  { max: 200, seconds: 86400 },
-];
+function positive(value: string | undefined, fallback: number): number {
+  const parsed = Number(value?.trim());
+  return value?.trim() && Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
+}
+
+export function docketSearchLimits(env: Record<string, string | undefined> = process.env) {
+  return [
+    { max: positive(env.DOCKET_SEARCH_PER_MINUTE, 120), seconds: 60 },
+    { max: positive(env.DOCKET_SEARCH_PER_DAY, 20000), seconds: 86400 },
+  ];
+}
 
 type Search = (body: Record<string, unknown>) => Promise<DocketSearchResult>;
 
@@ -55,7 +62,7 @@ export async function handleDocketSearch(request: Request, search: Search = (bod
   }
 
   try {
-    await enforceDurableLimit('docket-search', clientKey(request), LIMITS);
+    await enforceDurableLimit('docket-search', clientKey(request), docketSearchLimits());
   } catch (error) {
     if (!(error instanceof MeterError)) throw error;
     return Response.json(

@@ -10,8 +10,8 @@ const KEY_PREFIX = 'atticus:v1';
 const PERIOD_TTL_SECONDS = 40 * 86400;
 const LEDGER_TTL_SECONDS = 400 * 86400;
 const ABUSE_WINDOW_SECONDS = 600;
-const ABUSE_WINDOW_MAX = 40;
-const ABUSE_DAY_MAX = 300;
+const ABUSE_WINDOW_MAX = 120;
+const ABUSE_DAY_MAX = 1500;
 const DEFAULT_UNMETERED_UNTIL = '2026-11-10T08:00:00Z';
 const DEFAULT_BUDGET_USD = 10;
 const DEFAULT_HARD_CAP_USD = 50;
@@ -87,8 +87,8 @@ export function meterConfig(env: Record<string, string | undefined> = process.en
       questions: whole(env.PRO_QUESTIONS_PER_MONTH, 100),
     },
     judge: {
-      briefings: whole(env.JUDGE_BRIEFINGS_PER_MONTH, 50),
-      questions: whole(env.JUDGE_QUESTIONS_PER_MONTH, 50),
+      briefings: whole(env.JUDGE_BRIEFINGS_PER_MONTH, 100),
+      questions: whole(env.JUDGE_QUESTIONS_PER_MONTH, 100),
     },
     packs: parsePacks(env.CREDIT_PACKS),
   };

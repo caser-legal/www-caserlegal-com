@@ -91,10 +91,10 @@ test('attestation fails closed when the store is missing or down, while challeng
   }
 });
 
-test('one IP may POST /v1/attest at most 20 times per UTC day', async () => {
+test('one IP may POST /v1/attest at most 200 times per UTC day', async () => {
   const address = nextIp();
   const body = { key_id: 'x', attestation: 'y' };
-  for (let n = 0; n < 20; n += 1) assert.equal((await attest(body, address)).status, 400);
+  for (let n = 0; n < 200; n += 1) assert.equal((await attest(body, address)).status, 400);
   const limited = await attest(body, address);
   assert.equal(limited.status, 429);
   assert.deepEqual(await limited.json(), { error: 'rate_limited' });
@@ -104,10 +104,10 @@ test('one IP may POST /v1/attest at most 20 times per UTC day', async () => {
   assert.equal((await attest(body, address)).status, 400);
 });
 
-test('one IP may fetch at most 60 challenges per hour', async () => {
+test('one IP may fetch at most 600 challenges per hour', async () => {
   const address = nextIp();
   for (let n = 0; n < 10; n += 1) assert.equal((await attestChallenge(challengeRequest(address))).status, 200);
-  await store.incr(limitKey('attest-challenge', address, 3600), 50, 3600);
+  await store.incr(limitKey('attest-challenge', address, 3600), 590, 3600);
   const limited = await attestChallenge(challengeRequest(address));
   assert.equal(limited.status, 429);
   assert.deepEqual(await limited.json(), { error: 'rate_limited' });

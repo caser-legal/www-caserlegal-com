@@ -47,10 +47,10 @@ const RESEARCH_CACHE_MS = 7 * 24 * 60 * 60 * 1000;
 const MUSE_TIMEOUT_MS = 240_000;
 const MAX_BODY_BYTES = 32 * 1024;
 const RATE_WINDOW_MS = 5 * 60_000;
-const RATE_MAX_REQUESTS = 40;
+const RATE_MAX_REQUESTS = 600;
 const RATE_MAX_CLIENTS = 5000;
-const ATTEST_DAILY_MAX = 20;
-const CHALLENGE_HOURLY_MAX = 60;
+const ATTEST_DAILY_MAX = 200;
+const CHALLENGE_HOURLY_MAX = 600;
 
 const INVISIBLE_RANGES: ReadonlyArray<readonly [number, number]> = [
   [0x00, 0x08],
