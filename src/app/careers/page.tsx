@@ -28,7 +28,6 @@ import {
 export default function CareersPage() {
   return (
     <PageShell>
-      {/* Hero Section */}
       <section className="route-hero relative py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
@@ -54,7 +53,6 @@ export default function CareersPage() {
         </div>
       </section>
 
-      {/* Why Join Us */}
       <section className="py-16 lg:py-24 bg-muted/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-16">
@@ -123,7 +121,6 @@ export default function CareersPage() {
         </div>
       </section>
 
-      {/* Open Positions */}
       <section id="open-positions" className="py-20 lg:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-16">
@@ -133,7 +130,6 @@ export default function CareersPage() {
           </div>
 
           <div className="max-w-4xl mx-auto space-y-6">
-            {/* General Application */}
             <Card className="border-primary hover:shadow-lg transition-shadow">
               <CardHeader>
                 <div className="flex items-start justify-between">
@@ -259,7 +255,6 @@ export default function CareersPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
       <section className="py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">

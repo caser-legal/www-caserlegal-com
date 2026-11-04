@@ -3,8 +3,6 @@ interface IconProps {
   size?: number;
 }
 
-// Custom Legal Icons for Big Law Aesthetic
-
 export const ScalesOfJustice = ({ className, size = 24 }: IconProps) => (
   <svg 
     width={size} 
@@ -381,7 +379,6 @@ export const LegalBookSearch = ({ className, size = 24 }: IconProps) => (
   </svg>
 );
 
-// Additional icons needed for the pricing page
 export const CheckCircle = ({ className, size = 24 }: IconProps) => (
   <svg 
     width={size} 
@@ -558,7 +555,6 @@ export const Smartphone = ({ className, size = 24 }: IconProps) => (
   </svg>
 );
 
-// Additional icons for careers, contact, and support pages
 export const Target = ({ className, size = 24 }: IconProps) => (
   <svg
     width={size}

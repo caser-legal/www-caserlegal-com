@@ -89,14 +89,12 @@ export type ChatMessage = {
   id: string;
   role: 'user' | 'assistant' | 'system';
   text: string;
-  /** What was actually sent to Gemini when it differs from the visible text (case analysis). */
   prompt?: string;
   sources?: AtticusSource[];
   passages?: AtticusPassage[];
   searchEntryPointHTML?: string | null;
 };
 
-// Every search result and alert match counts as one PACER page; a search with no results still costs one.
 export const PACER_PAGE_FEE = 0.1;
 
 export function newId(): string {
@@ -105,7 +103,6 @@ export function newId(): string {
     : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
 
-/** State mirrored to localStorage under a per-user key, so each Privy account keeps its own workspace. */
 export function usePersistentState<T>(key: string, initial: T) {
   const [value, setValue] = useState<T>(initial);
   const loadedKey = useRef<string | null>(null);
@@ -125,7 +122,6 @@ export function usePersistentState<T>(key: string, initial: T) {
     try {
       window.localStorage.setItem(key, JSON.stringify(value));
     } catch {
-      // Storage full or blocked: keep working in memory.
     }
   }, [key, value]);
 

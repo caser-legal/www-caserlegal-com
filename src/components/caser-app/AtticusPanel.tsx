@@ -39,7 +39,6 @@ function AssistantMarkdown({ text }: { text: string }) {
   );
 }
 
-/** iOS ChatSourcesView: a collapsed "N sources" toggle that lists [n] title links. */
 function SourcesList({ sources }: { sources: AtticusSource[] }) {
   const [open, setOpen] = useState(false);
   return (
@@ -76,7 +75,6 @@ function SourcesList({ sources }: { sources: AtticusSource[] }) {
   );
 }
 
-/** iOS GroundingPassagesView: "Show exact passage" reveals each quoted passage and its source numbers. */
 function PassagesList({ passages }: { passages: AtticusPassage[] }) {
   const [open, setOpen] = useState(false);
   return (
@@ -108,10 +106,6 @@ function PassagesList({ passages }: { passages: AtticusPassage[] }) {
   );
 }
 
-/**
- * Google Search suggestions, which Google requires to be shown with grounded answers. Like the iOS
- * WebView, the provided HTML is rendered as-is but isolated (here in a shadow root) from the page.
- */
 function SearchSuggestions({ html }: { html: string }) {
   const hostRef = useRef<HTMLDivElement | null>(null);
 

@@ -16,7 +16,6 @@ export default function Home() {
     return () => window.clearInterval(timer);
   }, []);
 
-  // Keep the three hero phones hidden until all of them have loaded, then reveal them together.
   const [heroPhonesReady, setHeroPhonesReady] = React.useState(false);
   const heroPhoneRef = React.useRef<HTMLDivElement>(null);
   React.useEffect(() => {
@@ -44,7 +43,6 @@ export default function Home() {
 
   return (
     <PageShell mainUnpadded>
-      {/* Hero Section */}
       <section className="caser-hero overflow-hidden py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid items-center gap-8 lg:grid-cols-[.88fr_1.12fr] lg:gap-10">

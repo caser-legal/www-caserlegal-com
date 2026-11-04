@@ -1,8 +1,5 @@
 'use client';
 
-// Web port of the iOS AIAssistantService: Firebase AI Logic (Gemini Developer API backend)
-// on the caser-legal1 project with Google Search grounding.
-
 import { getApp, getApps, initializeApp, type FirebaseApp } from 'firebase/app';
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from 'firebase/app-check';
 import {
@@ -27,7 +24,6 @@ const IDLE_RESPONSE_TIMEOUT_MS = 20_000;
 const TOTAL_RESPONSE_TIMEOUT_MS = 75_000;
 const RATE_LIMIT = { max: 20, perMs: 10_000 };
 
-// iOS blocks medium-and-above across these five categories.
 const SAFETY_SETTINGS = [
   HarmCategory.HARM_CATEGORY_HARASSMENT,
   HarmCategory.HARM_CATEGORY_HATE_SPEECH,
@@ -36,7 +32,6 @@ const SAFETY_SETTINGS = [
   'HARM_CATEGORY_CIVIC_INTEGRITY' as HarmCategory,
 ].map((category) => ({ category, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE }));
 
-// Same Firebase project, key and app as the iOS app (GoogleService-Info.plist).
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY ?? 'AIzaSyBvQ8zvxnZJRsEFOY4Jo-COGjYGLXGDA38',
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN ?? 'caser-legal1.firebaseapp.com',
@@ -45,8 +40,6 @@ const firebaseConfig = {
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID ?? '549498909010',
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID ?? '1:549498909010:ios:798e5d51afd6c2ef964a8b',
 };
-// Optional: browsers can't use the iOS App Attest provider, so App Check only runs on the web
-// when a reCAPTCHA Enterprise site key is configured.
 const APP_CHECK_SITE_KEY = process.env.NEXT_PUBLIC_FIREBASE_APP_CHECK_RECAPTCHA_SITE_KEY;
 
 let app: FirebaseApp | null = null;
@@ -87,7 +80,6 @@ export type AtticusChunk = {
 };
 export type AtticusTurn = { role: 'user' | 'assistant'; text: string };
 
-/** iOS firebaseHistory: only complete user/model exchanges, last 30 entries. */
 function pairedHistory(turns: AtticusTurn[]): Content[] {
   const paired: Content[] = [];
   let pendingUser: Content | null = null;
@@ -140,8 +132,6 @@ function chunkFrom(response: EnhancedGenerateContentResponse): AtticusChunk {
   };
 }
 
-// ---- Errors (iOS AIAssistantErrorFormatter) --------------------------------
-
 function errorBlob(error: unknown): string {
   if (error instanceof Error) {
     const custom = (error as { customErrorData?: { status?: number; statusText?: string } }).customErrorData;
@@ -183,8 +173,6 @@ export function friendlyAtticusError(error: unknown): string {
   }
   return text;
 }
-
-// ---- Streaming --------------------------------------------------------------
 
 const sendTimes: number[] = [];
 
@@ -235,10 +223,6 @@ async function streamOnce(
   }
 }
 
-/**
- * Streams an Atticus reply. Like iOS, a rate-limited Flash request that has not produced any
- * output retries once on Flash-Lite with the same history and grounding.
- */
 export async function streamAtticus(
   prompt: string,
   turns: AtticusTurn[],

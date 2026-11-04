@@ -1,10 +1,7 @@
-// Atticus prompt rules, ported from the iOS app (AIAssistantViewModel.swift and PromptGuard.swift).
-
 export const MAX_INPUT_LENGTH = 2000;
 export const MAX_PREPARED_PROMPT_LENGTH = 8000;
 const BLOCKED_MESSAGE = "I can't help with that. Let's stick to the legal research question.";
 
-// Verbatim from the iOS app (AIAssistantViewModel.systemInstructions).
 export const ATTICUS_SYSTEM_PROMPT = `You are Atticus, an AI legal research assistant built by Case Search & Alerts by CASER.
 
 IDENTITY:
@@ -50,7 +47,6 @@ const SUSPICIOUS_PATTERNS = [
   /\byou are (?:now )?(?:jailbroken|my servant|in developer mode|dan\b)/i,
   /\bbegin prompt injection\b/i,
 ];
-// Untrusted fields such as RSS titles can carry an injection mid-string, so these are unanchored.
 const EMBEDDED_PATTERNS = [
   /(?:ignore|disregard|forget|reset|override) (?:all |the |your )?(?:previous |prior |above |earlier )?(?:instructions|guardrails|rules|guidelines|prompts?)\b/i,
   /(?:reveal|show|print|repeat|output|leak) (?:me )?(?:the )?system (?:prompt|instructions?)\b/i,
@@ -105,7 +101,6 @@ function stripHtml(text: string): string {
     .trim();
 }
 
-/** Same three-section analysis prompt the iOS case card sends. */
 export function caseAnalysisPrompt(title: string, description: string): GuardResult {
   const safeTitle = guardUntrustedField(title, 500);
   if (!safeTitle.ok) return safeTitle;

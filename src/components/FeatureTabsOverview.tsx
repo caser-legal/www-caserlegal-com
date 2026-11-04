@@ -14,7 +14,6 @@ import {
 } from '@/components/ui/icons';
 import { CheckCircle, Shield, Star, Zap } from 'lucide-react';
 
-/** Feature overview tabs — restored from 7e4a743 (2026-03-28). */
 export default function FeatureTabsOverview() {
   return (
     <Tabs defaultValue="ai" className="max-w-6xl mx-auto">

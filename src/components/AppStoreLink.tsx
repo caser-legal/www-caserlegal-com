@@ -15,10 +15,6 @@ type AppStoreBadgeProps = {
   className?: string;
 };
 
-/**
- * Official “Download on the App Store” badge (self-hosted SVG from Apple Marketing Tools).
- * Do not alter proportions, colors, or artwork per App Store Marketing Guidelines.
- */
 export function AppStoreBadge({ size = 'md', className }: AppStoreBadgeProps) {
   const heightClass = APP_STORE_BADGE_HEIGHT[size];
   const widthClass = appStoreBadgeWidthClass(size);
@@ -46,7 +42,6 @@ export function AppStoreBadge({ size = 'md', className }: AppStoreBadgeProps) {
   );
 }
 
-/** @deprecated Use AppStoreBadge — kept as alias for gradual migration */
 export function AppStoreBadgeLink(props: AppStoreBadgeProps) {
   return <AppStoreBadge {...props} />;
 }
@@ -59,7 +54,6 @@ type MatchedOutlineButtonProps = {
   internal?: boolean;
 };
 
-/** Outline CTA sized to match official App Store badge height on the same row */
 export function MatchedOutlineButton({
   href,
   children,
@@ -95,7 +89,6 @@ type AppStoreCtaRowProps = {
   secondary?: React.ReactNode;
 };
 
-/** Primary promo row: official badge + optional equally tall secondary button */
 export function AppStoreCtaRow({
   badgeSize = 'lg',
   className,
@@ -114,7 +107,6 @@ export function AppStoreCtaRow({
   );
 }
 
-/** Nav / compact areas: badge only at minimum guideline height */
 export function AppStoreNavBadge() {
   return <AppStoreBadge size="sm" />;
 }

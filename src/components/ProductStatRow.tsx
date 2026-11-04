@@ -2,7 +2,6 @@ import { cn } from '@/lib/utils';
 
 export type ProductStat = {
   value: string;
-  /** Two lines keep “Courts”, “Sign Up”, and “Fees” aligned with equal column gaps */
   lines: readonly [string, string];
 };
 
@@ -17,10 +16,6 @@ type ProductStatRowProps = {
   stats?: ProductStat[];
 };
 
-/**
- * Standard three-up product stats (federal courts, no signup, $0 search).
- * Equal column gaps; labels split on two lines for even spacing.
- */
 export function ProductStatRow({ className, stats = PRODUCT_STATS }: ProductStatRowProps) {
   return (
     <div
@@ -65,7 +60,6 @@ type StatHighlightGridProps = {
   lineClassName?: string;
 };
 
-/** Same equal-gap grid layout for other three-stat blocks sitewide */
 export function StatHighlightGrid({
   items,
   className,

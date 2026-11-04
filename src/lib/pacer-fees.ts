@@ -1,4 +1,3 @@
-/** Model source: https://pacer.uscourts.gov/pacer-pricing-how-fees-work */
 export const PACER_PAGE_FEE = 0.1;
 export const PACER_DOCUMENT_MAX_FEE = 3;
 export const PACER_DOCUMENT_PAGE_CAP = 30;
@@ -24,8 +23,6 @@ export function calculatePacerBilling({ monthlySearches, pagesPerSearch, documen
   const quarterlyBillable = quarterlyBill(monthlyTotal);
   const annualBillable = money(quarterlyBillable * 4);
   const remainingSearchCosts = money(pageCosts * (1 - Math.min(100, nonnegative(searchesReplacedPercent)) / 100));
-  // Documents still opened on PACER remain chargeable. Apply its waiver independently
-  // before and after CASER; reducing usage can change whether the full quarter is billed.
   const remainingAnnualPacer = money(quarterlyBill(documentCosts + remainingSearchCosts) * 4);
   const annualWithCaser = money(remainingAnnualPacer + nonnegative(annualSubscription));
   return { pageCosts, documentCosts, monthlyTotal, quarterlyCharges, quarterlyBillable,

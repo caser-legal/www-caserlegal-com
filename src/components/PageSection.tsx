@@ -4,9 +4,7 @@ type PageSectionProps = {
   children: React.ReactNode;
   className?: string;
   id?: string;
-  /** Muted background band */
   muted?: boolean;
-  /** Default marketing section vertical rhythm */
   size?: 'default' | 'compact' | 'hero';
 };
 

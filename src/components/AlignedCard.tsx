@@ -5,7 +5,6 @@ type AlignedCardProps = {
   className?: string;
 };
 
-/** Wrapper for equal-height cards in a stretch grid */
 export function AlignedCard({ children, className }: AlignedCardProps) {
   return <div className={cn('flex flex-col h-full', className)}>{children}</div>;
 }
@@ -16,7 +15,6 @@ type TwoLineLabelProps = {
   className?: string;
 };
 
-/** Fixed two-line title block so prices/stats align across columns */
 export function TwoLineLabel({ line1, line2, className }: TwoLineLabelProps) {
   return (
     <div className={cn('min-h-[3.25rem] flex flex-col items-center justify-center', className)}>

@@ -12,11 +12,8 @@ import { calculatePacerBilling } from '@/lib/pacer-fees';
 import { AppStoreCtaRow, MatchedOutlineButton } from '@/components/AppStoreLink';
 
 interface PACERCalculatorProps {
-  /** Full-width section on pricing page with heading */
   standalone?: boolean;
-  /** Inside another section — no outer container or duplicate CTAs */
   embedded?: boolean;
-  /** Home showcase: steps + summary on left, sliders + PACER costs on right */
   showcase?: boolean;
   leftSlot?: ReactNode;
 }

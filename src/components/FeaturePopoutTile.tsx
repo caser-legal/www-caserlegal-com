@@ -13,7 +13,6 @@ type FeaturePopoutTileProps = {
   howTo: string;
 };
 
-/** Feature card that opens a larger screenshot with a short how-to. */
 export default function FeaturePopoutTile({ n, title, body, img, alt, howTo }: FeaturePopoutTileProps) {
   const [open, setOpen] = useState(false);
 

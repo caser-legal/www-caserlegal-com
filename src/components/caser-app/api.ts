@@ -23,7 +23,6 @@ async function readError(response: Response, fallback: string): Promise<ApiError
   return new ApiError(message, response.status);
 }
 
-/** Calls CASER's signed-in API routes with the current Privy access token. */
 export function useCaserApi() {
   const { getAccessToken } = usePrivy();
 

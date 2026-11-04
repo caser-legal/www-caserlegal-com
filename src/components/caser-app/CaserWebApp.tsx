@@ -48,7 +48,6 @@ const DEFAULT_FILTERS: SearchFilters = { states: [], courtTypes: [], dateRange: 
 
 const DOCKET_PATTERN = /\b\d{1,2}:\d{2}-[a-z]{1,4}-\d{2,6}(?:-[a-z]{1,4})*\b|\b\d{2}-\d{3,6}\b/i;
 
-/** The term a case card's Alert button watches: its docket number when the title has one. */
 function alertTermFor(match: DocketMatch): string {
   return (match.title.match(DOCKET_PATTERN)?.[0] ?? match.title).slice(0, 200);
 }
@@ -142,8 +141,6 @@ function Workspace({ userId, account, onLogout }: { userId: string; account: str
     [setSavings],
   );
 
-  // ---- Search -------------------------------------------------------------
-
   const runSearch = useCallback(
     async (query: string, signal: AbortSignal) => {
       const result = await search({ query, ...filters }, signal);
@@ -153,8 +150,6 @@ function Workspace({ userId, account, onLogout }: { userId: string; account: str
     },
     [filters, recordSavings, search, setRecent],
   );
-
-  // ---- Alerts -------------------------------------------------------------
 
   const alertsRef = useRef(alerts);
   useEffect(() => {
@@ -183,7 +178,6 @@ function Workspace({ userId, account, onLogout }: { userId: string; account: str
         });
         const createdAt = new Date(alert.createdAt).getTime();
         const seen = new Set(alert.seen);
-        // Like iOS: only filings published after the alert was created, each announced once.
         const fresh = result.matches.filter(
           (match) =>
             match.published_at &&
@@ -240,7 +234,6 @@ function Workspace({ userId, account, onLogout }: { userId: string; account: str
     [patchAlert, recordSavings, search, setMatches, toast],
   );
 
-  // The custom timer: every 30 seconds, run each enabled alert whose interval has elapsed.
   useEffect(() => {
     let cancelled = false;
     const tick = async () => {
@@ -290,8 +283,6 @@ function Workspace({ userId, account, onLogout }: { userId: string; account: str
     setPermission(await Notification.requestPermission());
   };
 
-  // ---- Atticus ------------------------------------------------------------
-
   const sendToAtticus = async (prompt: string, shown: string) => {
     atticusAbort.current?.abort();
     const abort = new AbortController();
@@ -317,7 +308,6 @@ function Workspace({ userId, account, onLogout }: { userId: string; account: str
       );
 
     try {
-      // Like iOS: text accumulates, the latest non-empty grounding replaces the previous one.
       await streamAtticus(
         prompt,
         turns,
@@ -360,8 +350,6 @@ function Workspace({ userId, account, onLogout }: { userId: string; account: str
     if (!guarded.ok) return addSystemMessage(guarded.message);
     sendToAtticus(guarded.text, 'Analyze this case for me');
   };
-
-  // ---- Shared card wiring -------------------------------------------------
 
   const savedIds = useMemo(() => new Set(saved.map((match) => match.id)), [saved]);
   const alertTerms = useMemo(() => new Set(alerts.map((alert) => alert.term)), [alerts]);

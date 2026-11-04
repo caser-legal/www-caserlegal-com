@@ -3,7 +3,6 @@
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
-/** Adds scroll reveals to marketing and help pages while preserving the Muse page as-is. */
 export default function SiteMotion() {
   const pathname = usePathname();
 

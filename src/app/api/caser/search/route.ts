@@ -13,7 +13,6 @@ export async function POST(request: Request) {
     return Response.json({ error: message }, { status: 401 });
   }
 
-  // Manual searches plus scheduled alert checks share this budget.
   if (rateLimited(`search:${userId}`, 30, 60_000)) {
     return Response.json({ error: 'Too many searches. Try again in a minute.' }, { status: 429 });
   }

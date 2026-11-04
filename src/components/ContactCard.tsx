@@ -4,12 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
-/** Shared height for card footer actions sitewide */
 export const CARD_ACTION_CLASS = 'w-full h-10 shrink-0';
 
 type ContactCardProps = {
   title: string;
-  /** Single string or two lines for aligned card headers */
   description: string | readonly [string, string];
   icon: ReactNode;
   children: React.ReactNode;
