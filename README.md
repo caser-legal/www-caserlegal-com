@@ -17,26 +17,27 @@ npm run build  # Vercel server build. /v1/docket-search runs only after this pro
 
 | Tier | CTA |
 |------|-----|
-| **CASER Pro (Individual)** | Free + $14.99/year Pro via App Store download |
-| **Business** | Contact form → `/contact` |
-| **Enterprise** | Contact form → `/contact` |
+| **Free** | App Store download |
+| **CASER Pro** | $14.99/year via App Store download |
+| **Team onboarding** | Contact form → `/contact` |
+| **Integration requests** | Contact form → `/contact` |
 
 ## Key components
 
 - `src/lib/app-store.ts` — canonical App Store URL
 - `src/components/AppStoreLink.tsx` — Download buttons
-- `src/components/PricingTiers.tsx` — three-column pricing
+- `src/components/PricingTiers.tsx` — pricing cards (Free and Pro, then team onboarding and integration requests)
 - `src/components/SiteFooter.tsx` — shared footer
 
 ## Meta Muse case intelligence (Meta Global AI Developer Hackathon)
 
-This repository is the backend for [CASER 2.0](https://github.com/caser-legal/CASER-2.0), the hackathon entry (Startups track). The site itself predates the event. **Every commit from `c32fa20` (Oct 27, 2026) onward is hackathon work**; the commit before it, `e018b59`, is dated Oct 24. See it with `git log c32fa20~1..main`.
+This repository is the backend for [CASER 2.0](https://github.com/caser-legal/CASER-2.0), the hackathon entry (Startups track). The site itself predates the event. **Hackathon work starts at `c32fa20` (Oct 27, 2026)**; the commit before it, `e018b59`, is dated Oct 24. A few later commits are routine site updates (footer, styling, pricing copy). See it with `git log c32fa20~1..main`.
 
-Built during the hackathon, all in `src/lib/case-intelligence.ts` and `src/lib/feed-archive.ts`:
+Built during the hackathon, mainly in `src/lib/case-intelligence.ts` and `src/lib/feed-archive.ts`, with metering, App Attest and StoreKit in `metering.ts`, `meter-store.ts`, `device-attest.ts`, `storekit.ts` and `appstore-notifications.ts`:
 
 | Endpoint | What it does with the Meta Model API |
 |---|---|
-| `POST /v1/case-insights` | Explains one docket entry. `muse-spark-1.3`, structured output (`text.format` JSON schema, strict) |
+| `POST /v1/case-insights` | Explains one docket entry. `muse-spark-1.3-contributor` (Standard if Contributor is busy or fails), structured output (`text.format` JSON schema, strict) |
 | `POST /v1/case-research` | The About This Case artifact: story, who's who, where it stands, timeline, news. Structured output plus `web_search` grounding; `url_citation` offsets are mapped onto the story so the app can show a source number after each cited claim. Incomplete or malformed answers are rejected |
 | `POST /v1/case-question` | Ask Atticus about a case, with web search and the `search_related_dockets` function tool |
 | `POST /v1/case-question-stream` | The same answer streamed as server-sent events: text deltas, reasoning summaries, tool status, sources |
@@ -49,13 +50,13 @@ Built during the hackathon, all in `src/lib/case-intelligence.ts` and `src/lib/f
 How Muse is used beyond a single call:
 
 - **Contributor mode for public records.** Case research and filing explanations use only public court data, so they run on `muse-spark-1.3-contributor`; questions people type stay on Standard `muse-spark-1.3` and are not used for training.
-- **Shared results.** Research and insights are cached per case in Blob storage, so a case is researched once and every later open is instant and free.
+- **Shared results.** Research and insights are cached per docket entry in Blob storage (research for 7 days, insights for 30), so later opens of the same filing are instant and free.
 - **Bounded research.** `max_tool_calls: 4` caps built-in web search per briefing; calls get up to four minutes inside a five-minute function.
 - **Measured cost.** Each response's token and search usage is priced and written to the Redis ledger; `npm run cost-report` prints cost per briefing, per question and the cache-hit rate. Measured on Oct 28, 2026: about $0.015 per new briefing and $0.009 per question.
 
 Docket text is fenced as untrusted data, inputs are validated and size-capped, every request from the app is signed with an App Attest assertion, and limits are sized to stop abuse without touching normal use. The Meta API key stays on the server.
 
-Environment variables: `MODEL_API_KEY` (Meta Model API key, required), `MUSE_MODEL` (optional, defaults to `muse-spark-1.3`), `CRON_SECRET`, and the Vercel Blob token for the archive.
+Environment variables: `MODEL_API_KEY` (Meta Model API key, required), `MUSE_MODEL` (questions, defaults to `muse-spark-1.3`), `MUSE_PUBLIC_MODEL` (research and insights, defaults to `muse-spark-1.3-contributor`), `CRON_SECRET`, and the Vercel Blob token for the archive.
 
 Tests: `npm test` runs 129 tests, including prompt-injection defenses, structured-output shaping, rejection of incomplete answers, citation offset mapping, streaming, archive pruning, App Attest attestation and assertions, StoreKit verification, App Store Server Notifications, connector access and Atticus metering.
 
@@ -69,11 +70,11 @@ Every Muse call's measured cost (`museUsage`) is recorded in a durable store, an
 - **Period:** the calendar month in UTC. Counters reset at 00:00 UTC on the 1st.
 - **Briefing:** opening one case. `/v1/case-insights` and `/v1/case-research` for the same docket entry count once per month, even when served from the shared case cache; reopening it that month is free.
 - **Question:** one `/v1/case-question` or `/v1/case-question-stream` call.
-- **Plans:** free is keyed by the App Attest device id. Pro is keyed by the `com.alertsfor.caser.yearly` subscription's `originalTransactionId`, sent as `X-CASER-Subscription` (StoreKit 2 `signedTransactionInfo`) and verified with Apple's `@apple/app-store-server-library` against the Apple root certificates in `data/apple-roots/` (SHA-256 checked against the macOS system trust store). Production and Sandbox transactions are accepted. Sandbox subscriptions (App Review, TestFlight) get the Pro allowance under a separate subject, `pro-sandbox:<originalTransactionId>`, and their spend counts against the free-usage pool because no money was paid. An invalid, expired, refunded or revoked subscription is treated as free.
+- **Plans:** free is keyed by the App Attest device id. Pro is keyed by the `com.alertsfor.caser.yearly` subscription's `originalTransactionId`, sent as `X-CASER-Subscription` (StoreKit 2 `signedTransactionInfo`) and verified with Apple's `@apple/app-store-server-library` against the Apple root certificates in `data/apple-roots/`. Production and Sandbox transactions are accepted. Sandbox subscriptions (App Review, TestFlight) get the Pro allowance under a separate subject, `pro-sandbox:<originalTransactionId>`, and their spend counts against the free-usage pool because no money was paid. An invalid, expired, refunded or revoked subscription is treated as free.
 - **Credits:** `X-CASER-Account` is the app's `appAccountToken` (UUID). `POST /v1/credits/redeem` with `{ "transaction": "<JWS>" }` verifies a consumable, checks its `appAccountToken` against the header and grants its uses once per `transactionId`. A transaction that App Store Server Notifications reported as refunded or revoked is refused. Sandbox consumables grant at most 10 uses each. Credits are spent only after the monthly allowance (1 credit = 1 briefing or 1 question).
 - **Charging:** allowance is checked before Muse is called and charged only after a successful response.
 - **Budget:** free-tier and judge usage share a monthly pool, `MUSE_MONTHLY_BUDGET_USD`; Pro subscribers and people spending purchased uses are not limited by it. All usage together stops at `MUSE_MONTHLY_HARD_CAP_USD`. When a limit is reached, calls that would reach Muse return `503 {"error":"atticus_paused"}`; cached case results are still served. The app then answers with Apple's on-device or Private Cloud Compute model.
-- **Abuse limits:** at most 120 Muse-bound requests per device per 10 minutes and 1,500 per UTC day (`429 {"error":"rate_limited"}` with `Retry-After`), on top of the per-IP limit.
+- **Abuse limits:** at most 120 metered requests per device per 10 minutes and 1,500 per UTC day (`429 {"error":"rate_limited"}` with `Retry-After`), on top of the per-IP limit.
 - **No store:** if the store is not configured in production, metered requests return `atticus_paused`, redeem returns `503 {"error":"credits_unavailable"}`, unmetered requests run on per-instance in-memory allowances, budget and abuse limits, and `meter_store_missing` is logged once.
 
 | Endpoint | Returns |
@@ -98,7 +99,7 @@ Every Muse call's measured cost (`museUsage`) is recorded in a durable store, an
 }
 ```
 
-Requests without an edition header report the judge limits. When the allowance and credits are used up the endpoint returns `402 { "error": "quota_exceeded", "kind": "briefing" | "question", "usage": … }`.
+Requests without an edition header report the judge limits until `UNMETERED_UNTIL`. When the allowance and credits are used up the endpoint returns `402 { "error": "quota_exceeded", "kind": "briefing" | "question", "usage": … }`.
 
 | Variable | Default | Purpose |
 |---|---|---|
@@ -158,13 +159,13 @@ If the store is down, `optional` lets the request through and logs `assertion_un
 
 ## Muse connector
 
-CASER's Muse connector is a server route in this site and deploys with it, so every push to `main` redeploys the connector. While Muse is reviewing it, avoid pushing changes that affect the route.
+CASER's Muse connector is a server route in this site and deploys with it, so every push to `main` redeploys the connector.
 
 - **Endpoint:** `POST https://www.caserlegal.com/v1/docket-search` (`src/app/v1/docket-search/route.ts`)
-- **Search logic:** `src/lib/docket-search.ts`, using the court feed lists in `data/courts/` (the same lists the iOS app ships)
+- **Search logic:** `src/lib/docket-search.ts`, using the court feed lists in `data/courts/` (333 feeds)
 - **Landing page:** `/muse` (`src/app/muse/page.tsx`, `src/components/MuseLockup.tsx`, assets in `public/muse/`)
 - **Connector icon** for the Muse submission (512×512 PNG): `docs/caser-muse-connector-icon.png`
-- **Tests:** `npm run test` (`tests/docket-search.test.ts`)
+- **Tests:** `npm run test` (`tests/docket-search.test.ts`, `tests/docket-search-endpoint.test.ts`)
 
 Request body (JSON):
 
@@ -182,7 +183,7 @@ Access: when `DOCKET_SEARCH_KEY` is set, the connector must send it, either as `
 
 Each search can fan out to every court feed, so identical searches (same normalized query, courts, date range and limit) are cached in the store for 10 minutes.
 
-Errors: `400` for bad input, `401` without the connector key when one is set, `429` after 10 searches in a minute or 200 in a UTC day from one IP (counted in the store, with `Retry-After`), and `500` if search fails. A request can run for up to 60 seconds.
+Errors: `400` for bad input, `401` without the connector key when one is set, `429` after 120 searches in a minute or 20,000 in a UTC day from one IP (`DOCKET_SEARCH_PER_MINUTE`, `DOCKET_SEARCH_PER_DAY`; counted in the store, with `Retry-After`), and `500` if search fails. A request can run for up to 60 seconds.
 
 ```bash
 curl -X POST https://www.caserlegal.com/v1/docket-search \
