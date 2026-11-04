@@ -20,8 +20,8 @@ export default function AboutPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h1 className="text-4xl lg:text-6xl font-bold tracking-tight route-title">
-              Pioneering Legal Technology
-              <span className="text-primary"> for Modern Practice</span>
+              Built inside a real
+              <span className="text-primary"> federal case</span>
             </h1>
           </div>
         </div>
@@ -39,32 +39,32 @@ export default function AboutPage() {
             <Card className="route-card p-8">
               <CardContent className="space-y-6 text-lg leading-relaxed text-muted-foreground">
                 <p>
-                  It started with countless nights studying law, drafting page after page of documents,
-                  navigating the federal court system Pro Se for the very first time. The complexity
-                  was overwhelming, but the real challenge came after filing.
+                  Federal court is terrifying, especially Pro Se. You never know when the next filing is
+                  coming. Maybe it&apos;s a motion to dismiss. Maybe it&apos;s a deadline. Maybe it&apos;s a
+                  default judgment. You find out what work needs to be done when the letter shows up,
+                  days or even a week after it was filed.
                 </p>
                 <p>
-                  What happens next? How do you monitor your case? How do you know when something changes?
-                  The PACER system was expensive, confusing, and seemed designed to keep people out rather
-                  than provide access to justice.
+                  Court RSS feeds don&apos;t help much. Filings scroll off within a short window, so unless
+                  you&apos;re refreshing the page for months between filings, you miss what just happened
+                  in your own case. And PACER charges 10 cents a page, search results included, for cases
+                  you often weren&apos;t even looking for.
                 </p>
                 <p>
-                  That's when the idea sparked: if the system won't work for regular people, maybe
-                  technology could bridge that gap. So I started learning to code—because I needed
-                  solutions to problems that didn't exist yet.
+                  I lived this in my own federal case. So I built a tool in Automator to watch it for me.
                 </p>
                 <p className="text-primary font-semibold text-xl">
-                  And so, CASER was born.
+                  That tool became CASER.
                 </p>
                 <p>
-                  What began as a personal tool to monitor a single case evolved into a platform that
-                  can now serve thousands of legal professionals, Pro Se litigants, and anyone who believes
-                  that access to court information shouldn't require a law degree to navigate.
+                  It kept growing: search across 400+ federal court feeds, an archive that keeps filings
+                  after they leave the feed, alerts, and PACER cost tracking. In October 2026 I rebuilt
+                  the case page around Meta Muse. Now you open any filing and Atticus builds the whole
+                  page for you, with a timeline, who&apos;s who and every source it used.
                 </p>
                 <p>
-                  CASER represents more than just technology—it's proof that when the system fails,
-                  innovation can succeed. It's a solution built by someone who lived the problem,
-                  for everyone who faces the same challenges.
+                  Court records have always been public. CASER is how I keep them that way: built by
+                  someone who lived the problem, for everyone who faces it.
                 </p>
               </CardContent>
             </Card>
@@ -105,8 +105,8 @@ export default function AboutPage() {
               </CardHeader>
               <CardContent className="flex-1">
                 <p className="text-sm text-muted-foreground">
-                  The founder learned to code to solve real monitoring needs. The iOS app ships on the
-                  App Store—focused tools, not buzzwords.
+                  CASER started as an Automator workflow watching one case. It grew into an iOS app
+                  on the App Store, built one real need at a time.
                 </p>
               </CardContent>
             </Card>
@@ -120,8 +120,8 @@ export default function AboutPage() {
               </CardHeader>
               <CardContent className="flex-1">
                 <p className="text-sm text-muted-foreground">
-                  Monitor federal court feeds without a PACER account for in-app search. Open documents
-                  on PACER only when you choose—public docket data stays reachable.
+                  Search federal court feeds without a PACER account. Once a public case page is built,
+                  the next person who opens that case gets it instantly.
                 </p>
               </CardContent>
             </Card>
@@ -149,7 +149,7 @@ export default function AboutPage() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <h2 className="text-3xl lg:text-4xl font-bold">
-                Our Mission: Democratizing Access to Court Intelligence
+                Understand any federal case, without the PACER bill
               </h2>
               <div className="space-y-2">
                 <div className="flex items-center space-x-3">
@@ -158,11 +158,11 @@ export default function AboutPage() {
                 </div>
                 <div className="flex items-center space-x-3">
                   <CheckCircle className="w-5 h-5 text-primary" />
-                  <span>Potential PACER savings based on your usage</span>
+                  <span>Case pages built by Atticus, powered by Meta Muse</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <CheckCircle className="w-5 h-5 text-primary" />
-                  <span>Protected local storage and optional app lock</span>
+                  <span>A 30-day archive of filings that left the feed</span>
                 </div>
               </div>
             </div>

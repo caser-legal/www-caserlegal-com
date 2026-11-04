@@ -270,7 +270,7 @@ main :focus-visible { outline:3px solid #d4ad39; outline-offset:3px; }
   pointer-events: none;
 }
 .caser-hero h1 { text-wrap:balance; }
-.hero-rotating-line { min-height:2.04em; }
+
 .hero-stats > div { flex:1; min-width:0; }
 .hero-stats > div + div { padding-left:20px; border-left:1px solid var(--border); }
 .hero-stats b { letter-spacing:-.04em; }

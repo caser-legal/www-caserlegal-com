@@ -4,7 +4,7 @@ import { buildPageMetadata } from '@/lib/site-metadata';
 export const metadata: Metadata = buildPageMetadata({
   title: 'Download CASER for iOS',
   description:
-    'Get CASER on the App Store. Monitor federal courts, set keyword alerts, and track PACER savings on iPhone.',
+    'Get CASER on the App Store. Search federal court filings, open any case and let Atticus, powered by Meta Muse, build the case page, set alerts, and track PACER savings on iPhone.',
   path: '/download',
 });
 

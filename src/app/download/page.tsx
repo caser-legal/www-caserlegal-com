@@ -44,9 +44,9 @@ export default function DownloadPage() {
           <div className="mx-auto grid max-w-5xl gap-10 rounded-3xl border bg-[#f5f5f5] p-6 sm:p-9 lg:grid-cols-[1.1fr_.9fr] lg:items-center">
             <div className="grid gap-4 sm:grid-cols-2">
               {[
-                { icon: CourthouseClock, title: 'Court search & alerts' },
+                { icon: Gavel, title: 'Atticus case pages, powered by Meta Muse' },
+                { icon: CourthouseClock, title: 'Court search, archive & alerts' },
                 { icon: DollarDocument, title: 'PACER savings tracker' },
-                { icon: Gavel, title: 'Atticus AI (CASER Pro)' },
                 { icon: LegalDocument, title: 'PDF export' },
               ].map(({ icon: Icon, title }) => (
                 <div key={title} className="route-card flex items-center gap-4 border p-5">

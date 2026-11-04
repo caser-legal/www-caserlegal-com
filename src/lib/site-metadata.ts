@@ -49,8 +49,8 @@ export function buildPageMetadata({
 }
 
 export const homeMetadata = buildPageMetadata({
-  title: 'CASER — Federal Court Monitoring for iOS',
+  title: 'CASER — Understand Any Federal Case on iPhone',
   description:
-    `${PRODUCT_FULL_NAME} (${PRODUCT_SHORT_NAME}). Federal court alerts and search for iOS. Monitor 400+ court feeds with no in-app search fees. Download on the App Store.`,
+    `${PRODUCT_FULL_NAME} (${PRODUCT_SHORT_NAME}). Search 400+ federal court feeds with no per-search fees. Open any filing and Atticus, powered by Meta Muse, builds the case page: timeline, who's who and sources. Download on the App Store.`,
   path: '/',
 });

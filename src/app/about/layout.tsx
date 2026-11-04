@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import { buildPageMetadata } from '@/lib/site-metadata';
 
 export const metadata: Metadata = buildPageMetadata({
-  title: 'About CASER — Court Monitoring for Legal Professionals',
+  title: 'About CASER — Built Inside a Real Federal Case',
   description:
-    'Learn how CASER helps litigation teams monitor 400+ federal court feeds, reduce PACER waste, and deliver keyword alerts on iOS.',
+    'CASER started as an Automator workflow watching one Pro Se federal case. Today it searches 400+ federal court feeds and builds full case pages with Atticus, powered by Meta Muse.',
   path: '/about',
 });
 

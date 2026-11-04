@@ -28,7 +28,7 @@ const softwareJsonLd = {
     priceCurrency: 'USD',
   },
   description:
-    `${PRODUCT_FULL_NAME} (${PRODUCT_SHORT_NAME}). Federal court alerts and search. Monitor 400+ U.S. federal court feeds with no in-app search fees.`,
+    `${PRODUCT_FULL_NAME} (${PRODUCT_SHORT_NAME}). Search 400+ U.S. federal court feeds with no per-search fees. Atticus, powered by Meta Muse, builds a case page for any filing with a timeline, who's who and sources.`,
   url: APP_STORE_URL,
 };
 

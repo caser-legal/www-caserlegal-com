@@ -12,8 +12,8 @@ export default function FeaturesPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h1 className="text-4xl lg:text-6xl font-bold tracking-tight route-title" suppressHydrationWarning>
-              Comprehensive Court Monitoring
-              <span className="text-primary"> for Everyone</span>
+              Every federal case, explained
+              <span className="text-primary"> with sources you can check</span>
             </h1>
             <AppStoreCtaRow
               badgeSize="lg"
@@ -128,7 +128,7 @@ export default function FeaturesPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h2 className="text-3xl lg:text-4xl font-bold">
-              Ready to Transform Your Court Monitoring?
+              Court records are public. Let&apos;s keep it that way.
             </h2>
             <AppStoreCtaRow
               badgeSize="lg"

@@ -18,8 +18,8 @@ export default function FeatureTabsOverview() {
   return (
     <Tabs defaultValue="ai" className="max-w-6xl mx-auto">
       <TabsList className="grid h-auto w-full grid-cols-2 gap-1 sm:grid-cols-4">
-        <TabsTrigger value="ai" className="min-h-11 whitespace-normal">AI Assistant</TabsTrigger>
-        <TabsTrigger value="monitoring" className="min-h-11 whitespace-normal">Monitoring</TabsTrigger>
+        <TabsTrigger value="ai" className="min-h-11 whitespace-normal">Atticus</TabsTrigger>
+        <TabsTrigger value="monitoring" className="min-h-11 whitespace-normal">Search &amp; Alerts</TabsTrigger>
         <TabsTrigger value="security" className="min-h-11 whitespace-normal">Security</TabsTrigger>
         <TabsTrigger value="analytics" className="min-h-11 whitespace-normal">Analytics</TabsTrigger>
       </TabsList>
@@ -34,7 +34,7 @@ export default function FeatureTabsOverview() {
                 </div>
                 <CardTitle>Federal Court Feed Monitoring</CardTitle>
                 <CardDescription>
-                  Search 400+ public federal court feeds, including court RSS and GovInfo opinions. Feed availability and retention vary; this is not a complete docket archive.
+                  Search 400+ public federal court feeds, including court RSS and GovInfo opinions, plus CASER&apos;s 30-day archive of filings that have already scrolled off the court feed. Feed availability varies; this is not a complete docket archive.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -69,9 +69,9 @@ export default function FeatureTabsOverview() {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <Gavel className="w-6 h-6 text-primary" />
                 </div>
-                <CardTitle>Keyword Alert System</CardTitle>
+                <CardTitle>Case Alerts</CardTitle>
                 <CardDescription>
-                  Find relevant matches when CASER checks available feeds. Background checks depend on iOS scheduling; delivery times are not guaranteed.
+                  Watch a name, company or case number and get an alert when a new filing matches, instead of waiting for the mail. Background checks depend on iOS scheduling; delivery times are not guaranteed.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -217,15 +217,15 @@ export default function FeatureTabsOverview() {
                   <div className="flex items-start space-x-3">
                     <Shield className="w-5 h-5 text-primary mt-0.5" />
                     <div>
-                      <div className="font-medium">Secure Data Transmission</div>
-                      <div className="text-sm text-muted-foreground">HTTPS connections to supported services</div>
+                      <div className="font-medium">Apple App Attest</div>
+                      <div className="text-sm text-muted-foreground">Every Atticus request is signed by the genuine app over HTTPS</div>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <Shield className="w-5 h-5 text-primary mt-0.5" />
                     <div>
                       <div className="font-medium">Privacy-First Design</div>
-                      <div className="text-sm text-muted-foreground">Local history; Atticus runs on Meta Muse</div>
+                      <div className="text-sm text-muted-foreground">Local history; questions you type are not used for training</div>
                     </div>
                   </div>
                 </div>
@@ -254,8 +254,8 @@ export default function FeatureTabsOverview() {
                   <div className="flex items-start space-x-3">
                     <CheckCircle className="w-5 h-5 text-primary mt-0.5" />
                     <div>
-                      <div className="font-medium">Verification Required</div>
-                      <div className="text-sm text-muted-foreground">Source confirmation</div>
+                      <div className="font-medium">Source Cards</div>
+                      <div className="text-sm text-muted-foreground">Every case page shows the sources it used</div>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
@@ -283,19 +283,19 @@ export default function FeatureTabsOverview() {
               <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <BrainScales className="w-8 h-8 text-primary" />
               </div>
-              <CardTitle className="text-2xl">Atticus AI Assistant</CardTitle>
+              <CardTitle className="text-2xl">Atticus Case Pages</CardTitle>
               <CardDescription className="text-lg">
-                Plain-English case briefings and answers, powered by Meta Muse
+                Open any filing and the whole case page builds itself, powered by Meta Muse
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <h4 className="font-semibold">Research Capabilities</h4>
+                  <h4 className="font-semibold">The Case Page</h4>
                   <ul className="space-y-1 text-sm">
                     <li className="flex items-center space-x-2">
                       <Star className="w-4 h-4 text-primary" />
-                      <span>The story of every case in plain English</span>
+                      <span>What the case is about and who is involved</span>
                     </li>
                     <li className="flex items-center space-x-2">
                       <Star className="w-4 h-4 text-primary" />
@@ -303,32 +303,32 @@ export default function FeatureTabsOverview() {
                     </li>
                     <li className="flex items-center space-x-2">
                       <Star className="w-4 h-4 text-primary" />
-                      <span>Timeline and recent news coverage</span>
+                      <span>A real timeline and recent news coverage</span>
                     </li>
                     <li className="flex items-center space-x-2">
                       <Star className="w-4 h-4 text-primary" />
-                      <span>Sources you can open and check</span>
+                      <span>A source card for everything it used</span>
                     </li>
                   </ul>
                 </div>
                 <div className="space-y-2">
-                  <h4 className="font-semibold">Professional Features</h4>
+                  <h4 className="font-semibold">Ask Atticus</h4>
                   <ul className="space-y-1 text-sm">
                     <li className="flex items-center space-x-2">
                       <Zap className="w-4 h-4 text-primary" />
-                      <span>Ask follow-up questions about the case</span>
+                      <span>Follow-up answers stream in live</span>
                     </li>
                     <li className="flex items-center space-x-2">
                       <Zap className="w-4 h-4 text-primary" />
-                      <span>Explains each filing and its key terms</span>
+                      <span>Pulls related dockets from CASER search</span>
                     </li>
                     <li className="flex items-center space-x-2">
                       <Zap className="w-4 h-4 text-primary" />
-                      <span>Apple Intelligence fallback if Muse is unavailable</span>
+                      <span>Falls back to Apple Intelligence, then the docket</span>
                     </li>
                     <li className="flex items-center space-x-2">
                       <Zap className="w-4 h-4 text-primary" />
-                      <span>Neutral information provider</span>
+                      <span>Shared case pages load instantly</span>
                     </li>
                   </ul>
                 </div>

@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import { buildPageMetadata } from '@/lib/site-metadata';
 
 export const metadata: Metadata = buildPageMetadata({
-  title: 'CASER Features — Monitoring, Alerts, Atticus AI & PACER Savings',
+  title: 'CASER Features — Atticus Case Pages, Search, Alerts & PACER Savings',
   description:
-    'Explore federal court monitoring, push keyword alerts, Atticus AI research tools, analytics, and enterprise-grade security on iOS.',
+    'Open any federal filing and Atticus, powered by Meta Muse, builds the case page: timeline, who\'s who and sources. Plus search across 400+ court feeds, a 30-day archive, alerts and PACER savings on iOS.',
   path: '/features',
 });
 
