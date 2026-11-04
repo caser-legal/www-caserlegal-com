@@ -162,7 +162,7 @@ If the store is down, `optional` lets the request through and logs `assertion_un
 CASER's Muse connector is a server route in this site and deploys with it, so every push to `main` redeploys the connector.
 
 - **Endpoint:** `POST https://www.caserlegal.com/v1/docket-search` (`src/app/v1/docket-search/route.ts`)
-- **Search logic:** `src/lib/docket-search.ts`, using the court feed lists in `data/courts/` (333 feeds)
+- **Search logic:** `src/lib/docket-search.ts`, using the court feed lists in `data/courts/` (400 feeds, the same lists the iOS app ships)
 - **Landing page:** `/muse` (`src/app/muse/page.tsx`, `src/components/MuseLockup.tsx`, assets in `public/muse/`)
 - **Connector icon** for the Muse submission (512×512 PNG): `docs/caser-muse-connector-icon.png`
 - **Tests:** `npm run test` (`tests/docket-search.test.ts`, `tests/docket-search-endpoint.test.ts`)

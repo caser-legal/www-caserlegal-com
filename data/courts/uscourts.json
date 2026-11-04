@@ -1,87 +1,178 @@
 [
   {
-    "name": "U.S. Court of Appeals for the Second Circuit",
+    "name": "U.S. Court of Appeals for the District of Columbia Circuit",
     "state": "National",
     "type": "appellate",
     "timezone": "America/New_York",
-    "url": "https://ecf.ca2.uscourts.gov/cgi-bin/rss_outside.pl"
+    "url": "https://ecf.cadc.uscourts.gov/n/beam/servlet/TransportRoom?servlet=RSSGenerator"
   },
   {
-    "name": "U.S. Court of Appeals for the Third Circuit",
+    "name": "U.S. Court of Appeals for the District of Columbia Circuit Opinions",
     "state": "National",
     "type": "appellate",
     "timezone": "America/New_York",
-    "url": null
-  },
-  {
-    "name": "U.S. Court of Appeals for the Fourth Circuit",
-    "state": "National",
-    "type": "appellate",
-    "timezone": "America/New_York",
-    "url": "https://ecf.ca4.uscourts.gov/cgi-bin/rss_outside.pl"
-  },
-  {
-    "name": "U.S. Court of Appeals for the Fifth Circuit",
-    "state": "National",
-    "type": "appellate",
-    "timezone": "America/Chicago",
-    "url": null
-  },
-  {
-    "name": "U.S. Court of Appeals for the Sixth Circuit",
-    "state": "National",
-    "type": "appellate",
-    "timezone": "America/New_York",
-    "url": "https://ecf.ca6.uscourts.gov/cgi-bin/rss_outside.pl"
-  },
-  {
-    "name": "U.S. Court of Appeals for the Seventh Circuit",
-    "state": "National",
-    "type": "appellate",
-    "timezone": "America/Chicago",
-    "url": null
+    "url": "https://media.cadc.uscourts.gov/opinions/rss.xml"
   },
   {
     "name": "U.S. Court of Appeals for the Eighth Circuit",
     "state": "National",
     "type": "appellate",
     "timezone": "America/Chicago",
-    "url": null
-  },
-  {
-    "name": "U.S. Court of Appeals for the Ninth Circuit",
-    "state": "National",
-    "type": "appellate",
-    "timezone": "America/Los_Angeles",
-    "url": null
-  },
-  {
-    "name": "U.S. Court of Appeals for the Tenth Circuit",
-    "state": "National",
-    "type": "appellate",
-    "timezone": "America/Denver",
-    "url": "https://ecf.ca10.uscourts.gov/cgi-bin/rss_outside.pl"
+    "url": "https://ecf.ca8.uscourts.gov/n/beam/servlet/TransportRoom?servlet=RSSGenerator"
   },
   {
     "name": "U.S. Court of Appeals for the Eleventh Circuit",
     "state": "National",
     "type": "appellate",
     "timezone": "America/New_York",
-    "url": "https://ecf.ca11.uscourts.gov/cgi-bin/rss_outside.pl"
+    "url": "https://ecf.ca11.uscourts.gov/n/beam/servlet/TransportRoom?servlet=RSSGenerator"
   },
   {
-    "name": "U.S. Court of Appeals for the District of Columbia Circuit",
+    "name": "U.S. Court of Appeals for the Eleventh Circuit Opinions",
     "state": "National",
     "type": "appellate",
     "timezone": "America/New_York",
-    "url": "https://ecf.cadc.uscourts.gov/cgi-bin/rss_outside.pl"
+    "url": "https://media.ca11.uscourts.gov/opinions/rss/pubopnsfeed.php"
   },
   {
     "name": "U.S. Court of Appeals for the Federal Circuit",
     "state": "National",
     "type": "appellate",
     "timezone": "America/New_York",
-    "url": "https://ecf.cafc.uscourts.gov/cgi-bin/rss_outside.pl"
+    "url": "https://ecf.cafc.uscourts.gov/n/beam/servlet/TransportRoom?servlet=RSSGenerator"
+  },
+  {
+    "name": "U.S. Court of Appeals for the Federal Circuit Opinions",
+    "state": "National",
+    "type": "appellate",
+    "timezone": "America/New_York",
+    "url": "https://www.cafc.uscourts.gov/category/opinion-order/feed/"
+  },
+  {
+    "name": "U.S. Court of Appeals for the Fifth Circuit",
+    "state": "National",
+    "type": "appellate",
+    "timezone": "America/Chicago",
+    "url": "https://ecf.ca5.uscourts.gov/n/beam/servlet/TransportRoom?servlet=RSSGenerator"
+  },
+  {
+    "name": "U.S. Court of Appeals for the Fifth Circuit Opinions",
+    "state": "National",
+    "type": "appellate",
+    "timezone": "America/Chicago",
+    "url": "https://www.ca5.uscourts.gov/feeds/opinions"
+  },
+  {
+    "name": "U.S. Court of Appeals for the First Circuit",
+    "state": "National",
+    "type": "appellate",
+    "timezone": "America/New_York",
+    "url": "https://ecf.ca1.uscourts.gov/n/beam/servlet/TransportRoom?servlet=RSSGenerator"
+  },
+  {
+    "name": "U.S. Court of Appeals for the Fourth Circuit",
+    "state": "National",
+    "type": "appellate",
+    "timezone": "America/New_York",
+    "url": "https://ecf.ca4.uscourts.gov/n/beam/servlet/TransportRoom?servlet=RSSGenerator"
+  },
+  {
+    "name": "U.S. Court of Appeals for the Fourth Circuit Opinions",
+    "state": "National",
+    "type": "appellate",
+    "timezone": "America/New_York",
+    "url": "https://www.ca4.uscourts.gov/feeds/daily-opinions-via-rss-(published-and-unpublished-opinions)"
+  },
+  {
+    "name": "U.S. Court of Appeals for the Ninth Circuit",
+    "state": "National",
+    "type": "appellate",
+    "timezone": "America/Los_Angeles",
+    "url": "https://ecf.ca9.uscourts.gov/n/beam/servlet/TransportRoom?servlet=RSSGenerator"
+  },
+  {
+    "name": "U.S. Court of Appeals for the Ninth Circuit Memoranda",
+    "state": "National",
+    "type": "appellate",
+    "timezone": "America/Los_Angeles",
+    "url": "https://www.ca9.uscourts.gov/decisions/memoranda/index.xml"
+  },
+  {
+    "name": "U.S. Court of Appeals for the Ninth Circuit Opinions",
+    "state": "National",
+    "type": "appellate",
+    "timezone": "America/Los_Angeles",
+    "url": "https://www.ca9.uscourts.gov/decisions/opinions/index.xml"
+  },
+  {
+    "name": "U.S. Court of Appeals for the Second Circuit",
+    "state": "National",
+    "type": "appellate",
+    "timezone": "America/New_York",
+    "url": "https://ecf.ca2.uscourts.gov/n/beam/servlet/TransportRoom?servlet=RSSGenerator"
+  },
+  {
+    "name": "U.S. Court of Appeals for the Second Circuit Opinions",
+    "state": "National",
+    "type": "appellate",
+    "timezone": "America/New_York",
+    "url": "https://coop.ca2.uscourts.gov/rss/opinions.xml"
+  },
+  {
+    "name": "U.S. Court of Appeals for the Second Circuit Summary Orders",
+    "state": "National",
+    "type": "appellate",
+    "timezone": "America/New_York",
+    "url": "https://coop.ca2.uscourts.gov/rss/orders.xml"
+  },
+  {
+    "name": "U.S. Court of Appeals for the Seventh Circuit",
+    "state": "National",
+    "type": "appellate",
+    "timezone": "America/Chicago",
+    "url": "https://ecf.ca7.uscourts.gov/n/beam/servlet/TransportRoom?servlet=RSSGenerator"
+  },
+  {
+    "name": "U.S. Court of Appeals for the Sixth Circuit",
+    "state": "National",
+    "type": "appellate",
+    "timezone": "America/New_York",
+    "url": "https://ecf.ca6.uscourts.gov/n/beam/servlet/TransportRoom?servlet=RSSGenerator"
+  },
+  {
+    "name": "U.S. Court of Appeals for the Tenth Circuit",
+    "state": "National",
+    "type": "appellate",
+    "timezone": "America/Denver",
+    "url": "https://ecf.ca10.uscourts.gov/n/beam/servlet/TransportRoom?servlet=RSSGenerator"
+  },
+  {
+    "name": "U.S. Court of Appeals for the Third Circuit",
+    "state": "National",
+    "type": "appellate",
+    "timezone": "America/New_York",
+    "url": "https://ecf.ca3.uscourts.gov/n/beam/servlet/TransportRoom?servlet=RSSGenerator"
+  },
+  {
+    "name": "U.S. Court of Appeals for the Armed Forces",
+    "state": "National",
+    "type": "specialized",
+    "timezone": "America/New_York",
+    "url": "https://www.armfor.uscourts.gov/RSS%20Feed/Opinions/rss.xml"
+  },
+  {
+    "name": "U.S. Court of Federal Claims",
+    "state": "National",
+    "type": "specialized",
+    "timezone": "America/New_York",
+    "url": "https://ecf.cofc.uscourts.gov/cgi-bin/rss_outside.pl"
+  },
+  {
+    "name": "U.S. Court of International Trade",
+    "state": "National",
+    "type": "specialized",
+    "timezone": "America/New_York",
+    "url": "https://ecf.cit.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "Alabama Middle District Court",
@@ -91,18 +182,11 @@
     "url": "https://ecf.almd.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
-    "name": "Alabama Northern District Court",
-    "state": "Alabama",
-    "type": "district",
-    "timezone": "America/Chicago",
-    "url": null
-  },
-  {
     "name": "Alabama Southern District Court",
     "state": "Alabama",
     "type": "district",
     "timezone": "America/Chicago",
-    "url": null
+    "url": "https://ecf.alsd.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "Alaska District Court",
@@ -196,13 +280,6 @@
     "url": "https://ecf.flmd.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
-    "name": "Florida Northern District Court",
-    "state": "Florida",
-    "type": "district",
-    "timezone": "America/New_York",
-    "url": "https://ecf.flnd.uscourts.gov/cgi-bin/rss_outside.pl"
-  },
-  {
     "name": "Florida Southern District Court",
     "state": "Florida",
     "type": "district",
@@ -217,20 +294,6 @@
     "url": "https://ecf.gamd.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
-    "name": "Georgia Northern District Court",
-    "state": "Georgia",
-    "type": "district",
-    "timezone": "America/New_York",
-    "url": "https://ecf.gand.uscourts.gov/cgi-bin/rss_outside.pl"
-  },
-  {
-    "name": "Georgia Southern District Court",
-    "state": "Georgia",
-    "type": "district",
-    "timezone": "America/New_York",
-    "url": "https://ecf.gasd.uscourts.gov/cgi-bin/rss_outside.pl"
-  },
-  {
     "name": "Guam District Court",
     "state": "Guam",
     "type": "district",
@@ -242,14 +305,14 @@
     "state": "Hawaii",
     "type": "district",
     "timezone": "Pacific/Honolulu",
-    "url": null
+    "url": "https://ecf.hid.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "Idaho District Court",
     "state": "Idaho",
     "type": "district",
     "timezone": "America/Boise",
-    "url": null
+    "url": "https://ecf.idd.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "Illinois Central District Court",
@@ -277,7 +340,7 @@
     "state": "Indiana",
     "type": "district",
     "timezone": "America/Indiana/Indianapolis",
-    "url": null
+    "url": "https://ecf.innd.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "Indiana Southern District Court",
@@ -291,7 +354,7 @@
     "state": "Iowa",
     "type": "district",
     "timezone": "America/Chicago",
-    "url": null
+    "url": "https://ecf.iand.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "Iowa Southern District Court",
@@ -308,13 +371,6 @@
     "url": "https://ecf.ksd.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
-    "name": "Kentucky Eastern District Court",
-    "state": "Kentucky",
-    "type": "district",
-    "timezone": "America/New_York",
-    "url": "https://ecf.kyed.uscourts.gov/cgi-bin/rss_outside.pl"
-  },
-  {
     "name": "Kentucky Western District Court",
     "state": "Kentucky",
     "type": "district",
@@ -326,7 +382,7 @@
     "state": "Louisiana",
     "type": "district",
     "timezone": "America/Chicago",
-    "url": null
+    "url": "https://ecf.laed.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "Louisiana Middle District Court",
@@ -347,28 +403,21 @@
     "state": "Maine",
     "type": "district",
     "timezone": "America/New_York",
-    "url": null
-  },
-  {
-    "name": "Maryland District Court",
-    "state": "Maryland",
-    "type": "district",
-    "timezone": "America/New_York",
-    "url": "https://ecf.mdd.uscourts.gov/cgi-bin/rss_outside.pl"
+    "url": "https://ecf.med.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "Massachusetts District Court",
     "state": "Massachusetts",
     "type": "district",
     "timezone": "America/New_York",
-    "url": null
+    "url": "https://ecf.mad.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "Michigan Eastern District Court",
     "state": "Michigan",
     "type": "district",
     "timezone": "America/Detroit",
-    "url": null
+    "url": "https://ecf.mied.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "Michigan Western District Court",
@@ -385,18 +434,11 @@
     "url": "https://ecf.mnd.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
-    "name": "Mississippi Northern District Court",
-    "state": "Mississippi",
-    "type": "district",
-    "timezone": "America/Chicago",
-    "url": null
-  },
-  {
     "name": "Mississippi Southern District Court",
     "state": "Mississippi",
     "type": "district",
     "timezone": "America/Chicago",
-    "url": null
+    "url": "https://ecf.mssd.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "Missouri Eastern District Court",
@@ -410,14 +452,14 @@
     "state": "Missouri",
     "type": "district",
     "timezone": "America/Chicago",
-    "url": null
+    "url": "https://ecf.mowd.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "Montana District Court",
     "state": "Montana",
     "type": "district",
     "timezone": "America/Denver",
-    "url": null
+    "url": "https://ecf.mtd.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "Nebraska District Court",
@@ -438,14 +480,14 @@
     "state": "New Hampshire",
     "type": "district",
     "timezone": "America/New_York",
-    "url": null
+    "url": "https://ecf.nhd.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "New Jersey District Court",
     "state": "New Jersey",
     "type": "district",
     "timezone": "America/New_York",
-    "url": null
+    "url": "https://ecf.njd.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "New Mexico District Court",
@@ -453,13 +495,6 @@
     "type": "district",
     "timezone": "America/Denver",
     "url": "https://ecf.nmd.uscourts.gov/cgi-bin/rss_outside.pl"
-  },
-  {
-    "name": "New York Eastern District Court",
-    "state": "New York",
-    "type": "district",
-    "timezone": "America/New_York",
-    "url": "https://ecf.nyed.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "New York Northern District Court",
@@ -476,18 +511,11 @@
     "url": "https://ecf.nysd.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
-    "name": "New York Western District Court",
-    "state": "New York",
-    "type": "district",
-    "timezone": "America/New_York",
-    "url": null
-  },
-  {
     "name": "North Carolina Eastern District Court",
     "state": "North Carolina",
     "type": "district",
     "timezone": "America/New_York",
-    "url": null
+    "url": "https://ecf.nced.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "North Carolina Middle District Court",
@@ -501,21 +529,14 @@
     "state": "North Carolina",
     "type": "district",
     "timezone": "America/New_York",
-    "url": null
-  },
-  {
-    "name": "North Dakota District Court",
-    "state": "North Dakota",
-    "type": "district",
-    "timezone": "America/Denver",
-    "url": "https://ecf.ndd.uscourts.gov/cgi-bin/rss_outside.pl"
+    "url": "https://ecf.ncwd.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "Northern Mariana Islands District Court",
     "state": "Northern Mariana Islands",
     "type": "district",
     "timezone": "Pacific/Saipan",
-    "url": null
+    "url": "https://ecf.nmid.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "Ohio Northern District Court",
@@ -532,32 +553,18 @@
     "url": "https://ecf.ohsd.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
-    "name": "Oklahoma Eastern District Court",
-    "state": "Oklahoma",
-    "type": "district",
-    "timezone": "America/Chicago",
-    "url": null
-  },
-  {
-    "name": "Oklahoma Northern District Court",
-    "state": "Oklahoma",
-    "type": "district",
-    "timezone": "America/Chicago",
-    "url": null
-  },
-  {
     "name": "Oklahoma Western District Court",
     "state": "Oklahoma",
     "type": "district",
     "timezone": "America/Chicago",
-    "url": null
+    "url": "https://ecf.okwd.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "Oregon District Court",
     "state": "Oregon",
     "type": "district",
     "timezone": "America/Los_Angeles",
-    "url": null
+    "url": "https://ecf.ord.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "Pennsylvania Eastern District Court",
@@ -565,13 +572,6 @@
     "type": "district",
     "timezone": "America/New_York",
     "url": "https://ecf.paed.uscourts.gov/cgi-bin/rss_outside.pl"
-  },
-  {
-    "name": "Pennsylvania Middle District Court",
-    "state": "Pennsylvania",
-    "type": "district",
-    "timezone": "America/New_York",
-    "url": "https://ecf.pamd.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "Pennsylvania Western District Court",
@@ -634,7 +634,7 @@
     "state": "Texas",
     "type": "district",
     "timezone": "America/Chicago",
-    "url": null
+    "url": "https://ecf.txed.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "Texas Northern District Court",
@@ -676,21 +676,14 @@
     "state": "Virgin Islands",
     "type": "district",
     "timezone": "America/St_Thomas",
-    "url": null
-  },
-  {
-    "name": "Virginia Eastern District Court",
-    "state": "Virginia",
-    "type": "district",
-    "timezone": "America/New_York",
-    "url": "https://ecf.vaed.uscourts.gov/cgi-bin/rss_outside.pl"
+    "url": "https://ecf.vid.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "Virginia Western District Court",
     "state": "Virginia",
     "type": "district",
     "timezone": "America/New_York",
-    "url": null
+    "url": "https://ecf.vawd.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "Washington Eastern District Court",
@@ -714,18 +707,11 @@
     "url": "https://ecf.wvnd.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
-    "name": "West Virginia Southern District Court",
-    "state": "West Virginia",
-    "type": "district",
-    "timezone": "America/New_York",
-    "url": "https://ecf.wvsd.uscourts.gov/cgi-bin/rss_outside.pl"
-  },
-  {
     "name": "Wisconsin Eastern District Court",
     "state": "Wisconsin",
     "type": "district",
     "timezone": "America/Chicago",
-    "url": null
+    "url": "https://ecf.wied.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "Wisconsin Western District Court",
@@ -1029,13 +1015,6 @@
     "url": "https://ecf.mieb.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
-    "name": "Michigan Western Bankruptcy Court",
-    "state": "Michigan",
-    "type": "bankruptcy",
-    "timezone": "America/Detroit",
-    "url": "https://ecf.miwb.uscourts.gov/cgi-bin/rss_outside.pl"
-  },
-  {
     "name": "Minnesota Bankruptcy Court",
     "state": "Minnesota",
     "type": "bankruptcy",
@@ -1141,13 +1120,6 @@
     "url": "https://ecf.nywb.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
-    "name": "North Carolina Eastern Bankruptcy Court",
-    "state": "North Carolina",
-    "type": "bankruptcy",
-    "timezone": "America/New_York",
-    "url": "https://ecf.nceb.uscourts.gov/cgi-bin/rss_outside.pl"
-  },
-  {
     "name": "North Carolina Middle Bankruptcy Court",
     "state": "North Carolina",
     "type": "bankruptcy",
@@ -1167,6 +1139,13 @@
     "type": "bankruptcy",
     "timezone": "America/Denver",
     "url": "https://ecf.ndb.uscourts.gov/cgi-bin/rss_outside.pl"
+  },
+  {
+    "name": "Northern Mariana Islands Bankruptcy Court",
+    "state": "Northern Mariana Islands",
+    "type": "bankruptcy",
+    "timezone": "Pacific/Saipan",
+    "url": "https://ecf.nmib.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
     "name": "Ohio Northern Bankruptcy Court",
@@ -1323,6 +1302,13 @@
     "url": "https://ecf.vtb.uscourts.gov/cgi-bin/rss_outside.pl"
   },
   {
+    "name": "Virgin Islands Bankruptcy Court",
+    "state": "Virgin Islands",
+    "type": "bankruptcy",
+    "timezone": "America/St_Thomas",
+    "url": "https://ecf.vib.uscourts.gov/cgi-bin/rss_outside.pl"
+  },
+  {
     "name": "Virginia Eastern Bankruptcy Court",
     "state": "Virginia",
     "type": "bankruptcy",
@@ -1384,33 +1370,5 @@
     "type": "bankruptcy",
     "timezone": "America/Denver",
     "url": "https://ecf.wyb.uscourts.gov/cgi-bin/rss_outside.pl"
-  },
-  {
-    "name": "U.S. Tax Court",
-    "state": "National",
-    "type": "specialized",
-    "timezone": "America/New_York",
-    "url": "https://www.govinfo.gov/feeds/collection/ustaxcourt"
-  },
-  {
-    "name": "U.S. Court of Appeals for Veterans Claims",
-    "state": "National",
-    "type": "specialized",
-    "timezone": "America/New_York",
-    "url": "https://www.govinfo.gov/feeds/collection/CAVC"
-  },
-  {
-    "name": "Judicial Panel on Multidistrict Litigation",
-    "state": "National",
-    "type": "specialized",
-    "timezone": "America/New_York",
-    "url": "https://www.govinfo.gov/feeds/collection/JPML"
-  },
-  {
-    "name": "U.S. Court of Appeals for the Armed Forces",
-    "state": "National",
-    "type": "specialized",
-    "timezone": "America/New_York",
-    "url": "https://www.armfor.uscourts.gov/RSS%20Feed/Opinions/rss.xml"
   }
 ]
