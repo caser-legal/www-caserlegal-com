@@ -6,7 +6,7 @@ Website and backend for **CASER** — **Case Alerts & Search of Electronic Recor
 - **App Store**: [https://apps.apple.com/app/id6752289799](https://apps.apple.com/app/id6752289799)
 
 > [!TIP]
-> **Meta Global AI Developer Hackathon 2026 entry:** [CASER-2.0 repository](https://github.com/caser-legal/CASER-2.0) · [demo video](https://youtu.be/dX9PhslaSR0) · [TestFlight build](https://testflight.apple.com/join/BhnF2kbQ) · [caserlegal.com/muse](https://www.caserlegal.com/muse) · [Adam Doherty's portfolio](https://apple.caserlegal.com)
+> **Meta Global AI Developer Hackathon 2026 entry:** [CASER-2.0 repository](https://github.com/caser-legal/CASER-2.0) · [demo video](https://youtu.be/IkZkKwwFOEo) · [TestFlight build](https://testflight.apple.com/join/BhnF2kbQ) · [caserlegal.com/muse](https://www.caserlegal.com/muse) · [Adam Doherty's portfolio](https://apple.caserlegal.com)
 
 ## Quick start
 
